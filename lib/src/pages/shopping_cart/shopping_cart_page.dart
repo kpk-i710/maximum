@@ -15,112 +15,139 @@ class ShoppingCartPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 2,
-        backgroundColor: Colors.white,
-        // leading: BackButton(color: Colors.black),
-        title: Text(
-          'completed_orders'.tr,
-          style: widgets.robotoConsid(
-            fontSize: 16,
-            fontWeight: FontWeight.w400,
-          ),
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            widgets.dark(
-                child: Container(
-                    width: double.infinity,
-                    height: 50,
-                    child: Row(
-                      children: [
-                        SizedBox(
-                          width: 20,
-                        ),
-                        Text(
-                          "Корзина #12543",
-                          style: widgets.robotoConsid(
-                              color: Colors.white, fontSize: 18),
-                        ),
-                      ],
-                    ))),
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: productWidgetWithCount(),
-            ),
-            Row(
-              children: [
-                SizedBox(width: 23),
-                widgets.underLineDashed(
-                    child: Text(
-                      "additional_services".tr,
-                      style: widgets.robotoConsid(color: Color(0xff142A65)),
-                    ),
-                    hight: 3),
-                SizedBox(width: 6),
-                Icon(
-                  Icons.arrow_forward_ios,
-                  color: Color(0xff142A65),
-                  size: 13,
-                )
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: productWidgetWithCount(),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: productWidgetWithCount(),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 15.0, right: 15, bottom: 40),
-              child: Container(
-                decoration: BoxDecoration(
-                    color: Color(0xffF6F6F6),
-                    borderRadius: BorderRadius.circular(5)),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 35.0, horizontal: 45),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              widgets.dark(
                   child: Container(
-                    child: Column(
-                      children: [
-                        widgets.rowText(
-                            text1: 'Товары, 1 шт.', text2: '119 990 с.'),
-                        widgets.rowText(text1: 'Скидка', text2: '10 800 с.'),
-                        SizedBox(height: 20),
-                        Row(
-                          children: [
-                            Text(
-                              "Итого:",
-                              style: widgets.robotoConsid(
-                                  fontSize: 24, fontWeight: FontWeight.bold),
+                      width: double.infinity,
+                      height: 50,
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Text(
+                            "Корзина #12543",
+                            style: widgets.robotoConsid(
+                                color: Colors.white, fontSize: 18),
+                          ),
+                          Spacer(),
+                          GestureDetector(
+                            onTap: () {
+                              widgets.citySelectorSheet(context: context);
+                            },
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.location_on,
+                                  color: Colors.white,
+                                  size: 20,
+                                ),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Obx(() {
+                                  return widgets.underLineDashed(
+                                    color: Colors.white,
+                                    child: Text(
+                                      controller.selectedCity.value ??
+                                          "your_city".tr,
+                                      style: widgets.robotoConsid(
+                                          color: Colors.white),
+                                    ),
+                                  );
+                                }),
+                                SizedBox(
+                                  width: 20,
+                                ),
+                              ],
                             ),
-                            Spacer(),
-                            Text(
-                              "109 190 с.",
-                              style: widgets.robotoConsid(
-                                  fontSize: 24, fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 30,
-                        ),
-                        widgets.orderButton(
-                            text: 'checkout'.tr.toUpperCase(),
-                            onPressed: () {
-                              Get.to(PaymentMethod());
-                            })
-                      ],
+                          )
+                        ],
+                      ))),
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: productWidgetWithCount(),
+              ),
+              Row(
+                children: [
+                  SizedBox(width: 23),
+                  widgets.underLineDashed(
+                      child: Text(
+                        "additional_services".tr,
+                        style: widgets.robotoConsid(color: Color(0xff142A65)),
+                      ),
+                      hight: 3),
+                  SizedBox(width: 6),
+                  Icon(
+                    Icons.arrow_forward_ios,
+                    color: Color(0xff142A65),
+                    size: 13,
+                  )
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: productWidgetWithCount(),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: productWidgetWithCount(),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.only(left: 15.0, right: 15, bottom: 40),
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Color(0xffF6F6F6),
+                      borderRadius: BorderRadius.circular(5)),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 35.0, horizontal: 25),
+                    child: Container(
+                      child: Column(
+                        children: [
+                          widgets.rowText(
+                              text1: 'Товары, 1 шт.', text2: '119 990 с.'),
+                          widgets.rowText(text1: 'Скидка', text2: '10 800 с.'),
+                          SizedBox(height: 20),
+                          Row(
+                            children: [
+                              Text(
+                                "Итого:",
+                                style: widgets.robotoConsid(
+                                    fontSize: 24, fontWeight: FontWeight.bold),
+                              ),
+                              Spacer(),
+                              Text(
+                                "109 190 с.",
+                                style: widgets.robotoConsid(
+                                    fontSize: 24, fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 30,
+                          ),
+                          widgets.orderButton(
+                              text: 'checkout1'.tr.toUpperCase(),
+                              onPressed: () {
+                                controller.selectedCity.value == null
+                                    ? widgets.citySelectorSheet(
+                                        context: context,
+                                      )
+                                    : Get.to(PaymentMethod());
+                              })
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -188,34 +215,40 @@ class ShoppingCartPage extends StatelessWidget {
                       ),
                       SizedBox(height: 7),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          buttonCounter(
-                              text: "-",
-                              onTap: () {
-                                controller.minus();
-                              }),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 7.0, vertical: 10),
-                            child: Text(
-                              controller.counter.value.toString(),
-                              style: widgets.robotoConsid(
-                                  fontWeight: FontWeight.w100,
-                                  color: Color(0xff494949),
-                                  fontSize: 18),
-                            ),
+                          Row(
+                            children: [
+                              buttonCounter(
+                                  text: "-",
+                                  onTap: () {
+                                    controller.minus();
+                                  }),
+                              Container(
+                                width: 40,
+                                child: Center(
+                                  child: Text(
+                                    controller.counter.value.toString(),
+                                    style: widgets.robotoConsid(
+                                        fontWeight: FontWeight.w100,
+                                        color: Color(0xff494949),
+                                        fontSize: 18),
+                                  ),
+                                ),
+                              ),
+                              buttonCounter(
+                                  text: "+",
+                                  onTap: () {
+                                    controller.plus();
+                                  }),
+                            ],
                           ),
-                          buttonCounter(
-                              text: "+",
-                              onTap: () {
-                                controller.plus();
-                              }),
                           SizedBox(
-                            width: 10,
+                            width: 4,
                           ),
                           widgets.addFavorite(),
                           SizedBox(
-                            width: 10,
+                            width: 4,
                           ),
                           widgets.IconBattonSvg(sizeButton: 35),
                         ],
@@ -223,7 +256,7 @@ class ShoppingCartPage extends StatelessWidget {
                       Row(
                         children: [
                           SizedBox(
-                            width: 35,
+                            width: 38,
                           ),
                           Text(
                             'по 10 шт.',

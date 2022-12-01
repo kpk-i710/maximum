@@ -7,7 +7,7 @@ import '../../widgets/widgets.dart' as widgets;
 import '../../pages/catalog/catalog_page.dart';
 import '../../pages/favorite/favorite_page.dart';
 import '../../pages/home/home_page.dart';
-import '../shopping_car/shopping_cart_page.dart';
+import '../shopping_cart/shopping_cart_page.dart';
 
 class MainPage extends StatefulWidget {
   @override

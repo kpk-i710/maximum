@@ -1,4 +1,6 @@
+import 'package:configurable_expansion_tile_null_safety/configurable_expansion_tile_null_safety.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
@@ -8,11 +10,16 @@ import 'package:get/instance_manager.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import '../../../helpers/prefs.dart';
 import '../../../widgets/widgets.dart' as widgets;
+import '../shopping_cart_page_controller.dart';
 import 'payment_method_controller.dart';
+import 'shipping_methods/shipping_methods_controller.dart';
+import 'shipping_methods/shipping_methods_page.dart';
 
 class PaymentMethod extends StatelessWidget {
   PaymentMethod({Key? key}) : super(key: key);
   final controller = Get.put(PaymentMethodController());
+  final controllerShoppingCart = Get.put(ShoppingCartPageController());
+  final controllerShippingMethods = Get.put(ShippingMethodsController());
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +30,7 @@ class PaymentMethod extends StatelessWidget {
         backgroundColor: Colors.white,
         leading: BackButton(color: Colors.black),
         title: Text(
-          'completed_orders'.tr,
+          'cart'.tr,
           style: widgets.robotoConsid(
             fontSize: 16,
             fontWeight: FontWeight.w400,
@@ -37,39 +44,34 @@ class PaymentMethod extends StatelessWidget {
               buttonChoise(
                   text: 'choose_shipping_method',
                   icon: widgets.truckSvg(),
-                  select: DeliveryOrPayment.DELIVERY),
+                  select: DeliveryOrPayment.DELIVERY,
+                  onTap: () {
+                    Get.to(ShippingMethodsPage());
+                  }),
               buttonChoise(
                   text: 'select_payment_method',
                   icon: widgets.dollarSvg(),
-                  select: DeliveryOrPayment.PAYMENT),
+                  select: DeliveryOrPayment.PAYMENT,
+                  onTap: () {}),
               Padding(
                 padding: const EdgeInsets.only(top: 10.0),
-                child: Theme(
-                    data: ThemeData().copyWith(
-                        dividerColor: Colors.transparent,
-                        inputDecorationTheme: InputDecorationTheme(
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                  color: Color(0xff142A65), width: 1.0),
-                              borderRadius: BorderRadius.circular(5.0),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  width: 1, color: Colors.transparent),
-                            ),
-                            labelStyle: TextStyle(color: Color(0xff696A6A)))),
-                    child: Column(
-                      children: [
-                        if (!Prefs.isLogin)
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 5.0),
-                            child: phoneNumberName(),
-                          ),
-                        if (Prefs.isLogin) expandTail(),
-                        expandTrail2(),
-                      ],
-                    )),
+                child: widgets.getTheme(
+                    child: Form(
+                  key: controller.loginFormKey,
+                  child: Column(
+                    children: [
+                      SizedBox(height: 20),
+                      if (!Prefs.isLogin)
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                          child: phoneNumberName(),
+                        ),
+                      if (Prefs.isLogin) expandTail(),
+                      SizedBox(height: 8),
+                      buyForOrganization(),
+                    ],
+                  ),
+                )),
               ),
               Container(
                 decoration: BoxDecoration(
@@ -107,9 +109,9 @@ class PaymentMethod extends StatelessWidget {
                           height: 30,
                         ),
                         widgets.orderButton(
-                            text: 'send'.tr.toUpperCase(),
+                            text: 'checkout1'.tr.toUpperCase(),
                             onPressed: () {
-                              Get.to(PaymentMethod());
+                              controller.checkLogin();
                             }),
                         SizedBox(height: 20),
                         Padding(
@@ -132,97 +134,134 @@ class PaymentMethod extends StatelessWidget {
     );
   }
 
-  Widget expandTrail2() {
+  Widget buyForOrganization() {
     return Obx(() {
-      return ExpansionTile(
-        collapsedBackgroundColor: Colors.transparent,
-        backgroundColor: Colors.transparent,
-        leading: Icon(
-          Icons.keyboard_arrow_down_sharp,
-          color: Colors.black,
-        ),
-        trailing: SizedBox(),
-        title: Text(
-          "apply_organization".tr,
-          style: widgets.robotoConsid(fontSize: 14),
-        ),
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                TextField(
-                  style: TextStyle(color: Colors.blueAccent),
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    border: OutlineInputBorder(),
-                    labelText: 'company_name'.tr,
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 7.5),
+        child: Container(
+          child: ConfigurableExpansionTile(
+            header: Container(
+              width: Get.width - 15,
+              child: Row(
+                children: [
+                  SizedBox(width: 20),
+                  Icon(
+                    Icons.keyboard_arrow_down_sharp,
+                    color: Colors.black,
                   ),
-                ),
-                SizedBox(height: 15),
-                TextField(
-                  style: TextStyle(color: Colors.blueAccent),
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    border: OutlineInputBorder(),
-                    labelText: 'tin'.tr,
+                  Text(
+                    "apply_organization".tr,
+                    textAlign: TextAlign.start,
+                    style: widgets.robotoConsid(fontSize: 14),
                   ),
-                ),
-                SizedBox(height: 20),
-                Row(
-                  children: [
-                    FlutterSwitch(
-                      inactiveColor: Color(0xffC9CDD6),
-                      activeColor: Color(0xff2B2861),
-                      width: 60.0,
-                      height: 30.0,
-                      valueFontSize: 25.0,
-                      toggleSize: 20.0,
-                      value: controller.status.value,
-                      borderRadius: 30.0,
-                      padding: 5.0,
-                      showOnOff: false,
-                      onToggle: (val) {
-                        controller.status.value = val;
-                      },
-                    ),
-                    SizedBox(width: 10),
-                    Text(
-                      "include_vat".tr,
-                      style: widgets.robotoConsid(
-                          fontSize: 18, color: Color(0xff543339)),
-                    )
-                  ],
-                ),
-              ],
+                ],
+              ),
             ),
-          )
-        ],
+            childrenBody: Column(children: [
+              Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 12.0, vertical: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      TextFormField(
+                        onSaved: (value) {
+                          controller.nameCompany = value!;
+                        },
+                        validator: (value) {
+                          return controller.validateCompanyName(value!);
+                        },
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.white,
+                          labelText: 'company_name'.tr,
+                        ),
+                        controller: controller.nameCompanyController,
+                      ),
+                      SizedBox(height: 15),
+                      TextFormField(
+                        onSaved: (value) {
+                          controller.firstName = value!;
+                        },
+                        validator: (value) {
+                          return controller.validateInnCompay(value!);
+                        },
+                        controller: controller.innCompayController,
+                        keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly,
+                          LengthLimitingTextInputFormatter(14),
+                        ],
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.white,
+                          labelText: 'tin'.tr,
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      Row(
+                        children: [
+                          FlutterSwitch(
+                            inactiveColor: Color(0xffC9CDD6),
+                            activeColor: Color(0xff2B2861),
+                            width: 60.0,
+                            height: 30.0,
+                            valueFontSize: 25.0,
+                            toggleSize: 20.0,
+                            value: controller.status.value,
+                            borderRadius: 30.0,
+                            padding: 5.0,
+                            showOnOff: false,
+                            onToggle: (val) {
+                              controller.status.value = val;
+                            },
+                          ),
+                          SizedBox(width: 10),
+                          Text(
+                            "include_vat".tr,
+                            style: widgets.robotoConsid(
+                                fontSize: 18, color: Color(0xff543339)),
+                          )
+                        ],
+                      ),
+                    ],
+                  )),
+            ]),
+          ),
+        ),
       );
     });
   }
 
   Widget expandTail() {
-    return ExpansionTile(
-        collapsedBackgroundColor: Colors.transparent,
-        backgroundColor: Colors.transparent,
-        leading: Icon(
-          Icons.keyboard_arrow_down_sharp,
-          color: Colors.black,
-        ),
-        trailing: SizedBox(),
-        title: Text(
-          "other_recipient".tr,
-          style: widgets.robotoConsid(fontSize: 14),
-        ),
-        children: <Widget>[phoneNumberName()],
-        onExpansionChanged: (bool expanded) {
-          controller.demoList[0] = !expanded;
-        });
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 5.0),
+      child: ConfigurableExpansionTile(
+          header: Container(
+            width: Get.width - 19,
+            child: Row(
+              children: [
+                SizedBox(width: 20),
+                Icon(
+                  Icons.keyboard_arrow_down_sharp,
+                  color: Colors.black,
+                ),
+                Text(
+                  "other_recipient".tr,
+                  textAlign: TextAlign.start,
+                  style: widgets.robotoConsid(fontSize: 14),
+                ),
+              ],
+            ),
+          ),
+          childrenBody: Column(
+            children: [phoneNumberName()],
+          ),
+          onExpansionChanged: (bool expanded) {
+            controller.demoList[0] = !expanded;
+          }),
+    );
   }
 
   Widget phoneNumberName() {
@@ -230,41 +269,60 @@ class PaymentMethod extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
       child: Column(
         children: [
-          TextField(
-            style: TextStyle(color: Colors.blueAccent),
+          TextFormField(
+            controller: controller.lastNameController,
+            onSaved: (value) {
+              controller.lastName = value!;
+            },
+            validator: (value) {
+              return controller.validateLastName(value!);
+            },
             decoration: InputDecoration(
               filled: true,
               fillColor: Colors.white,
-              border: OutlineInputBorder(),
               labelText: 'last_name'.tr,
             ),
           ),
           SizedBox(height: 15),
-          TextField(
-            style: TextStyle(color: Colors.blueAccent),
+          TextFormField(
+            controller: controller.firstNameController,
+            onSaved: (value) {
+              controller.firstName = value!;
+            },
+            validator: (value) {
+              return controller.validateFirstName(value!);
+            },
             decoration: InputDecoration(
               filled: true,
               fillColor: Colors.white,
-              border: OutlineInputBorder(),
               labelText: 'name'.tr,
             ),
           ),
           SizedBox(height: 15),
           Container(
-            color: Colors.white,
+            decoration: BoxDecoration(
+                color: Colors.white, borderRadius: BorderRadius.circular(5)),
             child: InternationalPhoneNumberInput(
+              textFieldController: controller.numberPhoneController,
+              maxLength: 15,
+              errorMessage: "errorMessage".tr,
               spaceBetweenSelectorAndTextField: 5,
               inputDecoration: InputDecoration(
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(5),
+                  borderSide: BorderSide(width: 1, color: Colors.transparent),
+                ),
                 filled: true,
                 fillColor: Colors.white,
               ),
-              searchBoxDecoration: InputDecoration(
-                filled: true,
-                fillColor: Colors.white,
-              ),
-              onInputChanged: (PhoneNumber value) {},
+              onSaved: (PhoneNumber value) {
+                controller.numberPhone = value;
+              },
               countries: ['RU', 'KG'],
+              selectorConfig:
+                  SelectorConfig(selectorType: PhoneInputSelectorType.DROPDOWN),
               hintText: "enter_phone".tr,
+              onInputChanged: (PhoneNumber value) {},
             ),
           ),
         ],
@@ -272,25 +330,26 @@ class PaymentMethod extends StatelessWidget {
     );
   }
 
+  // if (select == DeliveryOrPayment.DELIVERY) {
+  //   controller.isSelectedDelivryMethod.value =
+  //       !controller.isSelectedDelivryMethod.value;
+  //   return;
+  // }
+  // if (select == DeliveryOrPayment.PAYMENT) {
+  //   controller.isSelectedPaymentMethod.value =
+  //       !controller.isSelectedPaymentMethod.value;
+  //   return;
+  // }
+
   Widget buttonChoise(
       {required String text,
       required Widget icon,
-      required DeliveryOrPayment select}) {
+      required DeliveryOrPayment select,
+      required Function() onTap}) {
     return Padding(
       padding: const EdgeInsets.only(left: 20, right: 20, top: 15),
       child: GestureDetector(
-        onTap: () {
-          if (select == DeliveryOrPayment.DELIVERY) {
-            controller.isSelectedDelivryMethod.value =
-                !controller.isSelectedDelivryMethod.value;
-            return;
-          }
-          if (select == DeliveryOrPayment.PAYMENT) {
-            controller.isSelectedPaymentMethod.value =
-                !controller.isSelectedPaymentMethod.value;
-            return;
-          }
-        },
+        onTap: onTap,
         child: !controller.currentStatusButton(select)
             ? Container(
                 decoration: BoxDecoration(
@@ -365,7 +424,9 @@ class PaymentMethod extends StatelessWidget {
                     width: 10,
                   ),
                   Text(
-                    "free_shipping".tr,
+                    controllerShippingMethods.selectedPage.value == 0
+                        ? "free_shipping".tr
+                        : "express_delivery".tr,
                     style: widgets.robotoConsid(
                         fontWeight: FontWeight.bold, fontSize: 16),
                   ),
@@ -375,7 +436,7 @@ class PaymentMethod extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(left: 35.0),
                 child: Text(
-                  "г.Бишкек, ул. Матыева 148",
+                  "${controllerShoppingCart.selectedCity.value}",
                   style: widgets.robotoConsid(),
                 ),
               ),

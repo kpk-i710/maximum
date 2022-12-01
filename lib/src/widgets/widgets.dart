@@ -18,6 +18,7 @@ import '../helpers/prefs.dart';
 import '../models/news.dart';
 import '../pages/current_orders/order_page/order_page.dart';
 import '../pages/discounts/discount_card_page_controller.dart';
+import '../pages/shopping_cart/shopping_cart_page_controller.dart';
 import 'orders_widgets/time_line_horizontal.dart';
 import '../pages/products_by_catalog/products_by_catalog_page.dart';
 import '../styles.dart';
@@ -252,6 +253,92 @@ Widget rating(double rating, {double iconSize = 15, int quantity = 0}) {
   );
 }
 
+void citySelectorSheet({required BuildContext context}) {
+  final controller = Get.put(ShoppingCartPageController());
+  showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+      context: context,
+      builder: (context) {
+        return Obx(() {
+          return Container(
+            height: Get.height,
+            child: Padding(
+              padding: EdgeInsets.only(
+                  bottom: Get.height * 0.25,
+                  left: Get.width * 0.1,
+                  right: Get.width * 0.1),
+              child: Center(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.only(left: 15, right: 15, bottom: 15),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        SizedBox(height: 20),
+                        Text(
+                          "choose_city_from_list".tr,
+                          style: robotoConsid(),
+                        ),
+                        SizedBox(height: 10),
+                        SizedBox(
+                          height: 55,
+                          child: DropdownButtonFormField<String>(
+                              hint: Text(
+                                "your_city".tr,
+                                style: robotoConsid(),
+                              ),
+                              icon: SizedBox(),
+                              decoration: InputDecoration(
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                      color: Color(0xff112B66), width: 1.0),
+                                  borderRadius: BorderRadius.circular(5.0),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                    borderSide: BorderSide(
+                                      width: 1,
+                                      color: Color(0xff112B66),
+                                    )),
+                                focusColor: Color(0xff112B66),
+                              ),
+                              value: controller.selectedCity?.value,
+                              items: controller.citys!
+                                  .map((item) => DropdownMenuItem<String>(
+                                      value: item,
+                                      child: Text(
+                                        item,
+                                        style: robotoConsid(),
+                                      )))
+                                  .toList(),
+                              onChanged: (item) {
+                                print(item);
+                                controller.selectedCity?.value = item!;
+                              }),
+                        ),
+                        SizedBox(height: 20),
+                        saveButton(
+                            text: 'checkout'.tr.toUpperCase(),
+                            onPressed: () {
+                              Get.back();
+                            }),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          );
+        });
+      });
+}
+
 Widget bigFullWidthButton(
     {required String text,
     Color? bgColor,
@@ -363,7 +450,7 @@ Widget writeFeedbackButton({required String text, Function()? onPressed}) {
   );
 }
 
-Widget boxShadows({required Widget child}) {
+Widget boxShadows({required Widget child, double padding = 12}) {
   return Container(
     decoration: BoxDecoration(
       color: Colors.white,
@@ -378,7 +465,7 @@ Widget boxShadows({required Widget child}) {
       ],
     ),
     child: child,
-    padding: EdgeInsets.all(12),
+    padding: EdgeInsets.all(padding),
   );
 }
 
@@ -400,12 +487,13 @@ Widget dollarSvg() {
   );
 }
 
+Widget anySvg({required String nameSvg, Size size = const Size(17, 17)}) {
+  return SvgPicture.asset("assets/icons/$nameSvg.svg",
+      width: size.width, height: size.height);
+}
+
 Widget editSvg() {
-  return SvgPicture.asset(
-    "assets/icons/edit.svg",
-    width: 17,
-    height: 17
-  );
+  return SvgPicture.asset("assets/icons/edit.svg", width: 17, height: 17);
 }
 
 Widget userFeedback() {
@@ -661,6 +749,8 @@ Widget productWidget() {
   );
 }
 
+
+
 TextStyle robotoConsid(
     {double fontSize = 14,
     FontWeight fontWeight = FontWeight.normal,
@@ -859,6 +949,109 @@ Widget dateAndStatus({required String status, required String date}) {
   );
 }
 
+Widget getTheme({required Widget child}) {
+  return Theme(
+    child: child,
+    data: ThemeData().copyWith(
+        textSelectionTheme: TextSelectionThemeData(
+          cursorColor: Color(0xff112B66),
+        ),
+        dividerColor: Colors.transparent,
+        inputDecorationTheme: InputDecorationTheme(
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(80.0),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide:
+                  const BorderSide(color: Color(0xff112B66), width: 1.0),
+              borderRadius: BorderRadius.circular(5.0),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(5),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.red),
+              borderRadius: BorderRadius.circular(5),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(5),
+              borderSide: BorderSide(width: 1, color: Colors.transparent),
+            ),
+            labelStyle: TextStyle(color: Color(0xff696A6A)))),
+  );
+}
+
+Widget themeChangeAdress({required Widget child}) {
+  return Theme(
+    child: child,
+    data: ThemeData().copyWith(
+        splashColor: Colors.white,
+        textSelectionTheme: TextSelectionThemeData(
+          cursorColor: Color(0xff112B66),
+        ),
+        dividerColor: Colors.blueAccent,
+        inputDecorationTheme: InputDecorationTheme(
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(80.0),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(width: 1, color: Color(0xffC4C4C4)),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide:
+                  const BorderSide(color: Color(0xff112B66), width: 1.0),
+              borderRadius: BorderRadius.circular(5.0),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(5),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.red),
+              borderRadius: BorderRadius.circular(5),
+            ),
+            // enabledBorder: OutlineInputBorder(
+            //   borderRadius: BorderRadius.circular(5),
+            //   borderSide: BorderSide(width: 1, color: Colors.transparent),
+            // ),
+            labelStyle: TextStyle(color: Color(0xff696A6A)))),
+  );
+}
+
+Widget themeSelectDelivery({required Widget child}) {
+  return Theme(
+    child: child,
+    data: ThemeData().copyWith(
+        textSelectionTheme: TextSelectionThemeData(
+          cursorColor: Color(0xff112B66),
+        ),
+        dividerColor: Colors.blueAccent,
+        inputDecorationTheme: InputDecorationTheme(
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(80.0),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(width: 1, color: Color(0xffC4C4C4)),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide:
+                  const BorderSide(color: Color(0xff112B66), width: 1.0),
+              borderRadius: BorderRadius.circular(5.0),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(5),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.red),
+              borderRadius: BorderRadius.circular(5),
+            ),
+            // enabledBorder: OutlineInputBorder(
+            //   borderRadius: BorderRadius.circular(5),
+            //   borderSide: BorderSide(width: 1, color: Colors.transparent),
+            // ),
+            labelStyle: TextStyle(color: Color(0xff696A6A)))),
+  );
+}
+
 Widget loginButtonNew({required String text, Function()? onPressed}) {
   return Container(
     width: double.infinity,
@@ -877,6 +1070,25 @@ Widget loginButtonNew({required String text, Function()? onPressed}) {
         text,
         style: robotoConsid(
             fontWeight: FontWeight.bold, fontSize: 15, color: Colors.white),
+      ),
+    ),
+  );
+}
+
+Widget saveButton({required String text, Function()? onPressed}) {
+  return Container(
+    width: double.infinity,
+    height: 50.0,
+    decoration: BoxDecoration(
+        color: Color(0xff961A4E), borderRadius: BorderRadius.circular(5)),
+    child: ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+          primary: Colors.transparent, shadowColor: Colors.transparent),
+      child: Text(
+        "save".tr,
+        style: robotoConsid(
+            fontWeight: FontWeight.bold, fontSize: 18, color: Colors.white),
       ),
     ),
   );
@@ -1072,12 +1284,12 @@ Widget rowText({required String text1, required String text2}) {
     children: [
       Text(
         text1,
-        style:  robotoConsid(color: Color(0xff62656A)),
+        style: robotoConsid(color: Color(0xff62656A)),
       ),
       Spacer(),
       Text(
         text2,
-        style:  robotoConsid(color: Color(0xff62656A)),
+        style: robotoConsid(color: Color(0xff62656A)),
       ),
     ],
   );

@@ -85,6 +85,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.16.0"
+  configurable_expansion_tile_null_safety:
+    dependency: "direct main"
+    description:
+      name: configurable_expansion_tile_null_safety
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.1.1"
   crypto:
     dependency: transitive
     description:
@@ -221,6 +228,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.9.1"
+  flutter_plugin_android_lifecycle:
+    dependency: transitive
+    description:
+      name: flutter_plugin_android_lifecycle
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.7"
   flutter_rating_bar:
     dependency: "direct main"
     description:
@@ -308,13 +322,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.1"
-  graphs:
-    dependency: transitive
-    description:
-      name: graphs
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.2.0"
   html:
     dependency: "direct main"
     description:
@@ -539,13 +546,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "6.0.4"
-  rive:
-    dependency: "direct main"
-    description:
-      name: rive
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.9.1"
   rxdart:
     dependency: transitive
     description:
@@ -859,6 +859,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "6.1.0"
+  yandex_geocoder:
+    dependency: "direct main"
+    description:
+      name: yandex_geocoder
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.2"
+  yandex_mapkit:
+    dependency: "direct main"
+    description:
+      name: yandex_mapkit
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.2.0"
   youtube_player_flutter:
     dependency: "direct main"
     description:
