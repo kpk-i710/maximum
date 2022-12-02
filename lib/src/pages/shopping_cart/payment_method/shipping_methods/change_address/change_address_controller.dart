@@ -5,11 +5,16 @@ import 'package:get_storage/get_storage.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../../helpers/prefs.dart';
 import '../../../../../models/address_enter.dart';
 import '../../../shopping_cart_page_controller.dart';
+import '../../payment_method_controller.dart';
 
 class ChangeAdressController extends GetxController {
-  RxInt selectedRadio = 1.obs;
+  final controllerPaymentMethod = Get.put(PaymentMethodController());
+
+  RxInt selectedRadio = 10.obs;
+  RxBool isFirstPage = false.obs;
   final mapObjects = <MapObject>[].obs;
   final controllerShoppingCart = Get.put(ShoppingCartPageController());
   final GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
@@ -26,9 +31,28 @@ class ChangeAdressController extends GetxController {
         addressEnter.map((adressList) => adressList.toJson()).toList();
     String jsonString = jsonEncode(addressEnterAsMap);
     await box.write('adressEnter', jsonString);
+  }
 
-    // print("адресс сохранил");
-    // print(box.read('adressEnter'));
+  change(int? value) {
+    selectedRadio.value = value!;
+  }
+
+  delateAdress(int value) {
+    addressEnter.removeAt(value);
+    if (addressEnter.length < 1) {
+      controllerPaymentMethod.isSelectedDelivryPayMethod.value = false;
+    }
+    // print(   addressEnter.map((payment) => payment.toJson()).toList() );
+    saveInListAddress();
+  }
+
+  bool isCourier(List<String>? list) {
+    print("длина");
+    print(addressEnter.length);
+    if (list != null) {
+      return false;
+    }
+    return true;
   }
 
   Future<void> fetchListAdress() async {
@@ -53,7 +77,6 @@ class ChangeAdressController extends GetxController {
       }
 
       var getvalue = addressEnter.map((payment) => payment.toJson()).toList();
-      // print(getvalue);
     }
   }
 
@@ -113,6 +136,7 @@ class ChangeAdressController extends GetxController {
 
   @override
   void onInit() {
+
     fetchListAdress();
 
     streetController = TextEditingController();

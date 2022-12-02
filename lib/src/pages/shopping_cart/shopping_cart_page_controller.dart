@@ -41,12 +41,7 @@ class ShoppingCartPageController extends GetxController {
     "г.Джалал-Абад26",
     "г.Джалал-Абад27",
     "г.Джалал-Абад28",
-    "г.Джалал-Абад29",
-    "г.Джалал-Абад30",
-    "г.Джалал-Абад31",
-    "г.Джалал-Абад32",
-    "г.Джалал-Абад33",
-    "г.Джалал-Абад34",
+
   ];
   final  selectedCity =Rxn<String>( );
   final  selectedStreetHouse =Rxn<String>( );

@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/get_utils/get_utils.dart';
 import 'package:get/instance_manager.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import '../../../helpers/prefs.dart';
 import '../../../widgets/widgets.dart' as widgets;
@@ -405,6 +406,7 @@ class PaymentMethod extends StatelessWidget {
   }
 
   Widget delivaryButton() {
+    final box = GetStorage();
     return widgets.boxShadows(
         child: Container(
       height: 50,
@@ -433,11 +435,17 @@ class PaymentMethod extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 5),
-              Padding(
-                padding: const EdgeInsets.only(left: 35.0),
-                child: Text(
-                  "${controllerShoppingCart.selectedCity.value}",
-                  style: widgets.robotoConsid(),
+              SizedBox(
+                width: Get.width * 0.7,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 35.0),
+                  child: Text(
+                    controllerShippingMethods.selectedPage.value == 1
+                        ? "${controllerShoppingCart.selectedCity.value} ${controllerShoppingCart.selectedStreetHouse.value ?? ""}"
+                        : "${controllerShoppingCart.selectedCity.value} " "${box.read("PosintIssue" ) ??""}",
+                    overflow: TextOverflow.ellipsis,
+                    style: widgets.robotoConsid(),
+                  ),
                 ),
               ),
             ],

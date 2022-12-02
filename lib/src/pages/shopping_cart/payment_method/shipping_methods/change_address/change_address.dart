@@ -3,11 +3,13 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/get_utils/get_utils.dart';
 import 'package:get/instance_manager.dart';
+import 'package:get_storage/get_storage.dart';
 import '../../../../../helpers/prefs.dart';
 import '../../../../../widgets/widgets.dart' as widgets;
 import '../../../shopping_cart_page_controller.dart';
 import '../../payment_method_controller.dart';
 import '../shipping_methods_controller.dart';
+import 'add_adress/add_adress.dart';
 import 'change_address_controller.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 
@@ -20,15 +22,19 @@ class ChangeAdress extends StatefulWidget {
 
 class _ChangeAdressState extends State<ChangeAdress> {
   final controller = Get.put(ChangeAdressController());
-
   final controllerCart = Get.put(ShoppingCartPageController());
-
   final controllerPaymentMethod = Get.put(PaymentMethodController());
-
   final controllerShippingMethods = Get.put(ShippingMethodsController());
+
+  late YandexMapController controllerY;
+  final Point _point = Point(latitude: 42.88, longitude: 74.60);
+  final animationCamera =
+      MapAnimation(type: MapAnimationType.smooth, duration: 2.0);
 
   @override
   Widget build(BuildContext context) {
+    print("есть аргумент");
+    print(Get.arguments);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -44,39 +50,57 @@ class _ChangeAdressState extends State<ChangeAdress> {
         ),
       ),
       body: widgets.themeChangeAdress(
-        child: pageNewUser(),
+        child: Prefs.isLogin
+            ? controller.isCourier(Get.arguments)
+                ? controller.addressEnter.length > 0
+                    ? pageLoginedSavedAdress()
+                    : pageChangeAdgress()
+                : pageChangeAdgress()
+            : pageChangeAdgress(),
       ),
     );
   }
 
-  Widget pageNewUser() {
+  Widget pageChangeAdgress() {
+    final controller = Get.put(ChangeAdressController());
+    final controllerShippingMethods = Get.put(ShippingMethodsController());
+    final controllerPaymentMethod = Get.put(PaymentMethodController());
+    final controllerCart = Get.put(ShoppingCartPageController());
     return Obx(() {
       return Stack(
         children: [
           YandexMap(
             mapObjects: controller.mapObjects.value,
-            onMapCreated: (YandexMapController yandexMapController) async {},
+            onMapCreated: (YandexMapController yandexMapController) async {
+              controllerY = yandexMapController;
+            },
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15.0),
             child: Column(
               children: [
-                wigetForNewUser(),
+                widgets.wigetForNewUser(onTap: (item) async {
+                  print(item);
+                  controllerCart.selectedCity.value = item!;
+                  await controllerY.moveCamera(
+                      CameraUpdate.newCameraPosition(
+                          CameraPosition(target: _point)),
+                      animation: animationCamera);
+                }),
                 Spacer(),
                 widgets.saveButton(
                     text: "save",
                     onPressed: () {
-                     if(controller.checkAdress()){
-                       if (controllerShippingMethods.selectedPage.value == 0) {
-                         controllerPaymentMethod.isSelectedDelivryFreeMethod.value = true;
-                       }
-                       if (controllerShippingMethods.selectedPage.value == 1) {
-                         controllerPaymentMethod.isSelectedDelivryPayMethod.value =
-                         true;
-                       }
-                     }
-
-
+                      if (controller.checkAdress()) {
+                        if (controllerShippingMethods.selectedPage.value == 0) {
+                          controllerPaymentMethod
+                              .isSelectedDelivryFreeMethod.value = true;
+                        }
+                        if (controllerShippingMethods.selectedPage.value == 1) {
+                          controllerPaymentMethod
+                              .isSelectedDelivryPayMethod.value = true;
+                        }
+                      }
                     }),
                 SizedBox(height: 20),
               ],
@@ -87,144 +111,60 @@ class _ChangeAdressState extends State<ChangeAdress> {
     });
   }
 
-  Widget wigetForNewUser() {
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(height: 20),
-          GetBuilder<ShoppingCartPageController>(builder: (context) {
-            return Form(
-              key: controller.loginFormKey,
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 55,
-                    child: DropdownButtonFormField<String>(
-                        hint: Text(
-                          "your_city".tr,
-                          style: widgets.robotoConsid(),
-                        ),
-                        icon: SizedBox(),
-                        decoration: InputDecoration(
-                          fillColor: Colors.white,
-                          filled: true,
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                                color: Color(0xffC4C4C4), width: 1.0),
-                            borderRadius: BorderRadius.circular(5.0),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5),
-                              borderSide: BorderSide(
-                                width: 1,
-                                color: Color(0xffC4C4C4),
-                              )),
-                          focusColor: Color(0xffC4C4C4),
-                        ),
-                        value: controllerCart.selectedCity.value,
-                        items: controllerCart.citys!
-                            .map((item) => DropdownMenuItem<String>(
-                                value: item,
-                                child: Text(
-                                  item,
-                                  style: widgets.robotoConsid(),
-                                )))
-                            .toList(),
-                        onChanged: (item) {
-                          print(item);
-                          controllerCart.selectedCity.value = item!;
-                        }),
-                  ),
-                  SizedBox(height: 20),
-                  Get.arguments[0] == "courier"
-                      ? Column(
-                          children: [
-                            TextFormField(
-                              onSaved: (value) {
-                                controller.streetName = value!;
-                              },
-                              validator: (value) {
-                                return controller.validateStritName(value!);
-                              },
-                              controller: controller.streetController,
-                              decoration: InputDecoration(
-                                filled: true,
-                                fillColor: Colors.white,
-                                labelText: 'street'.tr,
-                              ),
-                            ),
-                            SizedBox(height: 20),
-                            Row(
-                              children: [
-                                Flexible(
-                                  flex: 1,
-                                  child: TextFormField(
-                                    onSaved: (value) {
-                                      controller.houseName = value!;
-                                    },
-                                    validator: (value) {
-                                      return controller
-                                          .validateHouseName(value!);
-                                    },
-                                    controller: controller.houseController,
-                                    decoration: InputDecoration(
-                                      filled: true,
-                                      fillColor: Colors.white,
-                                      labelText: 'home_address'.tr,
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(width: 10),
-                                Flexible(
-                                  flex: 1,
-                                  child: TextFormField(
-                                    onSaved: (value) {
-                                      controller.apartament = value!;
-                                    },
-                                    decoration: InputDecoration(
-                                      filled: true,
-                                      fillColor: Colors.white,
-                                      labelText: 'apartment'.tr,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        )
-                      : SizedBox(),
-                ],
-              ),
-            );
-          }),
-        ],
-      ),
-    );
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      moveToBishkek();
+      print("роут");
+      print(ModalRoute.of(context)?.settings.name);
+    });
+
+
   }
 
-  // Widget pageOldUser() {
-  //   return Padding(
-  //     padding: const EdgeInsets.symmetric(horizontal: 15.0),
-  //     child: Column(
-  //       children: [
-  //         selectRadio(text: "г.Бишкек, ПВЗ 4 мкрн. дом 6", index: 0),
-  //         selectRadio(text: "г.Бишкек, ПВЗ 4 мкрн. дом 6", index: 1),
-  //         SizedBox(height: 20),
-  //         addAdressButton(text: 'add_address'.tr),
-  //         Spacer(),
-  //         widgets.saveButton(
-  //             text: "save",
-  //             onPressed: () {
-  //
-  //
-  //               Get.back();
-  //             }),
-  //         SizedBox(height: 20),
-  //       ],
-  //     ),
-  //   );
-  // }
+  moveToBishkek() async {
+    await Future.delayed(const Duration(seconds: 2), () async {
+      if(ModalRoute.of(context)?.settings.name=="/ChangeAdress"){
+        await controllerY.moveCamera(
+            CameraUpdate.newCameraPosition(CameraPosition(target: _point)),
+            animation: animationCamera);
+      }
+    });
+  }
+
+  Widget pageLoginedSavedAdress() {
+    return Obx(() {
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+        child: Column(
+          children: [
+            for (int i = 0; i < controller.addressEnter.length; i++)
+              selectRadio(
+                  text:
+                      "${controllerCart.selectedCity.value} ${controller.addressEnter[i].house} ${controller.addressEnter[i].street}",
+                  index: i),
+            SizedBox(height: 20),
+            addAdressButton(
+                text: 'add_address'.tr,
+                onPressed: () {
+                  Get.to(AddAdress());
+                }),
+            Spacer(),
+            widgets.saveButton(
+                text: "save",
+                onPressed: () {
+                  if (!controllerPaymentMethod
+                      .isSelectedDelivryPayMethod.value) {
+                    return;
+                  }
+                  Get.back();
+                }),
+            SizedBox(height: 20),
+          ],
+        ),
+      );
+    });
+  }
 
   Widget addAdressButton({required String text, Function()? onPressed}) {
     return SizedBox(
@@ -258,43 +198,96 @@ class _ChangeAdressState extends State<ChangeAdress> {
   }
 
   Widget selectRadio({required String text, required int index}) {
+    final box = GetStorage();
+    print("выбрано");
+    print(box.read("selectedRadio"));
+    if (box.read("selectedRadio") != null) {
+      controller.selectedRadio.value = (box.read("selectedRadio"));
+    }
     return Obx(() {
       return Padding(
         padding: const EdgeInsets.only(top: 20.0),
         child: Column(
           children: [
-            GestureDetector(
-              onTap: () {
-                // controller.change(index);
-              },
-              child: widgets.boxShadows(
-                padding: 4,
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(5)),
-                  child: Row(
-                    children: [
-                      SizedBox(width: 10),
-                      Radio(
-                        activeColor: Color(0xff112B66),
-                        value: index,
-                        groupValue: controller.selectedRadio.value,
-                        onChanged: (int? value) {
-                          // controller.change(index);
-                        },
+            widgets.boxShadows(
+              padding: 4,
+              child: Row(
+                children: [
+                  Flexible(
+                    flex: 10,
+                    child: GestureDetector(
+                      onTap: () {
+                        controller.change(index);
+                        controllerPaymentMethod
+                            .isSelectedDelivryPayMethod.value = true;
+                        controllerCart.selectedStreetHouse.value = controller.addressEnter[index].house+ controller.addressEnter[index].street;
+
+
+                        print("radio");
+                        controller.change(index);
+
+                        print(index);
+                        final box = GetStorage();
+                        box.write("selectedRadio",controller.selectedRadio.value);
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(5)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Row(
+                                children: [
+                                  SizedBox(width: 10),
+                                  Radio(
+                                    activeColor: Color(0xff112B66),
+                                    value: index,
+                                    groupValue: controller.selectedRadio.value,
+                                    onChanged: (int? value) {
+                                      print("radio");
+                                      controller.change(index);
+
+                                      print(index);
+                                      final box = GetStorage();
+                                      box.write("selectedRadio",controller.selectedRadio.value);
+                                    },
+                                  ),
+                                  SizedBox(width: 15),
+                                  Flexible(
+                                    child: Text(
+                                      "$text",
+                                      overflow: TextOverflow.ellipsis,
+                                      style: widgets.robotoConsid(
+                                          color: Color(0xff2C2D2E)),
+                                    ),
+                                  ),
+
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                      SizedBox(width: 15),
-                      Text(
-                        "$text",
-                        style: widgets.robotoConsid(color: Color(0xff2C2D2E)),
-                      ),
-                      Spacer(),
-                      widgets.anySvg(nameSvg: "trash"),
-                      SizedBox(width: 10),
-                    ],
+                    ),
                   ),
-                ),
+
+                  Flexible(
+                    flex: 1,
+                    child: GestureDetector(
+                      onTap: () {
+                        controller.delateAdress(index);
+                      },
+                      child: Container(
+                        color: Colors.transparent,
+                        height: 50,
+                        width: 50,
+                        child: Center(child: widgets.anySvg(nameSvg: "trash")),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],

@@ -36,33 +36,37 @@ class ShoppingCartPage extends StatelessWidget {
                           Spacer(),
                           GestureDetector(
                             onTap: () {
-                              widgets.citySelectorSheet(context: context);
+                              widgets.citySelectorSheetAppBar(context: context);
                             },
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.location_on,
-                                  color: Colors.white,
-                                  size: 20,
-                                ),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Obx(() {
-                                  return widgets.underLineDashed(
+                            child: Container(
+                              height: 50,
+                              color: Colors.transparent,
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.location_on,
                                     color: Colors.white,
-                                    child: Text(
-                                      controller.selectedCity.value ??
-                                          "your_city".tr,
-                                      style: widgets.robotoConsid(
-                                          color: Colors.white),
-                                    ),
-                                  );
-                                }),
-                                SizedBox(
-                                  width: 20,
-                                ),
-                              ],
+                                    size: 20,
+                                  ),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Obx(() {
+                                    return widgets.underLineDashed(
+                                      color: Colors.white,
+                                      child: Text(
+                                        controller.selectedCity.value ??
+                                            "your_city".tr,
+                                        style: widgets.robotoConsid(
+                                            color: Colors.white),
+                                      ),
+                                    );
+                                  }),
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                ],
+                              ),
                             ),
                           )
                         ],
@@ -135,9 +139,8 @@ class ShoppingCartPage extends StatelessWidget {
                               text: 'checkout1'.tr.toUpperCase(),
                               onPressed: () {
                                 controller.selectedCity.value == null
-                                    ? widgets.citySelectorSheet(
-                                        context: context,
-                                      )
+                                    ? widgets.citySelectorSheetWithQuestion(
+                                        context: context)
                                     : Get.to(PaymentMethod());
                               })
                         ],

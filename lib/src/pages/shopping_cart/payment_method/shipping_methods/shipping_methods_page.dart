@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:get/get_utils/get_utils.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/state_manager.dart';
+import 'package:get_storage/get_storage.dart';
 import '../../../../helpers/prefs.dart';
 import '../../../../widgets/widgets.dart' as widgets;
 import '../../shopping_cart_page_controller.dart';
@@ -21,6 +22,8 @@ class ShippingMethodsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("эта нужная");
+
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
@@ -47,7 +50,7 @@ class ShippingMethodsPage extends StatelessWidget {
                         physics: NeverScrollableScrollPhysics(),
                         children: [
                           pageOne(),
-                          Prefs.isLogin ? pageTwo() : pageTwoNewUser(),
+                          pageTwoNewUser(),
                         ]),
                   ),
                   Flexible(flex: 1, child: selectBetweenTwo()),
@@ -72,37 +75,40 @@ class ShippingMethodsPage extends StatelessWidget {
                 print(controller.addressEnter
                     .map((adressList) => adressList.toJson())
                     .toList());
-                Get.to(ChangeAdress(), arguments: ["PointOfIssue"]);
+                Get.to(ChangeAdress(), arguments: ["points"]);
               }),
           SizedBox(height: 20),
           Text(
             "select_pickup_point".tr,
             style: widgets.robotoConsid(),
           ),
-          selectRadio(text: "г.Бишкек, ПВЗ 4 мкрн. дом 6", index: 0),
-          selectRadio(text: "ПВЗ Восток 6, дом 8", index: 1),
-          selectRadio(text: "ПВЗ 4 мкрн. дом 6", index: 2),
+          selectRadio(text: "г.Бишкек, ПВЗ 4 мкрн. дом 6", index: 0,isPointIssue: true),
+          selectRadio(text: "ПВЗ Восток 6, дом 8", index: 1,isPointIssue: true),
+          selectRadio(text: "ПВЗ 4 мкрн. дом 6", index: 2,isPointIssue: true),
         ],
       ),
     );
   }
 
-  Widget pageTwo() {
+  Widget pageTwoLogined() {
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(height: 20),
           buttonChoise(
-              icon: widgets.anySvg(nameSvg: 'location_dark'), onTap: () {}),
+              icon: widgets.anySvg(nameSvg: 'location_dark'),
+              onTap: () {
+                Get.to(
+                  ChangeAdress(),
+                );
+              }),
           SizedBox(height: 20),
           Text(
             "select_pickup_point".tr,
             style: widgets.robotoConsid(),
           ),
-          // selectRadio(text: "г.Бишкек, ПВЗ 4 мкрн. дом 6", index: 0),
-          // selectRadio(text: "ПВЗ Восток 6, дом 8", index: 1),
-          // selectRadio(text: "ПВЗ 4 мкрн. дом 6", index: 2),
+
           selectRadio(text: "г.Бишкек, ПВЗ 4 мкрн. дом 6", index: 0),
           selectRadio(text: "ПВЗ Восток 6, дом 8", index: 1),
           selectRadio(text: "ПВЗ 4 мкрн. дом 6", index: 2),
@@ -128,7 +134,9 @@ class ShippingMethodsPage extends StatelessWidget {
               icon: widgets.anySvg(nameSvg: 'location_dark'),
               courier: true,
               onTap: () {
-                Get.to(ChangeAdress(), arguments: ["courier"]);
+                Get.to(
+                  ChangeAdress(),
+                );
               }),
           SizedBox(height: 20),
           Text(
@@ -155,9 +163,7 @@ class ShippingMethodsPage extends StatelessWidget {
                     text: 'point_of_issue'.tr,
                     onPressed: () {
                       controller.selectedPage.value = 0;
-                      controller.controllerPage.animateToPage(0,
-                          duration: Duration(milliseconds: 300),
-                          curve: Curves.easeInOut);
+                      controller.jump(0);
                     },
                     index: 0,
                     icon: widgets.anySvg(
@@ -170,9 +176,7 @@ class ShippingMethodsPage extends StatelessWidget {
                 text: 'courier'.tr,
                 onPressed: () {
                   controller.selectedPage.value = 1;
-                  controller.controllerPage.animateToPage(1,
-                      duration: Duration(milliseconds: 300),
-                      curve: Curves.easeInOut);
+                  controller.jump(1);
                 },
                 index: 1,
                 icon: widgets.anySvg(nameSvg: 'car_blue', size: Size(20, 20)),
@@ -206,6 +210,7 @@ class ShippingMethodsPage extends StatelessWidget {
       required int index,
       required Widget icon}) {
     return Obx(() {
+
       return Container(
         height: 50.0,
         decoration: BoxDecoration(
@@ -247,7 +252,7 @@ class ShippingMethodsPage extends StatelessWidget {
     );
   }
 
-  Widget selectRadio({required String text, required int index}) {
+  Widget selectRadio({required String text, required int index,bool isPointIssue = false}) {
     return Obx(() {
       return Padding(
         padding: const EdgeInsets.only(top: 20.0),
@@ -255,7 +260,13 @@ class ShippingMethodsPage extends StatelessWidget {
           children: [
             GestureDetector(
               onTap: () {
+                if(isPointIssue){
+                  final box = GetStorage();
+                  box.write("PosintIssue", text);
+                }
+
                 controller.change(index);
+
               },
               child: Container(
                 decoration: BoxDecoration(

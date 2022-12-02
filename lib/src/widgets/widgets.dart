@@ -11,6 +11,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:timeline_tile/timeline_tile.dart';
+import 'package:yandex_mapkit/yandex_mapkit.dart';
 import '../helpers/app_router.dart';
 import '../models/menu_item.dart';
 import '../helpers/helper.dart';
@@ -18,6 +19,9 @@ import '../helpers/prefs.dart';
 import '../models/news.dart';
 import '../pages/current_orders/order_page/order_page.dart';
 import '../pages/discounts/discount_card_page_controller.dart';
+import '../pages/shopping_cart/payment_method/payment_method_controller.dart';
+import '../pages/shopping_cart/payment_method/shipping_methods/change_address/change_address_controller.dart';
+import '../pages/shopping_cart/payment_method/shipping_methods/shipping_methods_controller.dart';
 import '../pages/shopping_cart/shopping_cart_page_controller.dart';
 import 'orders_widgets/time_line_horizontal.dart';
 import '../pages/products_by_catalog/products_by_catalog_page.dart';
@@ -253,6 +257,96 @@ Widget rating(double rating, {double iconSize = 15, int quantity = 0}) {
   );
 }
 
+void citySelectorSheetAppBar({required BuildContext context}) {
+  final controller = Get.put(ShoppingCartPageController());
+  showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      context: context,
+      builder: (context) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 40.0),
+          child: Padding(
+            padding: EdgeInsets.only(bottom: Get.height * 0.1),
+            child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(5)),
+                height: Get.height * 0.7,
+                child: Scrollbar(
+                  child: ListView(physics: BouncingScrollPhysics(), children: [
+                    for (int i = 0; i < controller.citys!.length; i++)
+                      ListTile(
+                        onTap: () {
+                          print(controller.citys![i]);
+                          controller.selectedCity.value = controller.citys![i];
+                          Get.back();
+                        },
+                        title: Text(
+                          controller.citys![i],
+                          style: robotoConsid(),
+                        ),
+                      ),
+                  ]),
+                )),
+          ),
+        );
+      });
+}
+
+void citySelectorSheetWithQuestion({required BuildContext context}) {
+  final controller = Get.put(ShoppingCartPageController());
+  showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      context: context,
+      builder: (context) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 40.0),
+          child: Padding(
+            padding: EdgeInsets.only(bottom: Get.height * 0.1),
+            child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(5)),
+                height: Get.height * 0.7,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 30.0, bottom: 20),
+                      child: Text(
+                        "choose_city_from_list".tr,
+                        style: robotoConsid(fontSize: 15),
+                      ),
+                    ),
+                    Expanded(
+                      child: Scrollbar(
+                        child: ListView(
+                            physics: BouncingScrollPhysics(),
+                            children: [
+                              for (int i = 0; i < controller.citys!.length; i++)
+                                ListTile(
+                                  onTap: () {
+                                    print(controller.citys![i]);
+                                    controller.selectedCity.value =
+                                        controller.citys![i];
+                                    Get.back();
+                                  },
+                                  title: Text(
+                                    controller.citys![i],
+                                    style: robotoConsid(),
+                                  ),
+                                ),
+                            ]),
+                      ),
+                    ),
+                  ],
+                )),
+          ),
+        );
+      });
+}
+
 void citySelectorSheet({required BuildContext context}) {
   final controller = Get.put(ShoppingCartPageController());
   showModalBottomSheet(
@@ -450,11 +544,12 @@ Widget writeFeedbackButton({required String text, Function()? onPressed}) {
   );
 }
 
-Widget boxShadows({required Widget child, double padding = 12}) {
+Widget boxShadows(
+    {required Widget child, double padding = 12, double radius = 5}) {
   return Container(
     decoration: BoxDecoration(
       color: Colors.white,
-      borderRadius: BorderRadius.circular(5),
+      borderRadius: BorderRadius.circular(radius),
       boxShadow: [
         BoxShadow(
           color: Color(0xffD9D9D9).withOpacity(0.6),
@@ -749,8 +844,6 @@ Widget productWidget() {
   );
 }
 
-
-
 TextStyle robotoConsid(
     {double fontSize = 14,
     FontWeight fontWeight = FontWeight.normal,
@@ -792,7 +885,8 @@ Widget delivryBox({required BuildContext context}) {
         SizedBox(height: 19),
         GestureDetector(
           onTap: () {
-            showSnackBar(context: context);
+            // showSnackBar(context: context);
+            showTimeLineSheet(context: context);
           },
           child: Row(
             children: [
@@ -828,7 +922,8 @@ Widget delivryBox({required BuildContext context}) {
         SizedBox(height: 4),
         GestureDetector(
             onTap: () {
-              showSnackBar(context: context);
+              showTimeLineSheet(context: context);
+              // showSnackBar(context: context);
             },
             child: TimeLinesHorizontal()),
         SizedBox(
@@ -843,15 +938,27 @@ void showSnackBar({required BuildContext context}) {
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
     padding: EdgeInsets.only(bottom: Get.height / 10, right: 10, left: 10),
     duration: Duration(minutes: 2),
-    content: contentSnackBar(context: context),
+    content: contentSnackBar1(context: context),
     behavior: SnackBarBehavior.floating,
     backgroundColor: Colors.transparent,
     elevation: 0,
   ));
 }
 
-Widget contentSnackBar({required BuildContext context}) {
+void showTimeLineSheet({required BuildContext context}) {
+  showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      context: context,
+      builder: (context) {
+        return contentSnackBar1(context: context);
+      });
+}
+
+Widget contentSnackBar1({required BuildContext context}) {
   return boxShadows(
+    padding: 8,
+    radius: 10,
     child: Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -861,72 +968,169 @@ Widget contentSnackBar({required BuildContext context}) {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 8.0, top: 10),
-                child: Text(
-                  "order_status_detail".tr,
-                  style: robotoConsid(fontSize: 17),
-                ),
-              ),
-              Spacer(),
-              GestureDetector(
-                onTap: () {
-                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                },
-                child: Container(
-                    height: 25,
-                    width: 25,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(
-                          color: Color(0xff868584),
-                          width: 2,
-                        )),
-                    child: Icon(
-                      Icons.close_sharp,
-                      size: 15,
-                      color: Color(0xff868584),
-                    )),
-              ),
-            ],
+          Center(
+            child: Container(
+              width: 40,
+              height: 4,
+              decoration: BoxDecoration(
+                  color: Color(0xffE4E4E4),
+                  borderRadius: BorderRadius.circular(5)),
+            ),
           ),
-          SizedBox(height: 30),
-          Row(
-            children: [
-              SizedBox(width: 5),
-              SizedBox(
-                  height: Get.height / 3.8,
-                  width: 17,
-                  child: TimeLinesVertical()),
-              SizedBox(width: 5),
-              SizedBox(
-                height: Get.height / 3.8,
-                width: Get.width / 1.4,
-                child: Column(
-                  children: [
-                    dateAndStatus(
-                        status: "placed_order".tr, date: "26 марта 2022г."),
-                    dateAndStatus(
-                        status: "awaiting_payment".tr, date: "27 марта 2022г."),
-                    dateAndStatus(
-                        status: "on_my_way".tr, date: "28 марта 2022г."),
-                    dateAndStatus(
-                        status: "ready_for_shipment".tr,
-                        date: "29 марта 2022г."),
-                    dateAndStatus(
-                        status: "completed".tr, date: "30 марта 2022г."),
-                  ],
-                ),
-              ),
-            ],
+          SizedBox(
+            height: 10,
           ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            left: 40.0, top: 10, right: 10),
+                        child: Text(
+                          "order_status_detail".tr,
+                          style: robotoConsid(fontSize: 16),
+                        ),
+                      ),
+                      Spacer(),
+                      GestureDetector(
+                        onTap: () {
+                          Get.back();
+                        },
+                        child: anySvg(nameSvg: 'close', size: Size(17, 17)),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 30),
+                  Row(
+                    children: [
+                      SizedBox(width: 10),
+                      SizedBox(
+                          height: Get.height / 3.8,
+                          width: 17,
+                          child: TimeLinesVertical()),
+                      SizedBox(width: 20),
+                      SizedBox(
+                        height: Get.height / 3.8,
+                        width: Get.width / 1.4,
+                        child: Column(
+                          children: [
+                            dateAndStatus(
+                                status: "placed_order".tr,
+                                date: "26 марта 2022г."),
+                            dateAndStatus(
+                                status: "awaiting_payment".tr,
+                                date: "27 марта 2022г."),
+                            dateAndStatus(
+                                status: "on_my_way".tr,
+                                date: "28 марта 2022г."),
+                            dateAndStatus(
+                                status: "ready_for_shipment".tr,
+                                date: "29 марта 2022г."),
+                            dateAndStatus(
+                                status: "completed".tr,
+                                date: "30 марта 2022г."),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          )
         ],
       ),
     ),
   );
 }
+
+// Widget contentSnackBar({required BuildContext context}) {
+//   return boxShadows(
+//     child: Container(
+//       decoration: BoxDecoration(
+//         color: Colors.white,
+//         borderRadius: BorderRadius.circular(10),
+//       ),
+//       height: Get.height / 2.5,
+//       child: Column(
+//         crossAxisAlignment: CrossAxisAlignment.start,
+//         children: [
+//           Row(
+//             children: [
+//               Padding(
+//                 padding: const EdgeInsets.only(left: 8.0, top: 10),
+//                 child: Text(
+//                   "order_status_detail".tr,
+//                   style: robotoConsid(fontSize: 16),
+//                 ),
+//               ),
+//               Spacer(),
+//               GestureDetector(
+//                 onTap: () {
+//                   ScaffoldMessenger.of(context).hideCurrentSnackBar();
+//                 },
+//                 child: Container(
+//                   width: 50,
+//                   height: 50,
+//                   child: Center(
+//                     child: Container(
+//                         height: 25,
+//                         width: 25,
+//                         decoration: BoxDecoration(
+//                             borderRadius: BorderRadius.circular(20),
+//                             border: Border.all(
+//                               color: Color(0xff868584),
+//                               width: 2,
+//                             )),
+//                         child: Icon(
+//                           Icons.close_sharp,
+//                           size: 15,
+//                           color: Color(0xff868584),
+//                         )),
+//                   ),
+//                 ),
+//               ),
+//             ],
+//           ),
+//           SizedBox(height: 30),
+//           Row(
+//             children: [
+//               SizedBox(width: 5),
+//               SizedBox(
+//                   height: Get.height / 3.8,
+//                   width: 17,
+//                   child: TimeLinesVertical()),
+//               SizedBox(width: 5),
+//               SizedBox(
+//                 height: Get.height / 3.8,
+//                 width: Get.width / 1.4,
+//                 child: Column(
+//                   children: [
+//                     dateAndStatus(
+//                         status: "placed_order".tr, date: "26 марта 2022г."),
+//                     dateAndStatus(
+//                         status: "awaiting_payment".tr, date: "27 марта 2022г."),
+//                     dateAndStatus(
+//                         status: "on_my_way".tr, date: "28 марта 2022г."),
+//                     dateAndStatus(
+//                         status: "ready_for_shipment".tr,
+//                         date: "29 марта 2022г."),
+//                     dateAndStatus(
+//                         status: "completed".tr, date: "30 марта 2022г."),
+//                   ],
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ],
+//       ),
+//     ),
+//   );
+// }
 
 Widget dateAndStatus({required String status, required String date}) {
   return Padding(
@@ -1781,3 +1985,171 @@ Widget supportCenterButton() => fullWidthButton(
     onPressed: () {
       Get.toNamed(AppRouter.supportService);
     });
+
+Widget wigetForNewUser({Function(String? val)? onTap}) {
+  final controller = Get.put(ChangeAdressController());
+  final controllerCart = Get.put(ShoppingCartPageController());
+  return SingleChildScrollView(
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(height: 20),
+        GetBuilder<ShoppingCartPageController>(builder: (context) {
+          return Form(
+            key: controller.loginFormKey,
+            child: Column(
+              children: [
+                SizedBox(
+                    height: 55,
+                    child: DropdownButtonFormField<String>(
+                        hint: Text(
+                          "your_city".tr,
+                          style: robotoConsid(),
+                        ),
+                        icon: SizedBox(),
+                        decoration: InputDecoration(
+                          fillColor: Colors.white,
+                          filled: true,
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                                color: Color(0xffC4C4C4), width: 1.0),
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5),
+                              borderSide: BorderSide(
+                                width: 1,
+                                color: Color(0xffC4C4C4),
+                              )),
+                          focusColor: Color(0xffC4C4C4),
+                        ),
+                        value: controllerCart.selectedCity.value,
+                        items: controllerCart.citys!
+                            .map((item) => DropdownMenuItem<String>(
+                                value: item,
+                                child: Text(
+                                  item,
+                                  style: robotoConsid(),
+                                )))
+                            .toList(),
+                        onChanged: onTap
+
+                        )),
+                SizedBox(height: 20),
+                Get.arguments == null
+                    ? Column(
+                        children: [
+                          TextFormField(
+                            onSaved: (value) {
+                              controller.streetName = value!;
+                            },
+                            validator: (value) {
+                              return controller.validateStritName(value!);
+                            },
+                            controller: controller.streetController,
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.white,
+                              labelText: 'street'.tr,
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          Row(
+                            children: [
+                              Flexible(
+                                flex: 1,
+                                child: TextFormField(
+                                  onSaved: (value) {
+                                    controller.houseName = value!;
+                                  },
+                                  validator: (value) {
+                                    return controller.validateHouseName(value!);
+                                  },
+                                  controller: controller.houseController,
+                                  decoration: InputDecoration(
+                                    filled: true,
+                                    fillColor: Colors.white,
+                                    labelText: 'home_address'.tr,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 10),
+                              Flexible(
+                                flex: 1,
+                                child: TextFormField(
+                                  onSaved: (value) {
+                                    controller.apartament = value!;
+                                  },
+                                  decoration: InputDecoration(
+                                    filled: true,
+                                    fillColor: Colors.white,
+                                    labelText: 'apartment'.tr,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      )
+                    : SizedBox(),
+              ],
+            ),
+          );
+        }),
+      ],
+    ),
+  );
+}
+
+Widget pageChangeAdgress() {
+  late YandexMapController controllerY;
+  final Point _point = Point(latitude: 42.88, longitude: 74.60);
+  final animation = MapAnimation(type: MapAnimationType.smooth, duration: 2.0);
+  final controller = Get.put(ChangeAdressController());
+  final controllerShippingMethods = Get.put(ShippingMethodsController());
+  final controllerPaymentMethod = Get.put(PaymentMethodController());
+  final controllerCart = Get.put(ShoppingCartPageController());
+  return Obx(() {
+    return Stack(
+      children: [
+        YandexMap(
+          mapObjects: controller.mapObjects.value,
+          onMapCreated: (YandexMapController yandexMapController) async {
+            controllerY = yandexMapController;
+          },
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+          child: Column(
+            children: [
+              wigetForNewUser(onTap: (item) async {
+                print(item);
+                controllerCart.selectedCity.value = item!;
+                await controllerY.moveCamera(
+                    CameraUpdate.newCameraPosition(
+                        CameraPosition(target: _point)),
+                    animation: animation);
+              }),
+              Spacer(),
+              saveButton(
+                  text: "save",
+                  onPressed: () {
+                    if (controller.checkAdress()) {
+                      if (controllerShippingMethods.selectedPage.value == 0) {
+                        controllerPaymentMethod
+                            .isSelectedDelivryFreeMethod.value = true;
+                      }
+                      if (controllerShippingMethods.selectedPage.value == 1) {
+                        controllerPaymentMethod
+                            .isSelectedDelivryPayMethod.value = true;
+                      }
+                    }
+                  }),
+              SizedBox(height: 20),
+            ],
+          ),
+        ),
+      ],
+    );
+  });
+}
