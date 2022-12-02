@@ -111,20 +111,9 @@ class _ChangeAdressState extends State<ChangeAdress> {
     });
   }
 
-  @override
-  void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      moveToBishkek();
-      print("роут");
-      print(ModalRoute.of(context)?.settings.name);
-    });
-
-
-  }
-
   moveToBishkek() async {
     await Future.delayed(const Duration(seconds: 2), () async {
-      if(ModalRoute.of(context)?.settings.name=="/ChangeAdress"){
+      if (ModalRoute.of(context)?.settings.name == "/ChangeAdress") {
         await controllerY.moveCamera(
             CameraUpdate.newCameraPosition(CameraPosition(target: _point)),
             animation: animationCamera);
@@ -141,7 +130,7 @@ class _ChangeAdressState extends State<ChangeAdress> {
             for (int i = 0; i < controller.addressEnter.length; i++)
               selectRadio(
                   text:
-                      "${controllerCart.selectedCity.value} ${controller.addressEnter[i].house} ${controller.addressEnter[i].street}",
+                      "${controllerCart.selectedCity.value} ${controllerCart.selectedStreetHouse ?? ""}",
                   index: i),
             SizedBox(height: 20),
             addAdressButton(
@@ -218,17 +207,24 @@ class _ChangeAdressState extends State<ChangeAdress> {
                     child: GestureDetector(
                       onTap: () {
                         controller.change(index);
+
                         controllerPaymentMethod
                             .isSelectedDelivryPayMethod.value = true;
-                        controllerCart.selectedStreetHouse.value = controller.addressEnter[index].house+ controller.addressEnter[index].street;
 
+                        controllerCart.selectedStreetHouse.value = "ул. " +
+                            controller.addressEnter[index].street +
+                            " д." +
+                            controller.addressEnter[index].house +
+                            " кв." +
+                            controller.addressEnter[index].apartament;
 
                         print("radio");
                         controller.change(index);
 
                         print(index);
                         final box = GetStorage();
-                        box.write("selectedRadio",controller.selectedRadio.value);
+                        box.write(
+                            "selectedRadio", controller.selectedRadio.value);
                       },
                       child: Container(
                         decoration: BoxDecoration(
@@ -251,7 +247,8 @@ class _ChangeAdressState extends State<ChangeAdress> {
 
                                       print(index);
                                       final box = GetStorage();
-                                      box.write("selectedRadio",controller.selectedRadio.value);
+                                      box.write("selectedRadio",
+                                          controller.selectedRadio.value);
                                     },
                                   ),
                                   SizedBox(width: 15),
@@ -263,7 +260,6 @@ class _ChangeAdressState extends State<ChangeAdress> {
                                           color: Color(0xff2C2D2E)),
                                     ),
                                   ),
-
                                 ],
                               ),
                             ),
@@ -272,7 +268,6 @@ class _ChangeAdressState extends State<ChangeAdress> {
                       ),
                     ),
                   ),
-
                   Flexible(
                     flex: 1,
                     child: GestureDetector(

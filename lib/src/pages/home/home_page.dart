@@ -18,10 +18,13 @@ import '../../helpers/prefs.dart';
 import '../bestsellers/bestsellers_list_page.dart';
 import '../news/all_news_page.dart';
 import '../promotions/all_promotions_page.dart';
+import '../shopping_cart/payment_method/shipping_methods/shipping_methods_page.dart';
+import '../shopping_cart/shopping_cart_page_controller.dart';
 import 'home_page_controller.dart';
 
 class HomePage extends StatelessWidget {
   final homeController = Get.put(HomePageController());
+  final controllerShoppingCart = Get.put(ShoppingCartPageController());
 
   HomePage({key}) : super(key: key);
 
@@ -38,33 +41,42 @@ class HomePage extends StatelessWidget {
               child: Column(
                 children: [
                   SearchWidget(),
-                  widgets.location(),
+                  Obx(() {
+                    return widgets.location(
+                        adress: (controllerShoppingCart.selectedCity.value ??
+                                "Укажите город") +
+                            (controllerShoppingCart.selectedStreetHouse.value ??
+                                ""),
+                        onTap: () {
+                          Get.to(ShippingMethodsPage());
+                        });
+                  }),
                   // SearchBarWidget()
                   //     .paddingSymmetric(horizontal: 12),
                   // const SizedBox(height: 25),
                   Obx(() =>
                       BannerWidget(list: homeController.bannerList.value)),
-                  if (Prefs.isLogin)
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'hello_user'.trParams({'user': 'Станислав'})!,
-                          style: AppTextStyles.robotoCondensed(
-                            fontSize: 21,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        widgets.fullWidthButton(
-                          text: 'current_orders'.tr + ' - 2',
-                          icon: AppIcons.car_ride,
-                          onPressed: () {
-                            Get.toNamed(AppRouter.currentOrders);
-                          },
-                        ),
-                      ],
-                    ).paddingSymmetric(horizontal: 12),
+                  // if (Prefs.isLogin)
+                  //   Column(
+                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                  //     children: [
+                  //       Text(
+                  //         'hello_user'.trParams({'user': 'Станислав'})!,
+                  //         style: AppTextStyles.robotoCondensed(
+                  //           fontSize: 21,
+                  //           fontWeight: FontWeight.w700,
+                  //         ),
+                  //       ),
+                  //       const SizedBox(height: 10),
+                  //       widgets.fullWidthButton(
+                  //         text: 'current_orders'.tr + ' - 2',
+                  //         icon: AppIcons.car_ride,
+                  //         onPressed: () {
+                  //           Get.toNamed(AppRouter.currentOrders);
+                  //         },
+                  //       ),
+                  //     ],
+                  //   ).paddingSymmetric(horizontal: 12),
                   // Prefs.isLogin
                   //     ? const SizedBox(height: 12)
                   //     : Padding(
@@ -92,21 +104,21 @@ class HomePage extends StatelessWidget {
                   //           ),
                   //         ),
                   //       ),
-                  if (Prefs.isLogin)
-                    Container(
-                      margin: const EdgeInsets.only(top: 20),
-                      color: context.theme.focus,
-                      child: Column(
-                        children: [
-                          widgets
-                              .titleWidget('viewed_products'.tr)
-                              .paddingSymmetric(horizontal: 12.0),
-                          Obx(() => ProductsCarouselWidget(
-                                list: homeController.viewedProductsList.value,
-                              )),
-                        ],
-                      ),
-                    ),
+                  // if (Prefs.isLogin)
+                  //   Container(
+                  //     margin: const EdgeInsets.only(top: 20),
+                  //     color: context.theme.focus,
+                  //     child: Column(
+                  //       children: [
+                  //         widgets
+                  //             .titleWidget('viewed_products'.tr)
+                  //             .paddingSymmetric(horizontal: 12.0),
+                  //         Obx(() => ProductsCarouselWidget(
+                  //               list: homeController.viewedProductsList.value,
+                  //             )),
+                  //       ],
+                  //     ),
+                  //   ),
                   // else
                   //   Column(
                   //     children: [

@@ -22,7 +22,7 @@ class ShippingMethodsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("эта нужная");
+
 
     return Scaffold(
         resizeToAvoidBottomInset: false,
@@ -65,18 +65,55 @@ class ShippingMethodsPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(height: 20),
-          buttonChoise1(
-              courier: false,
-              icon: widgets.anySvg(nameSvg: 'location_dark'),
-              onTap: () {
-                print("сейчас сохраненные адреса");
-                final controller = Get.put(ChangeAdressController());
+          SizedBox(
+              height: 55,
+              child: DropdownButtonFormField<String>(
+                  hint: Text(
+                    "your_city".tr,
+                    style: widgets.robotoConsid(),
+                  ),
+                  icon: SizedBox(),
+                  decoration: InputDecoration(
+                    fillColor: Colors.white,
+                    filled: true,
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                          color: Color(0xffC4C4C4), width: 1.0),
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5),
+                        borderSide: BorderSide(
+                          width: 1,
+                          color: Color(0xffC4C4C4),
+                        )),
+                    focusColor: Color(0xffC4C4C4),
+                  ),
+                  value: controllerShoppingCart.selectedCity.value,
+                  items: controllerShoppingCart.citys!
+                      .map((item) => DropdownMenuItem<String>(
+                      value: item,
+                      child: Text(
+                        item,
+                        style: widgets.robotoConsid(),
+                      )))
+                      .toList(),
+                  onChanged: (String? value){
+                    controllerShoppingCart.selectedCity.value = value;
+                  }
+              )),
 
-                print(controller.addressEnter
-                    .map((adressList) => adressList.toJson())
-                    .toList());
-                Get.to(ChangeAdress(), arguments: ["points"]);
-              }),
+          // buttonChoise1(
+          //     courier: false,
+          //     icon: widgets.anySvg(nameSvg: 'location_dark'),
+          //     onTap: () {
+          //       final controller = Get.put(ChangeAdressController());
+          //
+          //       print(controller.addressEnter
+          //           .map((adressList) => adressList.toJson())
+          //           .toList());
+          //       Get.to(ChangeAdress(), arguments: ["points"]);
+          //     }),
           SizedBox(height: 20),
           Text(
             "select_pickup_point".tr,

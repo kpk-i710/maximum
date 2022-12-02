@@ -193,27 +193,30 @@ BottomNavigationBar bottomNavigation(
   );
 }
 
-Widget location() {
-  return Padding(
-    padding: const EdgeInsets.only(left: 10.0, right: 10, top: 8.0),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          "г.Бишкек, Пункт выдачи Матыева 148",
-          style: robotoConsid(color: Color(0xff112B66), fontSize: 12),
-        ),
-        Container(
-            decoration: DottedDecoration(
-                shape: Shape.line, dash: [4, 4], color: Color(0xff142A65)),
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 1.0, right: 1),
-              child: Text(
-                'change'.tr,
-                style: robotoConsid(fontSize: 12, color: Color(0xff142A65)),
-              ),
-            )),
-      ],
+Widget location({required String adress,Function()? onTap}) {
+  return GestureDetector(
+    onTap: onTap,
+    child: Padding(
+      padding: const EdgeInsets.only(left: 10.0, right: 10, top: 8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            adress,
+            style: robotoConsid(color: Color(0xff112B66), fontSize: 12),
+          ),
+          Container(
+              decoration: DottedDecoration(
+                  shape: Shape.line, dash: [4, 4], color: Color(0xff142A65)),
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 1.0, right: 1),
+                child: Text(
+                  'change'.tr,
+                  style: robotoConsid(fontSize: 12, color: Color(0xff142A65)),
+                ),
+              )),
+        ],
+      ),
     ),
   );
 }
@@ -1181,7 +1184,7 @@ Widget getTheme({required Widget child}) {
               borderRadius: BorderRadius.circular(5),
               borderSide: BorderSide(width: 1, color: Colors.transparent),
             ),
-            labelStyle: TextStyle(color: Color(0xff696A6A)))),
+            labelStyle: TextStyle(color: Color(0xff696A6A) ))),
   );
 }
 

@@ -166,38 +166,43 @@ class PaymentMethod extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      TextFormField(
-                        onSaved: (value) {
-                          controller.nameCompany = value!;
-                        },
-                        validator: (value) {
-                          return controller.validateCompanyName(value!);
-                        },
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Colors.white,
-                          labelText: 'company_name'.tr,
+                      sizeTextFild(
+                        child: TextFormField(
+                          onSaved: (value) {
+                            controller.nameCompany = value!;
+                          },
+                          validator: (value) {
+                            return controller.validateCompanyName(value!);
+                          },
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            labelText: 'company_name'.tr,
+                          ),
+                          controller: controller.nameCompanyController,
                         ),
-                        controller: controller.nameCompanyController,
                       ),
                       SizedBox(height: 15),
-                      TextFormField(
-                        onSaved: (value) {
-                          controller.firstName = value!;
-                        },
-                        validator: (value) {
-                          return controller.validateInnCompay(value!);
-                        },
-                        controller: controller.innCompayController,
-                        keyboardType: TextInputType.number,
-                        inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.digitsOnly,
-                          LengthLimitingTextInputFormatter(14),
-                        ],
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Colors.white,
-                          labelText: 'tin'.tr,
+                      sizeTextFild(
+
+                        child: TextFormField(
+                          onSaved: (value) {
+                            controller.firstName = value!;
+                          },
+                          validator: (value) {
+                            return controller.validateInnCompay(value!);
+                          },
+                          controller: controller.innCompayController,
+                          keyboardType: TextInputType.number,
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.digitsOnly,
+                            LengthLimitingTextInputFormatter(14),
+                          ],
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            labelText: 'tin'.tr,
+                          ),
                         ),
                       ),
                       SizedBox(height: 20),
@@ -265,65 +270,78 @@ class PaymentMethod extends StatelessWidget {
     );
   }
 
+  Widget sizeTextFild({required Widget child}){
+    return SizedBox(
+        height: 50,
+        child: child);
+  }
+
   Widget phoneNumberName() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
       child: Column(
         children: [
-          TextFormField(
-            controller: controller.lastNameController,
-            onSaved: (value) {
-              controller.lastName = value!;
-            },
-            validator: (value) {
-              return controller.validateLastName(value!);
-            },
-            decoration: InputDecoration(
-              filled: true,
-              fillColor: Colors.white,
-              labelText: 'last_name'.tr,
+          sizeTextFild(
+
+            child: TextFormField(
+              controller: controller.lastNameController,
+              onSaved: (value) {
+                controller.lastName = value!;
+              },
+              validator: (value) {
+                return controller.validateLastName(value!);
+              },
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: Colors.white,
+                labelText: 'last_name'.tr,
+              ),
             ),
           ),
           SizedBox(height: 15),
-          TextFormField(
-            controller: controller.firstNameController,
-            onSaved: (value) {
-              controller.firstName = value!;
-            },
-            validator: (value) {
-              return controller.validateFirstName(value!);
-            },
-            decoration: InputDecoration(
-              filled: true,
-              fillColor: Colors.white,
-              labelText: 'name'.tr,
+          sizeTextFild(
+            child: TextFormField(
+              controller: controller.firstNameController,
+              onSaved: (value) {
+                controller.firstName = value!;
+              },
+              validator: (value) {
+                return controller.validateFirstName(value!);
+              },
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: Colors.white,
+                labelText: 'name'.tr,
+              ),
             ),
           ),
           SizedBox(height: 15),
           Container(
             decoration: BoxDecoration(
                 color: Colors.white, borderRadius: BorderRadius.circular(5)),
-            child: InternationalPhoneNumberInput(
-              textFieldController: controller.numberPhoneController,
-              maxLength: 15,
-              errorMessage: "errorMessage".tr,
-              spaceBetweenSelectorAndTextField: 5,
-              inputDecoration: InputDecoration(
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5),
-                  borderSide: BorderSide(width: 1, color: Colors.transparent),
+            child: sizeTextFild(
+              child: InternationalPhoneNumberInput(
+                textFieldController: controller.numberPhoneController,
+                maxLength: 15,
+                errorMessage: "errorMessage".tr,
+                spaceBetweenSelectorAndTextField: 5,
+                inputDecoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5),
+                    borderSide: BorderSide(width: 1, color: Colors.transparent),
+                  ),
+                  filled: true,
+                  fillColor: Colors.white,
                 ),
-                filled: true,
-                fillColor: Colors.white,
+                onSaved: (PhoneNumber value) {
+                  controller.numberPhone = value;
+                },
+                countries: ['RU', 'KG'],
+                selectorConfig:
+                    SelectorConfig(selectorType: PhoneInputSelectorType.DROPDOWN),
+                hintText: "enter_phone".tr,
+                onInputChanged: (PhoneNumber value) {},
               ),
-              onSaved: (PhoneNumber value) {
-                controller.numberPhone = value;
-              },
-              countries: ['RU', 'KG'],
-              selectorConfig:
-                  SelectorConfig(selectorType: PhoneInputSelectorType.DROPDOWN),
-              hintText: "enter_phone".tr,
-              onInputChanged: (PhoneNumber value) {},
             ),
           ),
         ],

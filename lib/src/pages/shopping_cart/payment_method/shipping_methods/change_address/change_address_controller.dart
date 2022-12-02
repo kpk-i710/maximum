@@ -13,6 +13,7 @@ import '../../payment_method_controller.dart';
 class ChangeAdressController extends GetxController {
   final controllerPaymentMethod = Get.put(PaymentMethodController());
 
+  final controllerCart = Get.put(ShoppingCartPageController());
   RxInt selectedRadio = 10.obs;
   RxBool isFirstPage = false.obs;
   final mapObjects = <MapObject>[].obs;
@@ -128,15 +129,17 @@ class ChangeAdressController extends GetxController {
 
     addressEnter.add(AddressEnter(
         street: streetName, house: houseName, apartament: apartament));
+
     controllerShoppingCart.selectedStreetHouse.value =
-        "$streetName $houseName $apartament";
+        "ул. " + streetName + " д." + houseName + " кв." + apartament;
     saveInListAddress();
+
+    // "$streetName $houseName $apartament";
     return true;
   }
 
   @override
   void onInit() {
-
     fetchListAdress();
 
     streetController = TextEditingController();
