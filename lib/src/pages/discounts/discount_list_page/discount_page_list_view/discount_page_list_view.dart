@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../widgets/discount_widgets/discount_detail_item_widget.dart';
+import '../../../../widgets/discount_widgets/discount_detail_item_widget.dart';
 
-import '../../widgets/search_widgets/search_bar_2.dart';
-import '../../widgets/widgets.dart' as widgets;
+import '../../../../widgets/search_widgets/search_bar_2.dart';
+import '../../../../widgets/widgets.dart' as widgets;
 
-import 'discount_card_page.dart';
+import '../../discount_card_page.dart';
 
 import 'discount_page_list_view_controller.dart';
 

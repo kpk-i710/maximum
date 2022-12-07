@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/state_manager.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'dart:convert';
 
 import '../../../models/address_enter.dart';
@@ -27,7 +26,7 @@ class PaymentMethodController extends GetxController {
 
   var firstName = '';
   var lastName = '';
-  PhoneNumber numberPhone = PhoneNumber();
+  var numberPhone = " ";
 
   var nameCompany = '';
   var innCompay = '';
@@ -49,6 +48,14 @@ class PaymentMethodController extends GetxController {
     }
     return null;
   }
+
+  String? validateNumberPhone(String value) {
+    if (value.length < 3) {
+      return "Телефон должен быть длинее 3 символов";
+    }
+    return null;
+  }
+
 
   String? validateLastName(String value) {
     if (value.length < 3) {

@@ -22,8 +22,6 @@ class ShippingMethodsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
@@ -92,16 +90,15 @@ class ShippingMethodsPage extends StatelessWidget {
                   value: controllerShoppingCart.selectedCity.value,
                   items: controllerShoppingCart.citys!
                       .map((item) => DropdownMenuItem<String>(
-                      value: item,
-                      child: Text(
-                        item,
-                        style: widgets.robotoConsid(),
-                      )))
+                          value: item,
+                          child: Text(
+                            item,
+                            style: widgets.robotoConsid(),
+                          )))
                       .toList(),
-                  onChanged: (String? value){
+                  onChanged: (String? value) {
                     controllerShoppingCart.selectedCity.value = value;
-                  }
-              )),
+                  })),
 
           // buttonChoise1(
           //     courier: false,
@@ -119,9 +116,13 @@ class ShippingMethodsPage extends StatelessWidget {
             "select_pickup_point".tr,
             style: widgets.robotoConsid(),
           ),
-          selectRadio(text: "г.Бишкек, ПВЗ 4 мкрн. дом 6", index: 0,isPointIssue: true),
-          selectRadio(text: "ПВЗ Восток 6, дом 8", index: 1,isPointIssue: true),
-          selectRadio(text: "ПВЗ 4 мкрн. дом 6", index: 2,isPointIssue: true),
+          selectRadio(
+              text: "г.Бишкек, ПВЗ 4 мкрн. дом 6",
+              index: 0,
+              isPointIssue: true),
+          selectRadio(
+              text: "ПВЗ Восток 6, дом 8", index: 1, isPointIssue: true),
+          selectRadio(text: "ПВЗ 4 мкрн. дом 6", index: 2, isPointIssue: true),
         ],
       ),
     );
@@ -145,7 +146,6 @@ class ShippingMethodsPage extends StatelessWidget {
             "select_pickup_point".tr,
             style: widgets.robotoConsid(),
           ),
-
           selectRadio(text: "г.Бишкек, ПВЗ 4 мкрн. дом 6", index: 0),
           selectRadio(text: "ПВЗ Восток 6, дом 8", index: 1),
           selectRadio(text: "ПВЗ 4 мкрн. дом 6", index: 2),
@@ -247,7 +247,6 @@ class ShippingMethodsPage extends StatelessWidget {
       required int index,
       required Widget icon}) {
     return Obx(() {
-
       return Container(
         height: 50.0,
         decoration: BoxDecoration(
@@ -289,7 +288,8 @@ class ShippingMethodsPage extends StatelessWidget {
     );
   }
 
-  Widget selectRadio({required String text, required int index,bool isPointIssue = false}) {
+  Widget selectRadio(
+      {required String text, required int index, bool isPointIssue = false}) {
     return Obx(() {
       return Padding(
         padding: const EdgeInsets.only(top: 20.0),
@@ -297,13 +297,12 @@ class ShippingMethodsPage extends StatelessWidget {
           children: [
             GestureDetector(
               onTap: () {
-                if(isPointIssue){
+                if (isPointIssue) {
                   final box = GetStorage();
                   box.write("PosintIssue", text);
                 }
 
                 controller.change(index);
-
               },
               child: Container(
                 decoration: BoxDecoration(

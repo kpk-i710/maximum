@@ -8,7 +8,7 @@ import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/get_utils/get_utils.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:maxkgapp/src/styles.dart';
 import '../../../helpers/prefs.dart';
 import '../../../widgets/widgets.dart' as widgets;
 import '../shopping_cart_page_controller.dart';
@@ -47,7 +47,7 @@ class PaymentMethod extends StatelessWidget {
                   icon: widgets.truckSvg(),
                   select: DeliveryOrPayment.DELIVERY,
                   onTap: () {
-                    Get.to(ShippingMethodsPage());
+                    Get.toNamed("/shippingMethodsPage");
                   }),
               buttonChoise(
                   text: 'select_payment_method',
@@ -175,6 +175,7 @@ class PaymentMethod extends StatelessWidget {
                             return controller.validateCompanyName(value!);
                           },
                           decoration: InputDecoration(
+                            helperText: " ",
                             filled: true,
                             fillColor: Colors.white,
                             labelText: 'company_name'.tr,
@@ -182,9 +183,8 @@ class PaymentMethod extends StatelessWidget {
                           controller: controller.nameCompanyController,
                         ),
                       ),
-                      SizedBox(height: 15),
+                      SizedBox(height: 10),
                       sizeTextFild(
-
                         child: TextFormField(
                           onSaved: (value) {
                             controller.firstName = value!;
@@ -192,6 +192,7 @@ class PaymentMethod extends StatelessWidget {
                           validator: (value) {
                             return controller.validateInnCompay(value!);
                           },
+
                           controller: controller.innCompayController,
                           keyboardType: TextInputType.number,
                           inputFormatters: <TextInputFormatter>[
@@ -199,6 +200,7 @@ class PaymentMethod extends StatelessWidget {
                             LengthLimitingTextInputFormatter(14),
                           ],
                           decoration: InputDecoration(
+                            helperText: " ",
                             filled: true,
                             fillColor: Colors.white,
                             labelText: 'tin'.tr,
@@ -272,7 +274,7 @@ class PaymentMethod extends StatelessWidget {
 
   Widget sizeTextFild({required Widget child}){
     return SizedBox(
-        height: 50,
+        height: 70,
         child: child);
   }
 
@@ -292,13 +294,14 @@ class PaymentMethod extends StatelessWidget {
                 return controller.validateLastName(value!);
               },
               decoration: InputDecoration(
+                helperText: " ",
                 filled: true,
                 fillColor: Colors.white,
                 labelText: 'last_name'.tr,
               ),
             ),
           ),
-          SizedBox(height: 15),
+          SizedBox(height: 10),
           sizeTextFild(
             child: TextFormField(
               controller: controller.firstNameController,
@@ -310,39 +313,47 @@ class PaymentMethod extends StatelessWidget {
               },
               decoration: InputDecoration(
                 filled: true,
+                helperText: " ",
                 fillColor: Colors.white,
                 labelText: 'name'.tr,
               ),
             ),
           ),
-          SizedBox(height: 15),
-          Container(
-            decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(5)),
-            child: sizeTextFild(
-              child: InternationalPhoneNumberInput(
-                textFieldController: controller.numberPhoneController,
-                maxLength: 15,
-                errorMessage: "errorMessage".tr,
-                spaceBetweenSelectorAndTextField: 5,
-                inputDecoration: InputDecoration(
+          SizedBox(height: 10),
+          sizeTextFild(
+            child:Container(
+              height: 70,
+              child: TextFormField(
+                keyboardType: TextInputType.number,
+                controller: controller.numberPhoneController,
+                decoration: InputDecoration(
+                  fillColor: Colors.white,
+                  filled: true,
+                  prefixIcon: widgets.getDropDownPhone(),
+                  labelText: 'phone_number'.tr,
+                  helperText: " ",
+
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),
                     borderSide: BorderSide(width: 1, color: Colors.transparent),
                   ),
-                  filled: true,
-                  fillColor: Colors.white,
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5),
+                    borderSide: BorderSide(width: 1, color: Colors.transparent),
+                  ),
                 ),
-                onSaved: (PhoneNumber value) {
-                  controller.numberPhone = value;
+
+                onSaved: (value) {
+                  controller.numberPhone = value!;
                 },
-                countries: ['RU', 'KG'],
-                selectorConfig:
-                    SelectorConfig(selectorType: PhoneInputSelectorType.DROPDOWN),
-                hintText: "enter_phone".tr,
-                onInputChanged: (PhoneNumber value) {},
+                validator: (value) {
+                  return controller.validateNumberPhone(value!);
+                },
+                onChanged: (value) {},
               ),
             ),
+
+
           ),
         ],
       ),
@@ -372,7 +383,7 @@ class PaymentMethod extends StatelessWidget {
         child: !controller.currentStatusButton(select)
             ? Container(
                 decoration: BoxDecoration(
-                    border: Border.all(width: 2, color: Color(0xff991A4E)),
+                    border: Border.all(width: 2, color: AppTextStyles.colorRedMy),
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(5)),
                 height: 50,

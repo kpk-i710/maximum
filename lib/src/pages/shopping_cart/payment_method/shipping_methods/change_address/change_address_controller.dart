@@ -25,6 +25,8 @@ class ChangeAdressController extends GetxController {
   var apartament = '';
   var addressEnter = <AddressEnter>[].obs;
 
+
+
   Future<void> saveInListAddress() async {
     final box = GetStorage();
 

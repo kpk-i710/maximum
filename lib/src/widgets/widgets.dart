@@ -13,10 +13,12 @@ import 'package:shimmer/shimmer.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 import '../helpers/app_router.dart';
+import '../models/country_code.dart';
 import '../models/menu_item.dart';
 import '../helpers/helper.dart';
 import '../helpers/prefs.dart';
 import '../models/news.dart';
+import '../pages/auth/auth_page/auth_page_controller.dart';
 import '../pages/current_orders/order_page/order_page.dart';
 import '../pages/discounts/discount_card_page_controller.dart';
 import '../pages/shopping_cart/payment_method/payment_method_controller.dart';
@@ -193,7 +195,7 @@ BottomNavigationBar bottomNavigation(
   );
 }
 
-Widget location({required String adress,Function()? onTap}) {
+Widget location({required String adress, Function()? onTap}) {
   return GestureDetector(
     onTap: onTap,
     child: Padding(
@@ -224,7 +226,7 @@ Widget location({required String adress,Function()? onTap}) {
 Widget underLineDashed(
     {required Widget child,
     double hight = 1.0,
-    Color color = const Color(0xff142A65)}) {
+    Color color = const  Color(0xff112B66)}) {
   return Container(
       decoration:
           DottedDecoration(shape: Shape.line, dash: [4, 4], color: color),
@@ -1161,7 +1163,7 @@ Widget getTheme({required Widget child}) {
     child: child,
     data: ThemeData().copyWith(
         textSelectionTheme: TextSelectionThemeData(
-          cursorColor: Color(0xff112B66),
+          cursorColor: AppTextStyles.colorBlueMy,
         ),
         dividerColor: Colors.transparent,
         inputDecorationTheme: InputDecorationTheme(
@@ -1170,22 +1172,60 @@ Widget getTheme({required Widget child}) {
             ),
             focusedBorder: OutlineInputBorder(
               borderSide:
-                  const BorderSide(color: Color(0xff112B66), width: 1.0),
+                  BorderSide(color: AppTextStyles.colorBlueMy, width: 1.0),
               borderRadius: BorderRadius.circular(5.0),
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(5),
             ),
             focusedErrorBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.red),
+              borderSide: BorderSide(color: AppTextStyles.colorRedMy),
               borderRadius: BorderRadius.circular(5),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(5),
               borderSide: BorderSide(width: 1, color: Colors.transparent),
             ),
-            labelStyle: TextStyle(color: Color(0xff696A6A) ))),
+            labelStyle: TextStyle(color: AppTextStyles.colorGrayMy))),
   );
+}
+
+Widget getDropDownPhone() {
+  final controller = Get.put(AuthPageController());
+  return Obx(() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 10.0),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<String>(
+          items: controller.dropList
+              .map<DropdownMenuItem<String>>(
+                  (CountryCode item) => DropdownMenuItem<String>(
+                        value: item.number,
+                        child: Row(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  bottom: item.number == "+996" ? 2.0 : 4.0),
+                              child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  child: anySvg(nameSvg: item.iconSVg)),
+                            ),
+                            SizedBox(width: 5),
+                            Text(item.number),
+                          ],
+                        ),
+                      ))
+              .toList(),
+          value: controller.selectedCountryPhone.value,
+          onChanged: (String? value) {
+            print("код страны телефона");
+            print(value);
+            controller.selectedCountryPhone.value = value!;
+          },
+        ),
+      ),
+    );
+  });
 }
 
 Widget themeChangeAdress({required Widget child}) {
@@ -1213,7 +1253,7 @@ Widget themeChangeAdress({required Widget child}) {
               borderRadius: BorderRadius.circular(5),
             ),
             focusedErrorBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.red),
+              borderSide: BorderSide(color: AppTextStyles.colorRedMy),
               borderRadius: BorderRadius.circular(5),
             ),
             // enabledBorder: OutlineInputBorder(
@@ -1248,7 +1288,7 @@ Widget themeSelectDelivery({required Widget child}) {
               borderRadius: BorderRadius.circular(5),
             ),
             focusedErrorBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.red),
+              borderSide: BorderSide(color: AppTextStyles.colorRedMy),
               borderRadius: BorderRadius.circular(5),
             ),
             // enabledBorder: OutlineInputBorder(
@@ -1287,7 +1327,8 @@ Widget saveButton({required String text, Function()? onPressed}) {
     width: double.infinity,
     height: 50.0,
     decoration: BoxDecoration(
-        color: Color(0xff961A4E), borderRadius: BorderRadius.circular(5)),
+        color: AppTextStyles.colorRedMy,
+        borderRadius: BorderRadius.circular(5)),
     child: ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
@@ -1516,7 +1557,7 @@ Widget arrowButton(
             "assets/icons/$icon.svg",
             width: 17,
             height: 19.33,
-            color: Color(0xff0C54A1),
+            color: AppTextStyles.colorBlueMy,
           ),
           title: Text(
             "$label".tr,
@@ -1971,7 +2012,7 @@ Widget customTextField(String text, {bool required = false}) {
                   text: ' *',
                   style: robotoConsid(
                     fontSize: 12,
-                    color: Colors.red,
+                    color:AppTextStyles.colorRedMy,
                   ),
                 ),
             ],
@@ -2035,9 +2076,7 @@ Widget wigetForNewUser({Function(String? val)? onTap}) {
                                   style: robotoConsid(),
                                 )))
                             .toList(),
-                        onChanged: onTap
-
-                        )),
+                        onChanged: onTap)),
                 SizedBox(height: 20),
                 Get.arguments == null
                     ? Column(

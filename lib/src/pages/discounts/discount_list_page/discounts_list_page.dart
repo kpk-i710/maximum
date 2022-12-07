@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../helpers/app_router.dart';
-import '../../widgets/search_widgets/search_bar_2.dart';
-import '../../widgets/discount_widgets/discount_list_widget.dart';
-import '../../widgets/filter_widget.dart';
-import '../../styles.dart';
-import '../../widgets/widgets.dart' as widgets;
-import 'discount_list_page_controller.dart';
+import '../../../helpers/app_router.dart';
+import '../../../widgets/search_widgets/search_bar_2.dart';
+import '../../../widgets/discount_widgets/discount_list_widget.dart';
+import '../../../widgets/filter_widget.dart';
+import '../../../styles.dart';
+import '../../../widgets/widgets.dart' as widgets;
+import '../discount_list_page_controller.dart';
 
 class DiscountsListPage extends StatelessWidget {
   final DiscountController = Get.put(DiscountsListPageController());

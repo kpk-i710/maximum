@@ -1,7 +1,7 @@
  import 'package:get/get.dart';
 
-import '../../models/dicount_list_model.dart';
-import '../../repositories/dicount_repo_list.dart';
+import '../../../../models/dicount_list_model.dart';
+import '../../../../repositories/dicount_repo_list.dart';
 
 class DiscountPageNewController extends GetxController {
   DiscountListDetaile? dicount_list;

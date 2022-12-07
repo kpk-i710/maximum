@@ -1,14 +1,20 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
-
+import '../pages/auth/auth_enter_code/auth_enter_code.dart';
+import '../pages/auth/auth_by_phone.dart';
+import '../pages/auth/auth_page/auth_page.dart';
 import '../pages/banner/listBanner.dart';
 import '../pages/cart_deprecated/cart_page.dart';
 import '../pages/cart_deprecated/delivery_method_page.dart';
 import '../pages/cart_deprecated/payment_method_page.dart';
-import '../pages/discounts/discount_page_list_view.dart';
+import '../pages/discounts/discount_list_page/discounts_list_page.dart';
+import '../pages/discounts/discount_list_page/discount_page_list_view/discount_page_list_view.dart';
 import '../pages/map/map_page.dart';
+import '../pages/news/all_news_page.dart';
 import '../pages/news/level_below/news_list_page.dart';
 import '../pages/news/level_below/level_below/page_news.dart';
+import '../pages/promotions/all_promotions_page.dart';
+import '../pages/shopping_cart/payment_method/shipping_methods/shipping_methods_page.dart';
 import '../pages/support_service/support_service_page.dart';
 import '../pages/support_service/whatsapp_contacts_page.dart';
 import '../pages/user/add_address/add_address_page.dart';
@@ -16,7 +22,6 @@ import '../pages/user/add_phone/add_phone_page.dart';
 import '../pages/info/info_page.dart';
 import '../pages/intro/intro_page.dart';
 import '../pages/user/personal_data/personal_data_page.dart';
-import '../pages/auth/auth_page.dart';
 import '../pages/current_orders/current_orders_page.dart';
 import '../pages/discounts/discount_page.dart';
 import '../pages/filter/filter_page.dart';
@@ -27,7 +32,6 @@ import '../pages/products_by_catalog/products_by_catalog_page.dart';
 import '../pages/user/profile/profile_page.dart';
 import '../pages/search/search_page.dart';
 import '../pages/test/test_page.dart';
-import '../pages/discounts/discounts_list_page.dart';
 import '../pages/notifications/notifications_page.dart';
 import '../pages/verify_code/verify_page.dart';
 import '../pages/main/main_page.dart';
@@ -43,6 +47,9 @@ class AppRouter {
   static const String intro = '/intro';
   static const String test = '/test';
   static const String auth = '/auth';
+  static const String shippingMethodsPage  = '/shippingMethodsPage';
+  static const String authByPhone = '/authByPhone';
+  static const String authEnterCode = '/authEnterCode';
   static const String productDetails = '/product_details';
   static const String productsByCatalog = '/products_by_catalog';
   static const String search = '/search';
@@ -67,8 +74,10 @@ class AppRouter {
   static const String aboutCompany = '/about_company';
   static const String contacts = '/contacts';
   static const String saleRules = '/sale_rules';
+  static const String allPromotionsPage = '/allPromotionsPage';
   static const String suppliersAndManufacturers = '/suppliers_and_manufacturers';
   static const String vacancy = '/vacancy';
+  static const String allNewsPage = '/allNewsPage';
   static const String personalData = '/personal_data';
   static const String addPhone = '/add_phone';
   static const String addAddress = '/add_address';
@@ -86,6 +95,9 @@ class AppRouter {
     GetPage(name: listBanners, page: () => listBanner()),
     GetPage(name: test, page: ()  => TestPage()),
     GetPage(name: auth, page: () => AuthPage()),
+    GetPage(name: shippingMethodsPage, page: () => ShippingMethodsPage() ),
+    GetPage(name: authByPhone, page: () => AuthByPhone()),
+    GetPage(name: authEnterCode, page: () => AuthEnterCode()),
     GetPage(name: main, page: () => MainPage()),
     GetPage(name: intro, page: () => IntroPage()),
 
@@ -114,9 +126,11 @@ class AppRouter {
     GetPage(name: addAddress, page: () => AddAddressPage()),
     GetPage(name: supportService, page: () => SupportServicePage()),
     GetPage(name: whatsappContacts, page: () => WhatsappContactsPage()),
+    GetPage(name: allNewsPage, page: () => AllNewsPage()),
     GetPage(name: deliveryMethod, page: () => DeliveryMethodPage()),
     GetPage(name: paymentMethod, page: () => PaymentMethodPage()),
     GetPage(name: map, page: () => MapPage()),
+    GetPage(name: allPromotionsPage, page: () => AllPromotionsPage()),
 
     GetPage(name: deliveryAndTerms,
         page: () => InfoPage(InfoPage.DELIVERY_AND_TERMS)),

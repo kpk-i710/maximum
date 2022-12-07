@@ -4,28 +4,45 @@ import 'package:get/get.dart';
 
 extension AppThemeExtensions on ThemeData {
   Color get background => AppTheme.theme.bgColor;
+
   Color get background1 => AppTheme.theme.bgColor1;
+
   Color get background2 => AppTheme.theme.bgColor2;
+
   Color get background3 => AppTheme.theme.bgColor3;
+
   Color get primary => AppTheme.theme.primaryColor;
+
   Color get mainColor => AppTheme.theme.mainColor;
+
   Color get onPrimary => AppTheme.theme.onPrimaryColor;
+
   Color get primaryTint => AppTheme.theme.primaryTintColor;
+
   Color get secondary => AppTheme.theme.secondaryColor;
+
   Color get accent => AppTheme.theme.accentColor;
+
   Color get onAccent => AppTheme.theme.onAccentColor;
+
   Color get focus => AppTheme.theme.focusColor;
+
   Color get onFocus => AppTheme.theme.onFocusColor;
+
   Color get surface => AppTheme.theme.surface;
+
   Color get greyWeak => AppTheme.theme.greyWeakColor;
+
   Color get grey => AppTheme.theme.greyColor;
+
   Color get greyMedium => AppTheme.theme.greyMediumColor;
+
   Color get greyStrong => AppTheme.theme.greyStrongColor;
 
   Color get mainTextColor => AppTheme.theme.mainTextColor;
+
   Color get inverseTextColor => AppTheme.theme.inverseTextColor;
 }
-
 
 // Themes
 enum ThemeType {
@@ -67,7 +84,7 @@ class AppTheme {
   }
 
   factory AppTheme.fromType(ThemeType t) {
-    switch(t) {
+    switch (t) {
       case ThemeType.LIGHT_BLUE:
         return AppTheme(isDark: false)
           ..type = t
@@ -152,7 +169,8 @@ class AppTheme {
   Color shift(Color c, double amt) {
     amt *= (isDark ? -1 : 1);
     var hslc = HSLColor.fromColor(c); // Convert to HSL
-    double lightness = (hslc.lightness + amt).clamp(0, 1.0) as double; // Add/Remove lightness
+    double lightness =
+        (hslc.lightness + amt).clamp(0, 1.0) as double; // Add/Remove lightness
     return hslc.withLightness(lightness).toColor(); // Convert back to Color
   }
 
@@ -167,7 +185,8 @@ class AppTheme {
     }
   }
 
-  static AppTheme get theme => Get.isDarkMode ? AppTheme.darkTheme : AppTheme.lightTheme;
+  static AppTheme get theme =>
+      Get.isDarkMode ? AppTheme.darkTheme : AppTheme.lightTheme;
 
   static AppTheme lightTheme = AppTheme.fromType(ThemeType.LIGHT_BLUE);
   static AppTheme darkTheme = AppTheme.fromType(ThemeType.DARK_BLUE);
@@ -175,6 +194,10 @@ class AppTheme {
 
 // Text styles
 class AppTextStyles {
+  static Color colorBlueMy = Color(0xff112B66);
+  static Color colorGrayMy = Color(0xff696A6A);
+  static Color colorRedMy = Color(0xff991A4E);
+
   static mPlusRounded1c(
           {double fontSize = 12.0,
           fontWeight = FontWeight.w700,
@@ -191,19 +214,16 @@ class AppTextStyles {
           decoration: decoration);
 
   static robotoCondensed(
-          {double fontSize = 20.0,
-          fontWeight = FontWeight.w400,
-          color}) =>
+          {double fontSize = 20.0, fontWeight = FontWeight.w400, color}) =>
       GoogleFonts.robotoCondensed(
-
-          fontSize: fontSize, fontWeight: fontWeight,
+          fontSize: fontSize,
+          fontWeight: fontWeight,
           color: color ?? Get.theme.mainTextColor);
 
   static roboto(
-      {double fontSize = 20.0,
-        fontWeight = FontWeight.w400,
-        color}) =>
+          {double fontSize = 20.0, fontWeight = FontWeight.w400, color}) =>
       GoogleFonts.roboto(
-          fontSize: fontSize, fontWeight: fontWeight,
+          fontSize: fontSize,
+          fontWeight: fontWeight,
           color: color ?? Get.theme.mainTextColor);
 }

@@ -3,12 +3,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:maxkgapp/src/helpers/app_router.dart';
-
 import '../../../helpers/prefs.dart';
 import '../../../styles.dart';
 import '../../../widgets/app_icon.dart';
 import '../../../widgets/widgets.dart' as widgets;
-
 import '../../../widgets/orders_widgets/time_line_horizontal.dart';
 import 'profile_page_controller.dart';
 
@@ -136,8 +134,7 @@ class ProfilePage extends StatelessWidget {
               widgets.loginButtonNew(
                   text: 'login_or_register_plural'.tr,
                   onPressed: () {
-                    Prefs.isLogin = true;
-                    // Get.toNamed(AppRouter.auth);
+                    Get.toNamed(AppRouter.authByPhone);
                   }),
             ],
           ),
@@ -177,10 +174,11 @@ class ProfilePage extends StatelessWidget {
                   icon: "favorites",
                   text: 'favorite',
                   notification: true,
+                  page: AppRouter.discount,
                   isActive: false),
-              widgets.arrowButtonProfile(icon: "discounts", text: 'discounts'),
-              widgets.arrowButtonProfile(icon: "stock", text: 'promotions'),
-              widgets.arrowButtonProfile(icon: "news", text: 'news'),
+              widgets.arrowButtonProfile(icon: "discounts", text: 'discounts',page: AppRouter.discountList),
+              widgets.arrowButtonProfile(icon: "stock", text: 'promotions',page: AppRouter.allPromotionsPage),
+              widgets.arrowButtonProfile(icon: "news", text: 'news',page: AppRouter.allNewsPage),
               const SizedBox(height: 27),
               widgets.helpDaria(),
               Prefs.isLogin

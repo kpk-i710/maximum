@@ -9,19 +9,19 @@ import 'package:maxkgapp/src/repositories/user_repo.dart';
 
 import '../cart_controller.dart';
 
-class AppBindings implements Bindings {
-  @override
-  void dependencies() {
-    // repositories
-    Get.put(AppRepo());
-    Get.put(CartRepo());
-    Get.put(CatalogRepo());
-    Get.put(DiscountRepo());
-    Get.put(OrderRepo());
-    Get.put(ProductRepo());
-    Get.put(UserRepo());
+  class AppBindings implements Bindings {
+    @override
+    void dependencies() {
+      // repositories
+      Get.put(AppRepo());
+      Get.put(CartRepo());
+      Get.put(CatalogRepo());
+      Get.put(DiscountRepo());
+      Get.put(OrderRepo());
+      Get.put(ProductRepo());
+      Get.put(UserRepo());
 
-    // controllers
-    Get.put(CartController());
+      // controllers
+      Get.put(CartController());
+    }
   }
-}

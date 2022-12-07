@@ -29,10 +29,12 @@ class ShippingMethodsController extends GetxController {
 
   @override
   void onInit() {
+    print("init штпвС");
     WidgetsBinding.instance.addPostFrameCallback((_) {});
 
     controllerPage = PageController(initialPage: 0);
     selectedPage.value = 0;
+    super.onInit();
   }
 
   jump(int page) {
@@ -42,5 +44,11 @@ class ShippingMethodsController extends GetxController {
 
   change(int? value) {
     selectedRadio.value = value!;
+  }
+
+  @override
+  void dispose() {
+
+    super.dispose();
   }
 }
