@@ -226,7 +226,7 @@ Widget location({required String adress, Function()? onTap}) {
 Widget underLineDashed(
     {required Widget child,
     double hight = 1.0,
-    Color color = const  Color(0xff112B66)}) {
+    Color color = const Color(0xff112B66)}) {
   return Container(
       decoration:
           DottedDecoration(shape: Shape.line, dash: [4, 4], color: color),
@@ -1158,6 +1158,38 @@ Widget dateAndStatus({required String status, required String date}) {
   );
 }
 
+Widget getThemeOzon({required Widget child}) {
+  return Theme(
+    child: child,
+    data: ThemeData().copyWith(
+        textSelectionTheme: TextSelectionThemeData(
+          cursorColor: AppTextStyles.colorBlueMy,
+        ),
+        dividerColor: Colors.transparent,
+        inputDecorationTheme: InputDecorationTheme(
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(80.0),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.transparent, width: 1.0),
+              borderRadius: BorderRadius.circular(5.0),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderSide:BorderSide(color: Colors.transparent),
+              borderRadius: BorderRadius.circular(5),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderSide:BorderSide(color: Colors.transparent),
+              borderRadius: BorderRadius.circular(5),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(5),
+              borderSide: BorderSide(width: 1, color: Colors.transparent),
+            ),
+            labelStyle: TextStyle(color: AppTextStyles.colorGrayMy))),
+  );
+}
+
 Widget getTheme({required Widget child}) {
   return Theme(
     child: child,
@@ -1189,6 +1221,7 @@ Widget getTheme({required Widget child}) {
             labelStyle: TextStyle(color: AppTextStyles.colorGrayMy))),
   );
 }
+
 
 Widget getDropDownPhone() {
   final controller = Get.put(AuthPageController());
@@ -1342,7 +1375,8 @@ Widget saveButton({required String text, Function()? onPressed}) {
   );
 }
 
-Widget orderButton({required String text, Function()? onPressed}) {
+Widget orderButton(
+    {required String text, double fontSize = 18, Function()? onPressed}) {
   return Container(
     width: double.infinity,
     height: 50.0,
@@ -1357,7 +1391,9 @@ Widget orderButton({required String text, Function()? onPressed}) {
       child: Text(
         text,
         style: robotoConsid(
-            fontWeight: FontWeight.bold, fontSize: 18, color: Colors.white),
+            fontWeight: FontWeight.bold,
+            fontSize: fontSize,
+            color: Colors.white),
       ),
     ),
   );
@@ -2012,7 +2048,7 @@ Widget customTextField(String text, {bool required = false}) {
                   text: ' *',
                   style: robotoConsid(
                     fontSize: 12,
-                    color:AppTextStyles.colorRedMy,
+                    color: AppTextStyles.colorRedMy,
                   ),
                 ),
             ],

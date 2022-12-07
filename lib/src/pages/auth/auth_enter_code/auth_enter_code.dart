@@ -68,6 +68,12 @@ class AuthEnterCode extends StatelessWidget {
                       child: PinFieldAutoFill(
                           autoFocus: true,
                           codeLength: 4,
+                          decoration: UnderlineDecoration(
+                              colorBuilder:
+                                  FixedColorBuilder(AppTextStyles.colorBlueMy),
+                              textStyle: widgets.robotoConsid(
+                                  fontSize: 25,
+                                  color: AppTextStyles.colorBlueMy)),
                           onCodeChanged: (value) {
                             controller.receivedCode.value = value!;
                             print("onCodeChanged $value");
@@ -124,9 +130,9 @@ class AuthEnterCode extends StatelessWidget {
                                 checkColor: Colors.white,
                                 value: controller.checkBox.value,
                                 onChanged: (newValue) {
-
                                   controller.checkBox.value = newValue!;
-                                  if (controller.codeNumber.value == "5555" && controller.checkBox.value) {
+                                  if (controller.codeNumber.value == "5555" &&
+                                      controller.checkBox.value) {
                                     Prefs.isLogin = true;
                                     Get.to(ProfilePage());
                                   }
@@ -165,6 +171,4 @@ class AuthEnterCode extends StatelessWidget {
       }),
     );
   }
-
-
 }

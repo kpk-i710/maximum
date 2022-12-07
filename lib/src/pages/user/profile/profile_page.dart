@@ -174,7 +174,7 @@ class ProfilePage extends StatelessWidget {
                   icon: "favorites",
                   text: 'favorite',
                   notification: true,
-                  page: AppRouter.discount,
+                  page: AppRouter.favorite,
                   isActive: false),
               widgets.arrowButtonProfile(icon: "discounts", text: 'discounts',page: AppRouter.discountList),
               widgets.arrowButtonProfile(icon: "stock", text: 'promotions',page: AppRouter.allPromotionsPage),

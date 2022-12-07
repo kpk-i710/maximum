@@ -175,6 +175,7 @@ class PaymentMethod extends StatelessWidget {
                             return controller.validateCompanyName(value!);
                           },
                           decoration: InputDecoration(
+                            isDense: true,
                             helperText: " ",
                             filled: true,
                             fillColor: Colors.white,
@@ -200,6 +201,7 @@ class PaymentMethod extends StatelessWidget {
                             LengthLimitingTextInputFormatter(14),
                           ],
                           decoration: InputDecoration(
+                            isDense: true,
                             helperText: " ",
                             filled: true,
                             fillColor: Colors.white,
@@ -294,6 +296,7 @@ class PaymentMethod extends StatelessWidget {
                 return controller.validateLastName(value!);
               },
               decoration: InputDecoration(
+                isDense: true,
                 helperText: " ",
                 filled: true,
                 fillColor: Colors.white,
@@ -312,6 +315,7 @@ class PaymentMethod extends StatelessWidget {
                 return controller.validateFirstName(value!);
               },
               decoration: InputDecoration(
+                isDense: true,
                 filled: true,
                 helperText: " ",
                 fillColor: Colors.white,
@@ -332,7 +336,7 @@ class PaymentMethod extends StatelessWidget {
                   prefixIcon: widgets.getDropDownPhone(),
                   labelText: 'phone_number'.tr,
                   helperText: " ",
-
+                  isDense: true,
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),
                     borderSide: BorderSide(width: 1, color: Colors.transparent),

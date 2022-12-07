@@ -54,6 +54,7 @@ class AuthByPhone extends StatelessWidget {
                         prefixIcon: widgets.getDropDownPhone(),
                         labelText: 'phone_number'.tr,
                         helperText: " ",
+                        isDense: true,
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5),
                           borderSide: BorderSide(width: 1, color: Colors.grey),

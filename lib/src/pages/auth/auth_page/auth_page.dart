@@ -53,6 +53,7 @@ class AuthPage extends StatelessWidget {
                       decoration: InputDecoration(
                         prefixIcon: widgets.getDropDownPhone(),
                         labelText: 'phone_number'.tr,
+                        isDense: true,
                         helperText: " ",
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5),
@@ -78,9 +79,11 @@ class AuthPage extends StatelessWidget {
                           height: 70,
                           child: widgets.getTheme(
                             child: TextFormField(
+
                               controller: controller.passwordController,
                               obscureText: !controller.passwordVisible.value,
                               decoration: InputDecoration(
+                                isDense: true,
                                 helperText: " ",
                                 suffixIcon: IconButton(
                                   icon: Icon(
