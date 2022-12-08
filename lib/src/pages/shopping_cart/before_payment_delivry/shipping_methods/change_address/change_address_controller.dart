@@ -8,10 +8,10 @@ import 'package:flutter/material.dart';
 import '../../../../../helpers/prefs.dart';
 import '../../../../../models/address_enter.dart';
 import '../../../shopping_cart_page_controller.dart';
-import '../../payment_method_controller.dart';
+import '../../before_payment_delivry_controller.dart';
 
 class ChangeAdressController extends GetxController {
-  final controllerPaymentMethod = Get.put(PaymentMethodController());
+  final controllerPaymentMethod = Get.put(BeforPaymentDevliryController());
 
   final controllerCart = Get.put(ShoppingCartPageController());
   RxInt selectedRadio = 10.obs;

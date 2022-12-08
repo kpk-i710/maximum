@@ -2,8 +2,8 @@ import 'package:maxkgapp/src/helpers/helper.dart';
 
 import 'app_model.dart';
 
-class News extends AppModel {
-  News({this.id = -1, this.title, this.date, this.text, this.views = 0, this.logo});
+class News1 extends AppModel {
+  News1({this.id = -1, this.title, this.date, this.text, this.views = 0, this.logo});
 
   late int id;
   String? title;
@@ -14,7 +14,7 @@ class News extends AppModel {
 
   String? get logoUrl => Helper.getCorrectUrl(logo);
 
-  News.fromMap(map) {
+  News1.fromMap(map) {
     id = parseInt(map['id']);
     title = map['naim'];
     text = map['text'];
@@ -24,7 +24,7 @@ class News extends AppModel {
   }
 
   static fromMapList(List<dynamic> list) =>
-      list.map((e) => News.fromMap(e)).toList();
+      list.map((e) => News1.fromMap(e)).toList();
 
   @override
   toMap() => {

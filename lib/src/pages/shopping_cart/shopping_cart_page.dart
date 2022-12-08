@@ -4,7 +4,7 @@ import 'package:get/get_utils/get_utils.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/state_manager.dart';
 import '../../widgets/widgets.dart' as widgets;
-import 'payment_method/payment_method.dart';
+import 'before_payment_delivry/before_payment_delivry.dart';
 import 'shopping_cart_page_controller.dart';
 
 class ShoppingCartPage extends StatelessWidget {
@@ -141,7 +141,7 @@ class ShoppingCartPage extends StatelessWidget {
                                 controller.selectedCity.value == null
                                     ? widgets.citySelectorSheetWithQuestion(
                                         context: context)
-                                    : Get.to(PaymentMethod());
+                                    : Get.to(BeforePaymentDelivry());
                               })
                         ],
                       ),

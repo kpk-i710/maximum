@@ -8,7 +8,7 @@ import 'package:get_storage/get_storage.dart';
 import '../../../../helpers/prefs.dart';
 import '../../../../widgets/widgets.dart' as widgets;
 import '../../shopping_cart_page_controller.dart';
-import '../payment_method_controller.dart';
+import '../before_payment_delivry_controller.dart';
 import 'change_address/change_address.dart';
 import 'change_address/change_address_controller.dart';
 import 'shipping_methods_controller.dart';
@@ -18,7 +18,7 @@ class ShippingMethodsPage extends StatelessWidget {
 
   final controller = Get.put(ShippingMethodsController());
   final controllerShoppingCart = Get.put(ShoppingCartPageController());
-  final controllerPaymentMethod = Get.put(PaymentMethodController());
+  final controllerBeforPaymentDeivry = Get.put(BeforPaymentDevliryController());
 
   @override
   Widget build(BuildContext context) {
@@ -226,12 +226,12 @@ class ShippingMethodsPage extends StatelessWidget {
             text: 'checkout'.tr.toUpperCase(),
             onPressed: () {
               if (controller.selectedPage.value == 1 &&
-                  controllerPaymentMethod.isSelectedDelivryPayMethod.value ==
+                  controllerBeforPaymentDeivry.isSelectedDelivryPayMethod.value ==
                       false) {
                 return;
               }
               if (controller.selectedPage.value == 0) {
-                controllerPaymentMethod.isSelectedDelivryFreeMethod.value =
+                controllerBeforPaymentDeivry.isSelectedDelivryFreeMethod.value =
                     true;
               }
               Get.back();
@@ -410,7 +410,7 @@ class ShippingMethodsPage extends StatelessWidget {
 
   Widget getRedBoder({required Widget child, required bool courier}) {
     if (courier) {
-      return controllerPaymentMethod.isSelectedDelivryPayMethod.value
+      return controllerBeforPaymentDeivry.isSelectedDelivryPayMethod.value
           ? widgets.boxShadows(
               child: Container(
                   decoration:

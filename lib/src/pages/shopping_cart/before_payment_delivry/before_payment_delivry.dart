@@ -8,17 +8,19 @@ import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/get_utils/get_utils.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:maxkgapp/src/helpers/app_router.dart';
+import 'package:maxkgapp/src/pages/shopping_cart/before_payment_delivry/payment_method/payment_method_controller.dart';
 import 'package:maxkgapp/src/styles.dart';
 import '../../../helpers/prefs.dart';
 import '../../../widgets/widgets.dart' as widgets;
 import '../shopping_cart_page_controller.dart';
-import 'payment_method_controller.dart';
+import 'before_payment_delivry_controller.dart';
 import 'shipping_methods/shipping_methods_controller.dart';
 import 'shipping_methods/shipping_methods_page.dart';
 
-class PaymentMethod extends StatelessWidget {
-  PaymentMethod({Key? key}) : super(key: key);
-  final controller = Get.put(PaymentMethodController());
+class BeforePaymentDelivry extends StatelessWidget {
+  BeforePaymentDelivry({Key? key}) : super(key: key);
+  final controller = Get.put(BeforPaymentDevliryController());
   final controllerShoppingCart = Get.put(ShoppingCartPageController());
   final controllerShippingMethods = Get.put(ShippingMethodsController());
 
@@ -47,13 +49,15 @@ class PaymentMethod extends StatelessWidget {
                   icon: widgets.truckSvg(),
                   select: DeliveryOrPayment.DELIVERY,
                   onTap: () {
-                    Get.toNamed("/shippingMethodsPage");
+                    Get.toNamed(AppRouter.shippingMethodsPage);
                   }),
               buttonChoise(
                   text: 'select_payment_method',
                   icon: widgets.dollarSvg(),
                   select: DeliveryOrPayment.PAYMENT,
-                  onTap: () {}),
+                  onTap: () {
+                    Get.toNamed(AppRouter.paymentMethod);
+                  }),
               Padding(
                 padding: const EdgeInsets.only(top: 10.0),
                 child: widgets.getTheme(
@@ -193,7 +197,6 @@ class PaymentMethod extends StatelessWidget {
                           validator: (value) {
                             return controller.validateInnCompay(value!);
                           },
-
                           controller: controller.innCompayController,
                           keyboardType: TextInputType.number,
                           inputFormatters: <TextInputFormatter>[
@@ -274,10 +277,8 @@ class PaymentMethod extends StatelessWidget {
     );
   }
 
-  Widget sizeTextFild({required Widget child}){
-    return SizedBox(
-        height: 70,
-        child: child);
+  Widget sizeTextFild({required Widget child}) {
+    return SizedBox(height: 70, child: child);
   }
 
   Widget phoneNumberName() {
@@ -286,7 +287,6 @@ class PaymentMethod extends StatelessWidget {
       child: Column(
         children: [
           sizeTextFild(
-
             child: TextFormField(
               controller: controller.lastNameController,
               onSaved: (value) {
@@ -325,7 +325,7 @@ class PaymentMethod extends StatelessWidget {
           ),
           SizedBox(height: 10),
           sizeTextFild(
-            child:Container(
+            child: Container(
               height: 70,
               child: TextFormField(
                 keyboardType: TextInputType.number,
@@ -346,7 +346,6 @@ class PaymentMethod extends StatelessWidget {
                     borderSide: BorderSide(width: 1, color: Colors.transparent),
                   ),
                 ),
-
                 onSaved: (value) {
                   controller.numberPhone = value!;
                 },
@@ -356,8 +355,6 @@ class PaymentMethod extends StatelessWidget {
                 onChanged: (value) {},
               ),
             ),
-
-
           ),
         ],
       ),
@@ -387,7 +384,8 @@ class PaymentMethod extends StatelessWidget {
         child: !controller.currentStatusButton(select)
             ? Container(
                 decoration: BoxDecoration(
-                    border: Border.all(width: 2, color: AppTextStyles.colorRedMy),
+                    border:
+                        Border.all(width: 2, color: AppTextStyles.colorRedMy),
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(5)),
                 height: 50,
@@ -414,6 +412,7 @@ class PaymentMethod extends StatelessWidget {
   }
 
   Widget visaButton() {
+    final controller = Get.put(PaymentMethodController());
     return widgets.boxShadows(
         child: Container(
       height: 30,
@@ -426,11 +425,19 @@ class PaymentMethod extends StatelessWidget {
           SizedBox(
             width: 15,
           ),
-          Text(
-            "Онлайн оплата VISA",
-            style: widgets.robotoConsid(fontSize: 16),
+          Flexible(
+            child: SizedBox(
+              width: Get.width,
+              child: Text(
+                overflow: TextOverflow.ellipsis,
+                controller.listPayments[controller.selectedRadio.value],
+                maxLines: 1,
+                style: widgets.robotoConsid(fontSize: 16),
+              ),
+            ),
           ),
-          Spacer(),
+
+
           widgets.editSvg(),
           SizedBox(width: 5),
         ],
@@ -475,7 +482,8 @@ class PaymentMethod extends StatelessWidget {
                   child: Text(
                     controllerShippingMethods.selectedPage.value == 1
                         ? "${controllerShoppingCart.selectedCity.value} ${controllerShoppingCart.selectedStreetHouse.value ?? ""}"
-                        : "${controllerShoppingCart.selectedCity.value} " "${box.read("PosintIssue" ) ??""}",
+                        : "${controllerShoppingCart.selectedCity.value} "
+                            "${box.read("PosintIssue") ?? ""}",
                     overflow: TextOverflow.ellipsis,
                     style: widgets.robotoConsid(),
                   ),

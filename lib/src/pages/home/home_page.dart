@@ -18,7 +18,7 @@ import '../../helpers/prefs.dart';
 import '../bestsellers/bestsellers_list_page.dart';
 import '../news/all_news_page.dart';
 import '../promotions/all_promotions_page.dart';
-import '../shopping_cart/payment_method/shipping_methods/shipping_methods_page.dart';
+import '../shopping_cart/before_payment_delivry/shipping_methods/shipping_methods_page.dart';
 import '../shopping_cart/shopping_cart_page_controller.dart';
 import 'home_page_controller.dart';
 
@@ -216,7 +216,7 @@ class HomePage extends StatelessWidget {
                                   );
                                 },
                                 child: widgets
-                                    .newsItemWidget(
+                                    .DiscountItemWidget(
                                         homeController.newsList[index].logoUrl!)
                                     .marginOnly(bottom: 20),
                               ),
@@ -318,7 +318,7 @@ class HomePage extends StatelessWidget {
                                 },
                                 child: widgets
                                     .newsItemWidget(
-                                        homeController.newsList[index].logoUrl!)
+                                homeController.newsList[index])
                                     .marginOnly(bottom: 20),
                               ),
                           ],

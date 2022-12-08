@@ -4,7 +4,7 @@ import '../../models/news.dart';
 import '../../repositories/app_repo.dart';
 
 class AllPromotionsController extends GetxController {
-  final promotionsList = <News>[].obs;
+  final promotionsList = <News1>[].obs;
   final _appRepo = Get.find<AppRepo>();
 
 

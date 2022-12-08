@@ -28,7 +28,7 @@ class HomePageController extends GetxController {
   final bannerList = <AppBanner>[].obs;
   final discountBannerList = <AppBanner>[].obs;
 
-  final newsList = <News>[].obs;
+  final newsList = <News1>[].obs;
 
   @override
   void onInit() {

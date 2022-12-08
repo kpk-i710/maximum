@@ -35,7 +35,7 @@ class AppRepo extends BaseRepo {
     if (sort != null) _args['sort'] = sort;
 
     return await get(getUrlWithArguments('news', args: _args),
-        decoder: (list) => News.fromMapList(list));
+        decoder: (list) => News1.fromMapList(list));
   }
 
   getNotificationsList() async {

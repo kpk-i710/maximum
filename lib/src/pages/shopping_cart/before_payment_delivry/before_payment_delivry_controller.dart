@@ -9,7 +9,7 @@ import 'shipping_methods/shipping_methods_controller.dart';
 
 enum DeliveryOrPayment { DELIVERY, PAYMENT }
 
-class PaymentMethodController extends GetxController {
+class BeforPaymentDevliryController extends GetxController {
   RxBool status = false.obs;
   RxBool isSelectedDelivryPayMethod = false.obs;
   RxBool isSelectedDelivryFreeMethod = false.obs;
@@ -106,6 +106,8 @@ class PaymentMethodController extends GetxController {
     } else
       return isSelectedPaymentMethod.value;
   }
+
+
 
   var demoList = <bool>[
     false,

@@ -35,7 +35,7 @@ class AllPromotionsPage extends StatelessWidget {
                     );
                   },
                   child: widgets
-                      .newsItemWidget(allPromotionsController
+                      .DiscountItemWidget(allPromotionsController
                           .promotionsList[index].logoUrl!)
                       .marginOnly(bottom: 20),
                 ),

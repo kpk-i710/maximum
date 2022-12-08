@@ -22,21 +22,18 @@ class AllNewsPage extends StatelessWidget {
         () => ListView.builder(
             itemCount: allNewsController.newsList.length,
             itemBuilder: (BuildContext context, int index) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                child: GestureDetector(
-                  onTap: () {
-                    Get.toNamed(
-                      AppRouter.listNews,
-                      arguments: {
-                        "idNews": allNewsController.newsList[index].id,
-                      },
-                    );
-                  },
-                  child: widgets
-                      .newsItemWidget(allNewsController.newsList[index].logoUrl!)
-                      .marginOnly(bottom: 20),
-                ),
+              return GestureDetector(
+                onTap: () {
+                  Get.toNamed(
+                    AppRouter.listNews,
+                    arguments: {
+                      "idNews": allNewsController.newsList[index].id,
+                    },
+                  );
+                },
+                child: widgets
+                    .newsItemWidget( allNewsController.newsList[index] )
+                    .marginOnly(bottom: 20),
               );
             }),
       ),

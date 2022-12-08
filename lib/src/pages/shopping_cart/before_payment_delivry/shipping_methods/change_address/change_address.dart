@@ -7,7 +7,7 @@ import 'package:get_storage/get_storage.dart';
 import '../../../../../helpers/prefs.dart';
 import '../../../../../widgets/widgets.dart' as widgets;
 import '../../../shopping_cart_page_controller.dart';
-import '../../payment_method_controller.dart';
+import '../../before_payment_delivry_controller.dart';
 import '../shipping_methods_controller.dart';
 import 'add_adress/add_adress.dart';
 import 'change_address_controller.dart';
@@ -23,7 +23,7 @@ class ChangeAdress extends StatefulWidget {
 class _ChangeAdressState extends State<ChangeAdress> {
   final controller = Get.put(ChangeAdressController());
   final controllerCart = Get.put(ShoppingCartPageController());
-  final controllerPaymentMethod = Get.put(PaymentMethodController());
+  final controllerPaymentMethod = Get.put(BeforPaymentDevliryController());
   final controllerShippingMethods = Get.put(ShippingMethodsController());
 
   late YandexMapController controllerY;
@@ -64,7 +64,7 @@ class _ChangeAdressState extends State<ChangeAdress> {
   Widget pageChangeAdgress() {
     final controller = Get.put(ChangeAdressController());
     final controllerShippingMethods = Get.put(ShippingMethodsController());
-    final controllerPaymentMethod = Get.put(PaymentMethodController());
+    final controllerPaymentMethod = Get.put(BeforPaymentDevliryController());
     final controllerCart = Get.put(ShoppingCartPageController());
     return Obx(() {
       return Stack(

@@ -17,13 +17,16 @@ import '../models/country_code.dart';
 import '../models/menu_item.dart';
 import '../helpers/helper.dart';
 import '../helpers/prefs.dart';
-import '../models/news.dart';
+
+import '../models/news_list.dart';
 import '../pages/auth/auth_page/auth_page_controller.dart';
 import '../pages/current_orders/order_page/order_page.dart';
 import '../pages/discounts/discount_card_page_controller.dart';
-import '../pages/shopping_cart/payment_method/payment_method_controller.dart';
-import '../pages/shopping_cart/payment_method/shipping_methods/change_address/change_address_controller.dart';
-import '../pages/shopping_cart/payment_method/shipping_methods/shipping_methods_controller.dart';
+import '../pages/news/all_news_controller.dart';
+
+import '../pages/shopping_cart/before_payment_delivry/before_payment_delivry_controller.dart';
+import '../pages/shopping_cart/before_payment_delivry/shipping_methods/change_address/change_address_controller.dart';
+import '../pages/shopping_cart/before_payment_delivry/shipping_methods/shipping_methods_controller.dart';
 import '../pages/shopping_cart/shopping_cart_page_controller.dart';
 import 'orders_widgets/time_line_horizontal.dart';
 import '../pages/products_by_catalog/products_by_catalog_page.dart';
@@ -31,6 +34,7 @@ import '../styles.dart';
 import 'app_icon.dart';
 import 'cart_widgets/cart_icon.dart';
 import 'orders_widgets/time_line_vertical.dart';
+import '../models/news.dart';
 
 Widget priceWidget(double price, {TextStyle? style}) {
   if (style != null) {
@@ -129,7 +133,7 @@ Widget customListTile(
   );
 }
 
-Widget newsItemWidget(String image) {
+Widget DiscountItemWidget(String image) {
   return Container(
     height: 200,
     decoration: BoxDecoration(
@@ -139,6 +143,56 @@ Widget newsItemWidget(String image) {
         fit: BoxFit.cover,
       ),
     ),
+  );
+}
+
+Widget newsItemWidget(News1 newss) {
+  AllNewsController controllerNewss = Get.put(AllNewsController());
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              height: 200,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                image: DecorationImage(
+                  image: CachedNetworkImageProvider(newss.logoUrl!),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            SizedBox(height: 15),
+            Text(
+              newss.title!,
+              style: robotoConsid(fontSize: 17),
+            ),
+            SizedBox(height: 10),
+            Row(
+              children: [
+                Text(
+                  "${controllerNewss.getDate(newss.date!)} ",
+                  style: robotoConsid(
+                      fontSize: 14, color: AppTextStyles.colorGrayMy),
+                ),
+                Spacer(),
+                Icon(
+                  Icons.share,
+                  size: 20,
+                ),
+                SizedBox(width: 10),
+              ],
+            ),
+            SizedBox(height: 10),
+          ],
+        ),
+      ),
+      Divider(height: 1, color: AppTextStyles.colorGrayDividar),
+    ],
   );
 }
 
@@ -587,8 +641,9 @@ Widget dollarSvg() {
   );
 }
 
-Widget anySvg({required String nameSvg, Size size = const Size(17, 17)}) {
+Widget anySvg({required String nameSvg, Size size = const Size(17, 17),  Color? color}) {
   return SvgPicture.asset("assets/icons/$nameSvg.svg",
+      color: color,
       width: size.width, height: size.height);
 }
 
@@ -1175,11 +1230,11 @@ Widget getThemeOzon({required Widget child}) {
               borderRadius: BorderRadius.circular(5.0),
             ),
             errorBorder: OutlineInputBorder(
-              borderSide:BorderSide(color: Colors.transparent),
+              borderSide: BorderSide(color: Colors.transparent),
               borderRadius: BorderRadius.circular(5),
             ),
             focusedErrorBorder: OutlineInputBorder(
-              borderSide:BorderSide(color: Colors.transparent),
+              borderSide: BorderSide(color: Colors.transparent),
               borderRadius: BorderRadius.circular(5),
             ),
             enabledBorder: OutlineInputBorder(
@@ -1221,6 +1276,8 @@ Widget getTheme({required Widget child}) {
             labelStyle: TextStyle(color: AppTextStyles.colorGrayMy))),
   );
 }
+
+
 
 
 Widget getDropDownPhone() {
@@ -2185,7 +2242,7 @@ Widget pageChangeAdgress() {
   final animation = MapAnimation(type: MapAnimationType.smooth, duration: 2.0);
   final controller = Get.put(ChangeAdressController());
   final controllerShippingMethods = Get.put(ShippingMethodsController());
-  final controllerPaymentMethod = Get.put(PaymentMethodController());
+  final controllerPaymentMethod = Get.put(BeforPaymentDevliryController());
   final controllerCart = Get.put(ShoppingCartPageController());
   return Obx(() {
     return Stack(
