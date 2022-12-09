@@ -35,10 +35,7 @@ class PaymentMethodController extends GetxController {
     });
     print("началов выбора");
   }
-
   change({int? value, required String paymentMethod}) {
     selectedRadio.value = value!;
-    final box = GetStorage();
-    box.write("paymentGlobal", paymentMethod);
   }
 }

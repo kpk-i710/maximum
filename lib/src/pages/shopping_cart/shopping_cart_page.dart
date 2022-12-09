@@ -3,6 +3,7 @@ import 'package:get/get_navigation/get_navigation.dart';
 import 'package:get/get_utils/get_utils.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/state_manager.dart';
+import 'package:maxkgapp/src/styles.dart';
 import '../../widgets/widgets.dart' as widgets;
 import 'before_payment_delivry/before_payment_delivry.dart';
 import 'shopping_cart_page_controller.dart';
@@ -75,30 +76,13 @@ class ShoppingCartPage extends StatelessWidget {
                 padding: const EdgeInsets.all(15.0),
                 child: productWidgetWithCount(),
               ),
-              Row(
-                children: [
-                  SizedBox(width: 23),
-                  widgets.underLineDashed(
-                      child: Text(
-                        "additional_services".tr,
-                        style: widgets.robotoConsid(color: Color(0xff142A65)),
-                      ),
-                      hight: 3),
-                  SizedBox(width: 6),
-                  Icon(
-                    Icons.arrow_forward_ios,
-                    color: Color(0xff142A65),
-                    size: 13,
-                  )
-                ],
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: productWidgetWithCount(additionalService: false),
               ),
               Padding(
                 padding: const EdgeInsets.all(15.0),
-                child: productWidgetWithCount(),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: productWidgetWithCount(),
+                child: productWidgetWithCount(assemblyServices: true),
               ),
               Padding(
                 padding:
@@ -136,7 +120,8 @@ class ShoppingCartPage extends StatelessWidget {
                             height: 30,
                           ),
                           widgets.orderButton(
-                              text: 'checkout1'.tr.toUpperCase(),
+                              text: 'continue_checkout'.tr.toUpperCase(),
+                              fontSize: 14,
                               onPressed: () {
                                 controller.selectedCity.value == null
                                     ? widgets.citySelectorSheetWithQuestion(
@@ -156,7 +141,8 @@ class ShoppingCartPage extends StatelessWidget {
     );
   }
 
-  Widget productWidgetWithCount() {
+  Widget productWidgetWithCount(
+      {bool additionalService = true, bool assemblyServices = false}) {
     return Obx(() {
       return widgets.boxShadows(
         child: Column(
@@ -269,14 +255,149 @@ class ShoppingCartPage extends StatelessWidget {
                                 fontSize: 10),
                           ),
                         ],
-                      )
+                      ),
+                      SizedBox(height: 10),
+                      Row(
+                        children: [
+                          SizedBox(width: 2),
+                          widgets.anySvg(nameSvg: 'car_blue'),
+                          SizedBox(width: 10),
+                          Flexible(
+                            child: Text("when_coming_delivry".tr,
+                                maxLines: 2,
+                                style: widgets.robotoConsid(
+                                    color: AppTextStyles.colorBlueMy,
+                                    fontSize: 10)),
+                          )
+                        ],
+                      ),
                     ],
                   ),
                 ),
               ],
             ),
+            SizedBox(height: 15),
+            additionalService
+                ? ListTileTheme(
+                    contentPadding: EdgeInsets.all(0),
+                    child: Theme(
+                      data: ThemeData()
+                          .copyWith(dividerColor: Colors.transparent),
+                      child: ExpansionTile(
+                        onExpansionChanged: (bool expanded) {
+                          controller.demoList[1] = !expanded;
+                        },
+                        collapsedBackgroundColor: Colors.white,
+                        backgroundColor: Colors.white,
+                        trailing: Text(
+                          "500 с.",
+                          style:
+                              widgets.robotoConsid(fontWeight: FontWeight.bold),
+                        ),
+                        title: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            widgets.underLineDashed(
+                                child: Text(
+                                  "additional_services".tr,
+                                  style: widgets.robotoConsid(
+                                      color: Color(0xff142A65)),
+                                ),
+                                hight: 3),
+                            SizedBox(width: 6),
+                            controller.demoList[1]
+                                ? Icon(
+                                    Icons.arrow_forward_ios,
+                                    color: Color(0xff142A65),
+                                    size: 13,
+                                  )
+                                : widgets.anySvg(
+                                    nameSvg: "arrow_down", size: Size(7, 7)),
+                            Spacer(),
+                          ],
+                        ),
+                        children: <Widget>[
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "assembly_services".tr,
+                                style: widgets.robotoConsid(
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(height: 5),
+                              selectRadio(
+                                  text: 'Теннисный стол Хобби',
+                                  index: 0,
+                                  price: '500 с.'),
+                              selectRadio(
+                                  text: 'Теннисный стол Хобби',
+                                  index: 1,
+                                  price: '200 с.'),
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                  )
+                : SizedBox(),
           ],
         ),
+      );
+    });
+  }
+
+  Widget selectRadio({
+    required String text,
+    required int index,
+    required String price,
+  }) {
+    return Obx(() {
+      return Column(
+        children: [
+          GestureDetector(
+            onTap: () {
+              controller.change(value: index, paymentMethod: text);
+            },
+            child: Container(
+              child: Row(
+                children: [
+                  SizedBox(
+                    width: 20,
+                    child: Radio(
+                      activeColor: AppTextStyles.colorBlueMy,
+                      value: index,
+                      groupValue: controller.selectedRadio.value,
+                      onChanged: (int? value) {
+                        controller.change(value: index, paymentMethod: text);
+                      },
+                    ),
+                  ),
+                  SizedBox(width: 15),
+                  Flexible(
+                    child: SizedBox(
+                      width: Get.width - 100,
+                      child: Text(
+                        overflow: TextOverflow.ellipsis,
+                        "$text",
+                        style: index == controller.selectedRadio.value
+                            ? widgets.robotoConsid(
+                                color: AppTextStyles.colorBlueMy)
+                            : widgets.robotoConsid(color: Color(0xff727272)),
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 15),
+                  Text(
+                    "$price",
+                    style: widgets.robotoConsid(),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       );
     });
   }

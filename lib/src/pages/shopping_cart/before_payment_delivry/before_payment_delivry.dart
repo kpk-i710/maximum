@@ -413,36 +413,40 @@ class BeforePaymentDelivry extends StatelessWidget {
 
   Widget visaButton() {
     final controller = Get.put(PaymentMethodController());
-    return widgets.boxShadows(
-        child: Container(
-      height: 30,
-      child: Row(
-        children: [
-          SizedBox(
-            width: 10,
-          ),
-          widgets.dollarSvg(),
-          SizedBox(
-            width: 15,
-          ),
-          Flexible(
-            child: SizedBox(
-              width: Get.width,
-              child: Text(
-                overflow: TextOverflow.ellipsis,
-                controller.listPayments[controller.selectedRadio.value],
-                maxLines: 1,
-                style: widgets.robotoConsid(fontSize: 16),
+    return Obx(
+            () {
+        return widgets.boxShadows(
+            child: Container(
+          height: 30,
+          child: Row(
+            children: [
+              SizedBox(
+                width: 10,
               ),
-            ),
+              widgets.dollarSvg(),
+              SizedBox(
+                width: 15,
+              ),
+              Flexible(
+                child: SizedBox(
+                  width: Get.width,
+                  child: Text(
+                    overflow: TextOverflow.ellipsis,
+                    controller.listPayments[controller.selectedRadio.value],
+                    maxLines: 1,
+                    style: widgets.robotoConsid(fontSize: 16),
+                  ),
+                ),
+              ),
+
+
+              widgets.editSvg(),
+              SizedBox(width: 5),
+            ],
           ),
-
-
-          widgets.editSvg(),
-          SizedBox(width: 5),
-        ],
-      ),
-    ));
+        ));
+      }
+    );
   }
 
   Widget delivaryButton() {

@@ -140,10 +140,7 @@ class ProfilePage extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 21),
-        Padding(
-          padding: const EdgeInsets.only(left: 20.0, right: 20, bottom: 20),
-          child: widgets.currencyAndCityWidget(),
-        ),
+
         authorized_and_unauthorized(),
       ],
     );
@@ -162,14 +159,14 @@ class ProfilePage extends StatelessWidget {
                 text: 'notifications',
                 notification: true,
               ),
-              widgets.arrowButtonProfile(
+              Prefs.isLogin?  widgets.arrowButtonProfile(
                   icon: "checkMark",
                   text: 'current_orders',
-                  page: AppRouter.currentOrders),
-              widgets.arrowButtonProfile(
+                  page: AppRouter.currentOrders): SizedBox(),
+              Prefs.isLogin?  widgets.arrowButtonProfile(
                 icon: "purchase_history",
                 text: 'order_history',
-              ),
+              ): SizedBox(),
               widgets.arrowButtonProfile(
                   icon: "favorites",
                   text: 'favorite',

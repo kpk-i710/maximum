@@ -5,6 +5,13 @@ import '../../widgets/widgets.dart' as widgets;
 class ShoppingCartPageController extends GetxController {
   var counter = 0.obs;
 
+  var demoList = <bool>[
+    false,
+    false,
+    false,
+    false,
+  ].obs;
+
 
   List<String>? citys = [
     "г.Бишкек",
@@ -23,6 +30,12 @@ class ShoppingCartPageController extends GetxController {
   ];
   final  selectedCity =Rxn<String>( );
   final  selectedStreetHouse =Rxn<String>( );
+
+  RxInt selectedRadio = 1.obs;
+  change({int? value, required String paymentMethod}) {
+    selectedRadio.value = value!;
+  }
+
 
   minus() {
     if (counter >= 1) counter = counter - 1;
