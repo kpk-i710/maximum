@@ -33,7 +33,7 @@ class _MainPageState extends State<MainPage> {
     if (Get.arguments != null) {
       currentTab = Get.arguments as int;
     }
-    currentPage = pages[currentTab];
+    currentPage = pages[currentTab ];
     super.initState();
   }
 

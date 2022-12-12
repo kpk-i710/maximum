@@ -33,6 +33,7 @@ class BeforPaymentDevliryController extends GetxController {
 
   @override
   void onInit() {
+
     firstNameController = TextEditingController();
     lastNameController = TextEditingController();
     numberPhoneController = TextEditingController();

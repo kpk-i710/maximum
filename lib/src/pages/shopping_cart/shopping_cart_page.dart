@@ -1,3 +1,4 @@
+import 'package:dotted_decoration/dotted_decoration.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:get/get_utils/get_utils.dart';
@@ -17,43 +18,44 @@ class ShoppingCartPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              widgets.dark(
-                  child: Container(
-                      width: double.infinity,
-                      height: 50,
-                      child: Row(
-                        children: [
-                          SizedBox(
-                            width: 20,
-                          ),
-                          Text(
-                            "Корзина #12543",
-                            style: widgets.robotoConsid(
-                                color: Colors.white, fontSize: 18),
-                          ),
-                          Spacer(),
-                          GestureDetector(
-                            onTap: () {
-                              widgets.citySelectorSheetAppBar(context: context);
-                            },
-                            child: Container(
-                              height: 50,
-                              color: Colors.transparent,
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    Icons.location_on,
-                                    color: Colors.white,
-                                    size: 20,
-                                  ),
-                                  SizedBox(
-                                    width: 5,
-                                  ),
-                                  Obx(() {
-                                    return widgets.underLineDashed(
+        child: Obx(() {
+          return SingleChildScrollView(
+            child: Column(
+              children: [
+                widgets.dark(
+                    child: Container(
+                        width: double.infinity,
+                        height: 50,
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width: 20,
+                            ),
+                            Text(
+                              "Корзина #12543",
+                              style: widgets.robotoConsid(
+                                  color: Colors.white, fontSize: 18),
+                            ),
+                            Spacer(),
+                            GestureDetector(
+                              onTap: () {
+                                widgets.citySelectorSheetAppBar(
+                                    context: context);
+                              },
+                              child: Container(
+                                height: 50,
+                                color: Colors.transparent,
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.location_on,
+                                      color: Colors.white,
+                                      size: 20,
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    widgets.underLineDashed(
                                       color: Colors.white,
                                       child: Text(
                                         controller.selectedCity.value ??
@@ -61,82 +63,94 @@ class ShoppingCartPage extends StatelessWidget {
                                         style: widgets.robotoConsid(
                                             color: Colors.white),
                                       ),
-                                    );
-                                  }),
-                                  SizedBox(
-                                    width: 20,
+                                    ),
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )
+                          ],
+                        ))),
+                Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: productWidgetWithCount(),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: productWidgetWithCount(additionalService: false),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: productWidgetWithCount(assemblyServices: true),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.only(left: 15.0, right: 15, bottom: 40),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: Color(0xffF6F6F6),
+                        borderRadius: BorderRadius.circular(5)),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 35.0, horizontal: 25),
+                      child: Container(
+                        child: Column(
+                          children: [
+                            widgets.rowText(
+                                text1: 'Товары, 1 шт.', text2: '119 990 с.'),
+                            widgets.rowText(
+                                text1: 'Скидка', text2: '10 800 с.'),
+                            controller.checkForServices()
+                                ? widgets.rowText(
+                                    text1: 'Услуги', text2: '500 с.')
+                                : SizedBox(),
+                            SizedBox(height: 20),
+                            Row(
+                              children: [
+                                Text("Итого:",
+                                    style: widgets.robotoConsid(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.bold)),
+                                Flexible(
+                                  child: Container(
+                                    height: 15,
+                                    width: Get.width,
+                                    decoration: DottedDecoration(
+                                        color: AppTextStyles.colorBlackMy,
+                                        shape: Shape.line,
+                                        dash: [2, 2]),
                                   ),
-                                ],
-                              ),
+                                ),
+                                Text("109 190 с.",
+                                    style: widgets.robotoConsid(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.bold)),
+                              ],
                             ),
-                          )
-                        ],
-                      ))),
-              Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: productWidgetWithCount(),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: productWidgetWithCount(additionalService: false),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: productWidgetWithCount(assemblyServices: true),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.only(left: 15.0, right: 15, bottom: 40),
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: Color(0xffF6F6F6),
-                      borderRadius: BorderRadius.circular(5)),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 35.0, horizontal: 25),
-                    child: Container(
-                      child: Column(
-                        children: [
-                          widgets.rowText(
-                              text1: 'Товары, 1 шт.', text2: '119 990 с.'),
-                          widgets.rowText(text1: 'Скидка', text2: '10 800 с.'),
-                          SizedBox(height: 20),
-                          Row(
-                            children: [
-                              Text(
-                                "Итого:",
-                                style: widgets.robotoConsid(
-                                    fontSize: 24, fontWeight: FontWeight.bold),
-                              ),
-                              Spacer(),
-                              Text(
-                                "109 190 с.",
-                                style: widgets.robotoConsid(
-                                    fontSize: 24, fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 30,
-                          ),
-                          widgets.orderButton(
-                              text: 'continue_checkout'.tr.toUpperCase(),
-                              fontSize: 14,
-                              onPressed: () {
-                                controller.selectedCity.value == null
-                                    ? widgets.citySelectorSheetWithQuestion(
-                                        context: context)
-                                    : Get.to(BeforePaymentDelivry());
-                              })
-                        ],
+                            SizedBox(
+                              height: 30,
+                            ),
+                            widgets.orderButton(
+                                text: 'continue_checkout'.tr.toUpperCase(),
+                                fontSize: 14,
+                                onPressed: () {
+                                  controller.selectedCity.value == null
+                                      ? widgets.citySelectorSheetWithQuestion(
+                                          context: context)
+                                      : Get.to(BeforePaymentDelivry());
+                                })
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-              )
-            ],
-          ),
-        ),
+                )
+              ],
+            ),
+          );
+        }),
       ),
     );
   }
@@ -290,7 +304,7 @@ class ShoppingCartPage extends StatelessWidget {
                         collapsedBackgroundColor: Colors.white,
                         backgroundColor: Colors.white,
                         trailing: Text(
-                          "500 с.",
+                          controller.checkForServices()? "500 с.": "0 с",
                           style:
                               widgets.robotoConsid(fontWeight: FontWeight.bold),
                         ),
@@ -327,11 +341,11 @@ class ShoppingCartPage extends StatelessWidget {
                                     fontWeight: FontWeight.bold),
                               ),
                               SizedBox(height: 5),
-                              selectRadio(
+                              selectCheckBox(
                                   text: 'Теннисный стол Хобби',
                                   index: 0,
                                   price: '500 с.'),
-                              selectRadio(
+                              selectCheckBox(
                                   text: 'Теннисный стол Хобби',
                                   index: 1,
                                   price: '200 с.'),
@@ -348,56 +362,58 @@ class ShoppingCartPage extends StatelessWidget {
     });
   }
 
-  Widget selectRadio({
+  Widget selectCheckBox({
     required String text,
     required int index,
     required String price,
   }) {
     return Obx(() {
-      return Column(
-        children: [
-          GestureDetector(
-            onTap: () {
-              controller.change(value: index, paymentMethod: text);
-            },
-            child: Container(
-              child: Row(
-                children: [
-                  SizedBox(
-                    width: 20,
-                    child: Radio(
-                      activeColor: AppTextStyles.colorBlueMy,
-                      value: index,
-                      groupValue: controller.selectedRadio.value,
-                      onChanged: (int? value) {
-                        controller.change(value: index, paymentMethod: text);
-                      },
-                    ),
-                  ),
-                  SizedBox(width: 15),
-                  Flexible(
-                    child: SizedBox(
-                      width: Get.width - 100,
-                      child: Text(
-                        overflow: TextOverflow.ellipsis,
-                        "$text",
-                        style: index == controller.selectedRadio.value
-                            ? widgets.robotoConsid(
-                                color: AppTextStyles.colorBlueMy)
-                            : widgets.robotoConsid(color: Color(0xff727272)),
+      return Theme(
+        data: ThemeData(toggleableActiveColor: AppTextStyles.colorBlueMy),
+        child: Column(
+          children: [
+            GestureDetector(
+              onTap: () {
+                controller.changeBoxList(index: index);
+              },
+              child: Container(
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 20,
+                      child: Checkbox(
+                        checkColor: Colors.white,
+                        value: controller.checkBoxList[index].isSelected,
+                        onChanged: (newValue) {
+                          controller.changeBoxList(index: index);
+                        },
                       ),
                     ),
-                  ),
-                  SizedBox(width: 15),
-                  Text(
-                    "$price",
-                    style: widgets.robotoConsid(),
-                  ),
-                ],
+                    SizedBox(width: 15),
+                    Flexible(
+                      child: SizedBox(
+                        width: Get.width - 100,
+                        child: Text(
+                          overflow: TextOverflow.ellipsis,
+                          "$text",
+                          style: controller.checkBoxList[index].isSelected
+                              ? widgets.robotoConsid(
+                                  color: AppTextStyles.colorBlueMy)
+                              : widgets.robotoConsid(color: Color(0xff727272)),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 15),
+                    Text(
+                      "$price",
+                      style: widgets.robotoConsid(),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       );
     });
   }

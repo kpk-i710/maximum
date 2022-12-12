@@ -140,7 +140,6 @@ class ProfilePage extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 21),
-
         authorized_and_unauthorized(),
       ],
     );
@@ -159,23 +158,34 @@ class ProfilePage extends StatelessWidget {
                 text: 'notifications',
                 notification: true,
               ),
-              Prefs.isLogin?  widgets.arrowButtonProfile(
-                  icon: "checkMark",
-                  text: 'current_orders',
-                  page: AppRouter.currentOrders): SizedBox(),
-              Prefs.isLogin?  widgets.arrowButtonProfile(
-                icon: "purchase_history",
-                text: 'order_history',
-              ): SizedBox(),
+              Prefs.isLogin
+                  ? widgets.arrowButtonProfile(
+                      icon: "checkMark",
+                      text: 'current_orders',
+                      page: AppRouter.currentOrders)
+                  : SizedBox(),
+              Prefs.isLogin
+                  ? widgets.arrowButtonProfile(
+                      icon: "purchase_history",
+                      text: 'order_history',
+                    )
+                  : SizedBox(),
               widgets.arrowButtonProfile(
                   icon: "favorites",
                   text: 'favorite',
                   notification: true,
                   page: AppRouter.favorite,
                   isActive: false),
-              widgets.arrowButtonProfile(icon: "discounts", text: 'discounts',page: AppRouter.discountList),
-              widgets.arrowButtonProfile(icon: "stock", text: 'promotions',page: AppRouter.allPromotionsPage),
-              widgets.arrowButtonProfile(icon: "news", text: 'news',page: AppRouter.allNewsPage),
+              widgets.arrowButtonProfile(
+                  icon: "discounts",
+                  text: 'discounts',
+                  page: AppRouter.discountList),
+              widgets.arrowButtonProfile(
+                  icon: "stock",
+                  text: 'promotions',
+                  page: AppRouter.allPromotionsPage),
+              widgets.arrowButtonProfile(
+                  icon: "news", text: 'news', page: AppRouter.allNewsPage),
               const SizedBox(height: 27),
               widgets.helpDaria(),
               Prefs.isLogin
@@ -206,32 +216,7 @@ class ProfilePage extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 40),
-        Container(
-          decoration: BoxDecoration(
-              gradient: LinearGradient(begin: Alignment.centerLeft, stops: [
-            0.0,
-            0.8,
-          ], colors: [
-            Color(0xff112B66),
-            Color(0xff53235A),
-          ])),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 26.0),
-            child: Column(
-              children: [
-                widgets.arrowButtonProfileBlack(
-                    icon: "about_company", text: 'about_company'),
-                widgets.arrowButtonProfileBlack(
-                    icon: "contacts", text: 'contacts'),
-                widgets.arrowButtonProfileBlack(
-                    icon: "partners", text: 'partners'),
-                widgets.arrowButtonProfileBlack(
-                    icon: "about_the_application",
-                    text: 'about_the_application'),
-              ],
-            ),
-          ),
-        ),
+        widgets.bottomInfoBar()
       ],
     );
   }

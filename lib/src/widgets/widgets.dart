@@ -1,40 +1,34 @@
-import 'dart:developer';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dotted_decoration/dotted_decoration.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:intl/intl.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart' hide MenuItem;
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:maxkgapp/src/pages/user/profile_params/profile_params_page_controller.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:timeline_tile/timeline_tile.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 import '../helpers/app_router.dart';
 import '../models/country_code.dart';
-import '../models/menu_item.dart';
 import '../helpers/helper.dart';
 import '../helpers/prefs.dart';
-
-import '../models/news_list.dart';
 import '../pages/auth/auth_page/auth_page_controller.dart';
 import '../pages/current_orders/order_page/order_page.dart';
 import '../pages/discounts/discount_card_page_controller.dart';
 import '../pages/news/all_news_controller.dart';
-
 import '../pages/shopping_cart/before_payment_delivry/before_payment_delivry_controller.dart';
 import '../pages/shopping_cart/before_payment_delivry/shipping_methods/change_address/change_address_controller.dart';
 import '../pages/shopping_cart/before_payment_delivry/shipping_methods/shipping_methods_controller.dart';
 import '../pages/shopping_cart/shopping_cart_page_controller.dart';
+import '../pages/user/personal_data/personal_data_page_controller.dart';
 import 'orders_widgets/time_line_horizontal.dart';
-import '../pages/products_by_catalog/products_by_catalog_page.dart';
 import '../styles.dart';
 import 'app_icon.dart';
 import 'cart_widgets/cart_icon.dart';
 import 'orders_widgets/time_line_vertical.dart';
 import '../models/news.dart';
+import 'other_controllers_for_widgets/additional_service_controller.dart';
 
 Widget priceWidget(double price, {TextStyle? style}) {
   if (style != null) {
@@ -76,6 +70,119 @@ Widget priceWidget(double price, {TextStyle? style}) {
   } catch (e) {
     return Text('');
   }
+}
+
+Widget selectCheckBox({
+  required String text,
+  required int index,
+  required String price,
+}) {
+  final controller = Get.put(AdditionlServiceController());
+  return Obx(() {
+    return Theme(
+      data: ThemeData(toggleableActiveColor: AppTextStyles.colorBlueMy),
+      child: Column(
+        children: [
+          GestureDetector(
+            onTap: () {
+              controller.changeBoxList(index: index);
+            },
+            child: Container(
+              child: Row(
+                children: [
+                  SizedBox(
+                    width: 20,
+                    child: Checkbox(
+                      checkColor: Colors.white,
+                      value: controller.checkBoxList[index].isSelected,
+                      onChanged: (newValue) {
+                        controller.changeBoxList(index: index);
+                      },
+                    ),
+                  ),
+                  SizedBox(width: 15),
+                  Flexible(
+                    child: SizedBox(
+                      width: Get.width - 100,
+                      child: Text(
+                        overflow: TextOverflow.ellipsis,
+                        "$text",
+                        style: controller.checkBoxList[index].isSelected
+                            ? robotoConsid(color: AppTextStyles.colorBlueMy)
+                            : robotoConsid(color: Color(0xff727272)),
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 15),
+                  Text(
+                    "$price",
+                    style: robotoConsid(),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  });
+}
+
+Widget additionalService() {
+  final controller = Get.put(AdditionlServiceController());
+  return Obx(() {
+    return ListTileTheme(
+      contentPadding: EdgeInsets.all(0),
+      child: Theme(
+          data: ThemeData().copyWith(dividerColor: Colors.transparent),
+          child: ExpansionTile(
+            onExpansionChanged: (bool expanded) {},
+            collapsedBackgroundColor: Colors.white,
+            backgroundColor: Colors.white,
+            trailing: Text(
+              controller.checkForServices() ? "500 с." : "0 с",
+              style: robotoConsid(fontWeight: FontWeight.bold),
+            ),
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                underLineDashed(
+                    child: Text(
+                      "additional_services".tr,
+                      style: robotoConsid(color: Color(0xff142A65)),
+                    ),
+                    hight: 3),
+                SizedBox(width: 6),
+                controller.demoList[1]
+                    ? Icon(
+                        Icons.arrow_forward_ios,
+                        color: Color(0xff142A65),
+                        size: 13,
+                      )
+                    : anySvg(nameSvg: "arrow_down", size: Size(7, 7)),
+                Spacer(),
+              ],
+            ),
+            children: <Widget>[
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "assembly_services".tr,
+                    style: robotoConsid(fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 5),
+                  selectCheckBox(
+                      text: 'Теннисный стол Хобби', index: 0, price: '500 с.'),
+                  selectCheckBox(
+                      text: 'Теннисный стол Хобби', index: 1, price: '200 с.'),
+                ],
+              )
+            ],
+          )),
+    );
+  });
 }
 
 Widget titleWidget(
@@ -461,7 +568,7 @@ void citySelectorSheet({required BuildContext context}) {
                                     )),
                                 focusColor: Color(0xff112B66),
                               ),
-                              value: controller.selectedCity?.value,
+                              value: controller.selectedCity.value,
                               items: controller.citys!
                                   .map((item) => DropdownMenuItem<String>(
                                       value: item,
@@ -472,7 +579,7 @@ void citySelectorSheet({required BuildContext context}) {
                                   .toList(),
                               onChanged: (item) {
                                 print(item);
-                                controller.selectedCity?.value = item!;
+                                controller.selectedCity.value = item!;
                               }),
                         ),
                         SizedBox(height: 20),
@@ -603,6 +710,298 @@ Widget writeFeedbackButton({required String text, Function()? onPressed}) {
   );
 }
 
+Widget editTextButton(
+    {Function()? onTap,
+    required String icon,
+    required String text,
+    String secondIcon = ""}) {
+  return GestureDetector(
+    onTap: onTap,
+    child: boxShadows(
+        child: Container(
+      height: 30,
+      child: Row(
+        children: [
+          SizedBox(width: 8),
+          anySvg(nameSvg: "$icon"),
+          SizedBox(
+            width: 10,
+          ),
+          SizedBox(width: 8),
+          Text(
+            text,
+            style: robotoConsid(fontSize: 14),
+          ),
+          Spacer(),
+          secondIcon != ""
+              ? ClipRRect(
+                  borderRadius: BorderRadius.circular(5.0),
+                  child: anySvg(nameSvg: "$secondIcon"))
+              : SizedBox(),
+          SizedBox(width: 15),
+          editSvg(),
+        ],
+      ),
+    )),
+  );
+}
+
+Widget helpDaria1() {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+      Padding(
+        padding: const EdgeInsets.only(top: 8.0),
+        child: Text(
+          "daria".tr,
+          style: robotoConsid(
+              color: Color(0xff142A65), fontWeight: FontWeight.bold),
+        ),
+      ),
+      underLineDashed(
+          child: Text(
+        "write_a_message".tr,
+        style: robotoConsid(color: Color(0xff142A65), height: 2),
+      )),
+      underLineDashed(
+          child: Text(
+        "call".tr,
+        style: robotoConsid(color: Color(0xff142A65), height: 2),
+      )),
+    ],
+  );
+}
+
+Widget helpDaria() {
+  return boxShadows(
+    child: Row(
+      children: [
+        Expanded(
+          child: Column(
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "help_manager".tr,
+                    style: robotoConsid(),
+                  ),
+                  SizedBox(width: 12),
+                  Text(
+                    "daria".tr,
+                    style: robotoConsid(
+                        color: Color(0xff142A65), fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+              SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: SvgPicture.asset(
+                      "assets/icons/correspond.svg",
+                      width: 15,
+                    ),
+                  ),
+                  SizedBox(width: 8),
+                  underLineDashed(
+                      child: Text(
+                        "write_a_message".tr,
+                        style: robotoConsid(color: Color(0xff142A65), height: 2),
+                      )),
+                  SizedBox(width: 20),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: SvgPicture.asset(
+                      "assets/icons/call.svg",
+                      width: 15,
+                    ),
+                  ),
+                  SizedBox(width: 8),
+                  underLineDashed(
+                      child: Text(
+                        "call".tr,
+                        style: robotoConsid(color: Color(0xff142A65), height: 2),
+                      )),
+                ],
+              ),
+            ],
+          ),
+        ),
+        SizedBox(
+            width: 70, child: Image.asset("assets/images/daria.png", width: 60))
+      ],
+    ),
+  );
+}
+
+Widget bottomInfoBar() {
+  return Container(
+    decoration: BoxDecoration(
+        gradient: LinearGradient(begin: Alignment.centerLeft, stops: [
+      0.0,
+      0.8,
+    ], colors: [
+      Color(0xff112B66),
+      Color(0xff53235A),
+    ])),
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 26.0),
+      child: Column(
+        children: [
+          arrowButtonProfileBlack(icon: "about_company", text: 'about_company'),
+          arrowButtonProfileBlack(icon: "contacts", text: 'contacts'),
+          arrowButtonProfileBlack(icon: "partners", text: 'partners'),
+          arrowButtonProfileBlack(
+              icon: "about_the_application", text: 'about_the_application'),
+        ],
+      ),
+    ),
+  );
+}
+
+Widget radioGender({required int index, required String text}) {
+  final controller = Get.put(PersonalDataPageController());
+  return GestureDetector(
+    onTap: () {
+      controller.selectedGender.value = index!;
+    },
+    child: Container(
+      color: Colors.transparent,
+      child: Row(
+        children: [
+          Radio<int>(
+            value: index,
+            activeColor: AppTextStyles.colorBlackMy,
+            groupValue: controller.selectedGender.value,
+            onChanged: (int? value) {
+              controller.selectedGender.value = value!;
+            },
+          ),
+          Text(
+            "$text".tr,
+            style: robotoConsid(),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+Widget selectRadio(
+    {required String text,
+    required int index,
+    bool isTelegram = false,
+    bool isWhatsUp = false}) {
+  final controller = Get.put(ProfileParamsPageController());
+  return Obx(() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 20.0),
+      child: Column(
+        children: [
+          boxShadows(
+            padding: 4,
+            child: Row(
+              children: [
+                Flexible(
+                  flex: 10,
+                  child: GestureDetector(
+                    onTap: () {
+                      controller.change(index);
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(5)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Row(
+                              children: [
+                                SizedBox(width: 10),
+                                Radio(
+                                  activeColor: Color(0xff112B66),
+                                  value: index,
+                                  groupValue: controller.selectedRadio.value,
+                                  onChanged: (int? value) {
+                                    controller.change(index);
+                                  },
+                                ),
+                                SizedBox(width: 15),
+                                Flexible(
+                                  child: Text(
+                                    "$text",
+                                    overflow: TextOverflow.ellipsis,
+                                    style:
+                                        robotoConsid(color: Color(0xff2C2D2E)),
+                                  ),
+                                ),
+                                SizedBox(width: 5),
+                                if (isTelegram)
+                                  Icon(Icons.telegram, color: Colors.blue),
+                                SizedBox(width: 5),
+                                if (isWhatsUp)
+                                  Icon(Icons.whatsapp, color: Colors.green)
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                Flexible(
+                  flex: 1,
+                  child: GestureDetector(
+                    onTap: () {},
+                    child: Container(
+                      color: Colors.transparent,
+                      height: 50,
+                      width: 50,
+                      child: Center(child: anySvg(nameSvg: "trash")),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  });
+}
+
+Widget radioTheme({required int index, required String text}) {
+  final controller = Get.put(ProfileParamsPageController());
+  return GestureDetector(
+    onTap: () {
+      controller.selectedTheme.value = index!;
+    },
+    child: Container(
+      color: Colors.transparent,
+      child: Row(
+        children: [
+          Radio<int>(
+            value: index,
+            activeColor: AppTextStyles.colorBlackMy,
+            groupValue: controller.selectedTheme.value,
+            onChanged: (int? value) {
+              controller.selectedTheme.value = value!;
+            },
+          ),
+          Text(
+            "$text".tr,
+            style: robotoConsid(),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
 Widget boxShadows(
     {required Widget child, double padding = 12, double radius = 5}) {
   return Container(
@@ -641,10 +1040,10 @@ Widget dollarSvg() {
   );
 }
 
-Widget anySvg({required String nameSvg, Size size = const Size(17, 17),  Color? color}) {
+Widget anySvg(
+    {required String nameSvg, Size size = const Size(17, 17), Color? color}) {
   return SvgPicture.asset("assets/icons/$nameSvg.svg",
-      color: color,
-      width: size.width, height: size.height);
+      color: color, width: size.width, height: size.height);
 }
 
 Widget editSvg() {
@@ -820,9 +1219,9 @@ Widget orderWithDateDark() {
   );
 }
 
-Widget dark({required Widget child}) {
+Widget dark({required Widget child, double height = 50}) {
   return Container(
-    height: 50,
+    height: height,
     decoration: BoxDecoration(
         gradient: LinearGradient(begin: Alignment.centerLeft, stops: [
       0.0,
@@ -907,7 +1306,7 @@ Widget productWidget() {
 TextStyle robotoConsid(
     {double fontSize = 14,
     FontWeight fontWeight = FontWeight.normal,
-    Color color = Colors.black,
+    Color color = AppTextStyles.colorBlackMy,
     TextDecoration decoration = TextDecoration.none,
     double height = 0}) {
   return TextStyle(
@@ -964,7 +1363,8 @@ Widget delivryBox({required BuildContext context}) {
               underLineDashed(
                 child: Text(
                   "detailing".tr,
-                  style: robotoConsid(color: Color(0xff0C54A1), fontSize: 14),
+                  style: robotoConsid(
+                      color: AppTextStyles.colorBlueMy, fontSize: 14),
                 ),
               ),
               SizedBox(width: 10),
@@ -1277,8 +1677,41 @@ Widget getTheme({required Widget child}) {
   );
 }
 
-
-
+Widget getThemeBorderGreyTextFild({required Widget child}) {
+  return Theme(
+    child: child,
+    data: ThemeData().copyWith(
+        textSelectionTheme: TextSelectionThemeData(
+          cursorColor: AppTextStyles.colorBlueMy,
+        ),
+        dividerColor: Colors.transparent,
+        inputDecorationTheme: InputDecorationTheme(
+            isDense: true,
+            filled: true,
+            fillColor: Colors.white,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(80.0),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide:
+                  BorderSide(color: AppTextStyles.colorBlueMy, width: 1.0),
+              borderRadius: BorderRadius.circular(5.0),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(5),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: AppTextStyles.colorRedMy),
+              borderRadius: BorderRadius.circular(5),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(5),
+              borderSide:
+                  BorderSide(width: 1, color: AppTextStyles.colorGrayMy),
+            ),
+            labelStyle: TextStyle(color: AppTextStyles.colorGrayMy))),
+  );
+}
 
 Widget getDropDownPhone() {
   final controller = Get.put(AuthPageController());
@@ -1326,7 +1759,7 @@ Widget themeChangeAdress({required Widget child}) {
         textSelectionTheme: TextSelectionThemeData(
           cursorColor: Color(0xff112B66),
         ),
-        dividerColor: Colors.blueAccent,
+        dividerColor: AppTextStyles.colorBlueMy,
         inputDecorationTheme: InputDecorationTheme(
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(80.0),
@@ -1627,7 +2060,16 @@ Widget rowText({required String text1, required String text2}) {
         text1,
         style: robotoConsid(color: Color(0xff62656A)),
       ),
-      Spacer(),
+      Flexible(
+        child: Container(
+          height: 9,
+          width: Get.width,
+          decoration: DottedDecoration(
+              color: AppTextStyles.colorBlackMy,
+              shape: Shape.line,
+              dash: [2, 2]),
+        ),
+      ),
       Text(
         text2,
         style: robotoConsid(color: Color(0xff62656A)),
@@ -1796,6 +2238,52 @@ Widget customCheckBox(
   ]);
 }
 
+Widget checkBoxWithImage(
+    {bool value = false, required Icon icon, Function(bool? val)? onChanged}) {
+  return Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+    SizedBox(
+      width: 30,
+      child: Checkbox(
+          value: value,
+          onChanged: onChanged,
+          activeColor: Get.context!.theme.primary),
+    ),
+    if (icon != null) icon,
+  ]);
+}
+
+
+Widget addAdressButton({required String text, Function()? onPressed}) {
+  return SizedBox(
+    height: 50,
+    child: GestureDetector(
+      onTap: onPressed,
+      child: Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+              border: Border.all(
+                color: Color(0xff142A65),
+                width: 2.0,
+              )),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(width: 10),
+              Text("+",
+                  style: TextStyle(color: Color(0xff142A65), fontSize: 20)),
+              SizedBox(width: 5),
+              Text(text,
+                  textAlign: TextAlign.center,
+                  style:  robotoConsid(
+                      color: Color(0xff142A65),
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold)),
+            ],
+          )),
+    ),
+  );
+}
+
 // Widget customMenuList({required List<MenuItem> list}) {
 //   return Container(
 //     padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
@@ -1868,7 +2356,8 @@ Widget currencyAndCityWidget() {
                 ],
               ),
               Spacer(),
-              AppIcon(AppIcons.city, size: 18, color: Colors.black),
+              AppIcon(AppIcons.city,
+                  size: 18, color: AppTextStyles.colorBlackMy),
               SizedBox(width: 8),
             ],
           ),
@@ -1885,7 +2374,8 @@ Widget currencyAndCityWidget() {
           ),
           child: Row(
             children: [
-              AppIcon(AppIcons.currency, size: 18, color: Colors.black),
+              AppIcon(AppIcons.currency,
+                  size: 18, color: AppTextStyles.colorBlackMy),
               SizedBox(width: 10),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -1909,67 +2399,67 @@ Widget currencyAndCityWidget() {
   );
 }
 
-Widget helpDaria() {
-  return boxShadows(
-    child: Row(
-      children: [
-        Expanded(
-          child: Column(
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "help_manager".tr,
-                    style: robotoConsid(),
-                  ),
-                  SizedBox(width: 12),
-                  Text(
-                    "daria".tr,
-                    style: robotoConsid(
-                        color: Color(0xff142A65), fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-              SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    child: SvgPicture.asset(
-                      "assets/icons/correspond.svg",
-                      width: 15,
+Widget helpDariaNew() {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+    child: boxShadows(
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "support".tr,
+                      style: robotoConsid(),
                     ),
-                  ),
-                  SizedBox(width: 8),
-                  underLineDashed(
-                      child: Text(
-                    "write_a_message".tr,
-                    style: robotoConsid(color: Color(0xff142A65), height: 2),
-                  )),
-                  SizedBox(width: 20),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    child: SvgPicture.asset(
-                      "assets/icons/call.svg",
-                      width: 15,
+                  ],
+                ),
+                SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: SvgPicture.asset(
+                        "assets/icons/correspond.svg",
+                        width: 15,
+                      ),
                     ),
-                  ),
-                  SizedBox(width: 8),
-                  underLineDashed(
-                      child: Text(
-                    "call".tr,
-                    style: robotoConsid(color: Color(0xff142A65), height: 2),
-                  )),
-                ],
-              ),
-            ],
+                    SizedBox(width: 8),
+                    underLineDashed(
+                        child: Text(
+                      "write_a_message".tr,
+                      style: robotoConsid(
+                          color: AppTextStyles.colorBlueMy, height: 2),
+                    )),
+                    SizedBox(width: 20),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: SvgPicture.asset(
+                        "assets/icons/call.svg",
+                        width: 15,
+                      ),
+                    ),
+                    SizedBox(width: 8),
+                    underLineDashed(
+                        child: Text(
+                      "call".tr,
+                      style: robotoConsid(
+                          color: AppTextStyles.colorBlueMy, height: 2),
+                    )),
+                  ],
+                ),
+              ],
+            ),
           ),
-        ),
-        SizedBox(
-            width: 70, child: Image.asset("assets/images/daria.png", width: 60))
-      ],
+          SizedBox(
+              width: 70,
+              child: Image.asset("assets/images/daria.png", width: 60))
+        ],
+      ),
     ),
   );
 }
@@ -1979,27 +2469,34 @@ Widget arrowButtonProfile(
     required String text,
     bool notification = false,
     bool isActive = true,
-    String? page}) {
+    String? page,
+    bool haveDivider = true}) {
   return GestureDetector(
     onTap: page != null
         ? () {
-            Get.toNamed(page!);
+            Get.toNamed(page);
           }
         : null,
     child: Container(
       height: 50,
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(
-            color: Color(0xffF6F6F6),
-            width: 1.0,
-          ),
-        ),
-      ),
+      decoration: haveDivider
+          ? BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: Color(0xffF6F6F6),
+                  width: 1.0,
+                ),
+              ),
+            )
+          : BoxDecoration(),
       child: Row(
         children: [
-          SvgPicture.asset("assets/icons/$icon.svg",
-              semanticsLabel: 'Acme Logo'),
+          icon != ""
+              ? SvgPicture.asset("assets/icons/$icon.svg",
+                  semanticsLabel: 'Acme Logo')
+              : SizedBox(
+                  width: 20,
+                ),
           SizedBox(width: 20),
           Text(
             "$text".tr,

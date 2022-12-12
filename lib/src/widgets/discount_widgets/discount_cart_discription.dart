@@ -145,27 +145,28 @@ class DiscountCartDiscription extends StatelessWidget {
             ],
           ),
           SizedBox(height: 12),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(width: 21),
-              widgets.underLineDashed(
-                  child: Text(
-                "additional_services".tr,
-                style:
-                    widgets.robotoConsid(color: Color(0xff142A65), height: 2),
-              )),
-              SizedBox(width: 6),
-              Padding(
-                padding: const EdgeInsets.only(top: 14.0),
-                child: Icon(
-                  Icons.arrow_forward_ios,
-                  size: 12,
-                  color: Color(0xff142A65),
-                ),
-              )
-            ],
-          ),
+          widgets. additionalService(),
+          // Row(
+          //   crossAxisAlignment: CrossAxisAlignment.start,
+          //   children: [
+          //     SizedBox(width: 21),
+          //     widgets.underLineDashed(
+          //         child: Text(
+          //       "additional_services".tr,
+          //       style:
+          //           widgets.robotoConsid(color: Color(0xff142A65), height: 2),
+          //     )),
+          //     SizedBox(width: 6),
+          //     Padding(
+          //       padding: const EdgeInsets.only(top: 14.0),
+          //       child: Icon(
+          //         Icons.arrow_forward_ios,
+          //         size: 12,
+          //         color: Color(0xff142A65),
+          //       ),
+          //     )
+          //   ],
+          // ),
           SizedBox(height: 35),
           Row(
             children: [

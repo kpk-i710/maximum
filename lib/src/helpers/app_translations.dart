@@ -22,7 +22,8 @@ class AppTranslations extends Translations {
               'Доставка ожидается  26 - 29 марта, с 18,00 до 19,00 Бесплатная доставка по г.Бишкек',
           'brands': 'Бренды',
           'currency': 'Валюта:',
-          'payments_text': '1. Оплата безналичными принимается по 100% предоплате. 2. Для оплаты выберите наиболее удобный для вас банк . 3. После оформления заказа, вам необходимо распечатать или скачать счет на оплату. 4. Обратится в банк или оформить в интернет банкинге перевод денежных средств. 5. Оплаченная сумма будет отображена в личном кабинете.:',
+          'payments_text':
+              '1. Оплата безналичными принимается по 100% предоплате. 2. Для оплаты выберите наиболее удобный для вас банк . 3. После оформления заказа, вам необходимо распечатать или скачать счет на оплату. 4. Обратится в банк или оформить в интернет банкинге перевод денежных средств. 5. Оплаченная сумма будет отображена в личном кабинете.:',
           'street': 'Улица',
           'streetShort': 'ул.',
           'houseShort': 'д.',
@@ -30,6 +31,8 @@ class AppTranslations extends Translations {
           'apartamentShort': 'кв.',
           'free_to_bishkek': 'Бесплатная доставка по г.Бишкек',
           'pay_order': 'Оплатить',
+          'male': 'Мужской',
+          'female': 'Женский',
           'when_coming_delivry': 'Под заказ, доставим в Бишкек 24 - 31 октября',
           'your_city': 'Ваш город',
           'express_delivery': 'Курьерская доставка',
@@ -37,6 +40,7 @@ class AppTranslations extends Translations {
           'other_recipient': 'Другой получатель',
           'completed_orders': 'Заказы',
           'incorrect_code': 'Неверный код',
+          'personal_data1': 'Персональные данные',
           'include_vat': 'Включить НДС',
           'agreement':
               'Нажимая "Оформить заказ", Вы соглашаетесь c условиями политики конфиденциальности и правилами торговой площадкой.',
@@ -47,7 +51,9 @@ class AppTranslations extends Translations {
           'select_payment_method': 'Выберите способ оплаты',
           'placed_order': 'Оформлен',
           'apply_organization': 'Оформить на организацию',
+          'organization': 'Организация',
           'company_name': 'Название компании',
+          'app_theme': 'Тема приложения',
           'payment_method': 'Способ оплаты:',
           'visa_elcart': 'Онлайн картой Visa, MasterCard, Elcart',
           'kyrgyz_som': 'Кыргызский сом',
@@ -75,6 +81,8 @@ class AppTranslations extends Translations {
           'on_my_way': 'В пути',
           'ready_for_shipment': 'Готов к отгрузке',
           'instruction': 'Инструкция',
+          'dark': 'Темная',
+          'light': 'Светлая',
           'tin': 'ИНН',
           'all_products_category': 'Все товары категории:',
           'video': 'Видео /',
@@ -84,7 +92,7 @@ class AppTranslations extends Translations {
           'popular_goods': 'Популярные товары',
           'more': 'Подробнее',
           'minimum_order': 'минимальное количество к заказу от 10 шт.',
-          'free_shipping': 'Бесплатная доставка',
+          'free_shipping': 'Самовызов',
           'errorMessage': 'Неправильный номер телеофна',
           'availability_and_delivery': 'Наличие и доставка',
           'delivery_period':
@@ -123,7 +131,7 @@ class AppTranslations extends Translations {
           'shopping_cart': 'Корзина',
           'interesting': 'Интересное',
           'home': 'Главная',
-          'we_have_sent_code':  'Мы отправили код подтверждения на номер:',
+          'we_have_sent_code': 'Мы отправили код подтверждения на номер:',
           'send_confirm_code_to_phone':
               'Мы отправим код подтверждения на указанный номер телефона',
           'never_late_to_fix': 'Это никогда не поздно исправить :)',
@@ -133,6 +141,7 @@ class AppTranslations extends Translations {
           'city': 'Город',
           'delivery': 'Доставка',
           'pickup': 'Самовывоз',
+          'date_of_birth': 'Дата рождения',
           'total': 'Итого',
           'checkout': 'Оформить заказ',
           'checkout1': 'Оформить',
@@ -239,6 +248,8 @@ class AppTranslations extends Translations {
           'about_us': 'О нас',
           'call_me': 'Позвонить мне',
           'my_settings': 'Мои настройки',
+          'my_contacts': 'Мои контакты',
+          'notification_settings': 'Настройка уведомлений',
           'current_orders_menu': 'Текущие заказы@suffix @count',
           'order_hist_menu': 'История заказов',
           'notifications_menu': 'Уведомления@suffix @count',
@@ -259,6 +270,7 @@ class AppTranslations extends Translations {
           'of_products': 'Товаров',
           'price_without_discount': 'Цена без скидки',
           'paid': 'Оплачено',
+          'phone_number_has': 'на этом номере есть:',
           'reminder_to_be_paid': 'Остаток к оплате',
           'total_payable': 'Итого к оплате',
           'assembling_the_order': 'Сборка заказа',
@@ -284,6 +296,7 @@ class AppTranslations extends Translations {
           'write_message': 'Написать',
           'add_your_addresses': 'Добавьте ваши адреса',
           'add_address': 'Добавить адрес',
+          'add_number': 'Добавить номер',
           'highlight': 'Выделить',
           'add_your_phone_numbers': 'Добавьте ваши номера телефонов',
           'your_default_number': 'ваш номер по умолчанию',
@@ -292,9 +305,11 @@ class AppTranslations extends Translations {
           'last_name': 'Фамилия',
           'middle_name': 'Отчество',
           'choose_language': 'Выберите язык',
+          'language': 'Язык',
           'choose_city_from_list': 'Выберите город из списка',
           'your_birthday': 'Ваш день рождения',
           'enter_your_gender': 'Укажите ваш пол',
+          'your_gender': 'Ваш пол',
           'enter_your_address': 'Укажите адрес',
           'not_specified': 'Не указан',
           'city_bishkek': 'г.Бишкек',
@@ -320,7 +335,8 @@ class AppTranslations extends Translations {
           'get_code_in': 'Получить новый код можно через ',
           'send_new_code': 'Отправить новый код',
           'to_get_the_code': 'Получить код',
-          'i_agree_with_terms': 'Согласен с условиями продажи\nтоваров и обработки персональных\nданных',
+          'i_agree_with_terms':
+              'Согласен с условиями продажи\nтоваров и обработки персональных\nданных',
           'min_quantity_of': 'минимальное\n количество\n по @count',
           'assembly_services': 'Услуги сборки',
           'left': 'Осталось',
@@ -333,7 +349,9 @@ class AppTranslations extends Translations {
           'bestseller': 'Хит продаж',
           'sorting': 'Сортировка',
           'by_rating': 'по рейтингу',
-          'your_profile_complete': 'Ваш профиль заполнен на @percent',
+          'your_profile_complete': 'Ваш профиль заполнен на ',
+          'your_profile_complete2':
+              'заполните ваш профиль и получите дополнительную скидку!',
           'hours': 'часов',
           'minute': 'минут',
           'seconds': 'секунд',

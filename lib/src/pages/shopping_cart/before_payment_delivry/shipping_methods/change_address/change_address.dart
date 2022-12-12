@@ -133,7 +133,7 @@ class _ChangeAdressState extends State<ChangeAdress> {
                       "${controllerCart.selectedCity.value} ${controllerCart.selectedStreetHouse ?? ""}",
                   index: i),
             SizedBox(height: 20),
-            addAdressButton(
+            widgets.addAdressButton(
                 text: 'add_address'.tr,
                 onPressed: () {
                   Get.to(AddAdress());
@@ -155,36 +155,7 @@ class _ChangeAdressState extends State<ChangeAdress> {
     });
   }
 
-  Widget addAdressButton({required String text, Function()? onPressed}) {
-    return SizedBox(
-      height: 50,
-      child: GestureDetector(
-        onTap: onPressed,
-        child: Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                border: Border.all(
-                  color: Color(0xff142A65),
-                  width: 2.0,
-                )),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(width: 10),
-                Text("+",
-                    style: TextStyle(color: Color(0xff142A65), fontSize: 20)),
-                SizedBox(width: 5),
-                Text(text,
-                    textAlign: TextAlign.center,
-                    style: widgets.robotoConsid(
-                        color: Color(0xff142A65),
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold)),
-              ],
-            )),
-      ),
-    );
-  }
+
 
   Widget selectRadio({required String text, required int index}) {
     final box = GetStorage();

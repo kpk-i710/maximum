@@ -8,7 +8,6 @@ import '../../widgets/search_widgets/search_bar_2.dart';
 import '../../styles.dart';
 import '../../widgets/discount_widgets/discount_widget.dart';
 import '../../widgets/filter_widget.dart';
-import '../../widgets/timer_widget.dart';
 import '../../widgets/widgets.dart' as widgets;
 import 'discount_page_controller.dart';
 
@@ -50,7 +49,7 @@ class DiscountPage extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 8),
-                        TimerWidget(toDate: c.discount.toDateTime),
+
                         const SizedBox(height: 20),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 10),

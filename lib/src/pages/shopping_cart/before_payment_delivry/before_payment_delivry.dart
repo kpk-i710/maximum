@@ -58,33 +58,35 @@ class BeforePaymentDelivry extends StatelessWidget {
                   onTap: () {
                     Get.toNamed(AppRouter.paymentMethod);
                   }),
-              Padding(
-                padding: const EdgeInsets.only(top: 10.0),
-                child: widgets.getTheme(
-                    child: Form(
-                  key: controller.loginFormKey,
-                  child: Column(
-                    children: [
-                      SizedBox(height: 20),
-                      if (!Prefs.isLogin)
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                          child: phoneNumberName(),
-                        ),
-                      if (Prefs.isLogin) expandTail(),
-                      SizedBox(height: 8),
-                      buyForOrganization(),
-                    ],
-                  ),
-                )),
-              ),
+              Prefs.isLogin
+                  ? editName(onTap: () {
+                      print("редактировать имя");
+                    })
+                  : SizedBox(),
+              widgets.getTheme(
+                  child: Form(
+                key: controller.loginFormKey,
+                child: Column(
+                  children: [
+                    SizedBox(height: 20),
+                    if (!Prefs.isLogin)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                        child: phoneNumberName(),
+                      ),
+                    if (Prefs.isLogin) expandTail(),
+                    SizedBox(height: 8),
+                    buyForOrganization(),
+                  ],
+                ),
+              )),
               Container(
                 decoration: BoxDecoration(
                     color: Color(0xffF6F6F6),
                     borderRadius: BorderRadius.circular(5)),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
-                      vertical: 35.0, horizontal: 30),
+                      vertical: 35.0, horizontal: 22),
                   child: Container(
                     child: Column(
                       children: [
@@ -178,6 +180,7 @@ class BeforePaymentDelivry extends StatelessWidget {
                           validator: (value) {
                             return controller.validateCompanyName(value!);
                           },
+                          controller: controller.nameCompanyController,
                           decoration: InputDecoration(
                             isDense: true,
                             helperText: " ",
@@ -185,7 +188,7 @@ class BeforePaymentDelivry extends StatelessWidget {
                             fillColor: Colors.white,
                             labelText: 'company_name'.tr,
                           ),
-                          controller: controller.nameCompanyController,
+
                         ),
                       ),
                       SizedBox(height: 10),
@@ -361,16 +364,34 @@ class BeforePaymentDelivry extends StatelessWidget {
     );
   }
 
-  // if (select == DeliveryOrPayment.DELIVERY) {
-  //   controller.isSelectedDelivryMethod.value =
-  //       !controller.isSelectedDelivryMethod.value;
-  //   return;
-  // }
-  // if (select == DeliveryOrPayment.PAYMENT) {
-  //   controller.isSelectedPaymentMethod.value =
-  //       !controller.isSelectedPaymentMethod.value;
-  //   return;
-  // }
+  Widget editName({Function()? onTap}) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
+        child: widgets.boxShadows(
+            child: Container(
+          height: 30,
+          child: Row(
+            children: [
+              SizedBox(width: 8),
+              widgets.anySvg(nameSvg: 'profile', size: Size(20, 20)),
+              SizedBox(
+                width: 10,
+              ),
+              SizedBox(width: 8),
+              Text(
+                "Мурахмедов Анвар",
+                style: widgets.robotoConsid(fontSize: 16),
+              ),
+              Spacer(),
+              widgets.editSvg(),
+            ],
+          ),
+        )),
+      ),
+    );
+  }
 
   Widget buttonChoise(
       {required String text,
@@ -413,40 +434,36 @@ class BeforePaymentDelivry extends StatelessWidget {
 
   Widget visaButton() {
     final controller = Get.put(PaymentMethodController());
-    return Obx(
-            () {
-        return widgets.boxShadows(
-            child: Container(
-          height: 30,
-          child: Row(
-            children: [
-              SizedBox(
-                width: 10,
-              ),
-              widgets.dollarSvg(),
-              SizedBox(
-                width: 15,
-              ),
-              Flexible(
-                child: SizedBox(
-                  width: Get.width,
-                  child: Text(
-                    overflow: TextOverflow.ellipsis,
-                    controller.listPayments[controller.selectedRadio.value],
-                    maxLines: 1,
-                    style: widgets.robotoConsid(fontSize: 16),
-                  ),
+    return Obx(() {
+      return widgets.boxShadows(
+          child: Container(
+        height: 30,
+        child: Row(
+          children: [
+            SizedBox(
+              width: 10,
+            ),
+            widgets.dollarSvg(),
+            SizedBox(
+              width: 15,
+            ),
+            Flexible(
+              child: SizedBox(
+                width: Get.width,
+                child: Text(
+                  overflow: TextOverflow.ellipsis,
+                  controller.listPayments[controller.selectedRadio.value],
+                  maxLines: 1,
+                  style: widgets.robotoConsid(fontSize: 16),
                 ),
               ),
-
-
-              widgets.editSvg(),
-              SizedBox(width: 5),
-            ],
-          ),
-        ));
-      }
-    );
+            ),
+            widgets.editSvg(),
+            SizedBox(width: 5),
+          ],
+        ),
+      ));
+    });
   }
 
   Widget delivaryButton() {

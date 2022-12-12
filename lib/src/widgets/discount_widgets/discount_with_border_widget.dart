@@ -4,7 +4,6 @@ import 'package:sizer/sizer.dart';
 import 'package:get/get.dart';
 
 import '../../helpers/helper.dart';
-import '../../widgets/timer_widget.dart';
 import '../../models/discount.dart';
 import '../../widgets/widgets.dart' as widgets;
 import '../../styles.dart';
@@ -82,12 +81,7 @@ class DiscountWithBorderWidget extends StatelessWidget {
                                       ),
                                   ),
                                   const SizedBox(height: 6),
-                                  Container(
-                                    width: double.infinity,
-                                    child: Center(
-                                      child: TimerWidget(toDate: discount.toDateTime),
-                                    ),
-                                  ),
+
                                   const SizedBox(height: 3),
                                   Expanded(
                                     child: Padding(
