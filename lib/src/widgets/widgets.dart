@@ -5,6 +5,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart' hide MenuItem;
+import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
 import 'package:maxkgapp/src/pages/user/profile_params/profile_params_page_controller.dart';
 import 'package:shimmer/shimmer.dart';
@@ -808,9 +809,9 @@ Widget helpDaria() {
                   SizedBox(width: 8),
                   underLineDashed(
                       child: Text(
-                        "write_a_message".tr,
-                        style: robotoConsid(color: Color(0xff142A65), height: 2),
-                      )),
+                    "write_a_message".tr,
+                    style: robotoConsid(color: Color(0xff142A65), height: 2),
+                  )),
                   SizedBox(width: 20),
                   Padding(
                     padding: const EdgeInsets.only(top: 8.0),
@@ -822,9 +823,9 @@ Widget helpDaria() {
                   SizedBox(width: 8),
                   underLineDashed(
                       child: Text(
-                        "call".tr,
-                        style: robotoConsid(color: Color(0xff142A65), height: 2),
-                      )),
+                    "call".tr,
+                    style: robotoConsid(color: Color(0xff142A65), height: 2),
+                  )),
                 ],
               ),
             ],
@@ -890,11 +891,41 @@ Widget radioGender({required int index, required String text}) {
   );
 }
 
+Widget switchWithText(
+    {bool isActive = false,
+    required Function(bool val) onTap,
+    required String label}) {
+  return Row(
+    children: [
+      FlutterSwitch(
+        inactiveColor: Color(0xffC9CDD6),
+        activeColor: Color(0xff2B2861),
+        width: 40.0,
+        height: 20.0,
+        valueFontSize: 25.0,
+        toggleSize: 10.0,
+        // value: controller.status.value,
+        borderRadius: 30.0,
+        padding: 5.0,
+        showOnOff: false,
+        onToggle: onTap,
+        value: isActive,
+      ),
+      SizedBox(width: 20),
+      Text(
+        label.tr,
+        style: robotoConsid(),
+      ),
+    ],
+  );
+}
+
 Widget selectRadio(
     {required String text,
     required int index,
     bool isTelegram = false,
-    bool isWhatsUp = false}) {
+    bool isWhatsUp = false,
+    Function()? onTap}) {
   final controller = Get.put(ProfileParamsPageController());
   return Obx(() {
     return Padding(
@@ -956,7 +987,7 @@ Widget selectRadio(
                 Flexible(
                   flex: 1,
                   child: GestureDetector(
-                    onTap: () {},
+                    onTap: onTap,
                     child: Container(
                       color: Colors.transparent,
                       height: 50,
@@ -2223,12 +2254,30 @@ Widget catalogPlaceholder(
   );
 }
 
-Widget customCheckBox(
+Widget checkBoxWithText(
     {bool value = false,
     required String text,
     TextStyle? textStyle,
     Function(bool? val)? onChanged}) {
   return Row(children: [
+    SizedBox(
+      width: 20,
+      child: Checkbox(
+          value: value,
+          onChanged: onChanged,
+          activeColor: Get.context!.theme.primary),
+    ),
+    const SizedBox(width: 15),
+    Text(text, style: textStyle ?? robotoConsid( ))
+  ]);
+}
+
+Widget customCheckBox(
+    {bool value = false,
+    required String text,
+    TextStyle? textStyle,
+    Function(bool? val)? onChanged}) {
+  return Row(  children: [
     Checkbox(
         value: value,
         onChanged: onChanged,
@@ -2238,7 +2287,7 @@ Widget customCheckBox(
   ]);
 }
 
-Widget checkBoxWithImage(
+Widget checkBoxWithIcon(
     {bool value = false, required Icon icon, Function(bool? val)? onChanged}) {
   return Row(mainAxisAlignment: MainAxisAlignment.start, children: [
     SizedBox(
@@ -2252,34 +2301,36 @@ Widget checkBoxWithImage(
   ]);
 }
 
-
 Widget addAdressButton({required String text, Function()? onPressed}) {
-  return SizedBox(
-    height: 50,
-    child: GestureDetector(
-      onTap: onPressed,
-      child: Container(
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5),
-              border: Border.all(
-                color: Color(0xff142A65),
-                width: 2.0,
-              )),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(width: 10),
-              Text("+",
-                  style: TextStyle(color: Color(0xff142A65), fontSize: 20)),
-              SizedBox(width: 5),
-              Text(text,
-                  textAlign: TextAlign.center,
-                  style:  robotoConsid(
-                      color: Color(0xff142A65),
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold)),
-            ],
-          )),
+  return GestureDetector(
+    onTap: onPressed,
+    child: SizedBox(
+      height: 50,
+      child: GestureDetector(
+        onTap: onPressed,
+        child: Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                border: Border.all(
+                  color: Color(0xff142A65),
+                  width: 2.0,
+                )),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(width: 10),
+                Text("+",
+                    style: TextStyle(color: Color(0xff142A65), fontSize: 20)),
+                SizedBox(width: 5),
+                Text(text,
+                    textAlign: TextAlign.center,
+                    style: robotoConsid(
+                        color: Color(0xff142A65),
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold)),
+              ],
+            )),
+      ),
     ),
   );
 }

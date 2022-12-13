@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import '../../../widgets/app_icon.dart';
 import '../../../styles.dart';
 import '../../../widgets/widgets.dart' as widgets;
 import 'personal_data_page_controller.dart';

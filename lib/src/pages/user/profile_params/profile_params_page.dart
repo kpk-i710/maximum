@@ -11,9 +11,6 @@ import '../../../pages/user/profile_params/profile_params_page_controller.dart';
 class ProfileParamsPage extends StatelessWidget {
   final controller = Get.put(ProfileParamsPageController());
 
-  // Get.toNamed(AppRouter.personalData);
-  // Get.toNamed(AppRouter.addPhone);
-  // Get.toNamed(AppRouter.addAddress);
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -85,6 +82,7 @@ class ProfileParamsPage extends StatelessWidget {
                         widgets.arrowButtonProfile(
                           icon: "notification",
                           text: 'notification_settings',
+                          page: AppRouter.notifacationsPage,
                           haveDivider: false,
                         ),
                         widgets.arrowButtonProfile(
@@ -96,6 +94,7 @@ class ProfileParamsPage extends StatelessWidget {
                         widgets.arrowButtonProfile(
                           icon: "",
                           text: 'organization',
+                          page: AppRouter.organizationPage,
                           haveDivider: false,
                         ),
                       ],

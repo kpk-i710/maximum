@@ -1,5 +1,6 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
+import 'package:maxkgapp/src/pages/user/organization/organization_page.dart';
 import '../pages/auth/auth_enter_code/auth_enter_code.dart';
 import '../pages/auth/auth_by_phone.dart';
 import '../pages/auth/auth_page/auth_page.dart';
@@ -12,7 +13,6 @@ import '../pages/discounts/discount_list_page/discount_page_list_view/discount_p
 import '../pages/map/map_page.dart';
 import '../pages/news/all_news_page.dart';
 import '../pages/news/level_below/news_list_page.dart';
-import '../pages/news/level_below/level_below/page_news.dart';
 import '../pages/promotions/all_promotions_page.dart';
 import '../pages/shopping_cart/before_payment_delivry/shipping_methods/shipping_methods_page.dart';
 import '../pages/support_service/support_service_page.dart';
@@ -21,9 +21,9 @@ import '../pages/user/add_address/add_address_page.dart';
 import '../pages/user/add_phone/add_phone_page.dart';
 import '../pages/info/info_page.dart';
 import '../pages/intro/intro_page.dart';
+import '../pages/user/notifications/notifications_page.dart';
 import '../pages/user/personal_data/personal_data_page.dart';
 import '../pages/current_orders/current_orders_page.dart';
-import '../pages/discounts/discount_page.dart';
 import '../pages/filter/filter_page.dart';
 import '../pages/help_to_buyer/help_to_buyer_page.dart';
 import '../pages/favorite/favorite_page.dart';
@@ -43,6 +43,7 @@ class AppRouter {
   static const String pageNews = '/pageNews';
   static const String listNews = '/newsList';
   static const String listBanners = '/listBanner';
+  static const String organizationPage = '/organizationPage';
   static const String main = '/main';
   static const String intro = '/intro';
   static const String test = '/test';
@@ -64,7 +65,8 @@ class AppRouter {
   static const String discountList = '/discount_list';
   static const String discount = '/discount';
   static const String verify = '/verify';
-  static const String notifications = '/notifications';
+  static const String notificationsDelivry = '/notifications';
+  static const String notifacationsPage = '/notifacationsPage';
   static const String order = '/order';
   static const String deliveryAndTerms = '/delivery_and_terms';
   static const String paymentAndInstallments = '/payment_and_installments';
@@ -93,6 +95,7 @@ class AppRouter {
 
     GetPage(name: listNews, page: () => NewsListPage()),
     GetPage(name: listBanners, page: () => listBanner()),
+    GetPage(name: organizationPage, page: () => OrganizationPage()),
     GetPage(name: test, page: ()  => TestPage()),
     GetPage(name: auth, page: () => AuthPage()),
     GetPage(name: shippingMethodsPage, page: () => ShippingMethodsPage() ),
@@ -119,7 +122,8 @@ class AppRouter {
     GetPage(name: discountList, page: () => DiscountsListPage()),
     GetPage(name: discount, page: () => DiscountPageListView()),
     GetPage(name: verify, page: () => VerifyPage()),
-    GetPage(name: notifications, page: () => NotificationsPage()),
+    GetPage(name: notificationsDelivry, page: () => NotificationsDelivryPage()),
+    GetPage(name: notifacationsPage, page: () => NotifacationsPage()),
     GetPage(name: order, page: () => OrderPage()),
     GetPage(name: personalData, page: () => PersonalDataPage()),
     GetPage(name: addPhone, page: () => AddPhonePage()),

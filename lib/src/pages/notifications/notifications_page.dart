@@ -5,7 +5,7 @@ import '../../widgets/notification_widgets/notification_list_widget.dart';
 import '../../styles.dart';
 import 'notifications_page_controller.dart';
 
-class NotificationsPage extends StatelessWidget {
+class NotificationsDelivryPage extends StatelessWidget {
   final c = Get.put(NotificationsPageController());
 
   @override
