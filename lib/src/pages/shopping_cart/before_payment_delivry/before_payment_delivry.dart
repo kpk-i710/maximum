@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_switch/flutter_switch.dart';
-import 'package:get/get.dart';
+import 'package:get/get_navigation/get_navigation.dart';
+
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/get_utils/get_utils.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:maxkgapp/src/helpers/app_router.dart';
+import 'package:maxkgapp/src/pages/auth/auth_page/auth_page_controller.dart';
 import 'package:maxkgapp/src/pages/shopping_cart/before_payment_delivry/payment_method/payment_method_controller.dart';
 import 'package:maxkgapp/src/styles.dart';
 import '../../../helpers/prefs.dart';
@@ -23,7 +25,7 @@ class BeforePaymentDelivry extends StatelessWidget {
   final controller = Get.put(BeforPaymentDevliryController());
   final controllerShoppingCart = Get.put(ShoppingCartPageController());
   final controllerShippingMethods = Get.put(ShippingMethodsController());
-
+  final controllerAuth = Get.put(AuthPageController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -118,7 +120,11 @@ class BeforePaymentDelivry extends StatelessWidget {
                         widgets.orderButton(
                             text: 'checkout1'.tr.toUpperCase(),
                             onPressed: () {
-                              controller.checkLogin();
+                              if (controller.checkLogin() && !Prefs.isLogin) {
+                                widgets.showConfirmCodePhone(context: context, number: controllerAuth
+                                    .selectedCountryPhone.value +
+                                    "-" + controller.numberPhoneController.text);
+                              }
                             }),
                         SizedBox(height: 20),
                         Padding(
@@ -188,7 +194,6 @@ class BeforePaymentDelivry extends StatelessWidget {
                             fillColor: Colors.white,
                             labelText: 'company_name'.tr,
                           ),
-
                         ),
                       ),
                       SizedBox(height: 10),
@@ -355,7 +360,9 @@ class BeforePaymentDelivry extends StatelessWidget {
                 validator: (value) {
                   return controller.validateNumberPhone(value!);
                 },
-                onChanged: (value) {},
+                onChanged: (value) {
+                  controller.numberPhone = value;
+                },
               ),
             ),
           ),

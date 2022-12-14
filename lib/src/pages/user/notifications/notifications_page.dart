@@ -28,25 +28,23 @@ class NotifacationsPage extends StatelessWidget {
                   style: widgets.robotoConsid(
                       fontSize: 16, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 40),
+                SizedBox(height: 20),
                 widgets.switchWithText(
                     isActive: controller.discounts.value,
-                    onTap: (bool val) {
-                      controller.discounts.value = val;
+                    onTap: () {
+                      controller.discounts.value = !controller.discounts.value;
                     },
                     label: 'notifications_about_discounts'),
-                SizedBox(height: 30),
                 widgets.switchWithText(
                     isActive: controller.delivery.value,
-                    onTap: (bool val) {
-                      controller.delivery.value = val;
+                    onTap: () {
+                      controller.delivery.value = !controller.delivery.value;
                     },
                     label: 'delivery_notices'),
-                SizedBox(height: 30),
                 widgets.switchWithText(
                     isActive: controller.pe.value,
-                    onTap: (bool val) {
-                      controller.pe.value = val;
+                    onTap: () {
+                      controller.pe.value = !controller.pe.value;
                     },
                     label: 'Пе'),
                 SizedBox(height: 30),
@@ -71,14 +69,16 @@ class NotifacationsPage extends StatelessWidget {
                         widgets.checkBoxWithText(
                             text: 'automobile'.tr,
                             value: controller.automobileMy.value,
-                            onChanged: (val) {
-                              controller.automobileMy.value = val!;
+                            onTap: () {
+                              controller.automobileMy.value =
+                                  !controller.automobileMy.value;
                             }),
                         widgets.checkBoxWithText(
                             text: 'motorbike'.tr,
                             value: controller.motorbike.value,
-                            onChanged: (val) {
-                              controller.motorbike.value = val!;
+                            onTap: () {
+                              controller.motorbike.value =
+                                  !controller.motorbike.value;
                             }),
                       ],
                     ),
@@ -89,14 +89,15 @@ class NotifacationsPage extends StatelessWidget {
                         widgets.checkBoxWithText(
                             text: 'scooter1'.tr,
                             value: controller.scooter.value,
-                            onChanged: (val) {
-                              controller.scooter.value = val!;
+                            onTap: () {
+                              controller.scooter.value =
+                                  !controller.scooter.value;
                             }),
                         widgets.checkBoxWithText(
                             text: 'bike'.tr,
                             value: controller.bike.value,
-                            onChanged: (val) {
-                              controller.bike.value = val!;
+                            onTap: () {
+                              controller.bike.value = !controller.bike.value;
                             }),
                       ],
                     )
@@ -119,26 +120,29 @@ class NotifacationsPage extends StatelessWidget {
                         widgets.checkBoxWithText(
                             text: 'sport'.tr,
                             value: controller.sport.value,
-                            onChanged: (val) {
-                              controller.sport.value = val!;
+                            onTap: () {
+                              controller.sport.value = !controller.sport.value;
                             }),
                         widgets.checkBoxWithText(
                             text: 'cars'.tr,
                             value: controller.automobile.value,
-                            onChanged: (val) {
-                              controller.automobile.value = val!;
+                            onTap: () {
+                              controller.automobile.value =
+                                  !controller.automobile.value;
                             }),
                         widgets.checkBoxWithText(
                             text: 'garden'.tr,
                             value: controller.garden.value,
-                            onChanged: (val) {
-                              controller.garden.value = val!;
+                            onTap: () {
+                              controller.garden.value =
+                                  !controller.garden.value;
                             }),
                         widgets.checkBoxWithText(
                             text: 'health'.tr,
                             value: controller.health.value,
-                            onChanged: (val) {
-                              controller.health.value = val!;
+                            onTap: () {
+                              controller.health.value =
+                                  !controller.health.value;
                             }),
                       ],
                     ),
@@ -149,26 +153,30 @@ class NotifacationsPage extends StatelessWidget {
                         widgets.checkBoxWithText(
                             text: 'tourism'.tr,
                             value: controller.tourism.value,
-                            onChanged: (val) {
-                              controller.tourism.value = val!;
+                            onTap: () {
+                              controller.tourism.value =
+                                  !controller.tourism.value;
                             }),
                         widgets.checkBoxWithText(
                             text: 'hunting'.tr,
                             value: controller.hunting.value,
-                            onChanged: (val) {
-                              controller.hunting.value = val!;
+                            onTap: () {
+                              controller.hunting.value =
+                                  !controller.hunting.value;
                             }),
                         widgets.checkBoxWithText(
                             text: 'construction'.tr,
                             value: controller.building.value,
-                            onChanged: (val) {
-                              controller.building.value = val!;
+                            onTap: () {
+                              controller.building.value =
+                                  !controller.building.value;
                             }),
                         widgets.checkBoxWithText(
                             text: 'electronics'.tr,
                             value: controller.electronics.value,
-                            onChanged: (val) {
-                              controller.electronics.value = val!;
+                            onTap: () {
+                              controller.electronics.value =
+                                  !controller.electronics.value;
                             }),
                       ],
                     )
@@ -191,26 +199,27 @@ class NotifacationsPage extends StatelessWidget {
                         widgets.checkBoxWithText(
                             text: 'dog'.tr,
                             value: controller.dog.value,
-                            onChanged: (val) {
-                              controller.dog.value = val!;
+                            onTap: () {
+                              controller.dog.value = !controller.dog.value;
                             }),
                         widgets.checkBoxWithText(
                             text: 'fishs'.tr,
                             value: controller.fish.value,
-                            onChanged: (val) {
-                              controller.fish.value = val!;
+                            onTap: () {
+                              controller.fish.value = !controller.fish.value;
                             }),
                         widgets.checkBoxWithText(
                             text: 'reptile'.tr,
                             value: controller.reptile.value,
-                            onChanged: (val) {
-                              controller.reptile.value = val!;
+                            onTap: () {
+                              controller.reptile.value =
+                                  !controller.reptile.value;
                             }),
                         widgets.checkBoxWithText(
                             text: 'horse'.tr,
                             value: controller.horse.value,
-                            onChanged: (val) {
-                              controller.horse.value = val!;
+                            onTap: () {
+                              controller.horse.value = !controller.horse.value;
                             }),
                       ],
                     ),
@@ -221,26 +230,27 @@ class NotifacationsPage extends StatelessWidget {
                         widgets.checkBoxWithText(
                             text: 'cat'.tr,
                             value: controller.cat.value,
-                            onChanged: (val) {
-                              controller.cat.value = val!;
+                            onTap: () {
+                              controller.cat.value = !controller.cat.value;
                             }),
                         widgets.checkBoxWithText(
                             text: 'bird'.tr,
                             value: controller.bird.value,
-                            onChanged: (val) {
-                              controller.bird.value = val!;
+                            onTap: () {
+                              controller.bird.value = !controller.bird.value;
                             }),
                         widgets.checkBoxWithText(
                             text: 'rodent'.tr,
                             value: controller.rodent.value,
-                            onChanged: (val) {
-                              controller.rodent.value = val!;
+                            onTap: () {
+                              controller.rodent.value =
+                                  !controller.rodent.value;
                             }),
                         widgets.checkBoxWithText(
                             text: 'sheep'.tr,
                             value: controller.rams.value,
-                            onChanged: (val) {
-                              controller.rams.value = val!;
+                            onTap: () {
+                              controller.rams.value = !controller.rams.value;
                             }),
                       ],
                     )

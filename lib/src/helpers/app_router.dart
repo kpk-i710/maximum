@@ -33,7 +33,6 @@ import '../pages/user/profile/profile_page.dart';
 import '../pages/search/search_page.dart';
 import '../pages/test/test_page.dart';
 import '../pages/notifications/notifications_page.dart';
-import '../pages/verify_code/verify_page.dart';
 import '../pages/main/main_page.dart';
 import '../pages/current_orders/order_page/order_page.dart';
 import '../pages/user/profile_params/profile_params_page.dart';
@@ -121,7 +120,7 @@ class AppRouter {
     GetPage(name: orderHist, page: () => OrdersHistPage()),
     GetPage(name: discountList, page: () => DiscountsListPage()),
     GetPage(name: discount, page: () => DiscountPageListView()),
-    GetPage(name: verify, page: () => VerifyPage()),
+
     GetPage(name: notificationsDelivry, page: () => NotificationsDelivryPage()),
     GetPage(name: notifacationsPage, page: () => NotifacationsPage()),
     GetPage(name: order, page: () => OrderPage()),

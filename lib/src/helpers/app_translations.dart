@@ -179,6 +179,8 @@ class AppTranslations extends Translations {
           'rating_by_reviews': 'Рейтинг по отзывам',
           'seller': 'Продавец',
           'filler_type': 'Вид наполнителя',
+          'yes': 'Да',
+          'not': 'Нет',
           'filler_features': 'Особенности наполнителя',
           'smell': 'Запах',
           'show': 'Показать',
@@ -364,6 +366,8 @@ class AppTranslations extends Translations {
           'exit_profile': 'Выход из профиля',
           'we_send_code_to':
               'Мы отправили код подтверждения на следующий номер',
+          'confirm':
+          'Подтверждение',
           'enter_it_below': 'Введите его ниже',
           'get_code_in': 'Получить новый код можно через ',
           'send_new_code': 'Отправить новый код',

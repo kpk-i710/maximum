@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:maxkgapp/src/pages/user/add_phone/add_phone_page_controller.dart';
+import 'package:maxkgapp/src/styles.dart';
 import '../../../widgets/widgets.dart' as widgets;
+import '../../auth/auth_page/auth_page_controller.dart';
 
 class AddPhonePage extends StatelessWidget {
   final controller = Get.put(AddPhonePageController());
+  final controllerAuth = Get.put(AuthPageController());
 
   @override
   Widget build(BuildContext context) {
@@ -32,10 +35,9 @@ class AddPhonePage extends StatelessWidget {
                             isTelegram: controller.phoneList[i].telegram,
                             isWhatsUp: controller.phoneList[i].whatsApp,
                             onTap: () {
-                              controller.delatePhone(i);
+                              dialogShow(context: context, index: i);
                             }),
                       SizedBox(height: 20),
-
                       Container(
                         height: 70,
                         child: TextFormField(
@@ -48,13 +50,13 @@ class AddPhonePage extends StatelessWidget {
                             isDense: true,
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(5),
-                              borderSide: BorderSide(width: 1, color: Colors.grey),
+                              borderSide:
+                                  BorderSide(width: 1, color: Colors.grey),
                             ),
                           ),
                           onSaved: (value) {
                             controller.phoneNum.value = value!;
                           },
-
                           validator: (value) {
                             return controller.validatePhone(value!);
                           },
@@ -70,8 +72,9 @@ class AddPhonePage extends StatelessWidget {
                           widgets.checkBoxWithIcon(
                               value: controller.isWhatsUp.value,
                               icon: Icon(Icons.whatsapp, color: Colors.green),
-                              onChanged: (value) {
-                                controller.isWhatsUp.value = value!;
+                              onChanged: () {
+                                controller.isWhatsUp.value =
+                                    !controller.isWhatsUp.value;
                               }),
                           SizedBox(width: 20),
                           widgets.checkBoxWithIcon(
@@ -80,16 +83,24 @@ class AddPhonePage extends StatelessWidget {
                                 Icons.telegram,
                                 color: Colors.blue,
                               ),
-                              onChanged: (value) {
-                                print(value);
-                                controller.isTelegram.value = value!;
+                              onChanged: () {
+                                controller.isTelegram.value =
+                                    !controller.isTelegram.value;
                               }),
                         ],
                       ),
                       widgets.addAdressButton(
                           text: "add_number".tr,
                           onPressed: () {
-                            controller.checkSave();
+                            controller.receivedCode.value = "";
+                            if (controller.checkSave()) {
+                              widgets.showConfirmCodePhone(
+                                  context: context,
+                                  number: controllerAuth
+                                          .selectedCountryPhone.value +
+                                      "-" +
+                                      controller.phoneNum.value);
+                            }
                           }),
                       SizedBox(height: 100),
                     ],
@@ -101,6 +112,38 @@ class AddPhonePage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void dialogShow({required BuildContext context, required int index}) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(
+              "confirm".tr,
+              style: widgets.robotoConsid(),
+            ),
+            content: Text(
+              "remove".tr + " " + controller.phoneList[index].number + " ?",
+              style: widgets.robotoConsid(),
+            ),
+            actions: [
+              widgets.alertButton(
+                onTap: () {
+                  controller.delitePhone(index);
+                  Navigator.of(context).pop();
+                },
+                text: 'yes',
+              ),
+              widgets.alertButton(
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+                text: 'not',
+              ),
+            ],
+          );
+        });
   }
 
   Widget sizeTextFild({required Widget child}) {

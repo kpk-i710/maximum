@@ -9,6 +9,7 @@ import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
 import 'package:maxkgapp/src/pages/user/profile_params/profile_params_page_controller.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:sms_autofill/sms_autofill.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 import '../helpers/app_router.dart';
 import '../models/country_code.dart';
@@ -22,6 +23,7 @@ import '../pages/shopping_cart/before_payment_delivry/before_payment_delivry_con
 import '../pages/shopping_cart/before_payment_delivry/shipping_methods/change_address/change_address_controller.dart';
 import '../pages/shopping_cart/before_payment_delivry/shipping_methods/shipping_methods_controller.dart';
 import '../pages/shopping_cart/shopping_cart_page_controller.dart';
+import '../pages/user/add_phone/add_phone_page_controller.dart';
 import '../pages/user/personal_data/personal_data_page_controller.dart';
 import 'orders_widgets/time_line_horizontal.dart';
 import '../styles.dart';
@@ -729,11 +731,16 @@ Widget editTextButton(
             width: 10,
           ),
           SizedBox(width: 8),
-          Text(
-            text,
-            style: robotoConsid(fontSize: 14),
+          Flexible(
+            child: SizedBox(
+              width: Get.width,
+              child: Text(
+                text,
+                maxLines: 1,
+                style: robotoConsid(fontSize: 14),
+              ),
+            ),
           ),
-          Spacer(),
           secondIcon != ""
               ? ClipRRect(
                   borderRadius: BorderRadius.circular(5.0),
@@ -892,31 +899,40 @@ Widget radioGender({required int index, required String text}) {
 }
 
 Widget switchWithText(
-    {bool isActive = false,
-    required Function(bool val) onTap,
-    required String label}) {
-  return Row(
-    children: [
-      FlutterSwitch(
-        inactiveColor: Color(0xffC9CDD6),
-        activeColor: Color(0xff2B2861),
-        width: 40.0,
-        height: 20.0,
-        valueFontSize: 25.0,
-        toggleSize: 10.0,
-        // value: controller.status.value,
-        borderRadius: 30.0,
-        padding: 5.0,
-        showOnOff: false,
-        onToggle: onTap,
-        value: isActive,
+    {bool isActive = false, required Function() onTap, required String label}) {
+  return GestureDetector(
+    onTap: onTap,
+    child: Container(
+      color: Colors.transparent,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10.0),
+        child: Row(
+          children: [
+            FlutterSwitch(
+              inactiveColor: Color(0xffC9CDD6),
+              activeColor: Color(0xff2B2861),
+              width: 40.0,
+              height: 20.0,
+              valueFontSize: 25.0,
+              toggleSize: 10.0,
+              // value: controller.status.value,
+              borderRadius: 30.0,
+              padding: 5.0,
+              showOnOff: false,
+              value: isActive,
+              onToggle: (bool value) {
+                onTap();
+              },
+            ),
+            SizedBox(width: 20),
+            Text(
+              label.tr,
+              style: robotoConsid(),
+            ),
+          ],
+        ),
       ),
-      SizedBox(width: 20),
-      Text(
-        label.tr,
-        style: robotoConsid(),
-      ),
-    ],
+    ),
   );
 }
 
@@ -1434,6 +1450,126 @@ void showSnackBar({required BuildContext context}) {
     backgroundColor: Colors.transparent,
     elevation: 0,
   ));
+}
+
+void showConfirmCodePhone(
+    {required BuildContext context, required String number}) {
+  showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      context: context,
+      builder: (context) {
+        return confinrmCodeSheet(context: context, number: number);
+      });
+}
+
+Widget alertButton({required String text, required Function() onTap}) {
+  return ElevatedButton(
+      onPressed: onTap,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: AppTextStyles.colorBlueMy,
+      ),
+      child: Text(
+        "$text".tr,
+        style: robotoConsid(color: Colors.white),
+      ));
+}
+
+Widget confinrmCodeSheet(
+    {required BuildContext context, required String number}) {
+  final controller = Get.put(AddPhonePageController());
+  final controllerAuth = Get.put(AuthPageController());
+  return Obx(() {
+    return boxShadows(
+      padding: 8,
+      radius: 10,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        height: Get.height / 2,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Center(
+              child: Container(
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                    color: Color(0xffE4E4E4),
+                    borderRadius: BorderRadius.circular(5)),
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Text(
+                      "we_have_sent_code".tr,
+                      style: robotoConsid(),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      number,
+                      style: robotoConsid(),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      "enter_it_below".tr,
+                      style: robotoConsid(),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    PinFieldAutoFill(
+                        autoFocus: true,
+                        codeLength: 4,
+                        decoration: UnderlineDecoration(
+                            colorBuilder:
+                                FixedColorBuilder(AppTextStyles.colorBlueMy),
+                            textStyle: robotoConsid(
+                                fontSize: 25,
+                                color: AppTextStyles.colorBlueMy)),
+                        onCodeChanged: (value) {
+                          controller.receivedCode.value = value!;
+                          if (value == "5555") {
+                            if (Prefs.isLogin) {
+                              controller.savePhone();
+                            }
+                            controller.phoneController.text = "";
+                            Get.back();
+                          }
+                        },
+                        onCodeSubmitted: (val) {
+                          print("onCodeSubmitted $val");
+                        },
+                        currentCode: controller.receivedCode.value),
+                    SizedBox(height: 20),
+                    controller.checkFullCode()
+                        ? Text(
+                            "incorrect_code".tr,
+                            style:
+                                robotoConsid(color: AppTextStyles.colorRedMy),
+                          )
+                        : SizedBox(),
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  });
 }
 
 void showTimeLineSheet({required BuildContext context}) {
@@ -2258,18 +2394,27 @@ Widget checkBoxWithText(
     {bool value = false,
     required String text,
     TextStyle? textStyle,
-    Function(bool? val)? onChanged}) {
-  return Row(children: [
-    SizedBox(
-      width: 20,
-      child: Checkbox(
-          value: value,
-          onChanged: onChanged,
-          activeColor: Get.context!.theme.primary),
+    Function()? onTap}) {
+  return GestureDetector(
+    onTap: onTap,
+    child: Container(
+      color: Colors.transparent,
+      child: Row(children: [
+        SizedBox(
+          width: 20,
+          child: Checkbox(
+            value: value,
+            activeColor: Get.context!.theme.primary,
+            onChanged: (bool? value) {
+              onTap!();
+            },
+          ),
+        ),
+        const SizedBox(width: 15),
+        Text(text, style: textStyle ?? robotoConsid()),
+      ]),
     ),
-    const SizedBox(width: 15),
-    Text(text, style: textStyle ?? robotoConsid( ))
-  ]);
+  );
 }
 
 Widget customCheckBox(
@@ -2277,7 +2422,7 @@ Widget customCheckBox(
     required String text,
     TextStyle? textStyle,
     Function(bool? val)? onChanged}) {
-  return Row(  children: [
+  return Row(children: [
     Checkbox(
         value: value,
         onChanged: onChanged,
@@ -2288,17 +2433,26 @@ Widget customCheckBox(
 }
 
 Widget checkBoxWithIcon(
-    {bool value = false, required Icon icon, Function(bool? val)? onChanged}) {
-  return Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-    SizedBox(
-      width: 30,
-      child: Checkbox(
-          value: value,
-          onChanged: onChanged,
-          activeColor: Get.context!.theme.primary),
+    {bool value = false, required Icon icon, Function()? onChanged}) {
+  return GestureDetector(
+    onTap: onChanged,
+    child: Container(
+      color: Colors.transparent,
+      child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+        SizedBox(
+          width: 30,
+          child: Checkbox(
+            value: value,
+            activeColor: Get.context!.theme.primary,
+            onChanged: (bool? value) {
+              onChanged!();
+            },
+          ),
+        ),
+        if (icon != null) icon,
+      ]),
     ),
-    if (icon != null) icon,
-  ]);
+  );
 }
 
 Widget addAdressButton({required String text, Function()? onPressed}) {

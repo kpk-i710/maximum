@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:maxkgapp/src/pages/shopping_cart/before_payment_delivry/shipping_methods/shipping_methods_page.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
 import '../../../styles.dart';
@@ -7,9 +8,11 @@ import '../../../widgets/app_icon.dart';
 import '../../../helpers/app_router.dart';
 import '../../../widgets/widgets.dart' as widgets;
 import '../../../pages/user/profile_params/profile_params_page_controller.dart';
+import '../../shopping_cart/shopping_cart_page_controller.dart';
 
 class ProfileParamsPage extends StatelessWidget {
   final controller = Get.put(ProfileParamsPageController());
+  final controllerShoppingCart = Get.put(ShoppingCartPageController());
 
   @override
   Widget build(BuildContext context) {
@@ -77,25 +80,21 @@ class ProfileParamsPage extends StatelessWidget {
                         widgets.arrowButtonProfile(
                             icon: "profile_circle_outlined",
                             text: 'personal_data1',
-                            haveDivider: false,
                             page: AppRouter.personalData),
                         widgets.arrowButtonProfile(
                           icon: "notification",
                           text: 'notification_settings',
                           page: AppRouter.notifacationsPage,
-                          haveDivider: false,
                         ),
                         widgets.arrowButtonProfile(
                           icon: "",
                           page: AppRouter.addPhone,
                           text: 'my_contacts',
-                          haveDivider: false,
                         ),
                         widgets.arrowButtonProfile(
                           icon: "",
                           text: 'organization',
                           page: AppRouter.organizationPage,
-                          haveDivider: false,
                         ),
                       ],
                     ),
@@ -104,7 +103,14 @@ class ProfileParamsPage extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     child: widgets.editTextButton(
-                        icon: 'city', text: 'г. Бишкек, ул. Матыева 148'),
+                        icon: 'city',
+                        text: (controllerShoppingCart.selectedCity.value ??
+                            "Укажите город") +
+                            (controllerShoppingCart.selectedStreetHouse.value ??
+                                ""),
+                        onTap: () {
+                          Get.to(ShippingMethodsPage());
+                        }),
                   ),
                   SizedBox(height: 20),
                   Padding(

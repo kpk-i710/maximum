@@ -15,8 +15,10 @@ class AddPhonePageController extends GetxController {
   RxString phoneNum = "".obs;
   RxBool isTelegram = false.obs;
   RxBool isWhatsUp = false.obs;
+  RxBool isEnteredCode = false.obs;
 
   var phoneList = <Phone>[].obs;
+  var receivedCode = "".obs;
 
   String lastName = "";
   late TextEditingController lastNameController;
@@ -50,7 +52,6 @@ class AddPhonePageController extends GetxController {
           jsonData.map((adressList1) => Phone.fromJson(adressList1)).toList();
       print("записанный адрес");
 
-
       newPhoneList =
           jsonData.map((payment) => Phone.fromJson(payment)).toList().obs;
       for (int i = 0; i < newPhoneList.length; i++) {
@@ -60,7 +61,6 @@ class AddPhonePageController extends GetxController {
       }
 
       var getvalue = phoneList.map((payment) => payment.toJson()).toList();
-
     }
   }
 
@@ -74,34 +74,52 @@ class AddPhonePageController extends GetxController {
   @override
   void onInit() {
     fetchListPhones();
-    phoneController =  MaskedTextController(mask: '000-00-00-000');
+    phoneController = MaskedTextController(mask: '000-00-00-000');
     lastNameController = TextEditingController();
     // TODO: implement onInit
     super.onInit();
   }
 
-  delatePhone(int value) {
+  delitePhone(int value) {
     phoneList.removeAt(value);
     saveInListPhones();
   }
 
-  void checkSave() {
+  bool checkFullCode(){
+
+    if( receivedCode.value.length>= 4 && receivedCode.value != "5555"){
+      return true;
+    }
+    return false;
+
+  }
+
+  bool checkSave() {
     print("телефон");
 
     final isValid = loginFormKey.currentState!.validate();
     if (!isValid) {
       print("не валидная");
-      return;
+      return false;
     }
+
+
+
+
+    loginFormKey.currentState!.save();
+    return true;
+    // Get.back();
+  }
+
+
+  void savePhone(){
 
     phoneList.add(Phone(
         whatsApp: isWhatsUp.value,
         telegram: isTelegram.value,
-        number: controller.selectedCountryPhone.value + "-"  + phoneNum.value));
+        number:
+        controller.selectedCountryPhone.value + "-" + phoneNum.value));
 
     saveInListPhones();
-
-    loginFormKey.currentState!.save();
-    // Get.back();
   }
 }

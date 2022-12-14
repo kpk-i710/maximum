@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/state_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'dart:convert';
 
 import '../../../models/address_enter.dart';
-import 'shipping_methods/shipping_methods_controller.dart';
+import 'shipping_methods/shipping_methods_controller.dart';import '../../../widgets/widgets.dart' as widgets;
 
 enum DeliveryOrPayment { DELIVERY, PAYMENT }
 
@@ -33,10 +34,9 @@ class BeforPaymentDevliryController extends GetxController {
 
   @override
   void onInit() {
-
     firstNameController = TextEditingController();
     lastNameController = TextEditingController();
-    numberPhoneController = TextEditingController();
+    numberPhoneController = MaskedTextController(mask: '000-00-00-000');
     nameCompanyController = TextEditingController();
     innCompayController = TextEditingController();
     // TODO: implement onInit
@@ -56,7 +56,6 @@ class BeforPaymentDevliryController extends GetxController {
     }
     return null;
   }
-
 
   String? validateLastName(String value) {
     if (value.length < 3) {
@@ -79,12 +78,14 @@ class BeforPaymentDevliryController extends GetxController {
     return null;
   }
 
-  void checkLogin() {
+  bool checkLogin() {
     final isValid = loginFormKey.currentState!.validate();
     if (!isValid) {
-      return;
+      return false;
     }
     loginFormKey.currentState!.save();
+return true;
+
     print("зашел");
   }
 
@@ -107,8 +108,6 @@ class BeforPaymentDevliryController extends GetxController {
     } else
       return isSelectedPaymentMethod.value;
   }
-
-
 
   var demoList = <bool>[
     false,
