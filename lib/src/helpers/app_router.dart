@@ -1,5 +1,7 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
+import 'package:maxkgapp/src/pages/orders_history/orders_history_page.dart';
+import 'package:maxkgapp/src/pages/user/notifications_settings/notifications_page.dart';
 import 'package:maxkgapp/src/pages/user/organization/organization_page.dart';
 import '../pages/auth/auth_enter_code/auth_enter_code.dart';
 import '../pages/auth/auth_by_phone.dart';
@@ -21,13 +23,11 @@ import '../pages/user/add_address/add_address_page.dart';
 import '../pages/user/add_phone/add_phone_page.dart';
 import '../pages/info/info_page.dart';
 import '../pages/intro/intro_page.dart';
-import '../pages/user/notifications/notifications_page.dart';
 import '../pages/user/personal_data/personal_data_page.dart';
 import '../pages/current_orders/current_orders_page.dart';
 import '../pages/filter/filter_page.dart';
 import '../pages/help_to_buyer/help_to_buyer_page.dart';
 import '../pages/favorite/favorite_page.dart';
-import '../pages/orders_hist/orders_hist_page.dart';
 import '../pages/products_by_catalog/products_by_catalog_page.dart';
 import '../pages/user/profile/profile_page.dart';
 import '../pages/search/search_page.dart';
@@ -47,7 +47,7 @@ class AppRouter {
   static const String intro = '/intro';
   static const String test = '/test';
   static const String auth = '/auth';
-  static const String shippingMethodsPage  = '/shippingMethodsPage';
+  static const String shippingMethodsPage = '/shippingMethodsPage';
   static const String authByPhone = '/authByPhone';
   static const String authEnterCode = '/authEnterCode';
   static const String productDetails = '/product_details';
@@ -76,7 +76,8 @@ class AppRouter {
   static const String contacts = '/contacts';
   static const String saleRules = '/sale_rules';
   static const String allPromotionsPage = '/allPromotionsPage';
-  static const String suppliersAndManufacturers = '/suppliers_and_manufacturers';
+  static const String suppliersAndManufacturers =
+      '/suppliers_and_manufacturers';
   static const String vacancy = '/vacancy';
   static const String allNewsPage = '/allNewsPage';
   static const String personalData = '/personal_data';
@@ -91,21 +92,17 @@ class AppRouter {
   static String get initialRoute => Prefs.firstTime ? intro : main;
 
   static final pages = [
-
     GetPage(name: listNews, page: () => NewsListPage()),
     GetPage(name: listBanners, page: () => listBanner()),
     GetPage(name: organizationPage, page: () => OrganizationPage()),
-    GetPage(name: test, page: ()  => TestPage()),
+    GetPage(name: test, page: () => TestPage()),
     GetPage(name: auth, page: () => AuthPage()),
-    GetPage(name: shippingMethodsPage, page: () => ShippingMethodsPage() ),
+    GetPage(name: shippingMethodsPage, page: () => ShippingMethodsPage()),
     GetPage(name: authByPhone, page: () => AuthByPhone()),
     GetPage(name: authEnterCode, page: () => AuthEnterCode()),
     GetPage(name: main, page: () => MainPage()),
     GetPage(name: intro, page: () => IntroPage()),
-
-    GetPage(
-        name: productsByCatalog,
-        page: () => ProductsByCatalogPage()),
+    GetPage(name: productsByCatalog, page: () => ProductsByCatalogPage()),
     GetPage(name: search, page: () => SearchPage()),
     GetPage(name: cart, page: () => CartPage()),
     GetPage(name: profile, page: () => ProfilePage()),
@@ -120,7 +117,6 @@ class AppRouter {
     GetPage(name: orderHist, page: () => OrdersHistPage()),
     GetPage(name: discountList, page: () => DiscountsListPage()),
     GetPage(name: discount, page: () => DiscountPageListView()),
-
     GetPage(name: notificationsDelivry, page: () => NotificationsDelivryPage()),
     GetPage(name: notifacationsPage, page: () => NotifacationsPage()),
     GetPage(name: order, page: () => OrderPage()),
@@ -134,26 +130,23 @@ class AppRouter {
     GetPage(name: paymentMethod, page: () => PaymentMethodPage()),
     GetPage(name: map, page: () => MapPage()),
     GetPage(name: allPromotionsPage, page: () => AllPromotionsPage()),
-
-    GetPage(name: deliveryAndTerms,
+    GetPage(
+        name: deliveryAndTerms,
         page: () => InfoPage(InfoPage.DELIVERY_AND_TERMS)),
-    GetPage(name: paymentAndInstallments,
+    GetPage(
+        name: paymentAndInstallments,
         page: () => InfoPage(InfoPage.PAYMENT_AND_INSTALLMENTS)),
-    GetPage(name: pickupPoints,
-        page: () => InfoPage(InfoPage.PICKUP_POINTS)),
-    GetPage(name: organizationsAndBusiness,
+    GetPage(name: pickupPoints, page: () => InfoPage(InfoPage.PICKUP_POINTS)),
+    GetPage(
+        name: organizationsAndBusiness,
         page: () => InfoPage(InfoPage.ORGANIZATIONS_AND_BUSINESS)),
-    GetPage(name: faq,
-        page: () => InfoPage(InfoPage.FAQ)),
-    GetPage(name: aboutCompany,
-        page: () => InfoPage(InfoPage.ABOUT_COMPANY)),
-    GetPage(name: contacts,
-        page: () => InfoPage(InfoPage.CONTACTS)),
-    GetPage(name: saleRules,
-        page: () => InfoPage(InfoPage.SALES_RULES)),
-    GetPage(name: suppliersAndManufacturers,
+    GetPage(name: faq, page: () => InfoPage(InfoPage.FAQ)),
+    GetPage(name: aboutCompany, page: () => InfoPage(InfoPage.ABOUT_COMPANY)),
+    GetPage(name: contacts, page: () => InfoPage(InfoPage.CONTACTS)),
+    GetPage(name: saleRules, page: () => InfoPage(InfoPage.SALES_RULES)),
+    GetPage(
+        name: suppliersAndManufacturers,
         page: () => InfoPage(InfoPage.SUPPLIERS_AND_MANUFACTURERS)),
-    GetPage(name: vacancy,
-        page: () => InfoPage(InfoPage.VACANCY)),
+    GetPage(name: vacancy, page: () => InfoPage(InfoPage.VACANCY)),
   ];
 }

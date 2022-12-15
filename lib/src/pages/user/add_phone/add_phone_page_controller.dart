@@ -82,6 +82,7 @@ class AddPhonePageController extends GetxController {
 
   delitePhone(int value) {
     phoneList.removeAt(value);
+    phoneList.refresh();
     saveInListPhones();
   }
 

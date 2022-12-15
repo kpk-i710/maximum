@@ -129,9 +129,11 @@ class AddPhonePage extends StatelessWidget {
             ),
             actions: [
               widgets.alertButton(
-                onTap: () {
+                onTap: () async {
+                    Navigator.of(context).pop();
+                    await Future.delayed(Duration(milliseconds: 500));
                   controller.delitePhone(index);
-                  Navigator.of(context).pop();
+
                 },
                 text: 'yes',
               ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:maxkgapp/src/helpers/prefs.dart';
 import 'package:maxkgapp/src/pages/shopping_cart/before_payment_delivry/shipping_methods/shipping_methods_page.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
@@ -105,7 +106,7 @@ class ProfileParamsPage extends StatelessWidget {
                     child: widgets.editTextButton(
                         icon: 'city',
                         text: (controllerShoppingCart.selectedCity.value ??
-                            "Укажите город") +
+                                "Укажите город") +
                             (controllerShoppingCart.selectedStreetHouse.value ??
                                 ""),
                         onTap: () {
@@ -188,7 +189,28 @@ class ProfileParamsPage extends StatelessWidget {
                   ),
                   SizedBox(height: 15),
                   widgets.helpDariaNew(),
-                  SizedBox(height: 200),
+                  SizedBox(height: 50),
+                  GestureDetector(
+                    onTap: () {
+                      Prefs.isLogin = false;
+                      Get.back();
+                    },
+                    child: Container(
+                      color: Colors.transparent,
+                      width: Get.width,
+                      height: 50,
+                      child: Center(
+                        child: Text(
+                          "exit_application".tr,
+                          style: widgets.robotoConsid(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: AppTextStyles.colorBlueMy),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 30),
                   widgets.bottomInfoBar()
                 ],
               ),

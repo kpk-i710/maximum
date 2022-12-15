@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:maxkgapp/src/pages/discounts/discount_card_page_controller.dart';
 import '../../models/dicount_list_model.dart';
 import '../../styles.dart';
 import 'package:get/get.dart';
 import '../../widgets/widgets.dart' as widgets;
 
 class DiscountCartDiscription extends StatelessWidget {
-  const DiscountCartDiscription({Key? key, this.product}) : super(key: key);
+  DiscountCartDiscription({Key? key, this.product}) : super(key: key);
   final Product? product;
+  final controller = Get.put(DicountCardPageController());
 
   @override
   Widget build(BuildContext context) {
@@ -145,70 +147,112 @@ class DiscountCartDiscription extends StatelessWidget {
             ],
           ),
           SizedBox(height: 12),
-          widgets. additionalService(),
-          // Row(
-          //   crossAxisAlignment: CrossAxisAlignment.start,
-          //   children: [
-          //     SizedBox(width: 21),
-          //     widgets.underLineDashed(
-          //         child: Text(
-          //       "additional_services".tr,
-          //       style:
-          //           widgets.robotoConsid(color: Color(0xff142A65), height: 2),
-          //     )),
-          //     SizedBox(width: 6),
-          //     Padding(
-          //       padding: const EdgeInsets.only(top: 14.0),
-          //       child: Icon(
-          //         Icons.arrow_forward_ios,
-          //         size: 12,
-          //         color: Color(0xff142A65),
-          //       ),
-          //     )
-          //   ],
-          // ),
+          widgets.additionalService(),
           SizedBox(height: 35),
-          Row(
-            children: [
-              Expanded(
-                child: Container(
-                  height: 50.0,
-                  decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                          colors: [Color(0xff112B66), Color(0xff991A4E)]),
-                      borderRadius: BorderRadius.circular(5)),
-                  child: ElevatedButton.icon(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                        primary: Colors.transparent,
-                        shadowColor: Colors.transparent),
-                    icon: Icon(Icons.shopping_cart),
-                    label: Text(
-                      'to_cart'.tr.toUpperCase(),
-                      style: widgets.robotoConsid(
-                          fontWeight: FontWeight.bold, color: Colors.white),
-                    ),
-                  ),
-                ),
+          Obx(() {
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 1.0),
+              child: Row(
+                children: [
+                  widgets.favoriteWithPrice(price: product?.price),
+                  controller.isAddedToCard.value == true
+                      ? Row(
+                          children: [
+                            widgets.dark(
+                              radius: 5,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Row(
+                                  children: [
+                                    buttonCounter(
+                                        text: "-",
+                                        onTap: () {
+                                          controller.minus();
+                                        }),
+                                    Container(
+                                      width: 50,
+                                      child: Center(
+                                        child: Text(
+                                          controller.counter.value.toString(),
+                                          style: widgets.robotoConsid(
+                                              color: Colors.white,
+                                              fontSize: 18),
+                                        ),
+                                      ),
+                                    ),
+                                    buttonCounter(
+                                        text: "+",
+                                        onTap: () {
+                                          controller.plus();
+                                        }),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
+                      : Container(
+                          height: 50.0,
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(colors: [
+                                Color(0xff112B66),
+                                Color(0xff991A4E)
+                              ]),
+                              borderRadius: BorderRadius.circular(5)),
+                          child: ElevatedButton.icon(
+                            onPressed: () {
+                              controller.isAddedToCard.value = true;
+                            },
+                            style: ElevatedButton.styleFrom(
+                                primary: Colors.transparent,
+                                shadowColor: Colors.transparent),
+                            icon: Icon(Icons.shopping_cart),
+                            label: Text(
+                              'to_cart'.tr.toUpperCase(),
+                              style: widgets.robotoConsid(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            ),
+                          ),
+                        ),
+                ],
               ),
-              SizedBox(width: 8),
-              widgets.addFavorite(
-                sizeButton: 50,
-                sizeFavorite: 30,
-              ),
-              SizedBox(width: 8),
-              widgets.shareButton(
-                sizeButton: 50,
-                sizeFavorite: 30,
-              ),
-            ],
-          ),
+            );
+          }),
           SizedBox(height: 15),
           Text(
             "minimum_order".tr,
             style: widgets.robotoConsid(),
           )
         ],
+      ),
+    );
+  }
+
+  Widget buttonCounter({
+    required String text,
+    required Function() onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(5),
+            color: Colors.white,
+            border: Border.all(
+              color: Color(0xffCCCCCC),
+              width: 1,
+            )),
+        width: 35,
+        height: 35,
+        child: Center(
+          child: Text(
+            text,
+            style: widgets.robotoConsid(
+                color: AppTextStyles.colorBlueMy, fontSize: 20),
+          ),
+        ),
       ),
     );
   }

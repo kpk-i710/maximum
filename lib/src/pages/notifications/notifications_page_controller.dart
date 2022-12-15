@@ -1,38 +1,23 @@
 import 'package:get/get.dart';
-import '../../models/notification.dart';
+import 'package:maxkgapp/src/models/notification_all.dart';
 import '../../repositories/app_repo.dart';
 
 class NotificationsPageController extends GetxController {
-  final notfList = <AppNotification>[].obs;
+  var newNoti = <NotificationAll>[
+    NotificationAll(data: "28.02.2021  13:15", description: "time_delivery"),
+    NotificationAll(data: "29.02.2021  13:15", description: "time_delivery"),
+    NotificationAll(data: "30.02.2021  13:15", description: "time_delivery"),
+  ].obs;
 
-  final _appRepo = Get.find<AppRepo>();
+  var oldNoti = <NotificationAll>[].obs;
 
-  @override
-  void onInit() {
-    super.onInit();
-    refreshAll();
-  }
-
-  refreshAll() async {
-    _appRepo.getNotificationsList().then((value) {
-      notfList.addAll(value);
-      notfList.refresh();
-    });
-  }
-
-  clearAll() {
-    notfList.clear();
-    notfList.refresh();
-  }
-
-  Future<void> onRefresh() async {
-    clearAll();
-    refreshAll();
-  }
-
-  @override
-  void onClose() {
-    notfList.close();
-    super.onClose();
+  nakeOldNoti({required int index}) {
+    print("удалил");
+    if (newNoti.length >= 1) {
+      oldNoti.add(newNoti[index]);
+      oldNoti.refresh();
+      newNoti.removeAt(index);
+      newNoti.refresh();
+    }
   }
 }

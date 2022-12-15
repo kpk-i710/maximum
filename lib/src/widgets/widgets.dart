@@ -75,6 +75,253 @@ Widget priceWidget(double price, {TextStyle? style}) {
   }
 }
 
+void leaveFeedback({required BuildContext context}) {
+  showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      context: context,
+      builder: (context) {
+        return leaveFeedbackSheet(
+          context: context,
+        );
+      });
+}
+
+Widget leaveFeedbackSheet({
+  required BuildContext context,
+}) {
+  return getThemeBorderGreyTextFild(
+    child: boxShadows(
+        padding: 8,
+        radius: 10,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            height: Get.height / 1.7,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: Container(
+                    width: 40,
+                    height: 4,
+                    decoration: BoxDecoration(
+                        color: Color(0xffE4E4E4),
+                        borderRadius: BorderRadius.circular(5)),
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Center(child: raitingEmodjy(onTap: (value) {})),
+                SizedBox(
+                  height: 20,
+                ),
+                TextFormField(
+                  autofocus: true,
+                  keyboardType: TextInputType.multiline,
+                  maxLines: 5,
+                  minLines: 3,
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                OrderPayButton(
+                    text: 'send'.tr,
+                    fontSize: 15,
+                    onPressed: () {
+                      Get.back();
+                    }),
+              ],
+            ),
+          ),
+        )),
+  );
+}
+
+Widget notificationAll(
+    {required BuildContext context,
+    required String time,
+    required String description,
+    Function()? onTap}) {
+  return GestureDetector(
+    onTap: () {
+      showModalBottomSheet(
+          backgroundColor: Colors.transparent,
+          isScrollControlled: true,
+          context: context,
+          builder: (context) {
+            return fullReadNoty(
+              context: context,
+              time: time,
+              description: description,
+            );
+          });
+    },
+    child: Padding(
+      padding: const EdgeInsets.only(top: 15.0),
+      child: boxShadows(
+          child: Column(
+        children: [
+          SizedBox(height: 5),
+          Row(
+            children: [
+              Text(
+                "$time",
+                style: robotoConsid(color: AppTextStyles.colorGrayMy),
+              ),
+              Spacer(),
+              if (onTap != null)
+                SizedBox.fromSize(
+                  size: Size(40, 40),
+                  child: ClipOval(
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                          splashColor: Colors.grey,
+                          onTap: onTap,
+                          child: Center(
+                            child: anySvg(
+                                nameSvg: 'close',
+                                color: AppTextStyles.colorGrayMy,
+                                size: Size(15, 15)),
+                          )),
+                    ),
+                  ),
+                )
+            ],
+          ),
+          SizedBox(height: 20),
+          Padding(
+            padding: const EdgeInsets.only(right: 10.0),
+            child: Text(
+              "time_delivery".tr,
+              style: robotoConsid(color: AppTextStyles.colorGrayMy),
+            ),
+          ),
+          SizedBox(height: 20),
+        ],
+      )),
+    ),
+  );
+}
+
+Widget fullReadNoty(
+    {required BuildContext context,
+    required String time,
+    required String description}) {
+  return boxShadows(
+      padding: 8,
+      radius: 10,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          height: Get.height / 2,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Container(
+                  width: 40,
+                  height: 4,
+                  decoration: BoxDecoration(
+                      color: Color(0xffE4E4E4),
+                      borderRadius: BorderRadius.circular(5)),
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              SizedBox(height: 30),
+              Text(
+                time,
+                style: robotoConsid(),
+              ),
+              SizedBox(height: 30),
+              Text(
+                description.tr + "\n" + description.tr,
+                style: robotoConsid(fontSize: 15),
+              ),
+            ],
+          ),
+        ),
+      ));
+}
+
+Widget raitingEmodjy({required Function(double rating) onTap}) {
+  return RatingBar.builder(
+      initialRating: 3,
+      itemSize: 50,
+      itemCount: 5,
+      itemBuilder: (context, index) {
+        switch (index) {
+          case 0:
+            return iconAndText(
+                Icon: Icon(
+                  Icons.sentiment_very_dissatisfied,
+                  color: Colors.red,
+                ),
+                text: "terrible");
+          case 1:
+            return iconAndText(
+                Icon: Icon(
+                  Icons.sentiment_dissatisfied,
+                  color: Colors.redAccent,
+                ),
+                text: "badly");
+          case 2:
+            return iconAndText(
+                Icon: Icon(
+                  Icons.sentiment_neutral,
+                  color: Colors.amber,
+                ),
+                text: "medium");
+          case 3:
+            return iconAndText(
+                Icon: Icon(
+                  Icons.sentiment_satisfied,
+                  color: Colors.lightGreen,
+                ),
+                text: "good");
+          case 4:
+            return iconAndText(
+                Icon: Icon(
+                  Icons.sentiment_very_satisfied,
+                  color: Colors.green,
+                ),
+                text: "excellent");
+        }
+        return Icon(
+          Icons.sentiment_very_satisfied,
+          color: Colors.green,
+        );
+      },
+      onRatingUpdate: onTap);
+}
+
+Widget iconAndText({required Widget Icon, required String text}) {
+  return Container(
+    child: Column(
+      children: [
+        Icon,
+        SizedBox(height: 2),
+        Text(
+          "$text".tr,
+          style: robotoConsid(fontSize: 7),
+        ),
+      ],
+    ),
+  );
+}
+
 Widget selectCheckBox({
   required String text,
   required int index,
@@ -874,7 +1121,7 @@ Widget radioGender({required int index, required String text}) {
   final controller = Get.put(PersonalDataPageController());
   return GestureDetector(
     onTap: () {
-      controller.selectedGender.value = index!;
+      controller.selectedGender.value = index;
     },
     child: Container(
       color: Colors.transparent,
@@ -1025,7 +1272,7 @@ Widget radioTheme({required int index, required String text}) {
   final controller = Get.put(ProfileParamsPageController());
   return GestureDetector(
     onTap: () {
-      controller.selectedTheme.value = index!;
+      controller.selectedTheme.value = index;
     },
     child: Container(
       color: Colors.transparent,
@@ -1181,9 +1428,12 @@ Widget moreButton({required String text, Function()? onPressed}) {
 }
 
 Widget OrderPayButton(
-    {required String text, Function()? onPressed, bool isActive = true}) {
+    {required String text,
+    Function()? onPressed,
+    bool isActive = true,
+    double fontSize = 20}) {
   return SizedBox(
-      height: 50,
+      height: 45,
       width: double.infinity,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
@@ -1191,15 +1441,16 @@ Widget OrderPayButton(
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(5),
               side: BorderSide(
-                  color: isActive ? Color(0xff0C54A1) : Color(0xff9A9A9A),
+                  color:
+                      isActive ? AppTextStyles.colorBlueMy : Color(0xff9A9A9A),
                   width: 1.0)),
         ),
         onPressed: onPressed,
         child: Text(text,
             textAlign: TextAlign.center,
             style: robotoConsid(
-                color: isActive ? Color(0xff0C54A1) : Color(0xff9A9A9A),
-                fontSize: 20,
+                color: isActive ? AppTextStyles.colorBlueMy : Color(0xff9A9A9A),
+                fontSize: fontSize,
                 fontWeight: FontWeight.w700)),
       ));
 }
@@ -1210,7 +1461,7 @@ Widget orderWithDate() {
       Text(
         "Заказ № 31",
         style: robotoConsid(
-            color: Color(0xff112B66),
+            color: AppTextStyles.colorBlueMy,
             fontSize: 17,
             fontWeight: FontWeight.w600),
       ),
@@ -1219,7 +1470,7 @@ Widget orderWithDate() {
         "от 28.02.2021  13:15",
         style: robotoConsid(),
       ),
-      SizedBox(width: 10),
+      SizedBox(width: 8),
       GestureDetector(
         onTap: () {
           Get.to(OrderPage());
@@ -1227,7 +1478,7 @@ Widget orderWithDate() {
         child: underLineDashed(
             child: Text(
           "more".tr,
-          style: robotoConsid(color: Color(0xff0C54A1)),
+          style: robotoConsid(color: AppTextStyles.colorBlueMy),
         )),
       )
     ],
@@ -1266,10 +1517,53 @@ Widget orderWithDateDark() {
   );
 }
 
-Widget dark({required Widget child, double height = 50}) {
+Widget favoriteWithPrice({required int? price}){
+  return Row(
+    children: [
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "${price} с.",
+            style: robotoConsid(
+                color: Color(
+                  0xff991A4E,
+                ),
+                fontSize: 20,
+                fontWeight: FontWeight.w900),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Text(
+            "$price с.",
+            style:  robotoConsid(
+                color: Color(
+                  0xffCCCCCC,
+                ),
+                decoration: (TextDecoration.lineThrough),
+                fontSize: 15,
+                fontWeight: FontWeight.w900),
+          ),
+
+        ],
+      ),
+      SizedBox(width: 20),
+       addFavorite(
+        sizeButton: 50,
+        sizeFavorite: 30,
+      ),
+      SizedBox(width: 8),
+    ],
+  );
+}
+
+Widget dark({required Widget child, double height = 50,double radius =0}) {
   return Container(
+
     height: height,
     decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(radius),
         gradient: LinearGradient(begin: Alignment.centerLeft, stops: [
       0.0,
       0.8,
@@ -1391,7 +1685,6 @@ Widget delivryBox({required BuildContext context}) {
         SizedBox(height: 19),
         GestureDetector(
           onTap: () {
-            // showSnackBar(context: context);
             showTimeLineSheet(context: context);
           },
           child: Row(
@@ -1400,10 +1693,11 @@ Widget delivryBox({required BuildContext context}) {
                 width: 9,
               ),
               underLineDashed(
-                color: Color(0xff991A4E),
+                color: AppTextStyles.colorRedMy,
                 child: Text(
                   "arrived_at_pickup_point".tr,
-                  style: robotoConsid(color: Color(0xff991A4E), fontSize: 18),
+                  style: robotoConsid(
+                      color: AppTextStyles.colorRedMy, fontSize: 18),
                 ),
               ),
               Spacer(),
@@ -1478,7 +1772,6 @@ Widget alertButton({required String text, required Function() onTap}) {
 Widget confinrmCodeSheet(
     {required BuildContext context, required String number}) {
   final controller = Get.put(AddPhonePageController());
-  final controllerAuth = Get.put(AuthPageController());
   return Obx(() {
     return boxShadows(
       padding: 8,

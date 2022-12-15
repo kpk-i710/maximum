@@ -26,6 +26,7 @@ class BeforePaymentDelivry extends StatelessWidget {
   final controllerShoppingCart = Get.put(ShoppingCartPageController());
   final controllerShippingMethods = Get.put(ShippingMethodsController());
   final controllerAuth = Get.put(AuthPageController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,7 +63,7 @@ class BeforePaymentDelivry extends StatelessWidget {
                   }),
               Prefs.isLogin
                   ? editName(onTap: () {
-                      print("редактировать имя");
+                      Get.toNamed(AppRouter.personalData);
                     })
                   : SizedBox(),
               widgets.getTheme(
@@ -121,9 +122,12 @@ class BeforePaymentDelivry extends StatelessWidget {
                             text: 'checkout1'.tr.toUpperCase(),
                             onPressed: () {
                               if (controller.checkLogin() && !Prefs.isLogin) {
-                                widgets.showConfirmCodePhone(context: context, number: controllerAuth
-                                    .selectedCountryPhone.value +
-                                    "-" + controller.numberPhoneController.text);
+                                widgets.showConfirmCodePhone(
+                                    context: context,
+                                    number: controllerAuth
+                                            .selectedCountryPhone.value +
+                                        "-" +
+                                        controller.numberPhoneController.text);
                               }
                             }),
                         SizedBox(height: 20),

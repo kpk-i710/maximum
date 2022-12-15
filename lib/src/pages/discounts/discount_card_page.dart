@@ -17,7 +17,7 @@ import '../home/home_page_controller.dart';
 import 'discount_card_page_controller.dart';
 
 class DiscountCardPage extends StatelessWidget {
-  final c = Get.put(DicountCardPageController());
+  final controller = Get.put(DicountCardPageController());
   final Product? product;
   final homeController = Get.put(HomePageController());
 
@@ -43,13 +43,57 @@ class DiscountCardPage extends StatelessWidget {
                 SizedBox(height: 20),
                 DiscountCartDiscription(product: product),
                 SizedBox(height: 22),
-                DiscoiuntCartHelp(),
+
+                SizedBox(height: 10),
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Row(
+                    children: [
+                      widgets.favoriteWithPrice(price: product?.price),
+                      SizedBox(width: 20),
+                      Expanded(
+                        child: Container(
+                          height: 50.0,
+                          decoration: BoxDecoration(
+                              border:
+                                  Border.all(color: AppTextStyles.colorRedMy),
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(5)),
+                          child: ElevatedButton.icon(
+                            onPressed: () {
+                              // controller.isAddedToCard.value = true;
+                            },
+                            style: ElevatedButton.styleFrom(
+                                primary: Colors.transparent,
+                                shadowColor: Colors.transparent),
+                            icon: Icon(
+                              Icons.shopping_cart,
+                              color: AppTextStyles.colorRedMy,
+                            ),
+                            label: Text(
+                              'buy'.tr.toUpperCase(),
+                              style: widgets.robotoConsid(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppTextStyles.colorRedMy),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                // DiscoiuntCartHelp(),
                 SizedBox(
                   height: 50,
                 ),
                 Text(
                   "description".tr.toUpperCase(),
-                  style: widgets.robotoConsid(fontWeight: FontWeight.bold,),
+                  style: widgets.robotoConsid(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 SizedBox(
                   height: 5,
@@ -103,7 +147,7 @@ class DiscountCardPage extends StatelessWidget {
                 ),
                 SizedBox(height: 14),
                 YoutubePlayer(
-                  controller: c.controller,
+                  controller: controller.controller,
                   bottomActions: [
                     CurrentPosition(),
                     ProgressBar(
@@ -127,7 +171,10 @@ class DiscountCardPage extends StatelessWidget {
                       width: 29,
                     ),
                     SizedBox(width: 9),
-                    Text("instruction".tr,style: widgets.robotoConsid(),),
+                    Text(
+                      "instruction".tr,
+                      style: widgets.robotoConsid(),
+                    ),
                     Spacer(),
                     widgets.underLine(
                         child: Text(
@@ -148,7 +195,10 @@ class DiscountCardPage extends StatelessWidget {
                       width: 29,
                     ),
                     SizedBox(width: 9),
-                    Text("instruction".tr,style: widgets.robotoConsid(),),
+                    Text(
+                      "instruction".tr,
+                      style: widgets.robotoConsid(),
+                    ),
                     Spacer(),
                     widgets.underLine(
                         child: Text(
@@ -191,7 +241,8 @@ class DiscountCardPage extends StatelessWidget {
                 SizedBox(height: 6),
                 Center(
                   child: Text(
-                    "expample_card4".tr,style: widgets.robotoConsid(),
+                    "expample_card4".tr,
+                    style: widgets.robotoConsid(),
                   ),
                 ),
                 SizedBox(height: 20),
@@ -224,7 +275,10 @@ class DiscountCardPage extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("all_products_category".tr,style: widgets.robotoConsid(),),
+                        Text(
+                          "all_products_category".tr,
+                          style: widgets.robotoConsid(),
+                        ),
                         Row(
                           children: [
                             widgets.underLineDashed(
@@ -277,7 +331,6 @@ class DiscountCardPage extends StatelessWidget {
                 SizedBox(height: 23),
                 Obx(() => BrandOffersGridWidget(
                       list: homeController.discountList.value,
-
                     )),
                 SizedBox(height: 20),
                 widgets.writeFeedbackButton(
@@ -290,7 +343,6 @@ class DiscountCardPage extends StatelessWidget {
                 SizedBox(height: 18),
                 Obx(() => BoughtTodayGridWidget(
                       list: homeController.discountList.value,
-
                     )),
               ],
             ),

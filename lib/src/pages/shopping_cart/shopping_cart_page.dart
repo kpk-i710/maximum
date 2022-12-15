@@ -23,6 +23,7 @@ class ShoppingCartPage extends StatelessWidget {
             child: Column(
               children: [
                 widgets.dark(
+
                     child: Container(
                         width: double.infinity,
                         height: 50,

@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart' hide MenuItem;
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:maxkgapp/src/helpers/app_router.dart';
 import '../../../helpers/prefs.dart';
 import '../../../styles.dart';
 import '../../../widgets/app_icon.dart';
 import '../../../widgets/widgets.dart' as widgets;
-import '../../../widgets/orders_widgets/time_line_horizontal.dart';
 import 'profile_page_controller.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -154,10 +152,10 @@ class ProfilePage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               widgets.arrowButtonProfile(
-                icon: "bell",
-                text: 'notifications',
-                notification: true,
-              ),
+                  icon: "bell",
+                  text: 'notifications',
+                  notification: true,
+                  page: AppRouter.notificationsDelivry),
               Prefs.isLogin
                   ? widgets.arrowButtonProfile(
                       icon: "checkMark",
@@ -168,7 +166,7 @@ class ProfilePage extends StatelessWidget {
                   ? widgets.arrowButtonProfile(
                       icon: "purchase_history",
                       text: 'order_history',
-                    )
+                      page: AppRouter.orderHist)
                   : SizedBox(),
               widgets.arrowButtonProfile(
                   icon: "favorites",
