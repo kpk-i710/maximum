@@ -24,12 +24,14 @@ class AuthEnterCode extends StatelessWidget {
         leading: SizedBox(),
         backgroundColor: Colors.transparent,
         actions: [
-          IconButton(
-            onPressed: () {
-              Get.back();
-            },
-            icon: widgets.anySvg(nameSvg: "close_auth"),
-          ),
+          Padding(
+            padding: const EdgeInsets.only(right: 5.0, top: 10),
+            child: widgets.customButtonOval(
+                onTap: () {
+                  Get.back();
+                },
+                child: widgets.anySvg(nameSvg: 'close', size: Size(17, 17))),
+          )
         ],
       ),
       resizeToAvoidBottomInset: false,
@@ -110,10 +112,18 @@ class AuthEnterCode extends StatelessWidget {
                     SizedBox(
                       height: 20,
                     ),
-                    Text(
-                      "send_new_code".tr,
-                      style: widgets.robotoConsid(
-                          color: AppTextStyles.colorBlueMy, fontSize: 16),
+                    widgets.customButton(
+                      child: Container(
+                        height: 50,
+                        child: Center(
+                          child: Text(
+                            "send_new_code".tr,
+                            style: widgets.robotoConsid(
+                                color: AppTextStyles.colorBlueMy, fontSize: 16),
+                          ),
+                        ),
+                      ),
+                      onTap: () {},
                     ),
                     SizedBox(
                       height: 20,

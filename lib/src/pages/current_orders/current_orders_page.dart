@@ -12,6 +12,8 @@ class CurrentOrdersPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: context.theme.background2,
+      bottomNavigationBar: widgets.bottomNavigation(
+          currentTab: 0, onSelectTab: c.tabSelect),
       appBar: AppBar(
         elevation: 2,
         backgroundColor: Colors.white,

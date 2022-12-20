@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get_navigation/get_navigation.dart';
-
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/get_utils/get_utils.dart';
 import 'package:get/instance_manager.dart';
@@ -376,31 +375,35 @@ class BeforePaymentDelivry extends StatelessWidget {
   }
 
   Widget editName({Function()? onTap}) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
-        child: widgets.boxShadows(
-            child: Container(
-          height: 30,
-          child: Row(
-            children: [
-              SizedBox(width: 8),
-              widgets.anySvg(nameSvg: 'profile', size: Size(20, 20)),
-              SizedBox(
-                width: 10,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
+      child: widgets.boxShadows(
+          padding: 0,
+          child: widgets.customButton(
+            onTap: onTap!,
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Container(
+                height: 30,
+                child: Row(
+                  children: [
+                    SizedBox(width: 8),
+                    widgets.anySvg(nameSvg: 'profile', size: Size(20, 20)),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    SizedBox(width: 8),
+                    Text(
+                      "Мурахмедов Анвар",
+                      style: widgets.robotoConsid(fontSize: 16),
+                    ),
+                    Spacer(),
+                    widgets.editSvg(),
+                  ],
+                ),
               ),
-              SizedBox(width: 8),
-              Text(
-                "Мурахмедов Анвар",
-                style: widgets.robotoConsid(fontSize: 16),
-              ),
-              Spacer(),
-              widgets.editSvg(),
-            ],
-          ),
-        )),
-      ),
+            ),
+          )),
     );
   }
 
@@ -411,7 +414,7 @@ class BeforePaymentDelivry extends StatelessWidget {
       required Function() onTap}) {
     return Padding(
       padding: const EdgeInsets.only(left: 20, right: 20, top: 15),
-      child: GestureDetector(
+      child: widgets.customButton(
         onTap: onTap,
         child: !controller.currentStatusButton(select)
             ? Container(

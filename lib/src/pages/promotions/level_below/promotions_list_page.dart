@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
 import 'package:maxkgapp/src/pages/promotions/level_below/promotions_list_page_controller.dart';
-
+import '../../../widgets/widgets.dart' as widgets;
 import '../../../widgets/news_widgets/news_grid_item_widget.dart';
 import '../../../widgets/promotions_widgets/promotions_grid_item_widget.dart';
 import '../../../widgets/search_widgets/search_bar_2.dart';
@@ -20,6 +20,8 @@ class PromotionsListPage extends StatelessWidget {
     return Scaffold(
       appBar: SearchBar2(
           title: promotionsListPageController.poromotionsList?.news.naim ?? ""),
+      bottomNavigationBar: widgets.bottomNavigation(
+          currentTab: 0, onSelectTab: promotionsListPageController.tabSelect),
       body: Obx(() {
         return Visibility(
           visible: promotionsListPageController.isLoaded.value,

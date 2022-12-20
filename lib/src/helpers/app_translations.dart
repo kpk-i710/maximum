@@ -238,6 +238,7 @@ class AppTranslations extends Translations {
           'to_favorites': 'В избранное',
           'delete': 'Удалить',
           'remove': 'Удалить',
+          'removed_from_card': 'Удалено с корзины',
           'order': 'Заказ',
           'close': 'Закрыт',
           'not_verified_wait_for_call':

@@ -7,6 +7,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart' hide MenuItem;
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
+import 'package:maxkgapp/src/pages/discounts/discount_card_page.dart';
+import 'package:maxkgapp/src/pages/orders_history/order_history_page_controller.dart';
+import 'package:maxkgapp/src/pages/shopping_cart/shopping_cart_page.dart';
 import 'package:maxkgapp/src/pages/user/profile_params/profile_params_page_controller.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:sms_autofill/sms_autofill.dart';
@@ -32,6 +35,7 @@ import 'cart_widgets/cart_icon.dart';
 import 'orders_widgets/time_line_vertical.dart';
 import '../models/news.dart';
 import 'other_controllers_for_widgets/additional_service_controller.dart';
+import '../widgets/widgets.dart' as widgets;
 
 Widget priceWidget(double price, {TextStyle? style}) {
   if (style != null) {
@@ -101,7 +105,7 @@ Widget leaveFeedbackSheet({
               color: Colors.white,
               borderRadius: BorderRadius.circular(10),
             ),
-            height: Get.height / 1.7,
+            height: MediaQuery.of(context).viewInsets.bottom+300,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -136,10 +140,54 @@ Widget leaveFeedbackSheet({
                     onPressed: () {
                       Get.back();
                     }),
+                SizedBox(
+                  height: MediaQuery.of(context).viewInsets.bottom,
+                )
               ],
             ),
           ),
         )),
+  );
+}
+
+Widget inkButton({Function()? onTap, required Widget child}) {
+  return Padding(
+    padding: const EdgeInsets.only(right: 5.0, bottom: 20),
+    child: SizedBox.fromSize(
+      size: Size(50, 50),
+      child: ClipOval(
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+              splashColor: Colors.grey,
+              onTap: onTap,
+              child: Center(child: child)),
+        ),
+      ),
+    ),
+  );
+}
+
+Widget customButton({required Widget child, required Function() onTap}) {
+  return Material(
+    color: Colors.transparent,
+    child: InkWell(
+        splashColor: Colors.grey, onTap: onTap, child: Center(child: child)),
+  );
+}
+
+Widget customButtonOval({required Widget child, required Function() onTap}) {
+  return SizedBox.fromSize(
+    size: Size(50, 50),
+    child: ClipOval(
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+            splashColor: Colors.grey,
+            onTap: onTap,
+            child: Center(child: child)),
+      ),
+    ),
   );
 }
 
@@ -176,23 +224,9 @@ Widget notificationAll(
               ),
               Spacer(),
               if (onTap != null)
-                SizedBox.fromSize(
-                  size: Size(40, 40),
-                  child: ClipOval(
-                    child: Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                          splashColor: Colors.grey,
-                          onTap: onTap,
-                          child: Center(
-                            child: anySvg(
-                                nameSvg: 'close',
-                                color: AppTextStyles.colorGrayMy,
-                                size: Size(15, 15)),
-                          )),
-                    ),
-                  ),
-                )
+                inkButton(
+                    child: anySvg(nameSvg: 'close', size: Size(17, 17)),
+                    onTap: onTap)
             ],
           ),
           SizedBox(height: 20),
@@ -254,6 +288,405 @@ Widget fullReadNoty(
           ),
         ),
       ));
+}
+
+Widget buttonCounter({
+  required String text,
+  required Function() onTap,
+}) {
+  return Container(
+    decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(5),
+        color: Colors.white,
+        border: Border.all(
+          color: Color(0xffCCCCCC),
+          width: 1,
+        )),
+    width: 35,
+    height: 35,
+    child: Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        splashColor: Colors.grey,
+        child: Center(
+          child: Text(
+            text,
+            style: robotoConsid(color: AppTextStyles.colorBlueMy, fontSize: 20),
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+Widget counterCardManyProduct({required BuildContext context}) {
+  final controller = Get.put(DicountCardPageController());
+  return Row(
+    children: [
+      dark(
+        width: Get.width / 2.1,
+        height: 52,
+        radius: 5,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Row(
+            children: [
+              buttonCounter(
+                  text: "-",
+                  onTap: () {
+                    controller.minus(context: context);
+                  }),
+              Spacer(),
+              Text(
+                controller.counter.value.toString(),
+                style: robotoConsid(color: Colors.white, fontSize: 18),
+              ),
+              Spacer(),
+              buttonCounter(
+                  text: "+",
+                  onTap: () {
+                    controller.plus();
+                  }),
+            ],
+          ),
+        ),
+      ),
+    ],
+  );
+}
+
+Widget counterCardRuntime(
+    {int? price, Function()? onTap, required BuildContext context}) {
+  final controller = Get.put(DicountCardPageController());
+  return Obx(() {
+    return SizedBox(
+      height: 100,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          favoriteWithPrice(price: price),
+          if (controller.counter.value > 1)
+            counterCardManyProduct(context: context),
+          if (controller.counter.value == 1)
+            counterCardOneProduct(context: context),
+          if (controller.counter.value == 0) cardButton(onTap: onTap),
+        ],
+      ),
+    );
+  });
+}
+
+void showOptionCountProduct(
+    {required BuildContext context, required String name}) {
+  showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      context: context,
+      builder: (context) {
+        return optionCountProductSheet(context: context, name: name);
+      });
+}
+
+Widget optionCountProductSheet(
+    {required BuildContext context, required String name}) {
+  return Obx(() {
+    return boxShadows(
+      padding: 8,
+      radius: 10,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        height: Get.height / 1.8,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Center(
+              child: Container(
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                    color: Color(0xffE4E4E4),
+                    borderRadius: BorderRadius.circular(5)),
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            inkButton(
+                onTap: () {
+                  Get.back();
+                },
+                child: anySvg(nameSvg: 'close', size: Size(17, 17))),
+            productWidgetOption(context: context),
+          ],
+        ),
+      ),
+    );
+  });
+}
+
+Widget productWidgetOption({required BuildContext context}) {
+  final controller = Get.put(DicountCardPageController());
+  return Expanded(
+    child: Column(
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              height: 100,
+              width: 100,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(5),
+                child: Image.asset('assets/images/notebook_item.png',
+                    fit: BoxFit.cover),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'expample_card6'.tr,
+                    style: robotoConsid(color: Color(0xff62656A)),
+                  ),
+                  SizedBox(height: 5),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        '2000 с',
+                        style: robotoConsid(
+                            color: Color(0xff494949),
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(width: 10),
+                      Text(
+                        '3 200 сом',
+                        style: robotoConsid(
+                          color: Color(0xff62656A),
+                          decoration: TextDecoration.lineThrough,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                  Container(
+                    padding: EdgeInsets.all(3),
+                    decoration: BoxDecoration(
+                        color: Color(0xffF6F6F6),
+                        borderRadius: BorderRadius.circular(5)),
+                    child: Text(
+                      "кол-во: 50 шт.= 10 000 с.",
+                      style: robotoConsid(color: Color(0xff70757A)),
+                    ),
+                  ),
+                  SizedBox(height: 17),
+                  Row(
+                    children: [
+                      SizedBox(width: 2),
+                      anySvg(nameSvg: 'car_blue'),
+                      SizedBox(width: 10),
+                      Flexible(
+                        child: Text("when_coming_delivry".tr,
+                            maxLines: 2,
+                            style: robotoConsid(
+                                color: AppTextStyles.colorBlueMy,
+                                fontSize: 10)),
+                      )
+                    ],
+                  ),
+                  SizedBox(height: 20),
+                ],
+              ),
+            ),
+          ],
+        ),
+        Text(
+          'минимальное количество к заказу от 10 шт.',
+          style: robotoConsid(
+            color: Color(0xff62656A),
+          ),
+        ),
+        SizedBox(height: 20),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            buttonCounterOption(
+                text: "-",
+                onTap: () {
+                  controller.minus(context: context);
+                }),
+            Text(
+              controller.counter.value.toString(),
+              style: robotoConsid(color: Color(0xff494949), fontSize: 18),
+            ),
+            buttonCounterOption(
+                text: "+",
+                onTap: () {
+                  controller.plus();
+                }),
+          ],
+        ),
+        Spacer(),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 30.0),
+          child: orderButton(
+              text: 'continue_checkout'.tr.toUpperCase(),
+              fontSize: 14,
+              onPressed: () {
+                Get.to(ShoppingCartPage());
+              }),
+        ),
+        Spacer(),
+      ],
+    ),
+  );
+}
+
+Widget buttonCounterOption({
+  required String text,
+  required Function() onTap,
+}) {
+  return customButton(
+    onTap: onTap,
+    child: Container(
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          border: Border.all(
+            color: AppTextStyles.colorGrayDividar,
+            width: 1,
+          )),
+      width: 70,
+      height: 70,
+      child: Center(
+        child: Text(
+          text,
+          style: robotoConsid(color: AppTextStyles.colorBlackMy, fontSize: 30),
+        ),
+      ),
+    ),
+  );
+}
+
+void deletedFromCardSnackBar({required BuildContext context}) {
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    duration: Duration(milliseconds: 500),
+    margin: EdgeInsets.all(0),
+    padding: EdgeInsets.only(
+      bottom: 60,
+    ),
+    content: Container(
+      width: Get.width,
+      child: Padding(
+        padding:
+            const EdgeInsets.only(left: 22.0, right: 20, top: 8, bottom: 8),
+        child: Text(
+          "removed_from_card".tr,
+          textAlign: TextAlign.center,
+          style: widgets.robotoConsid(color: Colors.white),
+        ),
+      ),
+      color: AppTextStyles.colorBlackMy,
+    ),
+    behavior: SnackBarBehavior.floating,
+    backgroundColor: Colors.transparent,
+    elevation: 0,
+  ));
+}
+
+Widget counterCardOneProduct({required BuildContext context}) {
+  final controller = Get.put(DicountCardPageController());
+  return Row(
+    children: [
+      dark(
+        width: Get.width / 2.1,
+        height: 52,
+        radius: 5,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Row(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  controller.minus(context: context);
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: Colors.white,
+                      border: Border.all(
+                        color: Color(0xffCCCCCC),
+                        width: 1,
+                      )),
+                  width: 35,
+                  height: 35,
+                  child: Center(child: anySvg(nameSvg: 'trash_full')),
+                ),
+              ),
+              Spacer(),
+              Text(
+                controller.counter.value.toString(),
+                style: robotoConsid(color: Colors.white, fontSize: 18),
+              ),
+              Spacer(),
+              buttonCounter(
+                  text: "+",
+                  onTap: () {
+                    controller.plus();
+                  }),
+            ],
+          ),
+        ),
+      ),
+    ],
+  );
+}
+
+Widget cardButton({Function()? onTap}) {
+  return Container(
+    height: 52.0,
+    width: Get.width / 2.1,
+    decoration: BoxDecoration(
+        gradient:
+            LinearGradient(colors: [Color(0xff112B66), Color(0xff991A4E)]),
+        borderRadius: BorderRadius.circular(5)),
+    child: ElevatedButton.icon(
+      onPressed: onTap,
+      style: ElevatedButton.styleFrom(
+          primary: Colors.transparent, shadowColor: Colors.transparent),
+      icon: anySvg(nameSvg: 'card', color: Colors.white, size: Size(20, 20)),
+      label: Text(
+        'to_cart'.tr.toUpperCase(),
+        style: robotoConsid(fontWeight: FontWeight.bold, color: Colors.white),
+      ),
+    ),
+  );
+}
+
+Widget raitingBar({required Function(double value) onTap}) {
+  return RatingBar.builder(
+    initialRating: 3,
+    minRating: 1,
+    direction: Axis.horizontal,
+    allowHalfRating: true,
+    itemCount: 5,
+    itemSize: 15,
+    itemBuilder: (context, _) => Icon(
+      Icons.star,
+      color: Colors.amber,
+      size: 2,
+    ),
+    onRatingUpdate: onTap,
+  );
 }
 
 Widget raitingEmodjy({required Function(double rating) onTap}) {
@@ -331,48 +764,49 @@ Widget selectCheckBox({
   return Obx(() {
     return Theme(
       data: ThemeData(toggleableActiveColor: AppTextStyles.colorBlueMy),
-      child: Column(
-        children: [
-          GestureDetector(
-            onTap: () {
-              controller.changeBoxList(index: index);
-            },
-            child: Container(
-              child: Row(
-                children: [
-                  SizedBox(
-                    width: 20,
-                    child: Checkbox(
-                      checkColor: Colors.white,
-                      value: controller.checkBoxList[index].isSelected,
-                      onChanged: (newValue) {
-                        controller.changeBoxList(index: index);
-                      },
+      child: GestureDetector(
+        onTap: () {
+          controller.changeBoxList(index: index);
+        },
+        child: customButton(
+          child: Container(
+            child: Row(
+              children: [
+                SizedBox(
+                  width: 20,
+                  child: Checkbox(
+                    checkColor: Colors.white,
+                    value: controller.checkBoxList[index].isSelected,
+                    onChanged: (newValue) {
+                      controller.changeBoxList(index: index);
+                    },
+                  ),
+                ),
+                SizedBox(width: 15),
+                Flexible(
+                  child: SizedBox(
+                    width: Get.width - 100,
+                    child: Text(
+                      overflow: TextOverflow.ellipsis,
+                      "$text",
+                      style: controller.checkBoxList[index].isSelected
+                          ? robotoConsid(color: AppTextStyles.colorBlueMy)
+                          : robotoConsid(color: Color(0xff727272)),
                     ),
                   ),
-                  SizedBox(width: 15),
-                  Flexible(
-                    child: SizedBox(
-                      width: Get.width - 100,
-                      child: Text(
-                        overflow: TextOverflow.ellipsis,
-                        "$text",
-                        style: controller.checkBoxList[index].isSelected
-                            ? robotoConsid(color: AppTextStyles.colorBlueMy)
-                            : robotoConsid(color: Color(0xff727272)),
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: 15),
-                  Text(
-                    "$price",
-                    style: robotoConsid(),
-                  ),
-                ],
-              ),
+                ),
+                SizedBox(width: 15),
+                Text(
+                  "$price",
+                  style: robotoConsid(),
+                ),
+              ],
             ),
           ),
-        ],
+          onTap: () {
+            controller.changeBoxList(index: index);
+          },
+        ),
       ),
     );
   });
@@ -553,64 +987,63 @@ Widget newsItemWidget(News1 newss) {
   );
 }
 
-BottomNavigationBar bottomNavigation(
+SizedBox bottomNavigation(
     {int currentTab = 0, Function(int sel)? onSelectTab}) {
-  return BottomNavigationBar(
-    type: BottomNavigationBarType.fixed,
-    selectedItemColor: Get.context!.theme.primary,
-    iconSize: 22,
-    backgroundColor: Get.context!.theme.background,
-    selectedIconTheme: IconThemeData(size: 28),
-    unselectedItemColor: Get.context!.theme.secondary.withOpacity(1),
-    currentIndex: currentTab,
-    onTap: onSelectTab,
-    items: [
-      BottomNavigationBarItem(
-        icon: Icon(Icons.home),
-        label: 'home'.tr,
-      ),
-      BottomNavigationBarItem(
-        icon: Icon(currentTab == 1 ? Icons.close : Icons.menu),
-        label: 'catalog'.tr,
-      ),
-      // BottomNavigationBarItem(
-      //   icon: Icon(Icons.wb_incandescent),
-      //   label: 'interesting'.tr,
-      // ),
-      /*BottomNavigationBarItem(
-          title: new Container(height: 5.0),
-          icon: Container(
-            width: 42,
-            height: 42,
-            decoration: BoxDecoration(
-              color: Get.theme.accentColor,
-              borderRadius: BorderRadius.all(
-                Radius.circular(50),
-              ),
-              boxShadow: [
-                BoxShadow(color: Get.theme.accentColor.withOpacity(0.4), blurRadius: 40, offset: Offset(0, 15)),
-                BoxShadow(color: Get.theme.accentColor.withOpacity(0.4), blurRadius: 13, offset: Offset(0, 3))
-              ],
-            ),
-            child: new Icon(Icons.home, color: Get.theme.primaryColor),
-          )),*/
-      BottomNavigationBarItem(
-        icon: CartIcon(), // new Icon(Icons.shopping_cart),
-        label: 'shopping_cart'.tr,
-      ),
-      BottomNavigationBarItem(
-        icon: new Icon(Icons.person),
-        label: 'profile'.tr,
-      ),
-    ],
+  return SizedBox(
+    height: 50,
+    child: BottomNavigationBar(
+      elevation: 10,
+      type: BottomNavigationBarType.fixed,
+      selectedItemColor: Colors.black,
+      unselectedItemColor: AppTextStyles.colorGrayMy,
+      selectedLabelStyle: widgets.robotoConsid(fontSize: 10),
+      unselectedLabelStyle: widgets.robotoConsid(fontSize: 10),
+      selectedFontSize: 10,
+      unselectedFontSize: 10,
+      backgroundColor: Get.context!.theme.background,
+      selectedIconTheme: IconThemeData(size: 25),
+      unselectedIconTheme: IconThemeData(size: 25),
+      currentIndex: currentTab,
+      onTap: onSelectTab,
+      items: [
+        BottomNavigationBarItem(
+          icon: Icon(currentTab == 0 ? Icons.home : Icons.home_outlined),
+          label: 'home'.tr,
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(currentTab == 1 ? Icons.close : Icons.menu),
+          label: 'catalog'.tr,
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(currentTab == 2 ? Icons.favorite : Icons.favorite_border),
+          label: 'interesting'.tr,
+        ),
+        BottomNavigationBarItem(
+          icon: currentTab == 3
+              ? Padding(
+                  padding: const EdgeInsets.only(bottom: 5.0),
+                  child: anySvg(nameSvg: 'card', size: Size(22, 22)),
+                )
+              : Icon(Icons
+                  .shopping_cart_outlined), // new Icon(Icons.shopping_cart),
+          // icon: CartIcon(), // new Icon(Icons.shopping_cart),
+          label: 'shopping_cart'.tr,
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(
+              currentTab == 4 ? Icons.person : Icons.person_outline_outlined),
+          label: 'profile'.tr,
+        ),
+      ],
+    ),
   );
 }
 
-Widget location({required String adress, Function()? onTap}) {
-  return GestureDetector(
-    onTap: onTap,
+Widget location({required String adress, required Function()  onTap}) {
+  return customButton(
+    onTap: onTap ,
     child: Padding(
-      padding: const EdgeInsets.only(left: 10.0, right: 10, top: 8.0),
+      padding: const EdgeInsets.only(left: 10.0, right: 10, top: 8.0,bottom: 8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -692,15 +1125,17 @@ void citySelectorSheetAppBar({required BuildContext context}) {
                 child: Scrollbar(
                   child: ListView(physics: BouncingScrollPhysics(), children: [
                     for (int i = 0; i < controller.citys!.length; i++)
-                      ListTile(
+                      customButton(
                         onTap: () {
                           print(controller.citys![i]);
                           controller.selectedCity.value = controller.citys![i];
                           Get.back();
                         },
-                        title: Text(
-                          controller.citys![i],
-                          style: robotoConsid(),
+                        child: ListTile(
+                          title: Text(
+                            controller.citys![i],
+                            style: robotoConsid(),
+                          ),
                         ),
                       ),
                   ]),
@@ -961,44 +1396,48 @@ Widget writeFeedbackButton({required String text, Function()? onPressed}) {
 }
 
 Widget editTextButton(
-    {Function()? onTap,
+    {required Function() onTap,
     required String icon,
     required String text,
     String secondIcon = ""}) {
-  return GestureDetector(
-    onTap: onTap,
-    child: boxShadows(
-        child: Container(
-      height: 30,
-      child: Row(
-        children: [
-          SizedBox(width: 8),
-          anySvg(nameSvg: "$icon"),
-          SizedBox(
-            width: 10,
-          ),
-          SizedBox(width: 8),
-          Flexible(
-            child: SizedBox(
-              width: Get.width,
-              child: Text(
-                text,
-                maxLines: 1,
-                style: robotoConsid(fontSize: 14),
-              ),
+  return boxShadows(
+      padding: 0,
+      child: customButton(
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Container(
+            height: 30,
+            child: Row(
+              children: [
+                SizedBox(width: 8),
+                anySvg(nameSvg: "$icon"),
+                SizedBox(
+                  width: 10,
+                ),
+                SizedBox(width: 8),
+                Flexible(
+                  child: SizedBox(
+                    width: Get.width,
+                    child: Text(
+                      text,
+                      maxLines: 1,
+                      style: robotoConsid(fontSize: 14),
+                    ),
+                  ),
+                ),
+                secondIcon != ""
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.circular(5.0),
+                        child: anySvg(nameSvg: "$secondIcon"))
+                    : SizedBox(),
+                SizedBox(width: 15),
+                editSvg(),
+              ],
             ),
           ),
-          secondIcon != ""
-              ? ClipRRect(
-                  borderRadius: BorderRadius.circular(5.0),
-                  child: anySvg(nameSvg: "$secondIcon"))
-              : SizedBox(),
-          SizedBox(width: 15),
-          editSvg(),
-        ],
-      ),
-    )),
-  );
+        ),
+        onTap: onTap,
+      ));
 }
 
 Widget helpDaria1() {
@@ -1053,33 +1492,55 @@ Widget helpDaria() {
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    child: SvgPicture.asset(
-                      "assets/icons/correspond.svg",
-                      width: 15,
+                  widgets.customButton(
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 5.0),
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: SvgPicture.asset(
+                              "assets/icons/correspond.svg",
+                              width: 15,
+                            ),
+                          ),
+                          SizedBox(width: 8),
+                          underLineDashed(
+                              child: Text(
+                            "write_a_message".tr,
+                            style: robotoConsid(
+                                color: Color(0xff142A65), height: 2),
+                          )),
+                          SizedBox(width: 20),
+                        ],
+                      ),
                     ),
+                    onTap: () {},
                   ),
-                  SizedBox(width: 8),
-                  underLineDashed(
-                      child: Text(
-                    "write_a_message".tr,
-                    style: robotoConsid(color: Color(0xff142A65), height: 2),
-                  )),
-                  SizedBox(width: 20),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    child: SvgPicture.asset(
-                      "assets/icons/call.svg",
-                      width: 15,
+                  widgets.customButton(
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 5.0),
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: SvgPicture.asset(
+                              "assets/icons/call.svg",
+                              width: 15,
+                            ),
+                          ),
+                          SizedBox(width: 8),
+                          underLineDashed(
+                              child: Text(
+                            "call".tr,
+                            style: robotoConsid(
+                                color: Color(0xff142A65), height: 2),
+                          )),
+                        ],
+                      ),
                     ),
-                  ),
-                  SizedBox(width: 8),
-                  underLineDashed(
-                      child: Text(
-                    "call".tr,
-                    style: robotoConsid(color: Color(0xff142A65), height: 2),
-                  )),
+                    onTap: () {},
+                  )
                 ],
               ),
             ],
@@ -1102,17 +1563,14 @@ Widget bottomInfoBar() {
       Color(0xff112B66),
       Color(0xff53235A),
     ])),
-    child: Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 26.0),
-      child: Column(
-        children: [
-          arrowButtonProfileBlack(icon: "about_company", text: 'about_company'),
-          arrowButtonProfileBlack(icon: "contacts", text: 'contacts'),
-          arrowButtonProfileBlack(icon: "partners", text: 'partners'),
-          arrowButtonProfileBlack(
-              icon: "about_the_application", text: 'about_the_application'),
-        ],
-      ),
+    child: Column(
+      children: [
+        arrowButtonProfileBlack(icon: "about_company", text: 'about_company'),
+        arrowButtonProfileBlack(icon: "contacts", text: 'contacts'),
+        arrowButtonProfileBlack(icon: "partners", text: 'partners'),
+        arrowButtonProfileBlack(
+            icon: "about_the_application", text: 'about_the_application'),
+      ],
     ),
   );
 }
@@ -1147,36 +1605,39 @@ Widget radioGender({required int index, required String text}) {
 
 Widget switchWithText(
     {bool isActive = false, required Function() onTap, required String label}) {
-  return GestureDetector(
+  return widgets.customButton(
     onTap: onTap,
-    child: Container(
-      color: Colors.transparent,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10.0),
-        child: Row(
-          children: [
-            FlutterSwitch(
-              inactiveColor: Color(0xffC9CDD6),
-              activeColor: Color(0xff2B2861),
-              width: 40.0,
-              height: 20.0,
-              valueFontSize: 25.0,
-              toggleSize: 10.0,
-              // value: controller.status.value,
-              borderRadius: 30.0,
-              padding: 5.0,
-              showOnOff: false,
-              value: isActive,
-              onToggle: (bool value) {
-                onTap();
-              },
-            ),
-            SizedBox(width: 20),
-            Text(
-              label.tr,
-              style: robotoConsid(),
-            ),
-          ],
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: Container(
+        color: Colors.transparent,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10.0),
+          child: Row(
+            children: [
+              FlutterSwitch(
+                inactiveColor: Color(0xffC9CDD6),
+                activeColor: Color(0xff2B2861),
+                width: 40.0,
+                height: 20.0,
+                valueFontSize: 25.0,
+                toggleSize: 10.0,
+                // value: controller.status.value,
+                borderRadius: 30.0,
+                padding: 5.0,
+                showOnOff: false,
+                value: isActive,
+                onToggle: (bool value) {
+                  onTap();
+                },
+              ),
+              SizedBox(width: 20),
+              Text(
+                label.tr,
+                style: robotoConsid(),
+              ),
+            ],
+          ),
         ),
       ),
     ),
@@ -1248,9 +1709,9 @@ Widget selectRadio(
                   ),
                 ),
                 Flexible(
-                  flex: 1,
-                  child: GestureDetector(
-                    onTap: onTap,
+                  flex: 2,
+                  child: customButton(
+                    onTap: onTap!,
                     child: Container(
                       color: Colors.transparent,
                       height: 50,
@@ -1270,7 +1731,7 @@ Widget selectRadio(
 
 Widget radioTheme({required int index, required String text}) {
   final controller = Get.put(ProfileParamsPageController());
-  return GestureDetector(
+  return customButton(
     onTap: () {
       controller.selectedTheme.value = index;
     },
@@ -1455,6 +1916,277 @@ Widget OrderPayButton(
       ));
 }
 
+Widget buyButton() {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+    child: Row(
+      children: [
+        Expanded(
+          child: Container(
+            height: 50.0,
+            decoration: BoxDecoration(
+                border: Border.all(color: AppTextStyles.colorRedMy),
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(5)),
+            child: ElevatedButton.icon(
+              onPressed: () {
+                // controller.isAddedToCard.value = true;
+              },
+              style: ElevatedButton.styleFrom(
+                  primary: Colors.transparent, shadowColor: Colors.transparent),
+              icon: Icon(
+                Icons.shopping_cart,
+                color: AppTextStyles.colorRedMy,
+              ),
+              label: Text(
+                'buy'.tr.toUpperCase(),
+                style: robotoConsid(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: AppTextStyles.colorRedMy),
+              ),
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+Widget floatingCard(
+    {required BuildContext context,
+    required int? price,
+    required String? name}) {
+  final controller = Get.put(DicountCardPageController());
+  return Align(
+      alignment: Alignment(0, 1),
+      child: Container(
+        height: 60,
+        color: Colors.white,
+        child: Center(
+            child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: widgets.counterCardRuntime(
+              context: context,
+              price: price,
+              onTap: () {
+                controller.counter.value = 1;
+                widgets.showOptionCountProduct(
+                    context: context, name: '${name}');
+              }),
+        )),
+      ));
+}
+
+Widget productWidgetWithCount({bool additionalService = true}) {
+  final controller = Get.put(ShoppingCartPageController());
+  return Obx(() {
+    return boxShadows(
+      child: Column(
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                height: 100,
+                width: 100,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(5),
+                  child: Image.asset('assets/images/notebook_item.png',
+                      fit: BoxFit.cover),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'expample_card6'.tr,
+                      style: robotoConsid(color: Color(0xff62656A)),
+                    ),
+                    SizedBox(height: 5),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          '2000 с',
+                          style: robotoConsid(
+                              color: Color(0xff494949),
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(width: 10),
+                        Text(
+                          '3200 с',
+                          style: robotoConsid(
+                            color: Color(0xff62656A),
+                            decoration: TextDecoration.lineThrough,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 10),
+                    Container(
+                      padding: EdgeInsets.all(3),
+                      decoration: BoxDecoration(
+                          color: Color(0xffF6F6F6),
+                          borderRadius: BorderRadius.circular(5)),
+                      child: Text(
+                        "кол-во: 50 шт.= 10000 с.",
+                        style: robotoConsid(color: Color(0xff70757A)),
+                      ),
+                    ),
+                    SizedBox(height: 7),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            buttonCounter(
+                                text: "-",
+                                onTap: () {
+                                  controller.minus();
+                                }),
+                            Container(
+                              width: 40,
+                              child: Center(
+                                child: Text(
+                                  controller.counter.value.toString(),
+                                  style: robotoConsid(
+                                      fontWeight: FontWeight.w100,
+                                      color: Color(0xff494949),
+                                      fontSize: 18),
+                                ),
+                              ),
+                            ),
+                            buttonCounter(
+                                text: "+",
+                                onTap: () {
+                                  controller.plus();
+                                }),
+                          ],
+                        ),
+                        SizedBox(
+                          width: 4,
+                        ),
+                        addFavorite(onPressed: () {}),
+                        SizedBox(
+                          width: 4,
+                        ),
+                        customButton(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child:
+                                  anySvg(size: Size(20, 20), nameSvg: 'trash'),
+                            ),
+                            onTap: () {}),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: 38,
+                        ),
+                        Text(
+                          'по 10 шт.',
+                          style: robotoConsid(
+                              color: Color(0xff62656A),
+                              fontWeight: FontWeight.w100,
+                              fontSize: 10),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 10),
+                    Row(
+                      children: [
+                        SizedBox(width: 2),
+                        anySvg(nameSvg: 'car_blue'),
+                        SizedBox(width: 10),
+                        Flexible(
+                          child: Text("when_coming_delivry".tr,
+                              maxLines: 2,
+                              style: robotoConsid(
+                                  color: AppTextStyles.colorBlueMy,
+                                  fontSize: 10)),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 15),
+          additionalService
+              ? ListTileTheme(
+                  contentPadding: EdgeInsets.all(0),
+                  child: Theme(
+                    data:
+                        ThemeData().copyWith(dividerColor: Colors.transparent),
+                    child: ExpansionTile(
+                      onExpansionChanged: (bool expanded) {
+                        controller.demoList[1] = !expanded;
+                      },
+                      collapsedBackgroundColor: Colors.white,
+                      backgroundColor: Colors.white,
+                      trailing: Text(
+                        controller.checkForServices() ? "500 с." : "0 с",
+                        style: robotoConsid(fontWeight: FontWeight.bold),
+                      ),
+                      title: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          underLineDashed(
+                              child: Text(
+                                "additional_services".tr,
+                                style: robotoConsid(color: Color(0xff142A65)),
+                              ),
+                              hight: 3),
+                          SizedBox(width: 6),
+                          controller.demoList[1]
+                              ? Icon(
+                                  Icons.arrow_forward_ios,
+                                  color: Color(0xff142A65),
+                                  size: 13,
+                                )
+                              : anySvg(nameSvg: "arrow_down", size: Size(7, 7)),
+                          Spacer(),
+                        ],
+                      ),
+                      children: <Widget>[
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "assembly_services".tr,
+                              style: robotoConsid(fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(height: 5),
+                            selectCheckBox(
+                                text: 'Теннисный стол Хобби',
+                                index: 0,
+                                price: '500 с.'),
+                            selectCheckBox(
+                                text: 'Теннисный стол Хобби',
+                                index: 1,
+                                price: '200 с.'),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                )
+              : SizedBox(),
+        ],
+      ),
+    );
+  });
+}
+
 Widget orderWithDate() {
   return Row(
     children: [
@@ -1517,60 +2249,70 @@ Widget orderWithDateDark() {
   );
 }
 
-Widget favoriteWithPrice({required int? price}){
-  return Row(
-    children: [
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "${price} с.",
-            style: robotoConsid(
-                color: Color(
-                  0xff991A4E,
-                ),
-                fontSize: 20,
-                fontWeight: FontWeight.w900),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Text(
-            "$price с.",
-            style:  robotoConsid(
-                color: Color(
-                  0xffCCCCCC,
-                ),
-                decoration: (TextDecoration.lineThrough),
-                fontSize: 15,
-                fontWeight: FontWeight.w900),
-          ),
-
-        ],
-      ),
-      SizedBox(width: 20),
-       addFavorite(
-        sizeButton: 50,
-        sizeFavorite: 30,
-      ),
-      SizedBox(width: 8),
-    ],
+Widget favoriteWithPrice({required int? price}) {
+  return Expanded(
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: 5),
+            Text(
+              "${price} с",
+              style: robotoConsid(
+                  color: Color(
+                    0xff991A4E,
+                  ),
+                  fontSize: 20,
+                  fontWeight: FontWeight.w900),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Text(
+              "$price с",
+              style: robotoConsid(
+                  color: Color(
+                    0xffCCCCCC,
+                  ),
+                  decoration: (TextDecoration.lineThrough),
+                  fontSize: 15,
+                  fontWeight: FontWeight.w900),
+            ),
+          ],
+        ),
+        Spacer(),
+        addFavorite(
+          color: Colors.transparent,
+          sizeButton: 60,
+          sizeFavorite: 30,
+          onPressed: () {},
+        ),
+        SizedBox(width: 8),
+      ],
+    ),
   );
 }
 
-Widget dark({required Widget child, double height = 50,double radius =0}) {
+Widget dark(
+    {required Widget child,
+    double height = 50,
+    double? width = null,
+    double radius = 0}) {
   return Container(
-
     height: height,
+    width: width,
     decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(radius),
+        borderRadius: BorderRadius.circular(radius),
         gradient: LinearGradient(begin: Alignment.centerLeft, stops: [
-      0.0,
-      0.8,
-    ], colors: [
-      Color(0xff112B66),
-      Color(0xff53235A),
-    ])),
+          0.0,
+          0.8,
+        ], colors: [
+          Color(0xff112B66),
+          Color(0xff53235A),
+        ])),
     child: child,
   );
 }
@@ -1606,7 +2348,7 @@ Widget productWidget() {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
-                        '2000 с',
+                        '2 000 с',
                         style: robotoConsid(
                             color: Color(0xff494949),
                             fontSize: 18,
@@ -1614,7 +2356,7 @@ Widget productWidget() {
                       ),
                       SizedBox(width: 10),
                       Text(
-                        '3 200 сом',
+                        '3 200 с',
                         style: robotoConsid(
                           color: Color(0xff62656A),
                           decoration: TextDecoration.lineThrough,
@@ -1916,7 +2658,7 @@ Widget contentSnackBar1({required BuildContext context}) {
                         ),
                       ),
                       Spacer(),
-                      GestureDetector(
+                      customButtonOval(
                         onTap: () {
                           Get.back();
                         },
@@ -2372,47 +3114,27 @@ Widget addCartButton({required String text, Function()? onPressed}) {
 }
 
 Widget addFavorite(
-    {Function()? onPressed,
+    {required Function() onPressed,
     double? sizeFavorite,
     double? sizeButton,
-    IconData? icon = Icons.favorite}) {
+    IconData? icon = Icons.favorite,
+    Color color = const Color(0xffE5E5E5)}) {
   return SizedBox(
     width: sizeButton ?? 35,
     height: sizeButton ?? 35,
-    child: Container(
-      decoration: BoxDecoration(
-          color: Color(0xffF6F6F6), borderRadius: BorderRadius.circular(5)),
-      child: IconButton(
-          color: Color(0xffE5E5E5),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Color(0xffE5E5E5),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(5),
-            ),
-          ),
-          onPressed: onPressed,
-          icon: Icon(
+    child: customButton(
+      child: Container(
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
+        child: Center(
+          child: Icon(
             icon,
             size: sizeFavorite ?? 20,
             color: Color(0xff7B7B7B),
-          )),
-    ),
-  );
-}
-
-Widget IconBattonSvg(
-    {Function()? onPressed, double? sizeFavorite, double? sizeButton}) {
-  return SizedBox(
-    width: sizeButton ?? 40,
-    height: sizeButton ?? 40,
-    child: Container(
-        decoration: BoxDecoration(
-            color: Color(0xffF6F6F6), borderRadius: BorderRadius.circular(5)),
-        child: Center(
-          child: SvgPicture.asset(
-            'assets/icons/trash.svg',
           ),
-        )),
+        ),
+      ),
+      onTap: onPressed,
+    ),
   );
 }
 
@@ -2688,24 +3410,27 @@ Widget checkBoxWithText(
     required String text,
     TextStyle? textStyle,
     Function()? onTap}) {
-  return GestureDetector(
-    onTap: onTap,
-    child: Container(
-      color: Colors.transparent,
-      child: Row(children: [
-        SizedBox(
-          width: 20,
-          child: Checkbox(
-            value: value,
-            activeColor: Get.context!.theme.primary,
-            onChanged: (bool? value) {
-              onTap!();
-            },
+  return widgets.customButton(
+    onTap: onTap!,
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: Container(
+        color: Colors.transparent,
+        child: Row(children: [
+          SizedBox(
+            width: 20,
+            child: Checkbox(
+              value: value,
+              activeColor: Get.context!.theme.primary,
+              onChanged: (bool? value) {
+                onTap!();
+              },
+            ),
           ),
-        ),
-        const SizedBox(width: 15),
-        Text(text, style: textStyle ?? robotoConsid()),
-      ]),
+          const SizedBox(width: 15),
+          Text(text, style: textStyle ?? robotoConsid()),
+        ]),
+      ),
     ),
   );
 }
@@ -2727,8 +3452,8 @@ Widget customCheckBox(
 
 Widget checkBoxWithIcon(
     {bool value = false, required Icon icon, Function()? onChanged}) {
-  return GestureDetector(
-    onTap: onChanged,
+  return customButton(
+    onTap: onChanged!,
     child: Container(
       color: Colors.transparent,
       child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
@@ -2749,8 +3474,8 @@ Widget checkBoxWithIcon(
 }
 
 Widget addAdressButton({required String text, Function()? onPressed}) {
-  return GestureDetector(
-    onTap: onPressed,
+  return customButton(
+    onTap: onPressed!,
     child: SizedBox(
       height: 50,
       child: GestureDetector(
@@ -2919,37 +3644,60 @@ Widget helpDariaNew() {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: SvgPicture.asset(
-                        "assets/icons/correspond.svg",
-                        width: 15,
+                    widgets.customButton(
+                      child: Container(
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 5.0),
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(top: 8.0),
+                                child: SvgPicture.asset(
+                                  "assets/icons/correspond.svg",
+                                  width: 15,
+                                ),
+                              ),
+                              SizedBox(width: 8),
+                              underLineDashed(
+                                  child: Text(
+                                "write_a_message".tr,
+                                style: robotoConsid(
+                                    color: AppTextStyles.colorBlueMy,
+                                    height: 2),
+                              )),
+                              SizedBox(width: 20),
+                            ],
+                          ),
+                        ),
                       ),
+                      onTap: () {},
                     ),
-                    SizedBox(width: 8),
-                    underLineDashed(
-                        child: Text(
-                      "write_a_message".tr,
-                      style: robotoConsid(
-                          color: AppTextStyles.colorBlueMy, height: 2),
-                    )),
-                    SizedBox(width: 20),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: SvgPicture.asset(
-                        "assets/icons/call.svg",
-                        width: 15,
+                    widgets.customButton(
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 5.0),
+                        child: Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: SvgPicture.asset(
+                                "assets/icons/call.svg",
+                                width: 15,
+                              ),
+                            ),
+                            SizedBox(width: 8),
+                            underLineDashed(
+                                child: Text(
+                              "call".tr,
+                              style: robotoConsid(
+                                  color: AppTextStyles.colorBlueMy, height: 2),
+                            )),
+                          ],
+                        ),
                       ),
+                      onTap: () {},
                     ),
-                    SizedBox(width: 8),
-                    underLineDashed(
-                        child: Text(
-                      "call".tr,
-                      style: robotoConsid(
-                          color: AppTextStyles.colorBlueMy, height: 2),
-                    )),
                   ],
-                ),
+                )
               ],
             ),
           ),
@@ -2969,59 +3717,68 @@ Widget arrowButtonProfile(
     bool isActive = true,
     String? page,
     bool haveDivider = true}) {
-  return GestureDetector(
-    onTap: page != null
-        ? () {
-            Get.toNamed(page);
-          }
-        : null,
-    child: Container(
-      height: 50,
-      decoration: haveDivider
-          ? BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  color: Color(0xffF6F6F6),
-                  width: 1.0,
+  final controller = Get.put(OrderHistPageController());
+  return widgets.customButton(
+    onTap: () {
+      if(page == AppRouter.favorite){
+        controller.tabSelect(2);
+        return;
+      }
+
+      if (page != null) {
+        Get.toNamed(page);
+      }
+    },
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 26.0),
+      child: Container(
+        height: 50,
+        decoration: haveDivider
+            ? BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                    color: Color(0xffF6F6F6),
+                    width: 1.0,
+                  ),
                 ),
-              ),
-            )
-          : BoxDecoration(),
-      child: Row(
-        children: [
-          icon != ""
-              ? SvgPicture.asset("assets/icons/$icon.svg",
-                  semanticsLabel: 'Acme Logo')
-              : SizedBox(
-                  width: 20,
-                ),
-          SizedBox(width: 20),
-          Text(
-            "$text".tr,
-            style: robotoConsid(fontSize: 14),
-          ),
-          SizedBox(width: 10),
-          notification
-              ? Container(
-                  width: 20,
-                  height: 22,
-                  decoration: BoxDecoration(
-                      color: isActive ? Color(0xff991A4E) : Color(0xff62656A),
-                      borderRadius: BorderRadius.circular(5)),
-                  child: Center(
-                      child: Text(
-                    "1",
-                    style: robotoConsid(color: Colors.white, fontSize: 14),
-                  )),
-                )
-              : SizedBox(),
-          Spacer(),
-          Icon(
-            Icons.arrow_forward_ios,
-            color: Color(0xff424242),
-            size: 12,
-          ),
-        ],
+              )
+            : BoxDecoration(),
+        child: Row(
+          children: [
+            icon != ""
+                ? SvgPicture.asset("assets/icons/$icon.svg",
+                    semanticsLabel: 'Acme Logo')
+                : SizedBox(
+                    width: 20,
+                  ),
+            SizedBox(width: 20),
+            Text(
+              "$text".tr,
+              style: robotoConsid(fontSize: 14),
+            ),
+            SizedBox(width: 10),
+            notification
+                ? Container(
+                    width: 20,
+                    height: 22,
+                    decoration: BoxDecoration(
+                        color: isActive ? Color(0xff991A4E) : Color(0xff62656A),
+                        borderRadius: BorderRadius.circular(5)),
+                    child: Center(
+                        child: Text(
+                      "1",
+                      style: robotoConsid(color: Colors.white, fontSize: 14),
+                    )),
+                  )
+                : SizedBox(),
+            Spacer(),
+            Icon(
+              Icons.arrow_forward_ios,
+              color: Color(0xff424242),
+              size: 12,
+            ),
+          ],
+        ),
       ),
     ),
   );
@@ -3032,39 +3789,46 @@ Widget arrowButtonProfileBlack(
     required String text,
     bool notification = false,
     bool isActive = true}) {
-  return Container(
-    height: 50,
-    child: Row(
-      children: [
-        SvgPicture.asset("assets/icons/$icon.svg", semanticsLabel: 'Acme Logo'),
-        SizedBox(width: 20),
-        Text(
-          "$text".tr,
-          style: robotoConsid(fontSize: 14, color: Colors.white),
+  return customButton(
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: Container(
+        height: 50,
+        child: Row(
+          children: [
+            SvgPicture.asset("assets/icons/$icon.svg",
+                semanticsLabel: 'Acme Logo'),
+            SizedBox(width: 20),
+            Text(
+              "$text".tr,
+              style: robotoConsid(fontSize: 14, color: Colors.white),
+            ),
+            SizedBox(width: 10),
+            notification
+                ? Container(
+                    width: 20,
+                    height: 22,
+                    decoration: BoxDecoration(
+                        color: isActive ? Color(0xff991A4E) : Color(0xff62656A),
+                        borderRadius: BorderRadius.circular(5)),
+                    child: Center(
+                        child: Text(
+                      "1",
+                      style: robotoConsid(color: Colors.white, fontSize: 14),
+                    )),
+                  )
+                : SizedBox(),
+            Spacer(),
+            Icon(
+              Icons.arrow_forward_ios,
+              color: Colors.white,
+              size: 12,
+            ),
+          ],
         ),
-        SizedBox(width: 10),
-        notification
-            ? Container(
-                width: 20,
-                height: 22,
-                decoration: BoxDecoration(
-                    color: isActive ? Color(0xff991A4E) : Color(0xff62656A),
-                    borderRadius: BorderRadius.circular(5)),
-                child: Center(
-                    child: Text(
-                  "1",
-                  style: robotoConsid(color: Colors.white, fontSize: 14),
-                )),
-              )
-            : SizedBox(),
-        Spacer(),
-        Icon(
-          Icons.arrow_forward_ios,
-          color: Colors.white,
-          size: 12,
-        ),
-      ],
+      ),
     ),
+    onTap: () {},
   );
 }
 

@@ -40,7 +40,8 @@ class ProfilePage extends StatelessWidget {
             Color(0xff112B66),
             Color(0xff53235A),
           ])),
-          child: GestureDetector(
+          child: widgets.customButton(
+
             onTap: () {
               Get.toNamed(AppRouter.profileParams);
             },
@@ -146,72 +147,75 @@ class ProfilePage extends StatelessWidget {
   Widget authorized_and_unauthorized() {
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 26.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              widgets.arrowButtonProfile(
-                  icon: "bell",
-                  text: 'notifications',
-                  notification: true,
-                  page: AppRouter.notificationsDelivry),
-              Prefs.isLogin
-                  ? widgets.arrowButtonProfile(
-                      icon: "checkMark",
-                      text: 'current_orders',
-                      page: AppRouter.currentOrders)
-                  : SizedBox(),
-              Prefs.isLogin
-                  ? widgets.arrowButtonProfile(
-                      icon: "purchase_history",
-                      text: 'order_history',
-                      page: AppRouter.orderHist)
-                  : SizedBox(),
-              widgets.arrowButtonProfile(
-                  icon: "favorites",
-                  text: 'favorite',
-                  notification: true,
-                  page: AppRouter.favorite,
-                  isActive: false),
-              widgets.arrowButtonProfile(
-                  icon: "discounts",
-                  text: 'discounts',
-                  page: AppRouter.discountList),
-              widgets.arrowButtonProfile(
-                  icon: "stock",
-                  text: 'promotions',
-                  page: AppRouter.allPromotionsPage),
-              widgets.arrowButtonProfile(
-                  icon: "news", text: 'news', page: AppRouter.allNewsPage),
-              const SizedBox(height: 27),
-              widgets.helpDaria(),
-              Prefs.isLogin
-                  ? Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 20.0),
-                      child: widgets.currencyAndCityWidget(),
-                    )
-                  : SizedBox(
-                      height: 25,
-                    ),
-              Text(
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            widgets.arrowButtonProfile(
+                icon: "bell",
+                text: 'notifications',
+                notification: true,
+                page: AppRouter.notificationsDelivry),
+            Prefs.isLogin
+                ? widgets.arrowButtonProfile(
+                    icon: "checkMark",
+                    text: 'current_orders',
+                    page: AppRouter.currentOrders)
+                : SizedBox(),
+            Prefs.isLogin
+                ? widgets.arrowButtonProfile(
+                    icon: "purchase_history",
+                    text: 'order_history',
+                    page: AppRouter.orderHist)
+                : SizedBox(),
+            widgets.arrowButtonProfile(
+                icon: "favorites",
+                text: 'favorite',
+                notification: true,
+                page: AppRouter.favorite,
+                isActive: false),
+            widgets.arrowButtonProfile(
+                icon: "discounts",
+                text: 'discounts',
+                page: AppRouter.discountList),
+            widgets.arrowButtonProfile(
+                icon: "stock",
+                text: 'promotions',
+                page: AppRouter.allPromotionsPage),
+            widgets.arrowButtonProfile(
+                icon: "news", text: 'news', page: AppRouter.allNewsPage),
+            const SizedBox(height: 27),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 26.0),
+              child: widgets.helpDaria(),
+            ),
+            Prefs.isLogin
+                ? Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20.0,horizontal: 20),
+                    child: widgets.currencyAndCityWidget(),
+                  )
+                : SizedBox(
+                    height: 25,
+                  ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 26.0),
+              child: Text(
                 "reference_information".tr,
                 style: widgets.robotoConsid(fontSize: 14),
               ),
-              SizedBox(height: 10),
-              widgets.arrowButtonProfile(
-                  icon: "delivery_and_timing", text: 'delivery_and_terms'),
-              widgets.arrowButtonProfile(
-                  icon: "payment_and_installments",
-                  text: 'payment_and_installments'),
-              widgets.arrowButtonProfile(
-                  icon: "pick_up_points", text: 'pickup_points'),
-              widgets.arrowButtonProfile(
-                  icon: "organizations_and_businesses",
-                  text: 'organizations_and_business'),
-              widgets.arrowButtonProfile(icon: "faq", text: 'faq'),
-            ],
-          ),
+            ),
+            SizedBox(height: 10),
+            widgets.arrowButtonProfile(
+                icon: "delivery_and_timing", text: 'delivery_and_terms'),
+            widgets.arrowButtonProfile(
+                icon: "payment_and_installments",
+                text: 'payment_and_installments'),
+            widgets.arrowButtonProfile(
+                icon: "pick_up_points", text: 'pickup_points'),
+            widgets.arrowButtonProfile(
+                icon: "organizations_and_businesses",
+                text: 'organizations_and_business'),
+            widgets.arrowButtonProfile(icon: "faq", text: 'faq'),
+          ],
         ),
         const SizedBox(height: 40),
         widgets.bottomInfoBar()

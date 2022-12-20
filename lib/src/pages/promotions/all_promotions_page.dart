@@ -17,6 +17,8 @@ class AllPromotionsPage extends StatelessWidget {
     final allPromotionsController = Get.put(AllPromotionsController());
     return Scaffold(
       appBar: SearchBar2(title: "promotions".tr),
+      bottomNavigationBar: widgets.bottomNavigation(
+          currentTab: 0, onSelectTab: allPromotionsController.tabSelect),
       backgroundColor: Colors.white,
       body: Obx(
         () => ListView.builder(

@@ -86,7 +86,7 @@ class BoughtTodayItemWidget extends StatelessWidget {
                 ),
                 Expanded(
                   child: AutoSizeText(
-                    "46 850 сом",
+                    "46 850 с",
                     maxLines: 1,
                     textAlign: TextAlign.center,
                     maxFontSize: 12,

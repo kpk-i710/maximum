@@ -23,6 +23,8 @@ class ProfileParamsPage extends StatelessWidget {
         return false;
       },
       child: Scaffold(
+        bottomNavigationBar: widgets.bottomNavigation(
+            currentTab: 0, onSelectTab: controller.tabSelect),
         body: Obx(() {
           return SafeArea(
             child: SingleChildScrollView(
@@ -74,31 +76,28 @@ class ProfileParamsPage extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 20),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                    child: Column(
-                      children: [
-                        widgets.arrowButtonProfile(
-                            icon: "profile_circle_outlined",
-                            text: 'personal_data1',
-                            page: AppRouter.personalData),
-                        widgets.arrowButtonProfile(
-                          icon: "notification",
-                          text: 'notification_settings',
-                          page: AppRouter.notifacationsPage,
-                        ),
-                        widgets.arrowButtonProfile(
-                          icon: "",
-                          page: AppRouter.addPhone,
-                          text: 'my_contacts',
-                        ),
-                        widgets.arrowButtonProfile(
-                          icon: "",
-                          text: 'organization',
-                          page: AppRouter.organizationPage,
-                        ),
-                      ],
-                    ),
+                  Column(
+                    children: [
+                      widgets.arrowButtonProfile(
+                          icon: "profile_circle_outlined",
+                          text: 'personal_data1',
+                          page: AppRouter.personalData),
+                      widgets.arrowButtonProfile(
+                        icon: "notification",
+                        text: 'notification_settings',
+                        page: AppRouter.notifacationsPage,
+                      ),
+                      widgets.arrowButtonProfile(
+                        icon: "",
+                        page: AppRouter.addPhone,
+                        text: 'my_contacts',
+                      ),
+                      widgets.arrowButtonProfile(
+                        icon: "",
+                        text: 'organization',
+                        page: AppRouter.organizationPage,
+                      ),
+                    ],
                   ),
                   SizedBox(height: 20),
                   Padding(
@@ -119,7 +118,7 @@ class ProfileParamsPage extends StatelessWidget {
                     child: widgets.editTextButton(
                         icon: 'dollar_grey',
                         text: 'Валюта: Кыргызсикий сом',
-                        secondIcon: "kyrgyzstan"),
+                        secondIcon: "kyrgyzstan", onTap: () {  }),
                   ),
                   SizedBox(height: 20),
                   Padding(
@@ -141,7 +140,7 @@ class ProfileParamsPage extends StatelessWidget {
                           return Obx(() {
                             return Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: GestureDetector(
+                              child: widgets.customButton(
                                 onTap: () {
                                   controller.selectedLang.value =
                                       controller.languageIcons[index];
@@ -190,7 +189,7 @@ class ProfileParamsPage extends StatelessWidget {
                   SizedBox(height: 15),
                   widgets.helpDariaNew(),
                   SizedBox(height: 50),
-                  GestureDetector(
+                  widgets.customButton(
                     onTap: () {
                       Prefs.isLogin = false;
                       Get.back();

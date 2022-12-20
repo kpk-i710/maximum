@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:maxkgapp/src/helpers/helper.dart';
 import 'package:maxkgapp/src/models/notification_all.dart';
 import '../../repositories/app_repo.dart';
 
@@ -10,7 +11,7 @@ class NotificationsPageController extends GetxController {
   ].obs;
 
   var oldNoti = <NotificationAll>[].obs;
-
+  void tabSelect(int index) => Helper.tabSelect(index);
   nakeOldNoti({required int index}) {
     print("удалил");
     if (newNoti.length >= 1) {

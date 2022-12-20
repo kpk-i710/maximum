@@ -1,4 +1,5 @@
  import 'package:get/get.dart';
+import 'package:maxkgapp/src/helpers/helper.dart';
 
 import '../../../../models/dicount_list_model.dart';
 import '../../../../repositories/dicount_repo_list.dart';
@@ -6,6 +7,7 @@ import '../../../../repositories/dicount_repo_list.dart';
 class DiscountPageNewController extends GetxController {
   DiscountListDetaile? dicount_list;
   var isLoaded = false.obs;
+  void tabSelect(int index) => Helper.tabSelect(index);
 
   getData() async {
     dicount_list = await RemoteService()

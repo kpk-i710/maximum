@@ -29,324 +29,326 @@ class DiscountCardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: SearchBar2(title: Get.arguments['title']),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                DiscountSwipeWidget(
-                    image:
-                        "https://max.kg/nal/img/${product?.idPost}/b_${product?.img}"),
-                SizedBox(height: 20),
-                DiscountCartDiscription(product: product),
-                SizedBox(height: 22),
-
-                SizedBox(height: 10),
-
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Row(
-                    children: [
-                      widgets.favoriteWithPrice(price: product?.price),
-                      SizedBox(width: 20),
-                      Expanded(
-                        child: Container(
-                          height: 50.0,
-                          decoration: BoxDecoration(
-                              border:
-                                  Border.all(color: AppTextStyles.colorRedMy),
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(5)),
-                          child: ElevatedButton.icon(
-                            onPressed: () {
-                              // controller.isAddedToCard.value = true;
-                            },
-                            style: ElevatedButton.styleFrom(
-                                primary: Colors.transparent,
-                                shadowColor: Colors.transparent),
-                            icon: Icon(
-                              Icons.shopping_cart,
-                              color: AppTextStyles.colorRedMy,
-                            ),
-                            label: Text(
-                              'buy'.tr.toUpperCase(),
-                              style: widgets.robotoConsid(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: AppTextStyles.colorRedMy),
-                            ),
+        appBar: SearchBar2(
+            title: Get.arguments != null ? Get.arguments['title'] : ""),
+        bottomNavigationBar: widgets.bottomNavigation(
+            currentTab: 0, onSelectTab: controller.tabSelect),
+        body: Stack(
+          children: [
+            SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    DiscountSwipeWidget(
+                        image:
+                            "https://max.kg/nal/img/${product?.idPost}/b_${product?.img}"),
+                    SizedBox(height: 20),
+                    widgets.boxShadows(
+                      child: Column(
+                        children: [
+                          DiscountCartDiscription(product: product),
+                          Text(
+                            "minimum_order".tr,
+                            style: widgets.robotoConsid(),
                           ),
-                        ),
+                        ],
                       ),
-                    ],
-                  ),
-                ),
-
-                // DiscoiuntCartHelp(),
-                SizedBox(
-                  height: 50,
-                ),
-                Text(
-                  "description".tr.toUpperCase(),
-                  style: widgets.robotoConsid(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                ExpandText(
-                  expandOnGesture: true,
-                  maxLines: 3,
-                  "expample_card2".tr,
-                  style: widgets.robotoConsid(color: Color(0xff000000)),
-                  indicatorBuilder: (context, onTap, expanded) => InkWell(
-                      onTap: onTap,
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        child: widgets.underLineDashed(
-                            child: Text(
-                          !expanded ? "more".tr : "collapse".tr,
-                          style: widgets.robotoConsid(color: Color(0xff142A65)),
-                        )),
-                      )),
-                ),
-                SizedBox(
-                  height: 11,
-                ),
-                Text(
-                  "characteristics".tr.toUpperCase(),
-                  style: widgets.robotoConsid(fontWeight: FontWeight.bold),
-                ),
-                SizedBox(
-                  height: 11,
-                ),
-                ExpandText(
-                  expandOnGesture: true,
-                  maxLines: 3,
-                  "expample_card3".tr,
-                  style: widgets.robotoConsid(color: Color(0xff000000)),
-                  indicatorBuilder: (context, onTap, expanded) => InkWell(
-                      onTap: onTap,
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        child: widgets.underLineDashed(
-                            child: Text(
-                          !expanded ? "more".tr : "collapse".tr,
-                          style: widgets.robotoConsid(color: Color(0xff142A65)),
-                        )),
-                      )),
-                ),
-                SizedBox(height: 8),
-                Text(
-                  "video".tr.toUpperCase(),
-                  style: widgets.robotoConsid(fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 14),
-                YoutubePlayer(
-                  controller: controller.controller,
-                  bottomActions: [
-                    CurrentPosition(),
-                    ProgressBar(
-                      isExpanded: true,
-                      colors: ProgressBarColors(
-                          playedColor: Colors.red, handleColor: Colors.red),
-                    )
-                  ],
-                ),
-                SizedBox(height: 57),
-                Text(
-                  "documents".tr.toUpperCase(),
-                  style: widgets.robotoConsid(fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 7),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Image.asset(
-                      'assets/images/pdf.png',
-                      width: 29,
                     ),
-                    SizedBox(width: 9),
+                    // buyButton()
+                    // DiscoiuntCartHelp(),
+                    SizedBox(
+                      height: 30,
+                    ),
                     Text(
-                      "instruction".tr,
-                      style: widgets.robotoConsid(),
+                      "description".tr.toUpperCase(),
+                      style: widgets.robotoConsid(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                    Spacer(),
-                    widgets.underLine(
-                        child: Text(
-                          "download".tr,
-                          style: widgets.robotoConsid(
-                            color: Color(0xff0C54A1),
-                          ),
-                        ),
-                        hight: 0),
-                  ],
-                ),
-                SizedBox(height: 18),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Image.asset(
-                      'assets/images/pdf.png',
-                      width: 29,
+                    SizedBox(
+                      height: 5,
                     ),
-                    SizedBox(width: 9),
+                    ExpandText(
+                      expandOnGesture: true,
+                      maxLines: 3,
+                      "expample_card2".tr,
+                      style: widgets.robotoConsid(color: Color(0xff000000)),
+                      indicatorBuilder: (context, onTap, expanded) => InkWell(
+                          onTap: onTap,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: widgets.underLineDashed(
+                                child: Text(
+                              !expanded ? "more".tr : "collapse".tr,
+                              style: widgets.robotoConsid(
+                                  color: Color(0xff142A65)),
+                            )),
+                          )),
+                    ),
+                    SizedBox(
+                      height: 11,
+                    ),
                     Text(
-                      "instruction".tr,
-                      style: widgets.robotoConsid(),
-                    ),
-                    Spacer(),
-                    widgets.underLine(
-                        child: Text(
-                          "download".tr,
-                          style: widgets.robotoConsid(
-                            color: Color(0xff0C54A1),
-                          ),
-                        ),
-                        hight: 0),
-                  ],
-                ),
-                SizedBox(
-                  height: 26,
-                ),
-                Row(
-                  children: [
-                    Text(
-                      "reviews".tr.toUpperCase() + " /",
+                      "characteristics".tr.toUpperCase(),
                       style: widgets.robotoConsid(fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(width: 13),
-                    RatingBar.builder(
-                      initialRating: 4,
-                      minRating: 1,
-                      direction: Axis.horizontal,
-                      allowHalfRating: true,
-                      itemCount: 5,
-                      itemSize: 15,
-                      itemBuilder: (context, _) => Icon(
-                        Icons.star,
-                        color: Colors.amber,
-                        size: 2,
-                      ),
-                      onRatingUpdate: (rating) {
-                        print(rating);
-                      },
+                    SizedBox(
+                      height: 11,
                     ),
-                  ],
-                ),
-                SizedBox(height: 6),
-                Center(
-                  child: Text(
-                    "expample_card4".tr,
-                    style: widgets.robotoConsid(),
-                  ),
-                ),
-                SizedBox(height: 20),
-                widgets.writeFeedbackButton(
-                    text: 'write_feedback'.tr, onPressed: () {}),
-                SizedBox(height: 30),
-                ExpandChild(
-                  collapsedVisibilityFactor: 0.6,
-                  indicatorBuilder: (context, onTap, expanded) => InkWell(
-                      onTap: onTap,
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        child: widgets.underLineDashed(
-                            child: Text(
-                          !expanded ? "more".tr : "collapse".tr,
-                          style: widgets.robotoConsid(color: Color(0xff142A65)),
-                        )),
-                      )),
-                  child: Column(
-                    children: [
-                      widgets.userFeedback(),
-                      widgets.userFeedback(),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 30),
-                widgets.boxShadows(
-                    child: Row(
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "all_products_category".tr,
-                          style: widgets.robotoConsid(),
-                        ),
-                        Row(
-                          children: [
-                            widgets.underLineDashed(
+                    ExpandText(
+                      expandOnGesture: true,
+                      maxLines: 3,
+                      "expample_card3".tr,
+                      style: widgets.robotoConsid(color: Color(0xff000000)),
+                      indicatorBuilder: (context, onTap, expanded) => InkWell(
+                          onTap: onTap,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: widgets.underLineDashed(
                                 child: Text(
-                              "Ноутбуки".tr,
+                              !expanded ? "more".tr : "collapse".tr,
                               style: widgets.robotoConsid(
-                                  color: Color(0xff142A65), height: 2),
+                                  color: Color(0xff142A65)),
                             )),
-                            SizedBox(width: 6),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 14.0),
-                              child: Icon(
-                                Icons.arrow_forward_ios,
-                                size: 12,
-                                color: Color(0xff142A65),
-                              ),
-                            ),
-                          ],
+                          )),
+                    ),
+                    SizedBox(height: 8),
+                    Text(
+                      "video".tr.toUpperCase(),
+                      style: widgets.robotoConsid(fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 14),
+                    YoutubePlayer(
+                      controller: controller.controller,
+                      bottomActions: [
+                        CurrentPosition(),
+                        ProgressBar(
+                          isExpanded: true,
+                          colors: ProgressBarColors(
+                              playedColor: Colors.red, handleColor: Colors.red),
                         )
                       ],
                     ),
-                    Spacer(),
-                    Image.asset(
-                      "assets/images/imagePc.png",
-                      width: 60,
-                      height: 60,
+                    SizedBox(height: 57),
+                    Text(
+                      "documents".tr.toUpperCase(),
+                      style: widgets.robotoConsid(fontWeight: FontWeight.bold),
                     ),
-                  ],
-                )),
-                SizedBox(height: 31),
-                Column(
-                  children: [
-                    widgets.arrowButton(
-                        icon: 'car_ride', label: 'delivery_methods', index: 0),
-                    SizedBox(height: 12),
-                    widgets.arrowButton(
-                        icon: 'wallet',
-                        label: 'payment_сonvenient_way',
-                        index: 1),
-                    SizedBox(height: 12),
-                    widgets.arrowButton(
-                        icon: 'safely', label: 'buyer_warranties', index: 1),
-                  ],
-                ),
-                SizedBox(height: 46),
-                Text(
-                  "similar_products".tr.toUpperCase() + " /",
-                  style: widgets.robotoConsid(fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 23),
-                Obx(() => BrandOffersGridWidget(
-                      list: homeController.discountList.value,
+                    SizedBox(height: 7),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Image.asset(
+                          'assets/images/pdf.png',
+                          width: 29,
+                        ),
+                        SizedBox(width: 9),
+                        Text(
+                          "instruction".tr,
+                          style: widgets.robotoConsid(),
+                        ),
+                        Spacer(),
+                        widgets.underLine(
+                            child: Text(
+                              "download".tr,
+                              style: widgets.robotoConsid(
+                                color: Color(0xff0C54A1),
+                              ),
+                            ),
+                            hight: 0),
+                      ],
+                    ),
+                    SizedBox(height: 18),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Image.asset(
+                          'assets/images/pdf.png',
+                          width: 29,
+                        ),
+                        SizedBox(width: 9),
+                        Text(
+                          "instruction".tr,
+                          style: widgets.robotoConsid(),
+                        ),
+                        Spacer(),
+                        widgets.underLine(
+                            child: Text(
+                              "download".tr,
+                              style: widgets.robotoConsid(
+                                color: Color(0xff0C54A1),
+                              ),
+                            ),
+                            hight: 0),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 26,
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          "reviews".tr.toUpperCase() + " /",
+                          style:
+                              widgets.robotoConsid(fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(width: 13),
+                        RatingBar.builder(
+                          initialRating: 4,
+                          minRating: 1,
+                          direction: Axis.horizontal,
+                          allowHalfRating: true,
+                          itemCount: 5,
+                          itemSize: 15,
+                          itemBuilder: (context, _) => Icon(
+                            Icons.star,
+                            color: Colors.amber,
+                            size: 2,
+                          ),
+                          onRatingUpdate: (rating) {
+                            print(rating);
+                          },
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 6),
+                    Center(
+                      child: Text(
+                        "expample_card4".tr,
+                        style: widgets.robotoConsid(),
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    widgets.writeFeedbackButton(
+                        text: 'write_feedback'.tr, onPressed: () {}),
+                    SizedBox(height: 30),
+                    ExpandChild(
+                      collapsedVisibilityFactor: 0.6,
+                      indicatorBuilder: (context, onTap, expanded) => InkWell(
+                          onTap: onTap,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: widgets.underLineDashed(
+                                child: Text(
+                              !expanded ? "more".tr : "collapse".tr,
+                              style: widgets.robotoConsid(
+                                  color: Color(0xff142A65)),
+                            )),
+                          )),
+                      child: Column(
+                        children: [
+                          widgets.userFeedback(),
+                          widgets.userFeedback(),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 30),
+                    widgets.boxShadows(
+                        child: Row(
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "all_products_category".tr,
+                              style: widgets.robotoConsid(),
+                            ),
+                            Row(
+                              children: [
+                                widgets.underLineDashed(
+                                    child: Text(
+                                  "Ноутбуки".tr,
+                                  style: widgets.robotoConsid(
+                                      color: Color(0xff142A65), height: 2),
+                                )),
+                                SizedBox(width: 6),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 14.0),
+                                  child: Icon(
+                                    Icons.arrow_forward_ios,
+                                    size: 12,
+                                    color: Color(0xff142A65),
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                        Spacer(),
+                        Image.asset(
+                          "assets/images/imagePc.png",
+                          width: 60,
+                          height: 60,
+                        ),
+                      ],
                     )),
-                SizedBox(height: 20),
-                widgets.writeFeedbackButton(
-                    text: 'show_more2'.tr, onPressed: () {}),
-                SizedBox(height: 46),
-                Text(
-                  "you_watched".tr.toUpperCase() + " /",
-                  style: widgets.robotoConsid(fontWeight: FontWeight.bold),
+                    SizedBox(height: 31),
+                    Column(
+                      children: [
+                        widgets.arrowButton(
+                            icon: 'car_ride',
+                            label: 'delivery_methods',
+                            index: 0),
+                        SizedBox(height: 12),
+                        widgets.arrowButton(
+                            icon: 'wallet',
+                            label: 'payment_сonvenient_way',
+                            index: 1),
+                        SizedBox(height: 12),
+                        widgets.arrowButton(
+                            icon: 'safely',
+                            label: 'buyer_warranties',
+                            index: 1),
+                      ],
+                    ),
+                    SizedBox(height: 46),
+                    Text(
+                      "similar_products".tr.toUpperCase() + " /",
+                      style: widgets.robotoConsid(fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 23),
+                    Obx(() => BrandOffersGridWidget(
+                          list: homeController.discountList.value,
+                        )),
+                    SizedBox(height: 20),
+                    widgets.writeFeedbackButton(
+                        text: 'show_more2'.tr, onPressed: () {}),
+                    SizedBox(height: 46),
+                    Text(
+                      "you_watched".tr.toUpperCase() + " /",
+                      style: widgets.robotoConsid(fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 18),
+                    Obx(() => BoughtTodayGridWidget(
+                          list: homeController.discountList.value,
+                        )),
+                  ],
                 ),
-                SizedBox(height: 18),
-                Obx(() => BoughtTodayGridWidget(
-                      list: homeController.discountList.value,
-                    )),
-              ],
+              ),
             ),
-          ),
+            widgets.floatingCard(context: context, price: product?.price, name: product?.naim ),
+            // Align(
+            //     alignment: Alignment(0, 1),
+            //     child: Container(
+            //       height: 60,
+            //       color: Colors.white,
+            //       child: Center(
+            //           child: Padding(
+            //         padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            //         child: widgets.counterCardRuntime(
+            //           context: context,
+            //             price: product?.price,
+            //             onTap: () {
+            //               controller.counter.value = 1;
+            //               widgets.showOptionCountProduct(
+            //                   context: context, name: '${product?.naim}');
+            //             }),
+            //       )),
+            //     )),
+          ],
         ));
   }
 }

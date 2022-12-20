@@ -101,7 +101,7 @@ class NewsGridItemWidget extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.only(left: 9.0),
                           child: AutoSizeText(
-                            "${result?.cenaok.toString()} С",
+                            "${result?.cenaok.toString()} с",
                             maxLines: 1,
                             maxFontSize: 16,
                             textAlign: TextAlign.center,
@@ -114,7 +114,7 @@ class NewsGridItemWidget extends StatelessWidget {
                         ),
                         Expanded(
                           child: AutoSizeText(
-                            "${result?.oldPrice.toString()} сом",
+                            "${result?.oldPrice.toString()} с",
                             maxLines: 1,
                             textAlign: TextAlign.center,
                             maxFontSize: 12,

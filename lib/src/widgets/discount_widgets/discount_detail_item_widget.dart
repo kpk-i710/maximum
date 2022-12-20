@@ -103,7 +103,7 @@ class DiscountDetailItemWidget extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.only(left: 9.0),
                           child: AutoSizeText(
-                            "${product?.cenaok.toString()} С",
+                            "${product?.cenaok.toString()} с",
                             maxLines: 1,
                             maxFontSize: 16,
                             textAlign: TextAlign.center,
@@ -116,7 +116,7 @@ class DiscountDetailItemWidget extends StatelessWidget {
                         ),
                         Expanded(
                           child: AutoSizeText(
-                            "${product?.oldPrice.toString()} сом",
+                            "${product?.oldPrice.toString()} с",
                             maxLines: 1,
                             textAlign: TextAlign.center,
                             maxFontSize: 12,

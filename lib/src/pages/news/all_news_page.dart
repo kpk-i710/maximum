@@ -17,6 +17,8 @@ class AllNewsPage extends StatelessWidget {
     final allNewsController = Get.put(AllNewsController());
     return Scaffold(
       appBar: SearchBar2(title: "news".tr),
+      bottomNavigationBar: widgets.bottomNavigation(
+          currentTab: 0, onSelectTab: allNewsController.tabSelect),
       backgroundColor: Colors.white,
       body: Obx(
         () => ListView.builder(

@@ -6,7 +6,7 @@ import '../../../widgets/news_widgets/news_grid_item_widget.dart';
 import '../../../widgets/search_widgets/search_bar_2.dart';
 import 'news_list_page_controller.dart';
 import 'level_below/page_news.dart';
-
+import '../../../widgets/widgets.dart' as widgets;
 class NewsListPage extends StatelessWidget {
   NewsListPage({Key? key}) : super(key: key);
 
@@ -18,6 +18,8 @@ class NewsListPage extends StatelessWidget {
     return Scaffold(
       appBar:
           SearchBar2(title: newsListPageController.newsList?.news.naim ?? ""),
+      bottomNavigationBar: widgets.bottomNavigation(
+          currentTab: 0, onSelectTab: newsListPageController.tabSelect),
       body: Obx(() {
         return Visibility(
           visible: newsListPageController.isLoaded.value,

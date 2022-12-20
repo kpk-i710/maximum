@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:maxkgapp/src/helpers/helper.dart';
 import 'package:maxkgapp/src/styles.dart';
 
 import '../../../models/profile.dart';
@@ -32,7 +33,7 @@ class ProfileParamsPageController extends GetxController {
   User get user => Prefs.user;
 
   Profile get profile => Prefs.user.profile!;
-
+  void tabSelect(int index) => Helper.tabSelect(index);
   updateProfile(Profile profile) {
     Prefs.user.profile = profile;
     update();

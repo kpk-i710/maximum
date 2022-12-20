@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:maxkgapp/src/helpers/helper.dart';
 
 import '../../../models/news.dart';
 import '../../../models/news_list.dart';
@@ -10,7 +11,7 @@ class NewsListPageController extends GetxController {
   NewsList? newsList  ;
   var isLoaded = false.obs;
 
-
+  void tabSelect(int index) => Helper.tabSelect(index);
   @override
   Future<void> onInit() async {
     newsList =

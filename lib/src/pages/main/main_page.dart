@@ -19,7 +19,7 @@ class _MainPageState extends State<MainPage> {
     HomePage(key: UniqueKey()),
     // CatalogNew(key: UniqueKey()),
     CatalogPage(key: UniqueKey(), bottomNavigation: true, dialog: true),
-    // FavoritePage(key: UniqueKey()),
+    FavoritePage(),
     // CartPage(key: UniqueKey()),
     ShoppingCartPage(),
     ProfilePage(key: UniqueKey()),
@@ -33,7 +33,7 @@ class _MainPageState extends State<MainPage> {
     if (Get.arguments != null) {
       currentTab = Get.arguments as int;
     }
-    currentPage = pages[currentTab ];
+    currentPage = pages[currentTab];
     super.initState();
   }
 
@@ -41,8 +41,7 @@ class _MainPageState extends State<MainPage> {
     setState(() {
       if (index == 1) {
         Get.dialog(pages[index]).then((_index) {
-          if (_index != null)
-            tabSelect(_index);
+          if (_index != null) tabSelect(_index);
         });
         return;
       }

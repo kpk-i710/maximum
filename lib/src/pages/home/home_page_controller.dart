@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:maxkgapp/src/helpers/helper.dart';
 import 'package:maxkgapp/src/helpers/prefs.dart';
 import 'package:maxkgapp/src/models/news.dart';
 import '../../models/app_banner.dart';
@@ -15,7 +16,7 @@ class HomePageController extends GetxController {
   final _productRepo = Get.find<ProductRepo>();
   final _catalogRepo = Get.find<CatalogRepo>();
   final _discountRepo = Get.find<DiscountRepo>();
-
+  void tabSelect(int index) => Helper.tabSelect(index);
   final viewedProductsList = <Product>[].obs;
   final bestsellerProductsList = <Product>[].obs;
   final trendProductsList = <Product>[].obs;

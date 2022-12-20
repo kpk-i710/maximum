@@ -326,6 +326,7 @@ class HomePage extends StatelessWidget {
                       ),
                       widgets.moreButton(
                         onPressed: () {
+
                           Get.to(AllNewsPage());
                         },
                         text: 'show_more'.tr,

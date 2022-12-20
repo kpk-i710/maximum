@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart' hide MenuItem;
 import 'package:get/get.dart';
+import 'package:maxkgapp/src/pages/current_orders/order_page/order_page_controller.dart';
 
 import '../../../helpers/prefs.dart';
 import '../../../styles.dart';
@@ -7,8 +8,9 @@ import '../../../widgets/app_icon.dart';
 import '../../../widgets/widgets.dart' as widgets;
 
 class OrderPage extends StatelessWidget {
-  const OrderPage({Key? key}) : super(key: key);
+    OrderPage({Key? key}) : super(key: key);
 
+  final controller = Get.put(OrderPageController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,6 +26,9 @@ class OrderPage extends StatelessWidget {
           ),
         ),
       ),
+
+      bottomNavigationBar: widgets.bottomNavigation(
+          currentTab: 0, onSelectTab: controller.tabSelect),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

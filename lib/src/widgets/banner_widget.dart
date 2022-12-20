@@ -22,7 +22,7 @@ class BannerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: height.w,
-      margin: margin ?? EdgeInsets.only(top: 13),
+      margin: margin ?? EdgeInsets.only(top: 0),
       child: list.isEmpty
           ? widgets.blockPlaceholder()
           : Stack(children: [

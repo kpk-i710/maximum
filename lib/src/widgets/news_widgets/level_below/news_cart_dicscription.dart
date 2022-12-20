@@ -21,7 +21,7 @@ class NewsCartDiscriptionWidget extends StatelessWidget {
           Row(
             children: [
               Text(
-                "${result?.price} с.",
+                "${result?.price} с",
                 style: widgets.robotoConsid(
                     color: Color(
                       0xff991A4E,
@@ -33,7 +33,7 @@ class NewsCartDiscriptionWidget extends StatelessWidget {
                 width: 20,
               ),
               Text(
-                "${result?.price} с.",
+                "${result?.price} с",
                 style: widgets.robotoConsid(
                     color: Color(
                       0xffCCCCCC,
@@ -148,43 +148,7 @@ class NewsCartDiscriptionWidget extends StatelessWidget {
           ),
           SizedBox(height: 12),
           widgets.additionalService(),
-          SizedBox(height: 35),
-          Row(
-            children: [
-              Expanded(
-                child: Container(
-                  height: 50.0,
-                  decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                          colors: [Color(0xff112B66), Color(0xff991A4E)]),
-                      borderRadius: BorderRadius.circular(5)),
-                  child: ElevatedButton.icon(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                        primary: Colors.transparent,
-                        shadowColor: Colors.transparent),
-                    icon: Icon(Icons.shopping_cart),
-                    label: Text(
-                      'to_cart'.tr.toUpperCase(),
-                      style: widgets.robotoConsid(
-                          fontWeight: FontWeight.bold, color: Colors.white),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(width: 8),
-              widgets.addFavorite(
-                sizeButton: 50,
-                sizeFavorite: 30,
-              ),
-              SizedBox(width: 8),
-              widgets.shareButton(
-                sizeButton: 50,
-                sizeFavorite: 30,
-              ),
-            ],
-          ),
-          SizedBox(height: 15),
+
           Text(
             "minimum_order".tr,
             style: widgets.robotoConsid(),

@@ -1,13 +1,13 @@
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-
+import 'package:maxkgapp/src/helpers/helper.dart';
 import '../../models/news.dart';
 import '../../repositories/app_repo.dart';
 
 class AllNewsController extends GetxController {
   final newsList = <News1>[].obs;
   final _appRepo = Get.find<AppRepo>();
-
+  void tabSelect(int index) => Helper.tabSelect(index);
   String getDate(String date) {
     DateTime tempDate = DateFormat("yyyy-MM-dd hh:mm:ss").parse(date);
     print("день появления");

@@ -18,6 +18,8 @@ class NotificationsDelivryPage extends StatelessWidget {
         length: 2,
         child: Scaffold(
             backgroundColor: context.theme.background,
+            bottomNavigationBar: widgets.bottomNavigation(
+                currentTab: 0, onSelectTab: controller.tabSelect),
             appBar: AppBar(
               backgroundColor: context.theme.background,
               leading: BackButton(color: Colors.black),

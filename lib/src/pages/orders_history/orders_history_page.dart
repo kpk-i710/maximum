@@ -10,6 +10,8 @@ class OrdersHistPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: widgets.bottomNavigation(
+          currentTab: 0, onSelectTab: controller.tabSelect),
       appBar: AppBar(
         elevation: 2,
         backgroundColor: Colors.white,

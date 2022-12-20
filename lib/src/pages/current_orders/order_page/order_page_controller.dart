@@ -1,19 +1,12 @@
 import 'package:get/get.dart';
+import 'package:maxkgapp/src/helpers/helper.dart';
 
 import '../../../models/order.dart';
 
 class OrderPageController extends GetxController {
-  late Order order;
 
 
+  void tabSelect(int index) => Helper.tabSelect(index);
 
-  @override
-  void onInit() {
-    if (Get.arguments != null && Get.arguments is Order) {
-      order = Get.arguments as Order;
-    } else {
-      throw Exception('Invalid or null argument');
-    }
-    super.onInit();
-  }
+
 }

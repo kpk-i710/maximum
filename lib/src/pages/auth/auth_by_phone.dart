@@ -20,12 +20,14 @@ class AuthByPhone extends StatelessWidget {
         leading: SizedBox(),
         backgroundColor: Colors.transparent,
         actions: [
-          IconButton(
-            onPressed: () {
-              Get.back();
-            },
-            icon: widgets.anySvg(nameSvg: "close_auth"),
-          ),
+          Padding(
+            padding: const EdgeInsets.only(right: 5.0,top: 10),
+            child: widgets.customButtonOval(
+                onTap: () {
+                  Get.back();
+                },
+                child: widgets.anySvg(nameSvg: 'close', size: Size(17, 17))),
+          )
         ],
       ),
       body: widgets.getTheme(
@@ -89,7 +91,7 @@ class AuthByPhone extends StatelessWidget {
                       controller.checkLogin();
                     }),
                 Spacer(),
-                GestureDetector(
+                widgets.customButton(
                   onTap: () {
                     Get.toNamed('/auth');
                   },
