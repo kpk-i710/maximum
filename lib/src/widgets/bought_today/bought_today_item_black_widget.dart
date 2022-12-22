@@ -7,8 +7,7 @@ import '../../styles.dart';
 import '../../widgets/widgets.dart' as widgets;
 
 class BoughtTodayItemBlackWidget extends StatelessWidget {
-  const BoughtTodayItemBlackWidget(
-      {Key? key, required this.list,  this.index})
+  const BoughtTodayItemBlackWidget({Key? key, required this.list, this.index})
       : super(key: key);
 
   final List<Discount> list;
@@ -18,66 +17,52 @@ class BoughtTodayItemBlackWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 18.0),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5),
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Color(0xffD9D9D9).withOpacity(0.6),
-              spreadRadius: 0,
-              blurRadius: 10,
-              offset: Offset(0, 3), // changes position of shadow
-            ),
-          ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              height: 180,
-              child: Stack(
-                children: [
-                  Image.asset(
-                    "assets/images/notebook_item.png",
-                    fit: BoxFit.fill,
-                    height: 180,
-                  ),
-                ],
+      padding: const EdgeInsets.all(8.0),
+      child: SizedBox(
+        width: Get.width / 2.7,
+        child: widgets.boxShadows(
+          padding: 0,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Image.asset(
+                "assets/images/notebook_item.png",
+                fit: BoxFit.contain,
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 9.0,top: 2.0),
-              child: AutoSizeText(
-                "19 000 c",
-                maxLines: 1,
-                maxFontSize: 16,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontFamily: "MPLUSRounded1c-Black",
-                    fontSize: 16,
-                    color: Color(0xff2C2D2E),
-                    fontWeight: FontWeight.w900),
+              Padding(
+                padding: const EdgeInsets.only(left: 5.0, top: 5.0),
+                child: Text(
+                  "19 000 c",
+                  maxLines: 1,
+
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontFamily: "MPLUSRounded1c-Black",
+                      fontSize: 14,
+                      color: Color(0xff2C2D2E),
+                      fontWeight: FontWeight.w900),
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 9.0,bottom: 4),
-              child: AutoSizeText(
-                "Менделейка / Набор для опытов 6шт /Детский наборdsfffffffffffffffff",
-                maxFontSize: 14,
-                minFontSize: 14,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 2,
-                style: TextStyle(
-                    fontFamily: "RobotoCondensed-Regular",
-                    fontSize: 14,
-                    fontWeight: FontWeight.w200),
+
+              Padding(
+                padding: const EdgeInsets.only(left: 5.0, bottom: 4),
+                child: AutoSizeText(
+                  "Менделейка / Набор для опытов 6шт /Детский наборdsfffffffffffffffff",
+                  maxFontSize: 14,
+                  minFontSize: 14,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
+                  style: TextStyle(
+                      fontFamily: "RobotoCondensed-Regular",
+                      fontSize: 14,
+                      fontWeight: FontWeight.w200),
+                ),
               ),
-            ),
-            Padding(padding: EdgeInsets.only(left: 9, bottom: 20),
-            child: widgets.rating(3))
-          ],
+              Padding(
+                  padding: EdgeInsets.only(left: 5, bottom: 20),
+                  child: widgets.rating(3))
+            ],
+          ),
         ),
       ),
     );

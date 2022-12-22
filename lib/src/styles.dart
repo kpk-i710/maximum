@@ -201,6 +201,7 @@ class AppTextStyles {
   static Color colorGrayDividar = Color(0xffEAEAEA);
   static Color colorBurgundy = Color(0xff292862);
   static Color colorGreyThrou = Color( 0xffCCCCCC);
+  static Color colorFocus = Color( 0xffF9F9F9);
 
   static mPlusRounded1c(
           {double fontSize = 12.0,

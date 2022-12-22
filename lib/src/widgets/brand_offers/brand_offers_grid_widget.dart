@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/route_manager.dart';
 import '../../helpers/helper.dart';
 import '../../models/discount.dart';
 
@@ -12,33 +14,40 @@ class BrandOffersGridWidget extends StatelessWidget {
 
   BrandOffersGridWidget({Key? key, required this.list});
 
+
   @override
   Widget build(BuildContext context) {
-    return StaggeredGridView.countBuilder(
-      primary: false,
-      shrinkWrap: true,
-      crossAxisCount: 4,
-      itemCount: list.isEmpty ? 4 : list.length,
-      itemBuilder: (BuildContext context, int index) {
-        return list.isEmpty
-            ? Container(
-                height: 180,
-                margin: EdgeInsets.all(8.0),
-                child: widgets.blockPlaceholder())
-            : index == 0
-                ? BrandOffersItemBlackWidget(
-                    list: list,
-                    index: index,
-                  )
-                : BrandOffersItemWidget(
-                    list: list,
-                    index: index,
-                  );
-      },
-      staggeredTileBuilder: (int index) =>
-          StaggeredTile.fit(Helper.responsive(2, md: 1, lg: 1, xl: 1)),
-      mainAxisSpacing: 0,
-      crossAxisSpacing: 15,
+    return Container(
+      child: ConstrainedBox(
+        constraints: BoxConstraints(maxHeight: Get.width / 2.7 + 130),
+        child: ListView.builder(
+          physics: BouncingScrollPhysics(),
+          itemBuilder: (contexwidgetst, index) {
+            return list.isEmpty
+                ? widgets.productPlaceholder(width: 180, height: 160)
+                : currentItem(index: index);
+          },
+          itemCount: 3,
+          primary: false,
+          shrinkWrap: true,
+          scrollDirection: Axis.horizontal,
+        ),
+      ),
+    );
+  }
+
+  Widget currentItem({required int index}) {
+    if (index == 0) {
+      return BrandOffersItemBlackWidget(
+        index: index,
+        list: list,
+      );
+    }
+    return BrandOffersItemWidget(
+      index: index,
+      list: list,
     );
   }
 }
+// BrandOffersItemBlackWidget
+// BrandOffersItemWidget

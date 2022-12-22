@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:maxkgapp/src/helpers/helper.dart';
 import 'package:maxkgapp/src/helpers/prefs.dart';
@@ -10,8 +11,10 @@ import '../../repositories/app_repo.dart';
 import '../../repositories/discount_repo.dart';
 import '../../models/product.dart';
 import '../../models/catalog.dart';
-
+import '../../widgets/widgets.dart' as widgets;
 class HomePageController extends GetxController {
+
+
   final _appRepo = Get.find<AppRepo>();
   final _productRepo = Get.find<ProductRepo>();
   final _catalogRepo = Get.find<CatalogRepo>();
@@ -30,6 +33,9 @@ class HomePageController extends GetxController {
   final discountBannerList = <AppBanner>[].obs;
 
   final newsList = <News1>[].obs;
+
+
+
 
   @override
   void onInit() {
@@ -65,7 +71,7 @@ class HomePageController extends GetxController {
       discountBannerList.addAll(response.body);
       discountBannerList.refresh();
     });
-    _appRepo.getNewsList(pageSize: 3, sort: '-id').then((response) {
+    _appRepo.getNewsList(pageSize: 100, sort: '-id').then((response) {
       newsList.addAll(response.body);
       newsList.refresh();
     });

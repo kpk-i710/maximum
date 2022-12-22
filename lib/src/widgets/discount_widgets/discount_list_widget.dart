@@ -14,19 +14,19 @@ class DiscountListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StaggeredGridView.countBuilder(
+    return ListView.separated(
       primary: false,
       shrinkWrap: true,
-      crossAxisCount: 4,
       itemCount: list.length,
       itemBuilder: (BuildContext context, int index) {
         return InkWell(
           onTap: () => onItemTap!(index),
           child: DiscountGridItemWidget(discount: list.elementAt(index)),
         );
-      },
-      staggeredTileBuilder: (int index) => new StaggeredTile.fit(
-          MediaQuery.of(context).orientation == Orientation.portrait ? 4 : 2),
+      }, separatorBuilder: (BuildContext context, int index) {
+      return  SizedBox(height: 20);
+    },
+
     );
   }
 }

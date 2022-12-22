@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:maxkgapp/src/helpers/helper.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -20,12 +21,17 @@ class DicountCardPageController extends GetxController {
     false,
   ].obs;
 
+
+
   final videoURL = "https://youtu.be/YMx8Bbev6T4";
 
   late YoutubePlayerController controller;
 
   minus({required BuildContext context}) {
-    if (counter >= 1) counter = counter - 1;
+    if (counter >= 1) {
+      counter = counter - 1;
+      saveCounter();
+    }
     if (counter == 0) {
       widgets.deletedFromCardSnackBar(context: context);
     }
@@ -33,10 +39,23 @@ class DicountCardPageController extends GetxController {
 
   plus() {
     counter = counter + 1;
+    saveCounter();
+  }
+
+  void saveCounter() {
+    final box = GetStorage();
+    box.write("counter", counter.value);
+  }
+
+  int getCounter() {
+    final box = GetStorage();
+    box.writeIfNull('counter',0);
+    return box.read("counter" );
   }
 
   @override
   void onInit() {
+    counter.value = getCounter();
     final videoID = YoutubePlayer.convertUrlToId(videoURL);
     controller = YoutubePlayerController(
         initialVideoId: videoID!,

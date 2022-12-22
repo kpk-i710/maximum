@@ -448,7 +448,7 @@ class CartPage extends StatelessWidget {
             )),
         const SizedBox(height: 25),
         widgets
-            .titleWidget('viewed_products'.tr)
+            .titleWidget(title: 'viewed_products'.tr)
             .paddingSymmetric(horizontal: 12),
         Obx(() => ProductsCarouselWidget(
               list: controller.viewedProductsList,

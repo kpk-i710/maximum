@@ -7,7 +7,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart' hide MenuItem;
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
-import 'package:maxkgapp/src/pages/discounts/discount_card_page.dart';
 import 'package:maxkgapp/src/pages/orders_history/order_history_page_controller.dart';
 import 'package:maxkgapp/src/pages/shopping_cart/shopping_cart_page.dart';
 import 'package:maxkgapp/src/pages/user/profile_params/profile_params_page_controller.dart';
@@ -31,11 +30,11 @@ import '../pages/user/personal_data/personal_data_page_controller.dart';
 import 'orders_widgets/time_line_horizontal.dart';
 import '../styles.dart';
 import 'app_icon.dart';
-import 'cart_widgets/cart_icon.dart';
 import 'orders_widgets/time_line_vertical.dart';
 import '../models/news.dart';
 import 'other_controllers_for_widgets/additional_service_controller.dart';
 import '../widgets/widgets.dart' as widgets;
+import 'package:badges/badges.dart';
 
 Widget priceWidget(double price, {TextStyle? style}) {
   if (style != null) {
@@ -79,6 +78,64 @@ Widget priceWidget(double price, {TextStyle? style}) {
   }
 }
 
+
+Widget indicatorDots({required int length, required int currentIndex }){
+
+  return SizedBox(
+    height: 50,
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        for (int i = 0;
+        i < (length > 5 ? 5 : length);
+        i++)
+          AnimatedContainer(
+            duration: Duration(seconds: 1),
+            height: 7,
+            width: currentIndex == i ? 20 : 10,
+            margin: EdgeInsets.only(right: 5),
+            decoration: BoxDecoration(
+                color: currentIndex == i
+                    ? AppTextStyles.colorRedMy
+                    : AppTextStyles.colorGreyThrou,
+                borderRadius: BorderRadius.circular(16)),
+          )
+      ],
+    ),
+  );
+}
+
+Widget homeButton({
+  required String icon,
+  required String text,
+  String? page,
+}) {
+  return boxShadows(
+    padding: 0,
+    child: customButton(
+      child: Container(
+        height: 50,
+        child: Row(
+          children: [
+            SizedBox(width: 15),
+            anySvg(nameSvg: '$icon', size: Size(20, 20)),
+            SizedBox(width: 15),
+            Text(
+              "$text".tr,
+              style: robotoConsid(),
+            ),
+          ],
+        ),
+      ),
+      onTap: () {
+        if (page != null) {
+          Get.toNamed(page);
+        }
+      },
+    ),
+  );
+}
+
 void leaveFeedback({required BuildContext context}) {
   showModalBottomSheet(
       backgroundColor: Colors.transparent,
@@ -105,7 +162,7 @@ Widget leaveFeedbackSheet({
               color: Colors.white,
               borderRadius: BorderRadius.circular(10),
             ),
-            height: MediaQuery.of(context).viewInsets.bottom+300,
+            height: MediaQuery.of(context).viewInsets.bottom + 300,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -168,7 +225,7 @@ Widget inkButton({Function()? onTap, required Widget child}) {
   );
 }
 
-Widget customButton({required Widget child, required Function() onTap}) {
+Widget customButton({required Widget child, required Function()? onTap}) {
   return Material(
     color: Colors.transparent,
     child: InkWell(
@@ -870,20 +927,67 @@ Widget additionalService() {
 }
 
 Widget titleWidget(
-  String title, {
-  Widget? trailing,
-  String suffix = ':',
-  Function()? onTrailingTap,
-}) {
-  return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 0),
-    child: ListTile(
-      title: Text(
-        title + suffix,
-        style: robotoConsid(fontSize: 20, fontWeight: FontWeight.w500),
+    {required String title,
+    double bottom = 10.0,
+    double left = 0.0,
+    double rightTrailing = 0.0,
+    bool isTrailing = false,
+    Function()? onTap}) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.start,
+    children: [
+      Padding(
+        padding: EdgeInsets.only(bottom: bottom, left: left),
+        child: Text(
+          '$title'.tr.toUpperCase(),
+          style: widgets.robotoConsid(
+            fontSize: 16,
+          ),
+        ),
       ),
-      contentPadding: EdgeInsets.symmetric(vertical: 0),
-    ),
+      if (isTrailing)
+        Expanded(
+          child: Row(
+            children: [
+              Spacer(),
+              customButton(
+                child: Padding(
+                  padding: EdgeInsets.only(
+                      bottom: 25.0, left: 20, top: 10, right: rightTrailing),
+                  child: widgets.underLineDashed(
+                      child: Text(
+                    "show_more".tr,
+                    style:
+                        widgets.robotoConsid(color: AppTextStyles.colorBlueMy),
+                  )),
+                ),
+                onTap: onTap,
+              ),
+            ],
+          ),
+        ),
+    ],
+  );
+}
+
+Widget subTitleWidget({
+  required String title,
+  double bottom = 0.0,
+  double left = 0.0,
+}) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.start,
+    children: [
+      Padding(
+        padding: EdgeInsets.only(bottom: bottom, left: left),
+        child: Text(
+          '$title'.tr,
+          style: widgets.robotoConsid(
+            fontSize: 14,
+          ),
+        ),
+      ),
+    ],
   );
 }
 
@@ -942,45 +1046,42 @@ Widget newsItemWidget(News1 newss) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              height: 200,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                image: DecorationImage(
-                  image: CachedNetworkImageProvider(newss.logoUrl!),
-                  fit: BoxFit.cover,
-                ),
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            height: 200,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+              image: DecorationImage(
+                image: CachedNetworkImageProvider(newss.logoUrl!),
+                fit: BoxFit.cover,
               ),
             ),
-            SizedBox(height: 15),
-            Text(
-              newss.title!,
-              style: robotoConsid(fontSize: 17),
-            ),
-            SizedBox(height: 10),
-            Row(
-              children: [
-                Text(
-                  "${controllerNewss.getDate(newss.date!)} ",
-                  style: robotoConsid(
-                      fontSize: 14, color: AppTextStyles.colorGrayMy),
-                ),
-                Spacer(),
-                Icon(
-                  Icons.share,
-                  size: 20,
-                ),
-                SizedBox(width: 10),
-              ],
-            ),
-            SizedBox(height: 10),
-          ],
-        ),
+          ),
+          SizedBox(height: 15),
+          Text(
+            newss.title!,
+            style: robotoConsid(fontSize: 17),
+          ),
+          SizedBox(height: 10),
+          Row(
+            children: [
+              Text(
+                "${controllerNewss.getDate(newss.date!)} ",
+                style: robotoConsid(
+                    fontSize: 14, color: AppTextStyles.colorGrayMy),
+              ),
+              Spacer(),
+              Icon(
+                Icons.share,
+                size: 20,
+              ),
+              SizedBox(width: 10),
+            ],
+          ),
+          SizedBox(height: 10),
+        ],
       ),
       Divider(height: 1, color: AppTextStyles.colorGrayDividar),
     ],
@@ -994,7 +1095,7 @@ SizedBox bottomNavigation(
     child: BottomNavigationBar(
       elevation: 10,
       type: BottomNavigationBarType.fixed,
-      selectedItemColor: Colors.black,
+      selectedItemColor: AppTextStyles.colorBlueMy,
       unselectedItemColor: AppTextStyles.colorGrayMy,
       selectedLabelStyle: widgets.robotoConsid(fontSize: 10),
       unselectedLabelStyle: widgets.robotoConsid(fontSize: 10),
@@ -1007,7 +1108,7 @@ SizedBox bottomNavigation(
       onTap: onSelectTab,
       items: [
         BottomNavigationBarItem(
-          icon: Icon(currentTab == 0 ? Icons.home : Icons.home_outlined),
+          icon: Icon(Icons.home),
           label: 'home'.tr,
         ),
         BottomNavigationBarItem(
@@ -1015,23 +1116,18 @@ SizedBox bottomNavigation(
           label: 'catalog'.tr,
         ),
         BottomNavigationBarItem(
-          icon: Icon(currentTab == 2 ? Icons.favorite : Icons.favorite_border),
+          icon: Icon(Icons.favorite),
           label: 'interesting'.tr,
         ),
         BottomNavigationBarItem(
-          icon: currentTab == 3
-              ? Padding(
-                  padding: const EdgeInsets.only(bottom: 5.0),
-                  child: anySvg(nameSvg: 'card', size: Size(22, 22)),
-                )
-              : Icon(Icons
-                  .shopping_cart_outlined), // new Icon(Icons.shopping_cart),
+          icon: cardIcon(isSelected: currentTab == 3),
+
+          // new Icon(Icons.shopping_cart),
           // icon: CartIcon(), // new Icon(Icons.shopping_cart),
           label: 'shopping_cart'.tr,
         ),
         BottomNavigationBarItem(
-          icon: Icon(
-              currentTab == 4 ? Icons.person : Icons.person_outline_outlined),
+          icon: Icon(Icons.person),
           label: 'profile'.tr,
         ),
       ],
@@ -1039,11 +1135,46 @@ SizedBox bottomNavigation(
   );
 }
 
-Widget location({required String adress, required Function()  onTap}) {
+
+
+Widget cardIcon({bool isSelected = false}) {
+  final controller = Get.put(DicountCardPageController());
+  return Obx(() {
+    return Badge(
+      showBadge: controller.getCounter() > 0,
+      badgeContent: Padding(
+        padding: const EdgeInsets.only(right: 2.0),
+        child: RichText(
+          text: TextSpan(
+            text: " ${controller.getCounter()}",
+            style: robotoConsid(color: Colors.white, fontSize: 12),
+            children: <TextSpan>[
+              TextSpan(
+                  text: "  ${controller.counter.value}",
+                  style: TextStyle(fontSize: 0)),
+            ],
+          ),
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 2.5, top: 2.5),
+        child: anySvg(
+            nameSvg: 'card',
+            color: isSelected
+                ? AppTextStyles.colorBlueMy
+                : AppTextStyles.colorGrayMy,
+            size: Size(22, 22)),
+      ),
+    );
+  });
+}
+
+Widget location({required String adress, required Function() onTap}) {
   return customButton(
-    onTap: onTap ,
+    onTap: onTap,
     child: Padding(
-      padding: const EdgeInsets.only(left: 10.0, right: 10, top: 8.0,bottom: 8),
+      padding:
+          const EdgeInsets.only(left: 10.0, right: 10, top: 8.0, bottom: 8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -3423,7 +3554,7 @@ Widget checkBoxWithText(
               value: value,
               activeColor: Get.context!.theme.primary,
               onChanged: (bool? value) {
-                onTap!();
+                onTap ();
               },
             ),
           ),
@@ -3463,7 +3594,7 @@ Widget checkBoxWithIcon(
             value: value,
             activeColor: Get.context!.theme.primary,
             onChanged: (bool? value) {
-              onChanged!();
+              onChanged ();
             },
           ),
         ),
@@ -3720,7 +3851,7 @@ Widget arrowButtonProfile(
   final controller = Get.put(OrderHistPageController());
   return widgets.customButton(
     onTap: () {
-      if(page == AppRouter.favorite){
+      if (page == AppRouter.favorite) {
         controller.tabSelect(2);
         return;
       }

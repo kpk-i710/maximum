@@ -22,8 +22,8 @@ class DiscountPageListView extends StatelessWidget {
         child: Obx(() {
           return Visibility(
             visible: controller.isLoaded.value,
-            child: ListView.builder(
-                itemCount: controller.dicount_list?.product[0].length,
+            child: ListView.separated(
+                itemCount: controller.dicount_list?.product[0].length??0,
                 itemBuilder: (context, index) {
                   return DiscountDetailItemWidget(
                     product: controller.dicount_list?.product[0][index],
@@ -35,7 +35,13 @@ class DiscountPageListView extends StatelessWidget {
                       });
                     },
                   );
-                }),
+
+                },   separatorBuilder: (BuildContext context, int index) {
+              return SizedBox(
+                height: 20,
+              );
+            },),
+
             replacement: Center(child: CircularProgressIndicator()),
           );
         }),

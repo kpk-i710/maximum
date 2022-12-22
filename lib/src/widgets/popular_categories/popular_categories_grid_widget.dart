@@ -11,29 +11,33 @@ import '../catalog_widgets/catalog_item_widget.dart';
 class PopularCategoriesGridWidget extends StatelessWidget {
   final List<Catalog> list;
 
-  PopularCategoriesGridWidget({Key? key, required this.list}) : super(key: key);
-
-
+  final countAxis ;
+  final double maxHeight ;
+  final   itemCount ;
+  PopularCategoriesGridWidget({Key? key, required this.list, required this.countAxis, required this.maxHeight,required this.itemCount}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return StaggeredGridView.countBuilder(
-        physics: NeverScrollableScrollPhysics(),
-        crossAxisCount: 6,
-        crossAxisSpacing: 13,
-        mainAxisSpacing: 11,
-        shrinkWrap: true,
-        itemCount: 6,
-        itemBuilder: (BuildContext context, int index) {
-          return popular_categories_item(
-            index: index,
-          );
-        },
-        staggeredTileBuilder: (int index) {
-          if (index == 0 || index == 5) {
-            return StaggeredTile.extent(6, (1 / 2) * Get.width);
-          }
-          return StaggeredTile.extent(3, (1 / 2) * Get.width);
-        });
+    return Container(
+   
+      child: ConstrainedBox(
+        constraints: BoxConstraints(maxHeight: maxHeight),
+        child: GridView.count(
+          childAspectRatio: 2 / 1.5,
+          crossAxisSpacing: 20,
+          mainAxisSpacing: 20,
+          padding: EdgeInsets.all(10),
+          physics: BouncingScrollPhysics(),
+          crossAxisCount: countAxis,
+          children: List.generate(
+              itemCount, (index) => popular_categories_item(index: index)),
+
+          primary: false,
+          // shrinkWrap: true,
+          scrollDirection: Axis.horizontal,
+        ),
+      ),
+    );
   }
 }
+// popular_categories_item

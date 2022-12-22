@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
-import '../../widgets/widgets.dart'as widgets;
+import 'package:get/get_core/get_core.dart';
+import 'package:get/get_instance/src/extension_instance.dart';
+import 'package:get/route_manager.dart';
+import 'package:maxkgapp/src/models/category.dart';
+import 'package:maxkgapp/src/pages/popular_category/popular_category_controller.dart';
+import '../../widgets/widgets.dart' as widgets;
 
 class popular_categories_item extends StatelessWidget {
   final index;
@@ -8,55 +13,25 @@ class popular_categories_item extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<String> listData = [
-      "microwave.png",
-      "sofa.png",
-      "sofa.png",
-      "microwave.png",
-      "sofa.png",
-      "sofa.png",
-    ];
+    final controller = Get.put(PopularCategoryController());
 
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(5),
-        boxShadow: [
-          BoxShadow(
-            color: Color(0xffD9D9D9).withOpacity(0.3),
-            spreadRadius: 0,
-            blurRadius: 10,
-            offset: Offset(0, 3), // changes position of shadow
+    return widgets.boxShadows(
+      padding: 0,
+      child: Column(
+        children: [
+          SizedBox(height: 20),
+          SizedBox(
+              width: Get.width / 5,
+              height: 80,
+              child: Image.asset(
+                  "assets/images/${controller.listData[index].image}")),
+          SizedBox(height: 20),
+          Text(
+            " ${controller.listData[index].title}",
+            style: widgets.robotoConsid(fontSize: 14),
           ),
         ],
       ),
-      child: index == 5 || index == 0
-          ? Row(
-              children: [
-                SizedBox(width: 20),
-                Flexible(
-                    flex: 1,
-                    child: Image.asset("assets/images/${listData[index]}")),
-                Flexible(
-                    flex: 1,
-                    child: Center(
-                        child: Text(
-                      "Ноутбки",
-                      style: widgets.robotoConsid(color: Color(0xff494949),fontSize: 16),
-                    ))),
-              ],
-            )
-          : Column(
-              children: [
-                Flexible(
-                    flex: 3,
-                    child: Center(
-                        child:
-                            Image.asset("assets/images/${listData[index]}"))),
-                SizedBox(height: 20),
-                Flexible(flex: 1, child: Text("Ноутбки",style: widgets.robotoConsid(fontSize: 16),)),
-              ],
-            ),
     );
   }
 }

@@ -330,24 +330,7 @@ class DiscountCardPage extends StatelessWidget {
               ),
             ),
             widgets.floatingCard(context: context, price: product?.price, name: product?.naim ),
-            // Align(
-            //     alignment: Alignment(0, 1),
-            //     child: Container(
-            //       height: 60,
-            //       color: Colors.white,
-            //       child: Center(
-            //           child: Padding(
-            //         padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            //         child: widgets.counterCardRuntime(
-            //           context: context,
-            //             price: product?.price,
-            //             onTap: () {
-            //               controller.counter.value = 1;
-            //               widgets.showOptionCountProduct(
-            //                   context: context, name: '${product?.naim}');
-            //             }),
-            //       )),
-            //     )),
+
           ],
         ));
   }

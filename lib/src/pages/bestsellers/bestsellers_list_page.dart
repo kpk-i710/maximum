@@ -22,7 +22,7 @@ class BestSellersListPage extends StatelessWidget {
             Obx(() => BannerWidget(list: homeController.bannerList.value)),
             SizedBox(height: 10),
             widgets
-                .titleWidget('bestsellers'.tr)
+                .titleWidget(title: 'bestsellers'.tr)
                 .paddingSymmetric(horizontal: 12),
             SizedBox(height: 20),
             Obx(() => ProductsGridWidget(

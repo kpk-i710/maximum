@@ -65,7 +65,7 @@ class ProductsByCatalogPage extends StatelessWidget {
                       margin: EdgeInsets.only(top: 0),
                     )),
                 widgets
-                    .titleWidget('bestsellers'.tr)
+                    .titleWidget(title:'bestsellers'.tr)
                     .paddingSymmetric(horizontal: 12),
                 BestsellersCarouselWidget(),
                 Container(

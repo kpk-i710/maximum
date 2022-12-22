@@ -21,23 +21,26 @@ class AllNewsPage extends StatelessWidget {
           currentTab: 0, onSelectTab: allNewsController.tabSelect),
       backgroundColor: Colors.white,
       body: Obx(
-        () => ListView.builder(
-            itemCount: allNewsController.newsList.length,
-            itemBuilder: (BuildContext context, int index) {
-              return GestureDetector(
-                onTap: () {
-                  Get.toNamed(
-                    AppRouter.listNews,
-                    arguments: {
-                      "idNews": allNewsController.newsList[index].id,
-                    },
-                  );
-                },
-                child: widgets
-                    .newsItemWidget( allNewsController.newsList[index] )
-                    .marginOnly(bottom: 20),
-              );
-            }),
+        () => Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+          child: ListView.builder(
+              itemCount: allNewsController.newsList.length,
+              itemBuilder: (BuildContext context, int index) {
+                return GestureDetector(
+                  onTap: () {
+                    Get.toNamed(
+                      AppRouter.listNews,
+                      arguments: {
+                        "idNews": allNewsController.newsList[index].id,
+                      },
+                    );
+                  },
+                  child: widgets
+                      .newsItemWidget(allNewsController.newsList[index])
+                      .marginOnly(bottom: 20),
+                );
+              }),
+        ),
       ),
     );
   }

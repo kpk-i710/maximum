@@ -11,41 +11,45 @@ import 'discount_grid_item_widget.dart';
 class DiscountGridWidget extends StatelessWidget {
   final List<Discount> list;
 
-
-  DiscountGridWidget(
-      {Key? key, required this.list });
+  DiscountGridWidget({Key? key, required this.list});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 800,
       width: double.infinity,
-      child: ListView.builder(
-          physics: NeverScrollableScrollPhysics(),
-          itemCount: 4,
-          itemBuilder: (context, index) {
-            return list.isEmpty
-                ? Container(
-                    height: 180,
-                    margin: EdgeInsets.all(8.0),
-                    child: widgets.blockPlaceholder())
-                : InkWell(
-                    onTap: () {
-                      Get.toNamed(
-                        AppRouter.discount,
-                        // arguments: list[index]
-                        arguments: {
-                          "idDiscount": list[index].id,
-                          "title": list[index].title,
-                        },
-                      );
-                    },
-                    child: DiscountGridItemWidget(
-                      discount: list.elementAt(index),
-                      index: index,
-                    ),
-                  );
-          }),
+      child: ListView.separated(
+        physics: NeverScrollableScrollPhysics(),
+        itemCount: 4,
+        itemBuilder: (context, index) {
+          return list.isEmpty
+              ? Container(
+                  height: 180,
+                  margin: EdgeInsets.all(8.0),
+                  child: widgets.blockPlaceholder())
+              : InkWell(
+                  onTap: () {
+                    Get.toNamed(
+                      AppRouter.discount,
+                      // arguments: list[index]
+                      arguments: {
+                        "idDiscount": list[index].id,
+                        "title": list[index].title,
+                      },
+                    );
+                  },
+                  child: DiscountGridItemWidget(
+                    discount: list.elementAt(index),
+                    index: index,
+                  ),
+                );
+        },
+        separatorBuilder: (BuildContext context, int index) {
+          return SizedBox(
+            height: 20,
+          );
+        },
+      ),
     );
   }
 }
