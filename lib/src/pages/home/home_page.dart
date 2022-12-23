@@ -168,13 +168,7 @@ class HomePage extends StatelessWidget {
                                   list: homeController.newsList,
                                 ),
                                 SizedBox(height: 20),
-                                PromotionsSwiperWidget(
-                                  list: homeController.newsList,
-                                ),
-                                SizedBox(height: 20),
-                                PromotionsSwiperWidget(
-                                  list: homeController.newsList,
-                                ),
+
                               ],
                             ),
                           ],

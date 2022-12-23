@@ -45,27 +45,27 @@ class DiscountSwipeWidgetOffline extends StatelessWidget {
                     alignment: Alignment(0, 1.2),
                     child: widgets.indicatorDotsOffline(
                         currentIndex: currentIndex.value, length: 3)),
-                Obx(() {
-                  return Align(
-                    alignment: Alignment(0.8, 0.87),
-                    child: Container(
-
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 5.0,vertical: 4),
-                        child: Text(
-                          "${currentIndex.value + 1}/3",
-                          style: widgets.robotoConsid(
-                        fontSize: 9,
-                          color: Color(0xff62656A),
-                          fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      decoration: BoxDecoration(
-                          color: Color(0xffECECEC),
-                          borderRadius: BorderRadius.circular(2)),
-                    ),
-                  );
-                }),
+                // Obx(() {
+                //   return Align(
+                //     alignment: Alignment(0.8, 0.87),
+                //     child: Container(
+                //
+                //       child: Padding(
+                //         padding: const EdgeInsets.symmetric(horizontal: 5.0,vertical: 4),
+                //         child: Text(
+                //           "${currentIndex.value + 1}/3",
+                //           style: widgets.robotoConsid(
+                //         fontSize: 9,
+                //           color: Color(0xff62656A),
+                //           fontWeight: FontWeight.bold),
+                //         ),
+                //       ),
+                //       decoration: BoxDecoration(
+                //           color: Color(0xffECECEC),
+                //           borderRadius: BorderRadius.circular(2)),
+                //     ),
+                //   );
+                // }),
               ]),
       );
     });

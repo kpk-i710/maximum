@@ -23,6 +23,7 @@ class FavoritePage extends StatelessWidget {
                   itemCount: controller.dicount_list?.product[0].length,
                   itemBuilder: (context, index) {
                     return DiscountDetailItemWidget(
+                      index: index,
                       product: controller.dicount_list?.product[0][index],
                       onPress: () {
                         print(controller.dicount_list?.product[0][index].naim);

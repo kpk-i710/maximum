@@ -198,7 +198,7 @@ class AppTextStyles {
   static Color colorGrayMy = Color(0xff696A6A);
   static const Color colorBlackMy = Color(0xff424242);
   static Color colorRedMy = Color(0xff991A4E);
-  static Color colorGrayDividar = Color(0xffEAEAEA);
+  static const Color colorGrayDividar = Color(0xffEAEAEA);
   static Color colorBurgundy = Color(0xff292862);
   static Color colorGreyThrou = Color( 0xffCCCCCC);
   static Color colorFocus = Color( 0xffF9F9F9);

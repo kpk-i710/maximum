@@ -10,9 +10,10 @@ import '../../widgets/widgets.dart' as widgets;
 class DiscountDetailItemWidget extends StatelessWidget {
   Product? product;
   VoidCallback onPress;
+  final index;
 
   DiscountDetailItemWidget(
-      {super.key, required this.product, required this.onPress});
+      {super.key, required this.product, required this.onPress, this.index});
 
   @override
   Widget build(BuildContext context) {
@@ -163,22 +164,10 @@ class DiscountDetailItemWidget extends StatelessWidget {
                     SizedBox(
                       height: 8,
                     ),
-                    Row(
-                      children: [
-                        SizedBox(width: 9.00),
-                        Expanded(
-                          child: widgets.addCartButton(
-                            onPressed: () {},
-                            text: 'to_cart'.tr,
-                          ),
-                        ),
-                        SizedBox(width: 9.00),
-                        widgets.addFavorite(
-                          onPressed: () {},
-                        ),
-                        SizedBox(width: 9.00),
-                      ],
-                    ),
+                    widgets.addCardAndFavorite(
+                        textCard: 'to_cart'.tr,
+                        onPressedCard: () {},
+                        isSelectedFavorite: index == 0 ? true : false),
                     SizedBox(
                       height: 8,
                     )

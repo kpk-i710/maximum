@@ -245,7 +245,27 @@ Widget inkButton({Function()? onTap, required Widget child}) {
   );
 }
 
-Widget darkCustomButton(
+Widget colorCustomButton(
+    {required Widget child,
+    required Function()? onTap,
+    double height = 35,
+    double width = 35,
+    Color color = Colors.white}) {
+  return Material(
+    color: Colors.transparent,
+    child: InkWell(
+        splashColor: Colors.grey,
+        onTap: onTap,
+        child: Ink(
+            width: width,
+            height: height,
+            decoration: BoxDecoration(
+                color: color, borderRadius: BorderRadius.circular(5)),
+            child: Center(child: child))),
+  );
+}
+
+Widget gradientCustomButton(
     {required Widget child, required Function()? onTap, double height = 35}) {
   return Material(
     color: Colors.transparent,
@@ -389,6 +409,33 @@ Widget fullReadNoty(
           ),
         ),
       ));
+}
+
+Widget buttonCounterTest({
+  required String text,
+  required Function() onTap,
+}) {
+  return Container(
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(5),
+      color: Colors.white,
+    ),
+    width: 25,
+    height: 25,
+    child: Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        splashColor: Colors.grey,
+        child: Center(
+          child: Text(
+            text,
+            style: robotoConsid(color: AppTextStyles.colorBlueMy, fontSize: 15),
+          ),
+        ),
+      ),
+    ),
+  );
 }
 
 Widget buttonCounter({
@@ -702,6 +749,51 @@ void deletedFromCardSnackBar({required BuildContext context}) {
     backgroundColor: Colors.transparent,
     elevation: 0,
   ));
+}
+
+Widget counterCardOneProductTest() {
+  final controller = Get.put(DicountCardPageController());
+  return Expanded(
+    child: Row(
+      children: [
+        Flexible(
+          child: dark(
+            width: Get.width,
+            height: 35,
+            radius: 5,
+            child: Expanded(
+
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+
+                  children: [
+                    buttonCounterTest(
+                        text: "-",
+                        onTap: () {
+                          controller.plus();
+                        }),
+
+                    Text(
+                      controller.counter.value.toString(),
+                      style: robotoConsid(color: Colors.white, fontSize: 18),
+                    ),
+
+                    buttonCounterTest(
+                        text: "+",
+                        onTap: () {
+                          controller.plus();
+                        }),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
 }
 
 Widget counterCardOneProduct({required BuildContext context}) {
@@ -3352,7 +3444,7 @@ Widget orderButton(
 }
 
 Widget addCartButton({required String text, Function()? onPressed}) {
-  return darkCustomButton(
+  return gradientCustomButton(
       onTap: onPressed,
       child: Center(
         child: AutoSizeText(text.toUpperCase(),
@@ -3370,57 +3462,54 @@ Widget addCartButton({required String text, Function()? onPressed}) {
 Widget addCardAndFavorite(
     {required String textCard,
     Function()? onPressedCard,
-    bool isSelectedFavorite = false}) {
+    Function()? onPressedFavorite,
+    bool isSelectedFavorite = false,
+    bool isAddedToCard = false}) {
   return Row(
     children: [
       SizedBox(width: 9.00),
-      Expanded(
-        child: darkCustomButton(
-            onTap: onPressedCard,
-            child: Center(
-              child: AutoSizeText(textCard.toUpperCase(),
-                  maxFontSize: 14,
-                  minFontSize: 5,
-                  textAlign: TextAlign.center,
-                  maxLines: 1,
-                  style: robotoConsid(
-                    color: Colors.white,
-                    fontSize: 14,
+      isAddedToCard
+          ? counterCardOneProductTest()
+          : Expanded(
+              child: gradientCustomButton(
+                  onTap: onPressedCard,
+                  child: Center(
+                    child: AutoSizeText(textCard.toUpperCase(),
+                        maxFontSize: 14,
+                        minFontSize: 5,
+                        textAlign: TextAlign.center,
+                        maxLines: 1,
+                        style: robotoConsid(
+                          color: Colors.white,
+                          fontSize: 14,
+                        )),
                   )),
-            )),
-      ),
+            ),
       SizedBox(width: 5.00),
-      widgets.addFavorite(onPressed: () {}, isSelected: isSelectedFavorite),
+      widgets.addFavorite(
+          onPressed: onPressedFavorite, isSelected: isSelectedFavorite),
       SizedBox(width: 9.00),
     ],
   );
 }
 
 Widget addFavorite(
-    {required Function() onPressed,
+    {required Function()? onPressed,
     double? sizeFavorite,
     double? sizeButton,
     IconData? icon = Icons.favorite,
     bool isSelected = false,
     Color color = const Color(0xffE5E5E5)}) {
-  return SizedBox(
-    width: sizeButton ?? 35,
-    height: sizeButton ?? 35,
-    child: customButton(
-      child: Container(
-        decoration: BoxDecoration(
-            color: isSelected ? AppTextStyles.colorGrayDividar : null,
-            borderRadius: BorderRadius.circular(5)),
-        child: Center(
-          child: Icon(
-            icon,
-            size: sizeFavorite ?? 20,
-            color: isSelected ? AppTextStyles.colorRedMy : Color(0xff7B7B7B),
-          ),
-        ),
+  return colorCustomButton(
+    color: isSelected ? AppTextStyles.colorGrayDividar : Colors.white,
+    child: Center(
+      child: Icon(
+        icon,
+        size: sizeFavorite ?? 20,
+        color: isSelected ? AppTextStyles.colorRedMy : Color(0xff7B7B7B),
       ),
-      onTap: onPressed,
     ),
+    onTap: () {},
   );
 }
 
@@ -3524,8 +3613,10 @@ Widget bottomPopularCards({int? index}) {
         height: 8,
       ),
       widgets.addCardAndFavorite(
+          isAddedToCard: index == 0 ? true : false,
           textCard: 'to_cart'.tr,
           onPressedCard: () {},
+          onPressedFavorite: () {},
           isSelectedFavorite: index == 0 ? true : false),
       SizedBox(
         height: 8,
