@@ -10,24 +10,21 @@ class BrandGridWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxHeight: 350),
+      child: GridView.count(
+        childAspectRatio: 2 / 1.5,
+        crossAxisSpacing: 20,
+        mainAxisSpacing: 20,
+        padding: EdgeInsets.all(10),
+        physics: BouncingScrollPhysics(),
+        crossAxisCount: 3,
+        children: List.generate(
+            16, (index) =>BrandItemWidget()),
 
-      child: ConstrainedBox(
-        constraints: BoxConstraints(maxHeight: 350),
-        child: GridView.count(
-          childAspectRatio: 2 / 1.5,
-          crossAxisSpacing: 20,
-          mainAxisSpacing: 20,
-          padding: EdgeInsets.all(10),
-          physics: BouncingScrollPhysics(),
-          crossAxisCount: 3,
-          children: List.generate(
-              16, (index) =>BrandItemWidget()),
-
-          primary: false,
-          // shrinkWrap: true,
-          scrollDirection: Axis.horizontal,
-        ),
+        primary: false,
+        // shrinkWrap: true,
+        scrollDirection: Axis.horizontal,
       ),
     );
   }

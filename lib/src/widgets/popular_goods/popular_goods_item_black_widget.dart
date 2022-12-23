@@ -4,15 +4,18 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:maxkgapp/src/models/discount.dart';
 import 'package:maxkgapp/src/styles.dart';
+import 'package:maxkgapp/src/widgets/discount_widgets/discount_swipe_widget.dart';
+import 'package:maxkgapp/src/widgets/discount_widgets/discount_swipe_widget_offline.dart';
 import '../../widgets/widgets.dart' as widgets;
 import '../../styles.dart';
 
 class PopularGoodsItemBlackWidget extends StatelessWidget {
-  const PopularGoodsItemBlackWidget(
-      {Key? key, required this.list , this.index})
+  PopularGoodsItemBlackWidget(
+      {Key? key, required this.list, this.index, required this.onTap})
       : super(key: key);
 
   final List<Discount> list;
+  Function() onTap;
 
   final index;
 
@@ -40,10 +43,10 @@ class PopularGoodsItemBlackWidget extends StatelessWidget {
               height: 180,
               child: Stack(
                 children: [
-                  Image.asset(
-                    "assets/images/sofa.png",
-                    fit: BoxFit.fill,
-                    height: 180,
+                  GestureDetector(
+                    onTap: onTap,
+                    child: DiscountSwipeWidgetOffline(
+                        image: "assets/images/sofa.png"),
                   ),
                   Positioned(
                     left: 10,
@@ -67,78 +70,18 @@ class PopularGoodsItemBlackWidget extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 9.0, top: 2.0),
-              child: AutoSizeText(
+              padding: const EdgeInsets.only(left: 9.0, top: 8.0),
+              child: Text(
                 "19 000 c",
                 maxLines: 1,
-                maxFontSize: 16,
                 textAlign: TextAlign.center,
-                style:  widgets.robotoConsid(
-
-                    fontSize: 16,
+                style: widgets.robotoConsid(
+                    fontSize: 17,
                     color: Color(0xff2C2D2E),
                     fontWeight: FontWeight.w900),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 9.0, bottom: 5),
-              child: AutoSizeText(
-                "Менделейка / Набор для опытов 6шт /Детский наборdsfffffffffffffffff",
-                maxFontSize: 14,
-                minFontSize: 14,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 2,
-                style: TextStyle(
-                    fontFamily: "RobotoCondensed-Regular",
-                    fontSize: 14,
-                    fontWeight: FontWeight.w200),
-              ),
-            ),
-            Padding(
-                padding: EdgeInsets.only(left: 9),
-                child: Row(
-                  children: [
-                    SvgPicture.asset(
-                      "assets/icons/car_ride.svg",
-                      width: 17,
-                      height: 19.33,
-                      color: Color(0xff0C54A1),
-                    ),
-                    SizedBox(width: 7.37),
-                    Expanded(
-                      child: Text(
-                        "Под заказ, доставим в Бишкек 24 - 31 октября",
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                            color: Color(0xff0C54A1),
-                            fontWeight: FontWeight.w500,
-                            fontSize: 12,
-                            fontFamily: "RobotoThin"),
-                      ),
-                    ),
-                    SizedBox(width: 7.37),
-                  ],
-                )),
-            Row(
-              children: [
-                SizedBox(width: 9.00),
-                Expanded(
-                  child: widgets.addCartButton(
-                    onPressed: () {},
-                    text: 'to_cart'.tr,
-                  ),
-                ),
-                SizedBox(width: 9.00),
-                widgets.addFavorite(
-                  onPressed: () {},
-                ),
-                SizedBox(width: 9.00),
-              ],
-            ),
-            SizedBox(
-              height: 8,
-            )
+           widgets.bottomPopularCards(index: index)
           ],
         ),
       ),

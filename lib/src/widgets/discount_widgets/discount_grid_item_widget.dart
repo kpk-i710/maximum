@@ -32,7 +32,6 @@ class DiscountGridItemWidget extends StatelessWidget {
       ),
       height: height,
       width: double.infinity,
-      margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 0.0),
       child: Row(
         children: [
           Container(
@@ -95,7 +94,6 @@ class DiscountGridItemWidget extends StatelessWidget {
                                           minFontSize: 5,
                                           style: widgets.robotoConsid(
                                             color: Colors.white,
-
                                           ),
                                         ),
                                       ),
@@ -120,7 +118,6 @@ class DiscountGridItemWidget extends StatelessWidget {
                                         " - ${discount.discountValue.toString().toUpperCase()}%",
                                     style: widgets.robotoConsid(
                                         color: Colors.white,
-
                                         fontSize: 20,
                                         fontWeight: FontWeight.w900),
                                   ),
@@ -153,7 +150,6 @@ class DiscountGridItemWidget extends StatelessWidget {
                         fontSize: 14,
                         fontWeight:
                             index == 0 ? FontWeight.w900 : FontWeight.normal,
-
                         color: Color(0xff494949)),
                   ),
                 ),

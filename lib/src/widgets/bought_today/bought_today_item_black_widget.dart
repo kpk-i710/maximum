@@ -17,7 +17,7 @@ class BoughtTodayItemBlackWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.only(right: 16.0, top: 8.0, bottom: 8),
       child: SizedBox(
         width: Get.width / 2.7,
         child: widgets.boxShadows(
@@ -34,7 +34,6 @@ class BoughtTodayItemBlackWidget extends StatelessWidget {
                 child: Text(
                   "19 000 c",
                   maxLines: 1,
-
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontFamily: "MPLUSRounded1c-Black",
@@ -43,7 +42,6 @@ class BoughtTodayItemBlackWidget extends StatelessWidget {
                       fontWeight: FontWeight.w900),
                 ),
               ),
-
               Padding(
                 padding: const EdgeInsets.only(left: 5.0, bottom: 4),
                 child: AutoSizeText(

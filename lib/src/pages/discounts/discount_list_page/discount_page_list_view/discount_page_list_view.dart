@@ -17,7 +17,7 @@ class DiscountPageListView extends StatelessWidget {
     return Scaffold(
       bottomNavigationBar: widgets.bottomNavigation(
           currentTab: 0, onSelectTab: controller.tabSelect),
-      appBar: SearchBar2(title: Get.arguments['title']??""),
+      appBar: SearchBar2(title: Get.arguments != null ? Get.arguments['title']  : ""),
       body: SafeArea(
         child: Obx(() {
           return Visibility(

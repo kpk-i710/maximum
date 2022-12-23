@@ -15,6 +15,7 @@ import '../../widgets/widgets.dart' as widgets;
 class HomePageController extends GetxController {
 
 
+  double left = 10;
   final _appRepo = Get.find<AppRepo>();
   final _productRepo = Get.find<ProductRepo>();
   final _catalogRepo = Get.find<CatalogRepo>();

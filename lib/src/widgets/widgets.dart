@@ -5,6 +5,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart' hide MenuItem;
+import 'package:flutter_swiper_view/flutter_swiper_view.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
 import 'package:maxkgapp/src/pages/orders_history/order_history_page_controller.dart';
@@ -78,21 +79,40 @@ Widget priceWidget(double price, {TextStyle? style}) {
   }
 }
 
-
-Widget indicatorDots({required int length, required int currentIndex }){
-
+Widget indicatorDots({required int length, required int currentIndex}) {
   return SizedBox(
     height: 50,
     child: Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        for (int i = 0;
-        i < (length > 5 ? 5 : length);
-        i++)
+        for (int i = 0; i < (length > 5 ? 5 : length); i++)
           AnimatedContainer(
             duration: Duration(seconds: 1),
             height: 7,
             width: currentIndex == i ? 20 : 10,
+            margin: EdgeInsets.only(right: 5),
+            decoration: BoxDecoration(
+                color: currentIndex == i
+                    ? AppTextStyles.colorRedMy
+                    : AppTextStyles.colorGreyThrou,
+                borderRadius: BorderRadius.circular(16)),
+          )
+      ],
+    ),
+  );
+}
+
+Widget indicatorDotsOffline({required int length, required int currentIndex}) {
+  return SizedBox(
+    height: 50,
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        for (int i = 0; i < (length > 5 ? 5 : length); i++)
+          AnimatedContainer(
+            duration: Duration(seconds: 1),
+            height: 5,
+            width: currentIndex == i ? 10 : 5,
             margin: EdgeInsets.only(right: 5),
             decoration: BoxDecoration(
                 color: currentIndex == i
@@ -1134,8 +1154,6 @@ SizedBox bottomNavigation(
     ),
   );
 }
-
-
 
 Widget cardIcon({bool isSelected = false}) {
   final controller = Get.put(DicountCardPageController());
@@ -2619,6 +2637,93 @@ void showSnackBar({required BuildContext context}) {
   ));
 }
 
+void scaleImageSheet({required BuildContext context, required String image}) {
+  showModalBottomSheet(
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      enableDrag: false,
+      context: context,
+      builder: (context) {
+        return scaleImage(context: context, image: image);
+      });
+}
+
+Widget scaleImage({required BuildContext context, required String image}) {
+  TransformationController controller = TransformationController();
+  TapDownDetails? tapDownDetails;
+
+  final currentIndex = 0.obs;
+  return Obx(() {
+    return boxShadows(
+      padding: 0,
+      radius: 10,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        height: Get.height,
+        child: Stack(children: [
+          Swiper(
+            itemBuilder: (context, index) {
+              return GestureDetector(
+                onDoubleTapDown: (details) => tapDownDetails = details,
+                onDoubleTap: () {
+                  double correctScaleValue =
+                      controller.value.getMaxScaleOnAxis();
+                  final position = tapDownDetails!.localPosition;
+                  double scale = 2;
+                  if (correctScaleValue == 2) {
+                    scale = 4;
+                  }
+
+                  final x = -position.dx * (scale - 1);
+                  final y = -position.dy * (scale - 1);
+                  final zoomed = Matrix4.identity()
+                    ..translate(x, y)
+                    ..scale(scale);
+
+                  // controller.value.isIdentity()
+                  final value =
+                      correctScaleValue < 4 ? zoomed : Matrix4.identity();
+                  controller.value = value;
+                },
+                child: Container(
+                  child: InteractiveViewer(
+                      transformationController: controller,
+                      maxScale: 4,
+                      minScale: 1,
+                      child: CachedNetworkImage(
+                          imageUrl: image, fit: BoxFit.contain)),
+                ),
+              );
+            },
+            itemCount: 3,
+            controller: SwiperController(),
+            onIndexChanged: (index) {
+              currentIndex.value = index;
+              controller.value = Matrix4.identity();
+            },
+            autoplay: false,
+          ),
+          Align(
+              alignment: Alignment(0.9, -0.9),
+              child: customButtonOval(
+                  child: anySvg(nameSvg: 'close', size: Size(17, 17)),
+                  onTap: () {
+                    print("нажал");
+                    Get.back();
+                  })),
+          Align(
+              alignment: Alignment(0, 1),
+              child: widgets.indicatorDots(
+                  currentIndex: currentIndex.value, length: 3)),
+        ]),
+      ),
+    );
+  });
+}
+
 void showConfirmCodePhone(
     {required BuildContext context, required String number}) {
   showModalBottomSheet(
@@ -3227,10 +3332,10 @@ Widget addCartButton({required String text, Function()? onPressed}) {
       style: ElevatedButton.styleFrom(
         minimumSize: Size(double.infinity, 35),
         maximumSize: Size(double.infinity, 35),
-        backgroundColor: Colors.white,
+        backgroundColor: AppTextStyles.colorBurgundy,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(5),
-            side: BorderSide(color: Color(0xff162A65), width: 1.0)),
+            side: BorderSide(color: Colors.transparent, width: 1.0)),
       ),
       onPressed: onPressed,
       child: AutoSizeText(text.toUpperCase(),
@@ -3239,9 +3344,9 @@ Widget addCartButton({required String text, Function()? onPressed}) {
           textAlign: TextAlign.center,
           maxLines: 1,
           style: robotoConsid(
-              color: Color(0xff112B66),
-              fontSize: 14,
-              fontWeight: FontWeight.normal)));
+            color: Colors.white,
+            fontSize: 14,
+          )));
 }
 
 Widget addFavorite(
@@ -3249,18 +3354,21 @@ Widget addFavorite(
     double? sizeFavorite,
     double? sizeButton,
     IconData? icon = Icons.favorite,
+    bool isSelected = false,
     Color color = const Color(0xffE5E5E5)}) {
   return SizedBox(
     width: sizeButton ?? 35,
     height: sizeButton ?? 35,
     child: customButton(
       child: Container(
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
+        decoration: BoxDecoration(
+            color: isSelected ? AppTextStyles.colorGrayDividar : null,
+            borderRadius: BorderRadius.circular(5)),
         child: Center(
           child: Icon(
             icon,
             size: sizeFavorite ?? 20,
-            color: Color(0xff7B7B7B),
+            color: isSelected? AppTextStyles.colorRedMy: Color(0xff7B7B7B),
           ),
         ),
       ),
@@ -3327,6 +3435,64 @@ Widget fullWidthButton(
                         fontWeight: FontWeight.bold)),
           ],
         )),
+  );
+}
+
+Widget bottomPopularCards({int? index}) {
+  return Column(
+    children: [
+      Padding(
+        padding: const EdgeInsets.only(left: 9.0, bottom: 5),
+        child: AutoSizeText(
+          "Менделейка / Набор для опытов 6шт /Детский наборdsfffffffffffffffff",
+          maxFontSize: 12,
+          minFontSize: 12,
+          overflow: TextOverflow.ellipsis,
+          maxLines: 2,
+          style: widgets.robotoConsid(),
+        ),
+      ),
+      Padding(
+          padding: EdgeInsets.only(left: 9),
+          child: Row(
+            children: [
+              SvgPicture.asset(
+                "assets/icons/car_ride.svg",
+                width: 13,
+                height: 17.33,
+                color: AppTextStyles.colorBlueMy,
+              ),
+              SizedBox(width: 7.37),
+              Expanded(
+                child: Text("Под заказ, доставим в Бишкек 24 - 31 октября",
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: widgets.robotoConsid(
+                        fontSize: 12, color: AppTextStyles.colorBlueMy)),
+              ),
+              SizedBox(width: 7.37),
+            ],
+          )),
+      Row(
+        children: [
+          SizedBox(width: 9.00),
+          Expanded(
+            child: widgets.addCartButton(
+              onPressed: () {},
+              text: 'to_cart'.tr,
+            ),
+          ),
+          SizedBox(width: 5.00),
+          widgets.addFavorite(
+            onPressed: () {},isSelected: true
+          ),
+          SizedBox(width: 9.00),
+        ],
+      ),
+      SizedBox(
+        height: 8,
+      )
+    ],
   );
 }
 
@@ -3554,7 +3720,7 @@ Widget checkBoxWithText(
               value: value,
               activeColor: Get.context!.theme.primary,
               onChanged: (bool? value) {
-                onTap ();
+                onTap();
               },
             ),
           ),
@@ -3594,7 +3760,7 @@ Widget checkBoxWithIcon(
             value: value,
             activeColor: Get.context!.theme.primary,
             onChanged: (bool? value) {
-              onChanged ();
+              onChanged();
             },
           ),
         ),

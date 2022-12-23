@@ -95,8 +95,8 @@ class HomePage extends StatelessWidget {
                               children: [
                                 SizedBox(height: 20),
                                 Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 15.0),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: homeController.left),
                                   child: Text(
                                     'you_watched'.tr,
                                     style: widgets.robotoConsid(
@@ -106,8 +106,8 @@ class HomePage extends StatelessWidget {
                                 ),
                                 SizedBox(height: 15),
                                 Obx(() => Padding(
-                                      padding:
-                                          const EdgeInsets.only(left: 15.0),
+                                      padding: EdgeInsets.only(
+                                          left: homeController.left),
                                       child: ProductsCarouselWidget(
                                         list: homeController
                                             .viewedProductsList.value,
@@ -121,8 +121,8 @@ class HomePage extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 15.0),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: homeController.left),
                               child: Text(
                                 'popular_categories'.tr.toUpperCase(),
                                 style: widgets.robotoConsid(
@@ -131,31 +131,27 @@ class HomePage extends StatelessWidget {
                               ),
                             ),
                             SizedBox(height: 10),
-                            Obx(() => Padding(
-                                  padding: const EdgeInsets.only(left: 5.0),
-                                  child: PopularCategoriesGridWidget(
-                                    list: homeController
-                                        .seasonCategoriesList.value,
-                                    countAxis: 2,
-                                    maxHeight: 400,
-                                    itemCount: 8,
-                                  ),
+                            Obx(() => PopularCategoriesGridWidget(
+                                  list:
+                                      homeController.seasonCategoriesList.value,
+                                  countAxis: 2,
+                                  maxHeight: 350,
+                                  itemCount: 8,
                                 )),
                           ],
                         ),
                         SizedBox(height: 30),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            widgets.titleWidget(
-                                title: 'bought_today'.tr, left: 15),
-                            Obx(() => Padding(
-                                  padding: const EdgeInsets.only(left: 10.0),
-                                  child: BoughtTodayGridWidget(
+                        Padding(
+                          padding: EdgeInsets.only(left: homeController.left),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              widgets.titleWidget(title: 'bought_today'.tr),
+                              Obx(() => BoughtTodayGridWidget(
                                     list: homeController.discountList.value,
-                                  ),
-                                )),
-                          ],
+                                  )),
+                            ],
+                          ),
                         ),
                         SizedBox(height: 30),
                         Column(
@@ -182,91 +178,85 @@ class HomePage extends StatelessWidget {
                               ],
                             ),
                           ],
-                        ).paddingSymmetric(horizontal: 15),
+                        ).paddingSymmetric(horizontal: homeController.left),
                         SizedBox(height: 30),
-                        Column(
-                          children: [
-                            SizedBox(height: 20),
-                            widgets.titleWidget(
-                                title: 'brand_offers'.tr, left: 15),
-                            widgets.subTitleWidget(title: 'Asus', left: 15),
-                            Obx(() => Padding(
-                                  padding: const EdgeInsets.only(left: 7.0),
-                                  child: BrandOffersGridWidget(
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10.0),
+                          child: Column(
+                            children: [
+                              SizedBox(height: 20),
+                              widgets.titleWidget(
+                                title: 'brand_offers'.tr,
+                              ),
+                              widgets.subTitleWidget(
+                                title: 'Asus',
+                              ),
+                              Obx(() => BrandOffersGridWidget(
                                     list: homeController.discountList.value,
-                                  ),
-                                )),
-                            SizedBox(height: 10),
-                            widgets.subTitleWidget(title: 'Мечта', left: 15),
-                            Obx(() => Padding(
-                                  padding: const EdgeInsets.only(left: 7.0),
-                                  child: BrandOffersGridWidget(
+                                  )),
+                              SizedBox(height: 10),
+                              widgets.subTitleWidget(
+                                title: 'Мечта',
+                              ),
+                              Obx(() => BrandOffersGridWidget(
                                     list: homeController.discountList.value,
-                                  ),
-                                )),
-                            SizedBox(height: 10),
-                            widgets.subTitleWidget(title: 'Launch', left: 15),
-                            Obx(() => Padding(
-                                  padding: const EdgeInsets.only(left: 7.0),
-                                  child: BrandOffersGridWidget(
+                                  )),
+                              SizedBox(height: 10),
+                              widgets.subTitleWidget(
+                                title: 'Launch',
+                              ),
+                              Obx(() => BrandOffersGridWidget(
                                     list: homeController.discountList.value,
-                                  ),
-                                )),
-                          ],
+                                  )),
+                            ],
+                          ),
                         ),
                         SizedBox(height: 30),
-                        Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(right: 20.0),
-                              child: widgets.titleWidget(
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                          child: Column(
+                            children: [
+                              widgets.titleWidget(
                                   title: 'discounts'.tr,
-                                  left: 15,
                                   isTrailing: true,
                                   onTap: () {
                                     Get.toNamed(AppRouter.discountList);
                                   }),
-                            ),
-                            Obx(() => Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 8.0, right: 8),
-                                  child: DiscountGridWidget(
+                              Obx(() => DiscountGridWidget(
                                     list: homeController.discountList.value,
-                                  ),
-                                )),
-                          ],
+                                  )),
+                            ],
+                          ),
                         ),
                         SizedBox(height: 30),
-                        Column(
-                          children: [
-                            widgets.titleWidget(
-                                title: 'news'.tr,
-                                left: 15,
-                                isTrailing: true,
-                                rightTrailing: 15,
-                                onTap: () {
-                                  Get.to(AllNewsPage());
-                                }),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 15.0),
-                              child: AllNewsSwiper(
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                          child: Column(
+                            children: [
+                              widgets.titleWidget(
+                                  title: 'news'.tr,
+                                  isTrailing: true,
+                                  rightTrailing: 15,
+                                  onTap: () {
+                                    Get.to(AllNewsPage());
+                                  }),
+                              AllNewsSwiper(
                                 list: homeController.newsList,
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                         SizedBox(height: 30),
-                        Column(
-                          children: [
-                            widgets
-                                .titleWidget(
-                                  title: 'brands'.tr,
-                                )
-                                .paddingSymmetric(horizontal: 15),
-
-                            BrandGridWidget(),
-                          ],
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                          child: Column(
+                            children: [
+                              widgets.titleWidget(
+                                title: 'brands'.tr,
+                              ),
+                              BrandGridWidget(),
+                            ],
+                          ),
                         ),
                         SizedBox(height: 30),
                         Column(
@@ -278,7 +268,7 @@ class HomePage extends StatelessWidget {
                                   list: homeController.discountList.value,
                                 )),
                           ],
-                        ).paddingSymmetric(horizontal: 15),
+                        ).paddingSymmetric(horizontal: 10),
                         // widgets
                         //     .titleWidget(
                         //       title: 'season_categories'.tr,

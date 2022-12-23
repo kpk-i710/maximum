@@ -27,12 +27,14 @@ class PopularGoodsGridWidget extends StatelessWidget {
                 child: widgets.blockPlaceholder())
             : index == 0
                 ? PopularGoodsItemBlackWidget(
+                    onTap: () {},
                     list: list,
                     index: index,
                   )
                 : PopularGoodsItemWidget(
                     list: list,
                     index: index,
+                    onTap: () {},
                   );
       },
       staggeredTileBuilder: (int index) =>

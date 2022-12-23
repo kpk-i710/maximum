@@ -18,24 +18,21 @@ class PopularCategoriesGridWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-   
-      child: ConstrainedBox(
-        constraints: BoxConstraints(maxHeight: maxHeight),
-        child: GridView.count(
-          childAspectRatio: 2 / 1.5,
-          crossAxisSpacing: 20,
-          mainAxisSpacing: 20,
-          padding: EdgeInsets.all(10),
-          physics: BouncingScrollPhysics(),
-          crossAxisCount: countAxis,
-          children: List.generate(
-              itemCount, (index) => popular_categories_item(index: index)),
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxHeight: maxHeight),
+      child: GridView.count(
+        childAspectRatio: 2 / 1.5,
+        crossAxisSpacing: 20,
+        mainAxisSpacing: 20,
+        padding: EdgeInsets.all(10),
+        physics: BouncingScrollPhysics(),
+        crossAxisCount: countAxis,
+        children: List.generate(
+            itemCount, (index) => popular_categories_item(index: index, onTap: () {  },)),
 
-          primary: false,
-          // shrinkWrap: true,
-          scrollDirection: Axis.horizontal,
-        ),
+        primary: false,
+        // shrinkWrap: true,
+        scrollDirection: Axis.horizontal,
       ),
     );
   }

@@ -21,8 +21,6 @@ class DicountCardPageController extends GetxController {
     false,
   ].obs;
 
-
-
   final videoURL = "https://youtu.be/YMx8Bbev6T4";
 
   late YoutubePlayerController controller;
@@ -47,14 +45,22 @@ class DicountCardPageController extends GetxController {
     box.write("counter", counter.value);
   }
 
-  int getCounter() {
+  getCounter() {
     final box = GetStorage();
-    box.writeIfNull('counter',0);
-    return box.read("counter" );
+    box.writeIfNull('counter', 0);
+    return box.read("counter");
   }
 
   @override
   void onInit() {
+    ever(
+        counter,
+        (value) => () {
+              final box = GetStorage();
+              box.writeIfNull('counter', 0);
+              counter.value = box.read('counter');
+            });
+
     counter.value = getCounter();
     final videoID = YoutubePlayer.convertUrlToId(videoURL);
     controller = YoutubePlayerController(

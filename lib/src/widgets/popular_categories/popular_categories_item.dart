@@ -8,29 +8,33 @@ import '../../widgets/widgets.dart' as widgets;
 
 class popular_categories_item extends StatelessWidget {
   final index;
+  final Function() onTap;
 
-  const popular_categories_item({super.key, required this.index});
+  const popular_categories_item({super.key, required this.index,required this.onTap});
 
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(PopularCategoryController());
 
-    return widgets.boxShadows(
-      padding: 0,
-      child: Column(
-        children: [
-          SizedBox(height: 20),
-          SizedBox(
-              width: Get.width / 5,
-              height: 80,
-              child: Image.asset(
-                  "assets/images/${controller.listData[index].image}")),
-          SizedBox(height: 20),
-          Text(
-            " ${controller.listData[index].title}",
-            style: widgets.robotoConsid(fontSize: 14),
-          ),
-        ],
+    return GestureDetector(
+      onTap: onTap,
+      child: widgets.boxShadows(
+        padding: 0,
+        child: Column(
+          children: [
+            SizedBox(height: 20),
+            SizedBox(
+                width: Get.width / 5,
+                height: 80,
+                child: Image.asset(
+                    "assets/images/${controller.listData[index].image}")),
+            SizedBox(height: 20),
+            Text(
+              " ${controller.listData[index].title}",
+              style: widgets.robotoConsid(fontSize: 14),
+            ),
+          ],
+        ),
       ),
     );
   }

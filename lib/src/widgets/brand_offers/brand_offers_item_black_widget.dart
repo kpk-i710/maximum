@@ -19,7 +19,7 @@ class BrandOffersItemBlackWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.only(right: 16.0,top: 8,bottom: 8),
       child: SizedBox(
         width: Get.width / 2.7,
         child: widgets.boxShadows(

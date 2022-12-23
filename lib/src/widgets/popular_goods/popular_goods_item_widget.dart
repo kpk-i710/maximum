@@ -2,17 +2,19 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:maxkgapp/src/widgets/discount_widgets/discount_swipe_widget_offline.dart';
 
 import '../../models/discount.dart';
 import '../../styles.dart';
 import '../../widgets/widgets.dart' as widgets;
 
 class PopularGoodsItemWidget extends StatelessWidget {
-  const PopularGoodsItemWidget(
-      {Key? key, required this.list , this.index})
+  PopularGoodsItemWidget(
+      {Key? key, required this.list, this.index, required this.onTap})
       : super(key: key);
 
   final List<Discount> list;
+  Function() onTap;
 
   final index;
 
@@ -40,28 +42,25 @@ class PopularGoodsItemWidget extends StatelessWidget {
               height: 180,
               child: Stack(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    child: Image.asset(
-                      "assets/images/sofaRed.png",
-                      fit: BoxFit.fill,
-                      height: 180,
-                    ),
+                  GestureDetector(
+                    onTap: onTap,
+                    child: DiscountSwipeWidgetOffline(
+                        image: "assets/images/sofaRed.png"),
                   ),
                   Positioned(
                     left: 10,
                     bottom: 10,
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Color(0xff991A4E),
+                        color: AppTextStyles.colorRedMy,
                         borderRadius: BorderRadius.circular(5),
                       ),
                       padding: EdgeInsets.symmetric(horizontal: 5, vertical: 3),
                       child: Text(
                         ' - ${list[index].discountValue}%',
-                        style: AppTextStyles.robotoCondensed(
-                            color: context.theme.onAccent,
+                        style: widgets.robotoConsid(
                             fontSize: 14,
+                            color: Colors.white,
                             fontWeight: FontWeight.w700),
                       ),
                     ),
@@ -70,7 +69,7 @@ class PopularGoodsItemWidget extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: 2,
+              height: 8,
             ),
             Row(
               children: [
@@ -81,10 +80,9 @@ class PopularGoodsItemWidget extends StatelessWidget {
                     maxLines: 1,
                     maxFontSize: 16,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontFamily: "MPLUSRounded1c-Black",
+                    style: widgets.robotoConsid(
                         fontSize: 16,
-                        color: Color(0xff991A4E),
+                        color: AppTextStyles.colorRedMy,
                         fontWeight: FontWeight.w900),
                   ),
                 ),
@@ -94,10 +92,9 @@ class PopularGoodsItemWidget extends StatelessWidget {
                     maxLines: 1,
                     textAlign: TextAlign.center,
                     maxFontSize: 12,
-                    style: TextStyle(
-                      fontFamily: "MPLUSRounded1c-Black",
+                    style: widgets.robotoConsid(
                       fontSize: 12,
-                      color: Color(0xff62656A),
+                      color: AppTextStyles.colorGreyThrou,
                       fontWeight: FontWeight.w600,
                       decoration: TextDecoration.lineThrough,
                     ),
@@ -105,65 +102,7 @@ class PopularGoodsItemWidget extends StatelessWidget {
                 ),
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 9.0, bottom: 5),
-              child: AutoSizeText(
-                "Менделейка / Набор для опытов 6шт /Детский наборdsfffffffffffffffff",
-                maxFontSize: 14,
-                minFontSize: 14,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 2,
-                style: TextStyle(
-                    fontFamily: "RobotoCondensed-Regular",
-                    fontSize: 14,
-                    fontWeight: FontWeight.w200),
-              ),
-            ),
-            Padding(
-                padding: EdgeInsets.only(left: 9),
-                child: Row(
-                  children: [
-                    SvgPicture.asset(
-                      "assets/icons/car_ride.svg",
-                      width: 17,
-                      height: 19.33,
-                      color: Color(0xff0C54A1),
-                    ),
-                    SizedBox(width: 7.37),
-                    Expanded(
-                      child: Text(
-                        "Под заказ, доставим в Бишкек 24 - 31 октября",
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                            color: Color(0xff0C54A1),
-                            fontWeight: FontWeight.w500,
-                            fontSize: 12,
-                            fontFamily: "RobotoThin"),
-                      ),
-                    ),
-                    SizedBox(width: 7.37),
-                  ],
-                )),
-            Row(
-              children: [
-                SizedBox(width: 9.00),
-                Expanded(
-                  child: widgets.addCartButton(
-                    onPressed: () {},
-                    text: 'to_cart'.tr,
-                  ),
-                ),
-                SizedBox(width: 9.00),
-                widgets.addFavorite(
-                  onPressed: () {},
-                ),
-                SizedBox(width: 9.00),
-              ],
-            ),
-            SizedBox(
-              height: 8,
-            )
+            widgets.bottomPopularCards(index: index)
           ],
         ),
       ),
