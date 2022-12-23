@@ -56,9 +56,11 @@ class DicountCardPageController extends GetxController {
     ever(
         counter,
         (value) => () {
-              final box = GetStorage();
-              box.writeIfNull('counter', 0);
-              counter.value = box.read('counter');
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                final box = GetStorage();
+                box.writeIfNull('counter', 0);
+                counter.value = box.read('counter');
+              });
             });
 
     counter.value = getCounter();

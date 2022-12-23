@@ -9,10 +9,12 @@ import '../../styles.dart';
 import '../../widgets/widgets.dart' as widgets;
 
 class NewsGridItemWidget extends StatelessWidget {
-  NewsGridItemWidget({Key? key, required this.result, required this.onPress})
+  NewsGridItemWidget(
+      {Key? key, required this.result, required this.onPress, this.index})
       : super(key: key);
   VoidCallback onPress;
   Result? result;
+  final index;
 
   @override
   Widget build(BuildContext context) {
@@ -161,22 +163,10 @@ class NewsGridItemWidget extends StatelessWidget {
                     SizedBox(
                       height: 8,
                     ),
-                    Row(
-                      children: [
-                        SizedBox(width: 9.00),
-                        Expanded(
-                          child: widgets.addCartButton(
-                            onPressed: () {},
-                            text: 'to_cart'.tr,
-                          ),
-                        ),
-                        SizedBox(width: 9.00),
-                        widgets.addFavorite(
-                          onPressed: () {},
-                        ),
-                        SizedBox(width: 9.00),
-                      ],
-                    ),
+                    widgets.addCardAndFavorite(
+                        textCard: 'to_cart'.tr,
+                        onPressedCard: () {},
+                        isSelectedFavorite: index == 1 ? true : false),
                     SizedBox(
                       height: 8,
                     )

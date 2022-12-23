@@ -245,11 +245,35 @@ Widget inkButton({Function()? onTap, required Widget child}) {
   );
 }
 
+Widget darkCustomButton(
+    {required Widget child, required Function()? onTap, double height = 35}) {
+  return Material(
+    color: Colors.transparent,
+    child: InkWell(
+        splashColor: Colors.grey,
+        onTap: onTap,
+        child: Ink(
+            height: height,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                gradient: LinearGradient(begin: Alignment.centerLeft, stops: [
+                  0.0,
+                  0.8,
+                ], colors: [
+                  Color(0xff112B66),
+                  Color(0xff53235A),
+                ])),
+            child: Center(child: child))),
+  );
+}
+
 Widget customButton({required Widget child, required Function()? onTap}) {
   return Material(
     color: Colors.transparent,
     child: InkWell(
-        splashColor: Colors.grey, onTap: onTap, child: Center(child: child)),
+        splashColor: Colors.grey,
+        onTap: onTap,
+        child: Ink(child: Center(child: child))),
   );
 }
 
@@ -3328,25 +3352,48 @@ Widget orderButton(
 }
 
 Widget addCartButton({required String text, Function()? onPressed}) {
-  return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        minimumSize: Size(double.infinity, 35),
-        maximumSize: Size(double.infinity, 35),
-        backgroundColor: AppTextStyles.colorBurgundy,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(5),
-            side: BorderSide(color: Colors.transparent, width: 1.0)),
+  return darkCustomButton(
+      onTap: onPressed,
+      child: Center(
+        child: AutoSizeText(text.toUpperCase(),
+            maxFontSize: 14,
+            minFontSize: 5,
+            textAlign: TextAlign.center,
+            maxLines: 1,
+            style: robotoConsid(
+              color: Colors.white,
+              fontSize: 14,
+            )),
+      ));
+}
+
+Widget addCardAndFavorite(
+    {required String textCard,
+    Function()? onPressedCard,
+    bool isSelectedFavorite = false}) {
+  return Row(
+    children: [
+      SizedBox(width: 9.00),
+      Expanded(
+        child: darkCustomButton(
+            onTap: onPressedCard,
+            child: Center(
+              child: AutoSizeText(textCard.toUpperCase(),
+                  maxFontSize: 14,
+                  minFontSize: 5,
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  style: robotoConsid(
+                    color: Colors.white,
+                    fontSize: 14,
+                  )),
+            )),
       ),
-      onPressed: onPressed,
-      child: AutoSizeText(text.toUpperCase(),
-          maxFontSize: 14,
-          minFontSize: 5,
-          textAlign: TextAlign.center,
-          maxLines: 1,
-          style: robotoConsid(
-            color: Colors.white,
-            fontSize: 14,
-          )));
+      SizedBox(width: 5.00),
+      widgets.addFavorite(onPressed: () {}, isSelected: isSelectedFavorite),
+      SizedBox(width: 9.00),
+    ],
+  );
 }
 
 Widget addFavorite(
@@ -3368,7 +3415,7 @@ Widget addFavorite(
           child: Icon(
             icon,
             size: sizeFavorite ?? 20,
-            color: isSelected? AppTextStyles.colorRedMy: Color(0xff7B7B7B),
+            color: isSelected ? AppTextStyles.colorRedMy : Color(0xff7B7B7B),
           ),
         ),
       ),
@@ -3473,22 +3520,13 @@ Widget bottomPopularCards({int? index}) {
               SizedBox(width: 7.37),
             ],
           )),
-      Row(
-        children: [
-          SizedBox(width: 9.00),
-          Expanded(
-            child: widgets.addCartButton(
-              onPressed: () {},
-              text: 'to_cart'.tr,
-            ),
-          ),
-          SizedBox(width: 5.00),
-          widgets.addFavorite(
-            onPressed: () {},isSelected: true
-          ),
-          SizedBox(width: 9.00),
-        ],
+      SizedBox(
+        height: 8,
       ),
+      widgets.addCardAndFavorite(
+          textCard: 'to_cart'.tr,
+          onPressedCard: () {},
+          isSelectedFavorite: index == 0 ? true : false),
       SizedBox(
         height: 8,
       )

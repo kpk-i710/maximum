@@ -36,6 +36,7 @@ class NewsListPage extends StatelessWidget {
                       }
 
                       return NewsGridItemWidget(
+                        index: index,
                         onPress: () {
                           Get.to(
                               PageNews(
