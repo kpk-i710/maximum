@@ -753,33 +753,29 @@ void deletedFromCardSnackBar({required BuildContext context}) {
 
 Widget counterCardOneProductTest() {
   final controller = Get.put(DicountCardPageController());
-  return Expanded(
-    child: Row(
-      children: [
-        Flexible(
-          child: dark(
-            width: Get.width,
-            height: 35,
-            radius: 5,
-            child: Expanded(
-
+  return Obx(() {
+    return Expanded(
+      child: Row(
+        children: [
+          Flexible(
+            child: dark(
+              width: Get.width,
+              height: 35,
+              radius: 5,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
-
                   children: [
                     buttonCounterTest(
                         text: "-",
                         onTap: () {
-                          controller.plus();
+                          controller.minusWithOutSheet();
                         }),
-
                     Text(
                       controller.counter.value.toString(),
                       style: robotoConsid(color: Colors.white, fontSize: 18),
                     ),
-
                     buttonCounterTest(
                         text: "+",
                         onTap: () {
@@ -790,10 +786,10 @@ Widget counterCardOneProductTest() {
               ),
             ),
           ),
-        ),
-      ],
-    ),
-  );
+        ],
+      ),
+    );
+  });
 }
 
 Widget counterCardOneProduct({required BuildContext context}) {
@@ -1273,34 +1269,32 @@ SizedBox bottomNavigation(
 
 Widget cardIcon({bool isSelected = false}) {
   final controller = Get.put(DicountCardPageController());
-  return Obx(() {
-    return Badge(
-      showBadge: controller.getCounter() > 0,
-      badgeContent: Padding(
-        padding: const EdgeInsets.only(right: 2.0),
-        child: RichText(
-          text: TextSpan(
-            text: " ${controller.getCounter()}",
-            style: robotoConsid(color: Colors.white, fontSize: 12),
-            children: <TextSpan>[
-              TextSpan(
-                  text: "  ${controller.counter.value}",
-                  style: TextStyle(fontSize: 0)),
-            ],
-          ),
+  return  Badge(
+    showBadge: false,
+    badgeContent: Padding(
+      padding: const EdgeInsets.only(right: 2.0),
+      child: RichText(
+        text: TextSpan(
+          text: " ${controller.counter}",
+          style: robotoConsid(color: Colors.white, fontSize: 12),
+          children: <TextSpan>[
+            TextSpan(
+                text: "  ${controller.counter.value}",
+                style: TextStyle(fontSize: 0)),
+          ],
         ),
       ),
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 2.5, top: 2.5),
-        child: anySvg(
-            nameSvg: 'card',
-            color: isSelected
-                ? AppTextStyles.colorBlueMy
-                : AppTextStyles.colorGrayMy,
-            size: Size(22, 22)),
-      ),
-    );
-  });
+    ),
+    child: Padding(
+      padding: const EdgeInsets.only(bottom: 2.5, top: 2.5),
+      child: anySvg(
+          nameSvg: 'card',
+          color: isSelected
+              ? AppTextStyles.colorBlueMy
+              : AppTextStyles.colorGrayMy,
+          size: Size(22, 22)),
+    ),
+  );
 }
 
 Widget location({required String adress, required Function() onTap}) {
@@ -3571,6 +3565,95 @@ Widget fullWidthButton(
                         fontWeight: FontWeight.bold)),
           ],
         )),
+  );
+}
+
+Widget titleDescrpPrice({
+  String? title,
+  String? price,
+  String? oldPrice,
+}) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Padding(
+        padding: const EdgeInsets.only(left: 9.0, bottom: 5),
+        child: AutoSizeText(
+          title ?? "",
+          textAlign: TextAlign.left,
+          maxFontSize: 14,
+          minFontSize: 14,
+          overflow: TextOverflow.ellipsis,
+          maxLines: 2,
+          style: widgets.robotoConsid(
+            fontSize: 14,
+          ),
+        ),
+      ),
+      Row(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 9.0),
+            child: AutoSizeText(
+              "${price ?? ""} с",
+              maxLines: 1,
+              maxFontSize: 16,
+              textAlign: TextAlign.center,
+              style: widgets.robotoConsid(
+                  fontSize: 16,
+                  color: AppTextStyles.colorRedMy,
+                  fontWeight: FontWeight.w900),
+            ),
+          ),
+          Expanded(
+            child: AutoSizeText(
+              "${oldPrice ?? ""} с",
+              maxLines: 1,
+              textAlign: TextAlign.center,
+              maxFontSize: 14,
+              style: widgets.robotoConsid(
+                fontSize: 14,
+                color: AppTextStyles.colorGreyThrou,
+                fontWeight: FontWeight.w600,
+                decoration: TextDecoration.lineThrough,
+              ),
+            ),
+          ),
+        ],
+      ),
+      SizedBox(
+        height: 5,
+      ),
+      Padding(
+          padding: EdgeInsets.only(left: 9),
+          child: Row(
+            children: [
+              SvgPicture.asset(
+                "assets/icons/car_ride.svg",
+                width: 14,
+                height: 17.33,
+                color: AppTextStyles.colorBlueMy,
+              ),
+              SizedBox(width: 7.37),
+              Expanded(
+                child: Text(
+                  "Под заказ, доставим в Бишкек 24 - 31 октября",
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: widgets.robotoConsid(
+                    color: AppTextStyles.colorBlueMy,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 12,
+                  ),
+                ),
+              ),
+              SizedBox(width: 7.37),
+            ],
+          )),
+      SizedBox(
+        height: 8,
+      ),
+    ],
   );
 }
 

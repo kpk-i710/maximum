@@ -11,8 +11,12 @@ class ProductsListWidget extends StatelessWidget {
   final ScrollController? scrollController;
   final bool Function(ScrollNotification val)? onNotification;
 
-  const ProductsListWidget({Key? key, required this.list,
-    this.heroTag = 'product_list_', this.scrollController, this.onNotification});
+  const ProductsListWidget(
+      {Key? key,
+      required this.list,
+      this.heroTag = 'product_list_',
+      this.scrollController,
+      this.onNotification});
 
   @override
   Widget build(BuildContext context) {
@@ -25,10 +29,7 @@ class ProductsListWidget extends StatelessWidget {
         itemCount: list!.length,
         controller: scrollController,
         itemBuilder: (BuildContext context, int index) {
-          return ProductListItemWidget(
-
-            product: list!.elementAt(index),
-          );
+          return ProductListItemWidget();
         },
         staggeredTileBuilder: (int index) =>
             new StaggeredTile.fit(Helper.responsive(4, lg: 2, xl: 2)),

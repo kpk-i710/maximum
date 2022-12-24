@@ -27,13 +27,6 @@ class DiscountsListPage extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.max,
               children: [
-                // FilterWidget(
-                //     onFilterTap: () async {
-                //       final res = await Get.toNamed('/filter');
-                //       print('result from filter $res');
-                //     },
-                //     callBack: (type) {},
-                // ),
                 SizedBox(height: 10),
                 Obx(() => DiscountListWidget(
                     list: DiscountController.discountList.value,
@@ -44,8 +37,7 @@ class DiscountsListPage extends StatelessWidget {
                         arguments: {
                           "idDiscount":
                               DiscountController.discountList[index].id,
-                          "title":
-                          DiscountController.discountList[index].title,
+                          "title": DiscountController.discountList[index].title,
                         },
                       );
                     })),

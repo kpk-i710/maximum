@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:maxkgapp/src/pages/news/level_below/news_list_page_controller.dart';
+import 'package:maxkgapp/src/widgets/news_widgets/news_grid_item_widget.dart';
+import 'package:maxkgapp/src/widgets/product_widgets/product_hight_item_widget.dart';
 
 import '../../helpers/app_router.dart';
 import '../../widgets/bestsellers/bestsellers_carousel_widget.dart';
@@ -42,53 +45,20 @@ class ProductsByCatalogPage extends StatelessWidget {
                 }, callBack: (type) {
                   controller.changeViewType(type);
                 }),
-                // const SizedBox(height: 25),
-                // Obx(() => BannerWidget(list: controller.bannerList.value)),
-                // const SizedBox(height: 5),
-                // Obx(() => CatalogGridWidget(
-                //       list: controller.catalogList.value,
-                //       heroTag: 'Catalog_',
-                //     )).paddingSymmetric(horizontal: 12),
-                // const Divider(),
-                // widgets
-                //     .titleWidget('bestsellers'.tr)
-                //     .paddingSymmetric(horizontal: 12),
-                // Obx(() => ProductsCarouselWidget(
-                //       list: controller.bestsellerProductsList.value,
-                //
-                //     )),
-
-                const Divider(),
                 const SizedBox(height: 10),
                 Obx(() => BannerWidget(
                       list: homeController.bannerList.value,
                       margin: EdgeInsets.only(top: 0),
                     )),
+                const SizedBox(height: 10),
                 widgets
-                    .titleWidget(title:'bestsellers'.tr)
-                    .paddingSymmetric(horizontal: 12),
+                    .titleWidget(title: 'bestsellers'.tr)
+                    .paddingSymmetric(horizontal: 10),
                 BestsellersCarouselWidget(),
-                Container(
-                  child: Obx(() => AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 1000),
-                        child: controller.productsViewType.value == 'grid'
-                            ? ProductsGridWidget(
-                                list: controller.productsList.value,
-                                key: UniqueKey(),
-                              )
-                            : controller.productsViewType.value == 'list'
-                                ? ProductsListWidget(
-                                    key: UniqueKey(),
-                                    list: controller.productsList.value,
-                                    heroTag: 'product_list_')
-                                : ProductsBlockListWidget(
-                                    key: UniqueKey(),
-                                    list: controller.productsList.value,
-                                    heroTag: 'product_block_'),
-                      )),
-                ),
-                const SizedBox(height: 90),
-                widgets.supportCenterButton().paddingSymmetric(horizontal: 12),
+                ProductListItemWidget(),
+                SizedBox(height: 10),
+                ProductListItemWidget(),
+                ProductBlockItemWidget(),
                 const SizedBox(height: 20),
               ],
             )),

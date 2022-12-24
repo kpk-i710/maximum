@@ -18,7 +18,9 @@ class DiscountDetailItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10, ),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 10,
+      ),
       child: GestureDetector(
         onTap: onPress,
         child: Container(
@@ -38,7 +40,7 @@ class DiscountDetailItemWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Flexible(
-                flex: 1,
+                flex: 3,
                 child: Container(
                   height: 180,
                   child: Stack(
@@ -79,90 +81,17 @@ class DiscountDetailItemWidget extends StatelessWidget {
                 ),
               ),
               Flexible(
-                flex: 1,
+                flex: 4,
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
                       height: 13,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 9.0, bottom: 5),
-                      child: AutoSizeText(
-                        product?.naim.toString() ?? "",
-                        maxFontSize: 14,
-                        minFontSize: 14,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
-                        style: TextStyle(
-                          fontFamily: "RobotoCondensed-Regular",
-                          fontSize: 14,
-                        ),
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 9.0),
-                          child: AutoSizeText(
-                            "${product?.cenaok.toString()} с",
-                            maxLines: 1,
-                            maxFontSize: 16,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontFamily: "MPLUSRounded1c-Black",
-                                fontSize: 16,
-                                color: Color(0xff991A4E),
-                                fontWeight: FontWeight.w900),
-                          ),
-                        ),
-                        Expanded(
-                          child: AutoSizeText(
-                            "${product?.oldPrice.toString()} с",
-                            maxLines: 1,
-                            textAlign: TextAlign.center,
-                            maxFontSize: 12,
-                            style: TextStyle(
-                              fontFamily: "MPLUSRounded1c-Black",
-                              fontSize: 12,
-                              color: Color(0xff62656A),
-                              fontWeight: FontWeight.w600,
-                              decoration: TextDecoration.lineThrough,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Padding(
-                        padding: EdgeInsets.only(left: 9),
-                        child: Row(
-                          children: [
-                            SvgPicture.asset(
-                              "assets/icons/car_ride.svg",
-                              width: 17,
-                              height: 19.33,
-                              color: Color(0xff0C54A1),
-                            ),
-                            SizedBox(width: 7.37),
-                            Expanded(
-                              child: Text(
-                                "Под заказ, доставим в Бишкек 24 - 31 октября",
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    color: Color(0xff0C54A1),
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 12,
-                                    fontFamily: "RobotoThin"),
-                              ),
-                            ),
-                            SizedBox(width: 7.37),
-                          ],
-                        )),
-                    SizedBox(
-                      height: 8,
+                    widgets.titleDescrpPrice(
+                      price: product?.cenaok.toString(),
+                      title: product?.naim.toString(),
+                      oldPrice: product?.oldPrice.toString(),
                     ),
                     widgets.addCardAndFavorite(
                         textCard: 'to_cart'.tr,

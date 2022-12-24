@@ -25,6 +25,13 @@ class DicountCardPageController extends GetxController {
 
   late YoutubePlayerController controller;
 
+  minusWithOutSheet() {
+    if (counter >= 1) {
+      counter = counter - 1;
+      saveCounter();
+    }
+  }
+
   minus({required BuildContext context}) {
     if (counter >= 1) {
       counter = counter - 1;

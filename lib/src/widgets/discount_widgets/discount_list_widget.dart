@@ -24,7 +24,7 @@ class DiscountListWidget extends StatelessWidget {
           child: DiscountGridItemWidget(discount: list.elementAt(index)),
         );
       }, separatorBuilder: (BuildContext context, int index) {
-      return  SizedBox(height: 20);
+      return  SizedBox(height: 10);
     },
 
     );

@@ -9,185 +9,104 @@ import '../../widgets/cart_widgets/cart_with_text_button.dart';
 import '../../widgets/widgets.dart' as widgets;
 
 class ProductListItemWidget extends StatelessWidget {
-
-  final Product? product;
   final double height;
 
-  const ProductListItemWidget(
-      {Key? key, this.product, this.height = 240})
-      : assert(product != null),
-        super(key: key);
+  const ProductListItemWidget({Key? key, this.height = 240}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-       
-        Get.toNamed('/product_details', arguments: product);
-      },
-      child: Container(
-        color: Colors.grey.shade200,
-        child: Card(
-          elevation: 0,
-          margin: EdgeInsets.only(bottom: 4),
-          color: Get.theme.background,
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            height: height,
-            width: double.infinity,
-            decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey.shade200, width: 0.5)),
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 40,
-                  child: Container(
-                    height: height,
-                    padding: EdgeInsets.symmetric(vertical: 10),
-                    child: Column(
-                      children: [
-                        Flexible(
-                          flex: 4,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(8.0),
-                            child: CachedNetworkImage(
-                              imageUrl: product!.imageUrl,
-                              fit: BoxFit.contain,
-                              progressIndicatorBuilder:
-                                  (context, url, progress) {
-                                return Center(
-                                  child: Padding(
-                                    padding: EdgeInsets.all(32),
-                                    child: CircularProgressIndicator(
-                                        valueColor:
-                                            AlwaysStoppedAnimation<Color>(
-                                                context.theme.accent),
-                                        value: progress.totalSize != null
-                                            ? progress.downloaded /
-                                                progress.totalSize!
-                                            : null),
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 5),
-                        Flexible(
-                          flex: 1,
-                          child: Text(
-                            'Доставим в течении 15 дней',
-                            style: AppTextStyles.mPlusRounded1c(
-                                color: context.theme.primary,
-                                fontSize: 13,
-                                fontWeight: FontWeight.w500),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                Expanded(
-                  flex: 60,
-                  child: Column(
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 10,
+      ),
+      child: GestureDetector(
+        onTap: (){
+
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(5),
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Color(0xffD9D9D9).withOpacity(0.6),
+                spreadRadius: 0,
+                blurRadius: 10,
+                offset: Offset(0, 3), // changes position of shadow
+              ),
+            ],
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Flexible(
+                flex: 3,
+                child: Container(
+                  height: 180,
+                  child: Stack(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 12.0, vertical: 8.0),
-                        child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              widgets.rating(4),
-                              SizedBox(height: 5),
-                              SizedBox(
-                                width: double.infinity,
-                                child: Text(
-                                  product!.name!,
-                                  maxLines: 3,
-                                  style: AppTextStyles.mPlusRounded1c(
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                              ),
-                              SizedBox(height: 10),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      product!.discountPrice != 0
-                                          ? Row(
-                                              children: <Widget>[
-                                                Text(
-                                                  product!
-                                                      .getPriceWithCurrency(),
-                                                  style: AppTextStyles
-                                                      .mPlusRounded1c(
-                                                          fontSize: 12,
-                                                          color: context
-                                                              .theme.secondary
-                                                              .withOpacity(0.5),
-                                                          decorationColor:
-                                                              context
-                                                                  .theme.accent,
-                                                          decoration:
-                                                              TextDecoration
-                                                                  .lineThrough),
-                                                ),
-                                              ],
-                                            )
-                                          : Container(),
-                                      Text(
-                                        product!.getCurrentPriceWithCurrency(),
-                                        style: AppTextStyles.mPlusRounded1c(
-                                            color: context.theme.accent,
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w800),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 10),
-                              Row(
-                                children: [
-                                  Text(
-                                    'code'.tr + ' 1254261',
-                                    style: AppTextStyles.mPlusRounded1c(
-                                        color: context.theme.grey,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 5),
-                              Row(
-                                children: [
-                                  CartWithTextButtonWidget(product!),
-                                  SizedBox(width: 10),
-                                  Container(
-                                    height: 30,
-                                    width: 30,
-                                    child: InkWell(
-                                      onTap: () {},
-                                      child: Icon(
-                                          MaterialCommunityIcons.heart_outline,
-                                          color: context.theme.grey),
-                                    ),
-                                  ),
-                                ],
-                              )
-                            ]),
+                        padding: const EdgeInsets.all(5.0),
+                        child: CachedNetworkImage(
+                          imageUrl:
+                          "https://max.kg/nal/img/32619/b_tov_166900_5fd3e1f7.jpg",
+                          fit: BoxFit.cover,
+                          progressIndicatorBuilder: (context, url, progress) {
+                            return CircularProgressIndicator(
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                    context.theme.primary),
+                                value: progress.totalSize != null
+                                    ? progress.downloaded / progress.totalSize!
+                                    : null);
+                          },
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment(-0.8, 0.6),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Color(0xff991A4E),
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          padding:
+                          EdgeInsets.symmetric(horizontal: 5, vertical: 3),
+                          child: Text(
+                            '- 40%',
+                            style: AppTextStyles.robotoCondensed(
+                                color: context.theme.onAccent,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w700),
+                          ),
+                        ),
                       ),
                     ],
                   ),
-                )
-              ],
-            ),
+                ),
+              ),
+              Flexible(
+                flex: 4,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: 13,
+                    ),
+                    widgets.titleDescrpPrice(
+                      price: "1 000с",
+                      title:   "Мультиварка Redmond RMC-M36",
+                      oldPrice: "1 200c",
+                    ),
+                    widgets.addCardAndFavorite(
+                        textCard: 'to_cart'.tr,
+                        onPressedCard: () {},
+                        isSelectedFavorite:   false),
+                    SizedBox(
+                      height: 8,
+                    )
+                  ],
+                ),
+              )
+            ],
           ),
         ),
       ),

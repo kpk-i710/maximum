@@ -15,15 +15,13 @@ class FavoritePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: SearchBar2(title: "favorite".tr),
-
       body: SafeArea(
         child: Obx(() {
           return controller.isLoaded.value
-              ? ListView.builder(
-                  itemCount: controller.dicount_list?.product[0].length,
+              ? ListView.separated(
+                  itemCount: controller.dicount_list?.product[0].length ?? 0,
                   itemBuilder: (context, index) {
                     return DiscountDetailItemWidget(
-                      index: index,
                       product: controller.dicount_list?.product[0][index],
                       onPress: () {
                         print(controller.dicount_list?.product[0][index].naim);
@@ -38,7 +36,11 @@ class FavoritePage extends StatelessWidget {
                             });
                       },
                     );
-                  })
+                  },
+                  separatorBuilder: (BuildContext context, int index) {
+                    return SizedBox(height: 20);
+                  },
+                )
               : Center(child: CircularProgressIndicator());
         }),
       ),

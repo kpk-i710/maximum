@@ -15,7 +15,7 @@ class BestsellersItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(13),
+      padding: const EdgeInsets.all(10),
       child: ConstrainedBox(
 
         constraints: BoxConstraints(
@@ -81,7 +81,7 @@ class BestsellersItemWidget extends StatelessWidget {
                 ),
               ),
               Padding(
-                  padding: EdgeInsets.only(left: 9, bottom: 20),
+                  padding: EdgeInsets.only(left: 9, bottom: 10),
                   child: widgets.rating(3))
             ],
           ),
