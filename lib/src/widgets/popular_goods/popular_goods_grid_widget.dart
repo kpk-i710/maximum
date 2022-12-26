@@ -39,8 +39,8 @@ class PopularGoodsGridWidget extends StatelessWidget {
       },
       staggeredTileBuilder: (int index) =>
           StaggeredTile.fit(Helper.responsive(2, md: 1, lg: 1, xl: 1)),
-      mainAxisSpacing: 0,
-      crossAxisSpacing: 15,
+      mainAxisSpacing: 10,
+      crossAxisSpacing: 10,
     );
   }
 }

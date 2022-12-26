@@ -24,6 +24,7 @@ class DiscountDetailItemWidget extends StatelessWidget {
       child: GestureDetector(
         onTap: onPress,
         child: Container(
+          height: 180,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
             color: Colors.white,
@@ -83,22 +84,22 @@ class DiscountDetailItemWidget extends StatelessWidget {
               Flexible(
                 flex: 4,
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
                       height: 13,
                     ),
-                    widgets.titleDescrpPrice(
+                    widgets.titleDescrpPriceWithoutCar(
                       price: product?.cenaok.toString(),
                       title: product?.naim.toString(),
                       oldPrice: product?.oldPrice.toString(),
                     ),
-                    widgets.addCardAndFavorite(
+                    Spacer(),
+                    widgets.addCardAndFavoriteAndCar(
                         textCard: 'to_cart'.tr,
                         onPressedCard: () {},
-                        isSelectedFavorite: index == 0 ? true : false),
+                        isSelectedFavorite: index == 1 ? true : false),
                     SizedBox(
-                      height: 8,
+                      height: 10,
                     )
                   ],
                 ),

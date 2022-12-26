@@ -79,6 +79,33 @@ Widget priceWidget(double price, {TextStyle? style}) {
   }
 }
 
+Widget SwiperImage({required String image}) {
+  var currentIndex = 0.obs;
+  return Obx(() {
+    return Container(
+      height: Get.width-40,
+
+      child: Stack(children: [
+        Swiper(
+          itemBuilder: (context, index) {
+            return Image.asset(image);
+          },
+          itemCount: 3,
+          controller: SwiperController(),
+          onIndexChanged: (index) {
+            currentIndex.value = index;
+          },
+          autoplay: false,
+        ),
+        Align(
+            alignment: Alignment(0, 0.9),
+            child: widgets.indicatorDots(
+                currentIndex: currentIndex.value, length: 3)),
+      ]),
+    );
+  });
+}
+
 Widget indicatorDots({required int length, required int currentIndex}) {
   return SizedBox(
     height: 50,
@@ -1269,7 +1296,7 @@ SizedBox bottomNavigation(
 
 Widget cardIcon({bool isSelected = false}) {
   final controller = Get.put(DicountCardPageController());
-  return  Badge(
+  return Badge(
     showBadge: false,
     badgeContent: Padding(
       padding: const EdgeInsets.only(right: 2.0),
@@ -2543,7 +2570,7 @@ Widget favoriteWithPrice({required int? price}) {
           ],
         ),
         Spacer(),
-        addFavorite(
+        addFavoriteBig(
           color: Colors.transparent,
           sizeButton: 60,
           sizeFavorite: 30,
@@ -3453,12 +3480,78 @@ Widget addCartButton({required String text, Function()? onPressed}) {
       ));
 }
 
-Widget addCardAndFavorite(
+Widget addCardAndFavoriteAndCar(
     {required String textCard,
     Function()? onPressedCard,
     Function()? onPressedFavorite,
     bool isSelectedFavorite = false,
     bool isAddedToCard = false}) {
+  return Column(
+    children: [
+      Padding(
+          padding: EdgeInsets.only(left: 9),
+          child: Row(
+            children: [
+              SvgPicture.asset(
+                "assets/icons/car_ride.svg",
+                width: 14,
+                height: 17.33,
+                color: AppTextStyles.colorBlueMy,
+              ),
+              SizedBox(width: 7.37),
+              Expanded(
+                child: Text(
+                  "Под заказ, доставим в Бишкек 24 - 31 октября",
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: widgets.robotoConsid(
+                    color: AppTextStyles.colorBlueMy,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 12,
+                  ),
+                ),
+              ),
+              SizedBox(width: 7.37),
+            ],
+          )),
+      SizedBox(height: 10),
+      Row(
+        children: [
+          SizedBox(width: 9.00),
+          isAddedToCard
+              ? counterCardOneProductTest()
+              : Expanded(
+                  child: gradientCustomButton(
+                      onTap: onPressedCard,
+                      child: Center(
+                        child: AutoSizeText(textCard.toUpperCase(),
+                            maxFontSize: 14,
+                            minFontSize: 5,
+                            textAlign: TextAlign.center,
+                            maxLines: 1,
+                            style: robotoConsid(
+                              color: Colors.white,
+                              fontSize: 14,
+                            )),
+                      )),
+                ),
+          SizedBox(width: 5.00),
+          widgets.addFavorite(
+              onPressed: onPressedFavorite, isSelected: isSelectedFavorite),
+          SizedBox(width: 9.00),
+        ],
+      ),
+    ],
+  );
+}
+
+Widget addCardAndFavorite(
+    {required String textCard,
+    Function()? onPressedCard,
+    Function()? onPressedFavorite,
+    bool isSelectedFavorite = false,
+    bool isAddedToCard = false,
+    double rightPadding = 9.0}) {
   return Row(
     children: [
       SizedBox(width: 9.00),
@@ -3482,8 +3575,30 @@ Widget addCardAndFavorite(
       SizedBox(width: 5.00),
       widgets.addFavorite(
           onPressed: onPressedFavorite, isSelected: isSelectedFavorite),
-      SizedBox(width: 9.00),
+      SizedBox(width: rightPadding),
     ],
+  );
+}
+
+Widget addFavoriteBig(
+    {required Function()? onPressed,
+    double? sizeFavorite,
+    double? sizeButton,
+    IconData? icon = Icons.favorite,
+    bool isSelected = false,
+    Color color = const Color(0xffE5E5E5)}) {
+  return colorCustomButton(
+    height: 50,
+    width: 50,
+    color: AppTextStyles.colorGrayDividar,
+    child: Center(
+      child: Icon(
+        icon,
+        size: sizeFavorite ?? 20,
+        color: isSelected ? AppTextStyles.colorRedMy : Color(0xff7B7B7B),
+      ),
+    ),
+    onTap: () {},
   );
 }
 
@@ -3495,7 +3610,7 @@ Widget addFavorite(
     bool isSelected = false,
     Color color = const Color(0xffE5E5E5)}) {
   return colorCustomButton(
-    color: isSelected ? AppTextStyles.colorGrayDividar : Colors.white,
+    color: AppTextStyles.colorGrayDividar,
     child: Center(
       child: Icon(
         icon,
@@ -3652,6 +3767,63 @@ Widget titleDescrpPrice({
           )),
       SizedBox(
         height: 8,
+      ),
+    ],
+  );
+}
+
+Widget titleDescrpPriceWithoutCar({
+  String? title,
+  String? price,
+  String? oldPrice,
+}) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Padding(
+        padding: const EdgeInsets.only(left: 9.0, bottom: 5),
+        child: AutoSizeText(
+          title ?? "",
+          textAlign: TextAlign.left,
+          maxFontSize: 14,
+          minFontSize: 14,
+          overflow: TextOverflow.ellipsis,
+          maxLines: 2,
+          style: widgets.robotoConsid(
+            fontSize: 14,
+          ),
+        ),
+      ),
+      Row(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 9.0),
+            child: AutoSizeText(
+              "${price ?? ""} с",
+              maxLines: 1,
+              maxFontSize: 16,
+              textAlign: TextAlign.center,
+              style: widgets.robotoConsid(
+                  fontSize: 16,
+                  color: AppTextStyles.colorRedMy,
+                  fontWeight: FontWeight.w900),
+            ),
+          ),
+          Expanded(
+            child: AutoSizeText(
+              "${oldPrice ?? ""} с",
+              maxLines: 1,
+              textAlign: TextAlign.center,
+              maxFontSize: 14,
+              style: widgets.robotoConsid(
+                fontSize: 14,
+                color: AppTextStyles.colorGreyThrou,
+                fontWeight: FontWeight.w600,
+                decoration: TextDecoration.lineThrough,
+              ),
+            ),
+          ),
+        ],
       ),
     ],
   );

@@ -168,7 +168,6 @@ class HomePage extends StatelessWidget {
                                   list: homeController.newsList,
                                 ),
                                 SizedBox(height: 20),
-
                               ],
                             ),
                           ],
@@ -263,14 +262,6 @@ class HomePage extends StatelessWidget {
                                 )),
                           ],
                         ).paddingSymmetric(horizontal: 10),
-                        // widgets
-                        //     .titleWidget(
-                        //       title: 'season_categories'.tr,
-                        //     )
-                        //     .paddingSymmetric(horizontal: 12),
-                        // Obx(() => CatalogGridWidget(
-                        //       list: homeController.seasonCategoriesList.value,
-                        //     )),
                         const SizedBox(height: 20.0),
                       ],
                     );

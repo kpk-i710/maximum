@@ -38,7 +38,7 @@ class BoughtTodayGridWidget extends StatelessWidget {
         list: list,
       );
     }
-    return BoughtTodayItemWidget(
+    return BoughtTodayItemRedWidget(
       index: index,
       list: list,
     );

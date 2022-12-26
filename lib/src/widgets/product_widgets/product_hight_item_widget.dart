@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/get_utils/get_utils.dart';
+import 'package:maxkgapp/src/widgets/discount_widgets/discount_swipe_widget_offline.dart';
+import 'package:maxkgapp/src/widgets/widgets.dart';
 import '../../widgets/widgets.dart' as widgets;
 
 class ProductBlockItemWidget extends StatelessWidget {
@@ -16,7 +19,9 @@ class ProductBlockItemWidget extends StatelessWidget {
       child: widgets.boxShadows(
           child: Column(
         children: [
-          Image.asset("assets/images/notebook_item.png"),
+            SwiperImage(
+            image: 'assets/images/notebook_item.png',
+          ),
           SizedBox(height: 10),
           Text(
             "Менделейка / Набор для опытов 6шт /Детский набор ",
@@ -28,7 +33,7 @@ class ProductBlockItemWidget extends StatelessWidget {
             children: [
               widgets.truckSvg(),
               SizedBox(width: 10),
-              Flexible(
+              Expanded(
                 flex: 3,
                 child: Text(
                   "Под заказ, доставим в Бишкек 24 - 31 октября",
@@ -38,9 +43,11 @@ class ProductBlockItemWidget extends StatelessWidget {
               SizedBox(width: 10),
               Flexible(
                 flex: 4,
-                child: widgets.addCardAndFavorite(textCard: 'to_cart'.tr,),
+                child: widgets.addCardAndFavorite(
+                    rightPadding: 0,
+                    textCard: 'to_cart'.tr,
+                    onPressedCard: () {}),
               ),
-
             ],
           )
         ],

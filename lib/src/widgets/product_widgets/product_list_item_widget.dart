@@ -20,10 +20,9 @@ class ProductListItemWidget extends StatelessWidget {
         horizontal: 10,
       ),
       child: GestureDetector(
-        onTap: (){
-
-        },
+        onTap: () {},
         child: Container(
+          height: 180,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
             color: Colors.white,
@@ -49,7 +48,7 @@ class ProductListItemWidget extends StatelessWidget {
                         padding: const EdgeInsets.all(5.0),
                         child: CachedNetworkImage(
                           imageUrl:
-                          "https://max.kg/nal/img/32619/b_tov_166900_5fd3e1f7.jpg",
+                              "https://max.kg/nal/img/1051/b_tov_11270015_7e11f3ef.jpg",
                           fit: BoxFit.cover,
                           progressIndicatorBuilder: (context, url, progress) {
                             return CircularProgressIndicator(
@@ -62,14 +61,32 @@ class ProductListItemWidget extends StatelessWidget {
                         ),
                       ),
                       Align(
-                        alignment: Alignment(-0.8, 0.6),
+                        alignment: Alignment(-0.8, 0.8),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: AppTextStyles.colorBlueMy,
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 5, vertical: 3),
+                          child: Text(
+                            'ХИТ',
+                            style: AppTextStyles.robotoCondensed(
+                                color: Colors.white,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w700),
+                          ),
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment(-0.0,  0.8),
                         child: Container(
                           decoration: BoxDecoration(
                             color: Color(0xff991A4E),
                             borderRadius: BorderRadius.circular(5),
                           ),
                           padding:
-                          EdgeInsets.symmetric(horizontal: 5, vertical: 3),
+                              EdgeInsets.symmetric(horizontal: 5, vertical: 3),
                           child: Text(
                             '- 40%',
                             style: AppTextStyles.robotoCondensed(
@@ -91,17 +108,18 @@ class ProductListItemWidget extends StatelessWidget {
                     SizedBox(
                       height: 13,
                     ),
-                    widgets.titleDescrpPrice(
+                    widgets.titleDescrpPriceWithoutCar(
                       price: "1 000с",
-                      title:   "Мультиварка Redmond RMC-M36",
+                      title: "Мультиварка Redmond RMC-M36",
                       oldPrice: "1 200c",
                     ),
-                    widgets.addCardAndFavorite(
+                    Spacer(),
+                    widgets.addCardAndFavoriteAndCar(
                         textCard: 'to_cart'.tr,
                         onPressedCard: () {},
-                        isSelectedFavorite:   false),
+                        isSelectedFavorite: false),
                     SizedBox(
-                      height: 8,
+                      height: 10,
                     )
                   ],
                 ),

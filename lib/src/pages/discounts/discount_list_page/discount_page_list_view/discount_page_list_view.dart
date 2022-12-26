@@ -45,7 +45,7 @@ class DiscountPageListView extends StatelessWidget {
               },
               separatorBuilder: (BuildContext context, int index) {
                 return SizedBox(
-                  height: 20,
+                  height: 10,
                 );
               },
             ),

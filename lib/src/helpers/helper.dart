@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:maxkgapp/src/const/const.dart';
+import 'package:maxkgapp/src/helpers/app_router.dart';
 import 'package:maxkgapp/src/pages/catalog/catalog_page.dart';
 
 class Helper {
@@ -22,7 +23,7 @@ class Helper {
     }
     list.addAll(
         List.generate(5 - rate.floor() - (rate - rate.floor()).ceil(), (index) {
-      return Icon(Icons.star,  size: size, color: Color(0xFFB8B5AF));
+      return Icon(Icons.star, size: size, color: Color(0xFFB8B5AF));
     }));
     return list;
   }
@@ -58,24 +59,23 @@ class Helper {
   }
 
   static void tabSelect(int index) {
-    if (index == 1) {
-      Get.dialog(CatalogPage(
-          bottomNavigation: true,
-          dialog: true,
-      )).then((_index) {
-        print('helper tabSelect $_index');
-        if (_index != null)
-          tabSelect(_index);
-      });
-      return;
-    }
-    Get.offAllNamed('/main', arguments: index);
+    // if (index == 1) {
+    //   Get.dialog(CatalogPage(
+    //       bottomNavigation: true,
+    //       dialog: true,
+    //   )).then((_index) {
+    //     print('helper tabSelect $_index');
+    //     if (_index != null)
+    //       tabSelect(_index);
+    //   });
+    //   return;
+    // }
+    Get.offAllNamed(AppRouter.main, arguments: index);
   }
 
   static String? getCorrectUrl(String? url) {
     if (url == null) return null;
-    if (url.contains('http://') || url.contains('https://'))
-      return url;
+    if (url.contains('http://') || url.contains('https://')) return url;
 
     return Const.BASE_URL + (url.startsWith('/') ? url : '/$url');
   }
@@ -83,7 +83,7 @@ class Helper {
   static int? parseInt(val, {int? defVal = 0}) {
     try {
       return val is int ? val : int.parse(val);
-    } catch(e) {}
+    } catch (e) {}
 
     return defVal;
   }
@@ -91,7 +91,7 @@ class Helper {
   static double? parseDouble(val, {double? defVal = 0}) {
     try {
       return val is double ? val : double.parse(val);
-    } catch(e) {}
+    } catch (e) {}
 
     return defVal;
   }

@@ -6,8 +6,8 @@ import '../../models/discount.dart';
 import '../../styles.dart';
 import '../widgets.dart' as widgets;
 
-class BoughtTodayItemWidget extends StatelessWidget {
-  const BoughtTodayItemWidget({Key? key, required this.list, this.index})
+class BoughtTodayItemRedWidget extends StatelessWidget {
+  const BoughtTodayItemRedWidget({Key? key, required this.list, this.index})
       : super(key: key);
 
   final List<Discount> list;
@@ -40,7 +40,9 @@ class BoughtTodayItemWidget extends StatelessWidget {
                     "19 000 c",
                     maxLines: 1,
                     textAlign: TextAlign.center,
-                    style: widgets.robotoConsid(),
+                    style: widgets.robotoConsid(
+
+                        ),
                   ),
                   SizedBox(width: 5),
                   Padding(
@@ -50,11 +52,9 @@ class BoughtTodayItemWidget extends StatelessWidget {
                       maxLines: 1,
                       textAlign: TextAlign.center,
                       maxFontSize: 12,
-                      style: TextStyle(
-                        fontFamily: "MPLUSRounded1c-Black",
+                      style: widgets.robotoConsid(
                         fontSize: 12,
-                        color: Color(0xff62656A),
-                        fontWeight: FontWeight.w600,
+                        color: AppTextStyles.colorGreyThrou,
                         decoration: TextDecoration.lineThrough,
                       ),
                     ),
@@ -69,10 +69,9 @@ class BoughtTodayItemWidget extends StatelessWidget {
                   minFontSize: 14,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 2,
-                  style: TextStyle(
-                      fontFamily: "RobotoCondensed-Regular",
-                      fontSize: 14,
-                      fontWeight: FontWeight.w200),
+                  style: widgets.robotoConsid(
+                    fontSize: 14,
+                  ),
                 ),
               ),
             ],

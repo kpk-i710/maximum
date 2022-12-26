@@ -35,11 +35,8 @@ class BoughtTodayItemBlackWidget extends StatelessWidget {
                   "19 000 c",
                   maxLines: 1,
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontFamily: "MPLUSRounded1c-Black",
-                      fontSize: 14,
-                      color: Color(0xff2C2D2E),
-                      fontWeight: FontWeight.w900),
+                  style: widgets.robotoConsid(
+                      fontSize: 14, fontWeight: FontWeight.w900),
                 ),
               ),
               Padding(
@@ -50,10 +47,8 @@ class BoughtTodayItemBlackWidget extends StatelessWidget {
                   minFontSize: 14,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 2,
-                  style: TextStyle(
-                      fontFamily: "RobotoCondensed-Regular",
-                      fontSize: 14,
-                      fontWeight: FontWeight.w200),
+                  style: widgets.robotoConsid(
+                      fontSize: 14, fontWeight: FontWeight.w400),
                 ),
               ),
               Padding(

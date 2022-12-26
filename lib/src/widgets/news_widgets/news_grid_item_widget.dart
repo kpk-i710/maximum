@@ -19,10 +19,11 @@ class NewsGridItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      padding: const EdgeInsets.symmetric(  horizontal: 10),
       child: GestureDetector(
         onTap: onPress,
         child: Container(
+          height: 180,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
             color: Colors.white,
@@ -84,20 +85,18 @@ class NewsGridItemWidget extends StatelessWidget {
                     SizedBox(
                       height: 13,
                     ),
-                    widgets.titleDescrpPrice(
+                    widgets.titleDescrpPriceWithoutCar(
                       price: result?.cenaok.toString(),
                       title: result?.naim.toString(),
                       oldPrice: result?.oldPrice.toString(),
                     ),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    widgets.addCardAndFavorite(
+                    Spacer(),
+                    widgets.addCardAndFavoriteAndCar(
                         textCard: 'to_cart'.tr,
                         onPressedCard: () {},
                         isSelectedFavorite: index == 1 ? true : false),
                     SizedBox(
-                      height: 8,
+                      height: 10,
                     )
                   ],
                 ),

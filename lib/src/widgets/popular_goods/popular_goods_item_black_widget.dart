@@ -21,69 +21,66 @@ class PopularGoodsItemBlackWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 18.0),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5),
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Color(0xffD9D9D9).withOpacity(0.6),
-              spreadRadius: 0,
-              blurRadius: 10,
-              offset: Offset(0, 3), // changes position of shadow
-            ),
-          ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              height: 180,
-              child: Stack(
-                children: [
-                  GestureDetector(
-                    onTap: onTap,
-                    child: DiscountSwipeWidgetOffline(
-                        image: "assets/images/sofa.png"),
-                  ),
-                  Positioned(
-                    left: 10,
-                    bottom: 10,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Color(0xff142A65),
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      padding: EdgeInsets.symmetric(horizontal: 5, vertical: 3),
-                      child: Text(
-                        'hit'.tr.toUpperCase(),
-                        style: widgets.robotoConsid(
-                            color: context.theme.onAccent,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700),
-                      ),
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(5),
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Color(0xffD9D9D9).withOpacity(0.6),
+            spreadRadius: 0,
+            blurRadius: 10,
+            offset: Offset(0, 3), // changes position of shadow
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            height: 180,
+            child: Stack(
+              children: [
+                GestureDetector(
+                  onTap: onTap,
+                  child: DiscountSwipeWidgetOffline(
+                      image: "assets/images/sofa.png"),
+                ),
+                Positioned(
+                  left: 10,
+                  bottom: 10,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Color(0xff142A65),
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 5, vertical: 3),
+                    child: Text(
+                      'hit'.tr.toUpperCase(),
+                      style: widgets.robotoConsid(
+                          color: context.theme.onAccent,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 9.0, top: 8.0),
-              child: Text(
-                "19 000 c",
-                maxLines: 1,
-                textAlign: TextAlign.center,
-                style: widgets.robotoConsid(
-                    fontSize: 17,
-                    color: Color(0xff2C2D2E),
-                    fontWeight: FontWeight.w900),
-              ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 9.0, top: 8.0),
+            child: Text(
+              "19 000 c",
+              maxLines: 1,
+              textAlign: TextAlign.center,
+              style: widgets.robotoConsid(
+                  fontSize: 17,
+                  color: Color(0xff2C2D2E),
+                  fontWeight: FontWeight.w900),
             ),
-           widgets.bottomPopularCards(index: index)
-          ],
-        ),
+          ),
+         widgets.bottomPopularCards(index: index)
+        ],
       ),
     );
   }

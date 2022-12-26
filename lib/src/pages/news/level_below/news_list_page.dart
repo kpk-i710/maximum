@@ -23,35 +23,35 @@ class NewsListPage extends StatelessWidget {
           currentTab: 0, onSelectTab: newsListPageController.tabSelect),
       body: Obx(() {
         return newsListPageController.isLoaded.value
-            ? Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                child: ListView.builder(
-                    itemCount:
-                        newsListPageController.newsList?.result[0][0].length,
-                    itemBuilder: (context, index) {
-                      if (index == 0) {
-                        return Html(
-                          data: newsListPageController.newsList?.news.anons,
-                        );
-                      }
+            ? ListView.separated(
+                itemCount: newsListPageController.newsList?.result[0][0].length??0,
+                itemBuilder: (context, index) {
+                  if (index == 0) {
+                    return Html(
+                      data: newsListPageController.newsList?.news.anons,
+                    );
+                  }
 
-                      return NewsGridItemWidget(
-                        index: index,
-                        onPress: () {
-                          Get.to(
-                              PageNews(
-                                result: newsListPageController
-                                    .newsList?.result[0][0][index],
-                              ),
-                              arguments: {
-                                "title": newsListPageController
-                                    .newsList?.result[0][0][index].naim,
-                              });
-                        },
-                        result: newsListPageController.newsList?.result[0][0]
-                            [index],
-                      );
-                    }),
+                  return NewsGridItemWidget(
+                    index: index,
+                    onPress: () {
+                      Get.to(
+                          PageNews(
+                            result: newsListPageController.newsList?.result[0]
+                                [0][index],
+                          ),
+                          arguments: {
+                            "title": newsListPageController
+                                .newsList?.result[0][0][index].naim,
+                          });
+                    },
+                    result: newsListPageController.newsList?.result[0][0]
+                        [index],
+                  );
+                },
+                separatorBuilder: (BuildContext context, int index) {
+                  return SizedBox(height: 10);
+                },
               )
             : Center(child: CircularProgressIndicator());
       }),
