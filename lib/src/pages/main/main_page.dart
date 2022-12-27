@@ -30,23 +30,30 @@ class _MainPageState extends State<MainPage> {
 
   @override
   void initState() {
-    if (Get.arguments != null) {
-      currentTab = Get.arguments as int;
-    }
-    currentPage = pages[currentTab];
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        if (Get.arguments != null) {
+          currentTab = Get.arguments as int;
+        }
+        currentPage = pages[currentTab];
+      });
+    });
+
     super.initState();
   }
 
   void tabSelect(int index) {
-    setState(() {
-      if (index == 1) {
-        Get.dialog(pages[index]).then((_index) {
-          if (_index != null) tabSelect(_index);
-        });
-        return;
-      }
-      currentTab = index;
-      currentPage = pages[index];
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+     setState(() {
+       if (index == 1) {
+         Get.dialog(pages[index]).then((_index) {
+           if (_index != null) tabSelect(_index);
+         });
+         return;
+       }
+       currentTab = index;
+       currentPage = pages[index];
+     });
     });
   }
 

@@ -23,7 +23,6 @@ class ShoppingCartPage extends StatelessWidget {
             child: Column(
               children: [
                 widgets.dark(
-
                     child: Container(
                         width: double.infinity,
                         height: 50,
@@ -75,20 +74,24 @@ class ShoppingCartPage extends StatelessWidget {
                           ],
                         ))),
                 Padding(
-                  padding: const EdgeInsets.all(15.0),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10),
                   child: widgets.productWidgetWithCount(),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: widgets.productWidgetWithCount(additionalService: false),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: widgets.productWidgetWithCount( ),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10),
+                  child:
+                      widgets.productWidgetWithCount(additionalService: false),
                 ),
                 Padding(
                   padding:
-                      const EdgeInsets.only(left: 15.0, right: 15, bottom: 40),
+                      const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10),
+                  child: widgets.productWidgetWithCount(),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                      left: 10.0, right: 10, bottom: 40, top: 10),
                   child: Container(
                     decoration: BoxDecoration(
                         color: Color(0xffF6F6F6),
@@ -101,8 +104,7 @@ class ShoppingCartPage extends StatelessWidget {
                           children: [
                             widgets.rowText(
                                 text1: 'Товары, 1 шт.', text2: '119 990 с'),
-                            widgets.rowText(
-                                text1: 'Скидка', text2: '10 800 с'),
+                            widgets.rowText(text1: 'Скидка', text2: '10 800 с'),
                             controller.checkForServices()
                                 ? widgets.rowText(
                                     text1: 'Услуги', text2: '500 с')
@@ -155,8 +157,6 @@ class ShoppingCartPage extends StatelessWidget {
       ),
     );
   }
-
-
 
   Widget selectCheckBox({
     required String text,

@@ -38,7 +38,7 @@ class FavoritePage extends StatelessWidget {
                     );
                   },
                   separatorBuilder: (BuildContext context, int index) {
-                    return SizedBox(height: 20);
+                    return SizedBox(height: 10);
                   },
                 )
               : Center(child: CircularProgressIndicator());
