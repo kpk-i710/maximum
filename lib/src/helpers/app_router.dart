@@ -89,7 +89,7 @@ class AppRouter {
   static const String paymentMethod = '/payment_method';
   static const String map = '/map';
 
-  static String get initialRoute => Prefs.firstTime ? intro : main;
+  static String get initialRoute =>   main;
 
   static final pages = [
     GetPage(name: listNews, page: () => NewsListPage()),

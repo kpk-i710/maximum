@@ -118,7 +118,7 @@ class DiscountGridItemWidget extends StatelessWidget {
                                         " - ${discount.discountValue.toString().toUpperCase()}%",
                                     style: widgets.robotoConsid(
                                         color: Colors.white,
-                                        fontSize: 20,
+                                        fontSize: 17,
                                         fontWeight: FontWeight.w900),
                                   ),
                                 ),

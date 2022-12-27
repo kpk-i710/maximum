@@ -52,7 +52,7 @@ class AuthEnterCode extends StatelessWidget {
                       height: 10,
                     ),
                     Text(
-                      "+ (996) 550-88-25-88".tr,
+                      "+ (996) 550-88-25-88" ,
                       style: widgets.robotoConsid(),
                     ),
                     SizedBox(

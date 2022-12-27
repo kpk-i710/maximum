@@ -30,8 +30,8 @@ class NotificationsDelivryPage extends StatelessWidget {
             body: Column(
               children: [
                 TabBar(labelColor: AppTextStyles.colorBlackMy, tabs: [
-                  Tab(text: "Новые"),
-                  Tab(text: "Прочитанные"),
+                  Tab(text: "new_notifications".tr),
+                  Tab(text: "read_notifications".tr),
                 ]),
                 SizedBox(height: 20),
                 Expanded(
@@ -51,14 +51,17 @@ class NotificationsDelivryPage extends StatelessWidget {
   Widget newNoty({required BuildContext context}) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15.0),
-      child: Column(
-        children: List.generate(controller.newNoti.length, (index) => widgets.notificationAll(
-            context: context,
-            time: controller.newNoti[index].data,
-            description: controller.newNoti[index].description,
-            onTap: () {
-              controller.nakeOldNoti(index: index);
-            }))
+      child: SingleChildScrollView(
+        child: Column(
+            children: List.generate(
+                controller.newNoti.length,
+                (index) => widgets.notificationAll(
+                    context: context,
+                    time: controller.newNoti[index].data,
+                    description: controller.newNoti[index].description,
+                    onTap: () {
+                      controller.nakeOldNoti(index: index);
+                    }))),
       ),
     );
   }
@@ -67,14 +70,15 @@ class NotificationsDelivryPage extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15.0),
       child: Column(
-        children: List.generate(controller.oldNoti.length, (index) => widgets.notificationAll(
-            context: context,
-            time: controller.oldNoti[index].data,
-            description: controller.oldNoti[index].description,
-            onTap: () {
-              controller.nakeOldNoti(index: index);
-            }) )
-      ),
+          children: List.generate(
+              controller.oldNoti.length,
+              (index) => widgets.notificationAll(
+                  context: context,
+                  time: controller.oldNoti[index].data,
+                  description: controller.oldNoti[index].description,
+                  onTap: () {
+                    controller.nakeOldNoti(index: index);
+                  }))),
     );
   }
 }

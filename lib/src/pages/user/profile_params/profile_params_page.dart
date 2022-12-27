@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:maxkgapp/src/helpers/prefs.dart';
 import 'package:maxkgapp/src/pages/shopping_cart/before_payment_delivry/shipping_methods/shipping_methods_page.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
-
 import '../../../styles.dart';
 import '../../../widgets/app_icon.dart';
 import '../../../helpers/app_router.dart';
@@ -105,7 +104,7 @@ class ProfileParamsPage extends StatelessWidget {
                     child: widgets.editTextButton(
                         icon: 'city',
                         text: (controllerShoppingCart.selectedCity.value ??
-                                "Укажите город") +
+                                "specify_the_city".tr) +
                             (controllerShoppingCart.selectedStreetHouse.value ??
                                 ""),
                         onTap: () {
@@ -118,7 +117,8 @@ class ProfileParamsPage extends StatelessWidget {
                     child: widgets.editTextButton(
                         icon: 'dollar_grey',
                         text: 'Валюта: Кыргызсикий сом',
-                        secondIcon: "kyrgyzstan", onTap: () {  }),
+                        secondIcon: "kyrgyzstan",
+                        onTap: () {}),
                   ),
                   SizedBox(height: 20),
                   Padding(
@@ -144,6 +144,8 @@ class ProfileParamsPage extends StatelessWidget {
                                 onTap: () {
                                   controller.selectedLang.value =
                                       controller.languageIcons[index];
+
+                                  controller.changeLang();
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -157,10 +159,13 @@ class ProfileParamsPage extends StatelessWidget {
                                                   : Colors.white)),
                                   child: Padding(
                                     padding: EdgeInsets.all(5.0),
-                                    child: widgets.anySvg(
-                                        nameSvg:
-                                            controller.languageIcons[index],
-                                        size: Size(40, 40)),
+                                    child: controller.languageIcons[index] ==
+                                            "en"
+                                        ? widgets.imagePng(name: "lang/en.png")
+                                        : widgets.anySvg(
+                                            nameSvg:
+                                                "lang/${controller.languageIcons[index]}",
+                                            size: Size(40, 40)),
                                   ),
                                 ),
                               ),

@@ -8,6 +8,7 @@ import 'package:flutter/material.dart' hide MenuItem;
 import 'package:flutter_swiper_view/flutter_swiper_view.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
+import 'package:maxkgapp/src/pages/intro/intro_controller.dart';
 import 'package:maxkgapp/src/pages/orders_history/order_history_page_controller.dart';
 import 'package:maxkgapp/src/pages/shopping_cart/shopping_cart_page.dart';
 import 'package:maxkgapp/src/pages/user/profile_params/profile_params_page_controller.dart';
@@ -79,12 +80,18 @@ Widget priceWidget(double price, {TextStyle? style}) {
   }
 }
 
+Widget imagePng({required String name}) {
+  return Image.asset(
+    'assets/icons/$name',
+    scale: 0.8,
+  );
+}
+
 Widget SwiperImage({required String image}) {
   var currentIndex = 0.obs;
   return Obx(() {
     return Container(
-      height: Get.width-40,
-
+      height: Get.width - 40,
       child: Stack(children: [
         Swiper(
           itemBuilder: (context, index) {
@@ -1918,9 +1925,12 @@ Widget switchWithText(
                 },
               ),
               SizedBox(width: 20),
-              Text(
-                label.tr,
-                style: robotoConsid(),
+              Flexible(
+                child: Text(
+                  label.tr,
+                  style: robotoConsid(),
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             ],
           ),
@@ -2728,12 +2738,13 @@ Widget delivryBox({required BuildContext context}) {
                       color: AppTextStyles.colorRedMy, fontSize: 18),
                 ),
               ),
-              Spacer(),
-              underLineDashed(
-                child: Text(
-                  "detailing".tr,
-                  style: robotoConsid(
-                      color: AppTextStyles.colorBlueMy, fontSize: 14),
+              Expanded(
+                child: underLineDashed(
+                  child: Text(
+                    "detailing".tr,
+                    style: robotoConsid(
+                        color: AppTextStyles.colorBlueMy, fontSize: 14),
+                  ),
                 ),
               ),
               SizedBox(width: 10),
@@ -2772,6 +2783,93 @@ void showSnackBar({required BuildContext context}) {
     backgroundColor: Colors.transparent,
     elevation: 0,
   ));
+}
+
+void getLocationSheet() {
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    Get.bottomSheet(
+      getLocation(),
+      backgroundColor: Colors.transparent,
+    );
+  });
+}
+
+Widget getLocation() {
+  final controller = Get.put(IntroController());
+  return boxShadows(
+    padding: 0,
+    radius: 10,
+    child: Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      height: Get.height,
+      child: Column(
+        children: [
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "permission_position".tr,
+                      textAlign: TextAlign.center,
+                      style: widgets.robotoConsid(fontSize: 20),
+                    ),
+                    SizedBox(height: 20),
+                    Text(
+                      "Чтобы знать в какой\nгород доставлять товар",
+                      textAlign: TextAlign.center,
+                      style: widgets.robotoConsid(fontSize: 15),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: Column(
+              children: [
+                widgets.customButton(
+                  child: Container(
+                    height: 100,
+                    child: Center(
+                      child: Text(
+                        "not".tr,
+                        style: widgets.robotoConsid(),
+                      ),
+                    ),
+                  ),
+                  onTap: () {
+                    controller.onDonePress();
+                  },
+                ),
+                widgets.customButton(
+                  child: Container(
+                    height: 100,
+                    child: Center(
+                      child: Text(
+                        "yes".tr,
+                        style: widgets.robotoConsid(),
+                      ),
+                    ),
+                  ),
+                  onTap: () {
+                    controller.streamPosition();
+                    controller.onDonePress();
+                    Get.back();
+                  },
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
+    ),
+  );
 }
 
 void scaleImageSheet({required BuildContext context, required String image}) {
@@ -4249,9 +4347,12 @@ Widget currencyAndCityWidget() {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'your_city'.tr,
-                    style: robotoConsid(),
+                  Flexible(
+                    child: Text(
+                      overflow: TextOverflow.ellipsis,
+                      'your_city'.tr,
+                      style: robotoConsid(),
+                    ),
                   ),
                   Text(
                     'bishkek'.tr,

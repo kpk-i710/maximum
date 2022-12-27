@@ -10,9 +10,8 @@ import '../../../helpers/prefs.dart';
 class ProfileParamsPageController extends GetxController {
   RxInt selectedRadio = 0.obs;
 
-  void change(int index){
+  void change(int index) {
     selectedRadio.value = index;
-
   }
 
   RxString selectedLang = "flag_ru".obs;
@@ -20,10 +19,20 @@ class ProfileParamsPageController extends GetxController {
   RxInt selectedTheme = 0.obs;
 
   List<String> languageIcons = [
-    'flag_kg',
-    "flag_ru",
-    "flag_uz",
+    'en',
+    'kg',
+    "ru",
+    "uz",
   ].obs;
+
+  void changeLang(){
+
+    var locale = Locale(
+        selectedLang.value,
+         selectedLang.value
+            .toUpperCase());
+    Get.updateLocale(locale);
+  }
 
   void logout() {
     Prefs.isLogin = false;
@@ -33,7 +42,9 @@ class ProfileParamsPageController extends GetxController {
   User get user => Prefs.user;
 
   Profile get profile => Prefs.user.profile!;
+
   void tabSelect(int index) => Helper.tabSelect(index);
+
   updateProfile(Profile profile) {
     Prefs.user.profile = profile;
     update();

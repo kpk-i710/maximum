@@ -32,7 +32,7 @@ class ShoppingCartPage extends StatelessWidget {
                               width: 20,
                             ),
                             Text(
-                              "Корзина #12543",
+                              "cart".tr+  " #12543",
                               style: widgets.robotoConsid(
                                   color: Colors.white, fontSize: 18),
                             ),

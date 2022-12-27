@@ -39,8 +39,8 @@ class ShoppingCartPageController extends GetxController {
   }
 
   List<String>? citys = [
-    "г.Бишкек",
-    "г.Ош",
+    "Bishkek",
+    "Osh",
     "г.Нарын",
     "г.Балыкчы ",
     "г.Узген",

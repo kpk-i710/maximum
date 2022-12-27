@@ -12,14 +12,16 @@ import '../../repositories/discount_repo.dart';
 import '../../models/product.dart';
 import '../../models/catalog.dart';
 import '../../widgets/widgets.dart' as widgets;
-class HomePageController extends GetxController {
 
+class HomePageController extends GetxController {
+  RxString location = "".obs;
 
   double left = 10;
   final _appRepo = Get.find<AppRepo>();
   final _productRepo = Get.find<ProductRepo>();
   final _catalogRepo = Get.find<CatalogRepo>();
   final _discountRepo = Get.find<DiscountRepo>();
+
   void tabSelect(int index) => Helper.tabSelect(index);
   final viewedProductsList = <Product>[].obs;
   final bestsellerProductsList = <Product>[].obs;
@@ -35,12 +37,14 @@ class HomePageController extends GetxController {
 
   final newsList = <News1>[].obs;
 
-
-
-
   @override
   void onInit() {
     super.onInit();
+
+    if (Prefs.firstTime) {
+
+      widgets.getLocationSheet();
+    }
     refreshAll();
   }
 

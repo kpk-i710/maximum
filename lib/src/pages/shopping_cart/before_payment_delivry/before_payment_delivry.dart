@@ -429,11 +429,13 @@ class BeforePaymentDelivry extends StatelessWidget {
                     SizedBox(width: 20),
                     icon,
                     SizedBox(width: 15),
-                    Text(
-                      "$text".tr,
-                      style: widgets.robotoConsid(fontSize: 16),
+                    Expanded(
+                      child: Text(
+                        "$text".tr,
+                        overflow: TextOverflow.ellipsis,
+                        style: widgets.robotoConsid(fontSize: 16),
+                      ),
                     ),
-                    Spacer(),
                     SvgPicture.asset('assets/icons/warning.svg'),
                     SizedBox(width: 10),
                   ],

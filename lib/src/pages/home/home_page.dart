@@ -45,7 +45,7 @@ class HomePage extends StatelessWidget {
                           return widgets.location(
                               adress:
                                   (controllerShoppingCart.selectedCity.value ??
-                                          "Укажите город") +
+                                          "specify_the_city".tr) +
                                       (controllerShoppingCart
                                               .selectedStreetHouse.value ??
                                           ""),
@@ -67,7 +67,7 @@ class HomePage extends StatelessWidget {
                                       nameSvg: 'person_outline',
                                       size: Size(20, 20)),
                                   SizedBox(width: 15),
-                                  Text('Добро пожаловать Екатерина!',
+                                  Text('welcome'.tr + " Екатерина!",
                                       style: widgets.robotoConsid(
                                           fontSize: 16,
                                           fontWeight: FontWeight.bold)),
