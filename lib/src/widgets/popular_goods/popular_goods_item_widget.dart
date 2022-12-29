@@ -84,18 +84,20 @@ class PopularGoodsItemWidget extends StatelessWidget {
                       fontWeight: FontWeight.w900),
                 ),
               ),
+              SizedBox(width: 5),
               Expanded(
-                child: AutoSizeText(
-                  "46 850 сом",
-                  maxLines: 1,
-                  textAlign: TextAlign.center,
-                  maxFontSize: 12,
-                  style: widgets.robotoConsid(
-                    fontSize: 12,
-                    color: AppTextStyles.colorGreyThrou,
-                    fontWeight: FontWeight.w600,
-                    decoration: TextDecoration.lineThrough,
-                  ),
+                child: widgets.strikeThroughWidget(
+                  child: AutoSizeText(
+                    "46 850 сом",
+                    maxLines: 1,
+                    textAlign: TextAlign.center,
+                    maxFontSize: 12,
+                    style: widgets.robotoConsid(
+                      fontSize: 12,
+                      color: AppTextStyles.colorGreyThrou,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ), length: "46 850 сом".length, fontSize: 12,
                 ),
               ),
             ],

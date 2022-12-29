@@ -6,8 +6,8 @@ import '../../../widgets/widgets.dart' as widgets;
 import '../../../widgets/news_widgets/news_grid_item_widget.dart';
 import '../../../widgets/promotions_widgets/promotions_grid_item_widget.dart';
 import '../../../widgets/search_widgets/search_bar_2.dart';
-import '../../news/level_below/level_below/page_news.dart';
-import 'level_below/page_promotions.dart';
+import '../../detail_all/detail_all.dart';
+
 
 class PromotionsListPage extends StatelessWidget {
   PromotionsListPage({Key? key}) : super(key: key);
@@ -31,15 +31,22 @@ class PromotionsListPage extends StatelessWidget {
               itemBuilder: (context, index) {
                 return PromotionsGridItemWidget(
                   onPress: () {
+                    final product = promotionsListPageController
+                        .poromotionsList?.result[0][0][index];
+
                     Get.to(
-                        PagePromotions(
-                          result: promotionsListPageController
-                              .poromotionsList?.result[0][0][index],
+                            () => DetailAll(
+                          idPost: product?.idPost,
+                          img: product?.img,
+                          price: product?.price,
+                          naim: product?.naim,
                         ),
                         arguments: {
-                          "title": promotionsListPageController
-                              .poromotionsList?.result[0][0][index].naim,
+                          "title":
+                          promotionsListPageController
+                                 .poromotionsList?.result[0][0][index].naim,
                         });
+
                   },
                   result: promotionsListPageController
                       .poromotionsList?.result[0][0][index],

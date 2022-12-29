@@ -8,6 +8,7 @@ import 'package:flutter/material.dart' hide MenuItem;
 import 'package:flutter_swiper_view/flutter_swiper_view.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
+import 'package:maxkgapp/src/pages/detail_all/detail_all_controller.dart';
 import 'package:maxkgapp/src/pages/intro/intro_controller.dart';
 import 'package:maxkgapp/src/pages/orders_history/order_history_page_controller.dart';
 import 'package:maxkgapp/src/pages/shopping_cart/shopping_cart_page.dart';
@@ -37,6 +38,8 @@ import '../models/news.dart';
 import 'other_controllers_for_widgets/additional_service_controller.dart';
 import '../widgets/widgets.dart' as widgets;
 import 'package:badges/badges.dart';
+import 'package:flutter_svg_provider/flutter_svg_provider.dart' as svg;
+import 'dart:math' as math;
 
 Widget priceWidget(double price, {TextStyle? style}) {
   if (style != null) {
@@ -759,6 +762,30 @@ Widget buttonCounterOption({
   );
 }
 
+Widget strikeThroughWidget(
+    {required Widget child,
+    double width = 40,
+    double top = 5,
+    required int length,
+    required int fontSize}) {
+  final controller = Get.put(DetalAllController());
+  return Stack(
+    children: [
+      Positioned(
+        top: top,
+        child: Transform.rotate(
+            angle: math.pi / 25,
+            child: Container(
+                width: length.toDouble() * 6 +
+                    (controller.LessThanTwelth(fontSize) * 4),
+                height: 2,
+                color: AppTextStyles.colorGreyThrou)),
+      ),
+      child
+    ],
+  );
+}
+
 void deletedFromCardSnackBar({required BuildContext context}) {
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
     duration: Duration(milliseconds: 500),
@@ -998,6 +1025,7 @@ Widget selectCheckBox({
                 SizedBox(
                   width: 20,
                   child: Checkbox(
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(3.0))),
                     checkColor: Colors.white,
                     value: controller.checkBoxList[index].isSelected,
                     onChanged: (newValue) {
@@ -2307,20 +2335,24 @@ Widget productWidgetWithCount({bool additionalService = true}) {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
-                          '2000 с',
+                          '2 000 с',
                           style: robotoConsid(
                               color: Color(0xff494949),
                               fontSize: 18,
                               fontWeight: FontWeight.bold),
                         ),
                         SizedBox(width: 10),
-                        Text(
-                          '3200 с',
-                          style: robotoConsid(
-                            color: Color(0xff62656A),
-                            decoration: TextDecoration.lineThrough,
-                            fontSize: 16,
+                        strikeThroughWidget(
+                          top: 7,
+                          child: Text(
+                            "3 200c",
+                            style: robotoConsid(
+                              color: AppTextStyles.colorGreyThrou,
+                              fontSize: 16,
+                            ),
                           ),
+                          length: "3 200c".length,
+                          fontSize: 16,
                         ),
                       ],
                     ),
@@ -2546,6 +2578,7 @@ Widget orderWithDateDark() {
 }
 
 Widget favoriteWithPrice({required int? price}) {
+  final controller = Get.put(DetalAllController());
   return Expanded(
     child: Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -2556,7 +2589,7 @@ Widget favoriteWithPrice({required int? price}) {
           children: [
             SizedBox(height: 5),
             Text(
-              "${price} с",
+              "${controller.getPrice(price)} с",
               style: robotoConsid(
                   color: Color(
                     0xff991A4E,
@@ -2651,13 +2684,17 @@ Widget productWidget() {
                             fontWeight: FontWeight.bold),
                       ),
                       SizedBox(width: 10),
-                      Text(
-                        '3 200 с',
-                        style: robotoConsid(
-                          color: Color(0xff62656A),
-                          decoration: TextDecoration.lineThrough,
-                          fontSize: 16,
+                      strikeThroughWidget(
+                        child: Text(
+                          '3 200 с',
+                          style: robotoConsid(
+                            color: Color(0xff62656A),
+                            decoration: TextDecoration.lineThrough,
+                            fontSize: 16,
+                          ),
                         ),
+                        length: '3 200 с'.length,
+                        fontSize: 16,
                       ),
                     ],
                   ),
@@ -2792,6 +2829,82 @@ void getLocationSheet() {
       backgroundColor: Colors.transparent,
     );
   });
+}
+
+Widget chooseLangAndTheme() {
+  final controller = Get.put(ProfileParamsPageController());
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Padding(
+        padding: const EdgeInsets.only(left: 20.0),
+        child: Text(
+          "language".tr,
+          style: widgets.robotoConsid(),
+        ),
+      ),
+      SizedBox(height: 15),
+      SizedBox(
+        height: 60,
+        child: Center(
+          child: ListView.builder(
+            shrinkWrap: true,
+            scrollDirection: Axis.horizontal,
+            itemCount: controller.languageIcons.length,
+            itemBuilder: (context, index) {
+              return Obx(() {
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: widgets.customButton(
+                    onTap: () {
+                      controller.selectedLang.value =
+                          controller.languageIcons[index];
+
+                      controller.changeLang();
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(
+                              color: controller.selectedLang.value ==
+                                      controller.languageIcons[index]
+                                  ? AppTextStyles.colorBlueMy
+                                  : Colors.white)),
+                      child: Padding(
+                        padding: EdgeInsets.all(5.0),
+                        child: controller.languageIcons[index] == "en"
+                            ? widgets.imagePng(name: "lang/en.png")
+                            : widgets.anySvg(
+                                nameSvg:
+                                    "lang/${controller.languageIcons[index]}",
+                                size: Size(40, 40)),
+                      ),
+                    ),
+                  ),
+                );
+              });
+            },
+          ),
+        ),
+      ),
+      SizedBox(height: 20),
+      Padding(
+        padding: const EdgeInsets.only(left: 20.0),
+        child: Text(
+          "app_theme".tr,
+          style: widgets.robotoConsid(),
+        ),
+      ),
+      SizedBox(height: 20),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          widgets.radioTheme(index: 0, text: "light"),
+          widgets.radioTheme(index: 1, text: "dark"),
+        ],
+      ),
+    ],
+  );
 }
 
 Widget getLocation() {
@@ -3907,18 +4020,21 @@ Widget titleDescrpPriceWithoutCar({
                   fontWeight: FontWeight.w900),
             ),
           ),
+          SizedBox(width: 10),
           Expanded(
-            child: AutoSizeText(
-              "${oldPrice ?? ""} с",
-              maxLines: 1,
-              textAlign: TextAlign.center,
-              maxFontSize: 14,
-              style: widgets.robotoConsid(
-                fontSize: 14,
-                color: AppTextStyles.colorGreyThrou,
-                fontWeight: FontWeight.w600,
-                decoration: TextDecoration.lineThrough,
+            child: widgets.strikeThroughWidget(
+              child: Text(
+                "${oldPrice ?? ""} с",
+                maxLines: 1,
+                textAlign: TextAlign.center,
+                style: widgets.robotoConsid(
+                  fontSize: 14,
+                  color: AppTextStyles.colorGreyThrou,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
+              length: oldPrice == null ? 0 : oldPrice.length,
+              fontSize: 14,
             ),
           ),
         ],
@@ -4199,6 +4315,7 @@ Widget checkBoxWithText(
           SizedBox(
             width: 20,
             child: Checkbox(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5.0))),
               value: value,
               activeColor: Get.context!.theme.primary,
               onChanged: (bool? value) {
@@ -4239,6 +4356,7 @@ Widget checkBoxWithIcon(
         SizedBox(
           width: 30,
           child: Checkbox(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5.0))),
             value: value,
             activeColor: Get.context!.theme.primary,
             onChanged: (bool? value) {

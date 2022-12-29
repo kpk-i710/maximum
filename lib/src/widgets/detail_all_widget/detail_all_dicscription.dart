@@ -2,15 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get_utils/get_utils.dart';
+import 'package:get/instance_manager.dart';
+import 'package:maxkgapp/src/pages/detail_all/detail_all_controller.dart';
 
-import '../../../models/news_list.dart';
+import '../../models/news_list.dart';
 
-import '../../widgets.dart' as widgets;
+import '../widgets.dart' as widgets;
 
-class NewsCartDiscriptionWidget extends StatelessWidget {
-  const NewsCartDiscriptionWidget({Key? key, required this.result})
-      : super(key: key);
-  final Result? result;
+class DetailAllDiscriptionWidget extends StatelessWidget {
+  DetailAllDiscriptionWidget({Key? key, required this.price}) : super(key: key);
+  final int? price;
+  final controller = Get.put(DetalAllController());
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +23,7 @@ class NewsCartDiscriptionWidget extends StatelessWidget {
           Row(
             children: [
               Text(
-                "${result?.price} с",
+                "${controller.getPrice(price)} с",
                 style: widgets.robotoConsid(
                     color: Color(
                       0xff991A4E,
@@ -32,16 +34,21 @@ class NewsCartDiscriptionWidget extends StatelessWidget {
               SizedBox(
                 width: 20,
               ),
-              Text(
-                "${result?.price} с",
-                style: widgets.robotoConsid(
-                    color: Color(
-                      0xffCCCCCC,
-                    ),
-                    decoration: (TextDecoration.lineThrough),
-                    fontSize: 15,
-                    fontWeight: FontWeight.w900),
+              widgets.strikeThroughWidget(
+                top: 7,
+                child: Text(
+                  "${controller.getPrice(price)} с",
+                  style: widgets.robotoConsid(
+                      color: Color(
+                        0xffCCCCCC,
+                      ),
+                      fontSize: 15,
+                      fontWeight: FontWeight.w900),
+                ),
+                length: controller.getPrice(price).length, fontSize: 15,
               ),
+              Spacer(),
+              widgets.anySvg(nameSvg: 'share', size: Size(27, 27)),
               SizedBox(
                 width: 10,
               ),
@@ -148,7 +155,6 @@ class NewsCartDiscriptionWidget extends StatelessWidget {
           ),
           SizedBox(height: 12),
           widgets.additionalService(),
-
           Text(
             "minimum_order".tr,
             style: widgets.robotoConsid(),

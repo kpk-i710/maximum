@@ -32,7 +32,7 @@ class ShoppingCartPage extends StatelessWidget {
                               width: 20,
                             ),
                             Text(
-                              "cart".tr+  " #12543",
+                              "cart".tr + " #12543",
                               style: widgets.robotoConsid(
                                   color: Colors.white, fontSize: 18),
                             ),
@@ -158,61 +158,7 @@ class ShoppingCartPage extends StatelessWidget {
     );
   }
 
-  Widget selectCheckBox({
-    required String text,
-    required int index,
-    required String price,
-  }) {
-    return Obx(() {
-      return Theme(
-        data: ThemeData(toggleableActiveColor: AppTextStyles.colorBlueMy),
-        child: Column(
-          children: [
-            GestureDetector(
-              onTap: () {
-                controller.changeBoxList(index: index);
-              },
-              child: Container(
-                child: Row(
-                  children: [
-                    SizedBox(
-                      width: 20,
-                      child: Checkbox(
-                        checkColor: Colors.white,
-                        value: controller.checkBoxList[index].isSelected,
-                        onChanged: (newValue) {
-                          controller.changeBoxList(index: index);
-                        },
-                      ),
-                    ),
-                    SizedBox(width: 15),
-                    Flexible(
-                      child: SizedBox(
-                        width: Get.width - 100,
-                        child: Text(
-                          overflow: TextOverflow.ellipsis,
-                          "$text",
-                          style: controller.checkBoxList[index].isSelected
-                              ? widgets.robotoConsid(
-                                  color: AppTextStyles.colorBlueMy)
-                              : widgets.robotoConsid(color: Color(0xff727272)),
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 15),
-                    Text(
-                      "$price",
-                      style: widgets.robotoConsid(),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
-    });
-  }
+
 
   Widget buttonCounter({
     required String text,

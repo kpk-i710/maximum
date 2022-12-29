@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:maxkgapp/src/pages/detail_all/detail_all.dart';
 
 import '../../widgets/discount_widgets/discount_detail_item_widget.dart';
 
 import '../../pages/favorite/favorite_page_controller.dart';
 import '../../widgets/widgets.dart' as widgets;
 import '../../widgets/search_widgets/search_bar_2.dart';
-import '../discounts/discount_card_page.dart';
 
 class FavoritePage extends StatelessWidget {
   final controller = Get.put(FavoritePageController());
@@ -25,14 +25,18 @@ class FavoritePage extends StatelessWidget {
                       product: controller.dicount_list?.product[0][index],
                       onPress: () {
                         print(controller.dicount_list?.product[0][index].naim);
+                        final product = controller.dicount_list?.product[0][index];
+
                         Get.to(
-                            () => DiscountCardPage(
-                                  product: controller.dicount_list?.product[0]
-                                      [index],
-                                ),
+                                () => DetailAll(
+                              idPost: product?.idPost,
+                              img: product?.img,
+                              price: product?.price,
+                              naim: product?.naim,
+                            ),
                             arguments: {
-                              "title": controller
-                                  .dicount_list?.product[0][index].naim,
+                              "title":
+                              controller.dicount_list?.product[0][index].naim,
                             });
                       },
                     );

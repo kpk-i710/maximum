@@ -58,6 +58,11 @@ class Prefs {
   static get firstTime => _firstTime.val;
   static set firstTime(val) => _firstTime.val = val;
 
+
+  static final _selectedLang = "ru".val('SELECTED_LANG');
+  static get selectedLang => _selectedLang.val;
+  static set selectedLang(val) => _selectedLang.val = val;
+
   static listenKey(key, Function(dynamic val) callBack) {
     return _box.listenKey(key, callBack);
   }

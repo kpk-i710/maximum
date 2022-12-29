@@ -41,7 +41,6 @@ class ProfilePage extends StatelessWidget {
             Color(0xff53235A),
           ])),
           child: widgets.customButton(
-
             onTap: () {
               Get.toNamed(AppRouter.profileParams);
             },
@@ -190,7 +189,8 @@ class ProfilePage extends StatelessWidget {
             ),
             Prefs.isLogin
                 ? Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 20.0,horizontal: 20),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 20.0, horizontal: 20),
                     child: widgets.currencyAndCityWidget(),
                   )
                 : SizedBox(
@@ -215,6 +215,10 @@ class ProfilePage extends StatelessWidget {
                 icon: "organizations_and_businesses",
                 text: 'organizations_and_business'),
             widgets.arrowButtonProfile(icon: "faq", text: 'faq'),
+            SizedBox(height: 20),
+            Obx(() {
+              return widgets.chooseLangAndTheme();
+            }),
           ],
         ),
         const SizedBox(height: 40),
@@ -223,4 +227,3 @@ class ProfilePage extends StatelessWidget {
     );
   }
 }
-

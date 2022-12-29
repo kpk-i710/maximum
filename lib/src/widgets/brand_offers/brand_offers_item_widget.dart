@@ -42,23 +42,26 @@ class BrandOffersItemWidget extends StatelessWidget {
                     "19 000 c",
                     maxLines: 1,
                     textAlign: TextAlign.center,
-                    style: widgets.robotoConsid(),
+                    style:  widgets.robotoConsid(
+                        fontSize: 16,
+                        color: AppTextStyles.colorRedMy,
+                        fontWeight: FontWeight.w900),
                   ),
                   SizedBox(width: 5),
                   Padding(
                     padding: const EdgeInsets.only(top: 3.0),
-                    child: AutoSizeText(
-                      "46 850 с",
-                      maxLines: 1,
-                      textAlign: TextAlign.center,
-                      maxFontSize: 12,
-                      style: TextStyle(
-                        fontFamily: "MPLUSRounded1c-Black",
-                        fontSize: 12,
-                        color: Color(0xff62656A),
-                        fontWeight: FontWeight.w600,
-                        decoration: TextDecoration.lineThrough,
-                      ),
+                    child: widgets.strikeThroughWidget(
+                      child: Text(
+                        "46 850 с",
+                        maxLines: 1,
+                        textAlign: TextAlign.center,
+
+                        style: widgets.robotoConsid(
+                          fontSize: 12,
+                          color: AppTextStyles.colorGreyThrou,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ), length:    "46 850 с".length, fontSize: 12,
                     ),
                   ),
                 ],

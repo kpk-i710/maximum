@@ -41,6 +41,8 @@ class DiscountCartDiscription extends StatelessWidget {
                   fontSize: 15,
                   fontWeight: FontWeight.w900),
             ),
+            Spacer(),
+            widgets.anySvg(nameSvg: 'share', size: Size(27, 27)),
             SizedBox(
               width: 10,
             ),

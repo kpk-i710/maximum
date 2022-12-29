@@ -14,7 +14,16 @@ class ProfileParamsPageController extends GetxController {
     selectedRadio.value = index;
   }
 
-  RxString selectedLang = "flag_ru".obs;
+  @override
+  void onInit() {
+    if (Prefs.selectedLang != null) {
+      selectedLang.value = Prefs.selectedLang;
+    }
+    // TODO: implement onInit
+    super.onInit();
+  }
+
+  RxString selectedLang = "ru".obs;
 
   RxInt selectedTheme = 0.obs;
 
@@ -25,12 +34,9 @@ class ProfileParamsPageController extends GetxController {
     "uz",
   ].obs;
 
-  void changeLang(){
-
-    var locale = Locale(
-        selectedLang.value,
-         selectedLang.value
-            .toUpperCase());
+  void changeLang() {
+    var locale = Locale(selectedLang.value, selectedLang.value.toUpperCase());
+    Prefs.selectedLang = selectedLang.value;
     Get.updateLocale(locale);
   }
 

@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:maxkgapp/src/helpers/prefs.dart';
 import 'package:sizer/sizer.dart';
 
 import 'src/helpers/app_bindings.dart';
@@ -28,7 +29,10 @@ class MyApp extends StatelessWidget {
         Helper.setConstraintsAndOrientation(constraints, orientation);
         return GetMaterialApp(
           debugShowCheckedModeBanner: true,
-          locale: Locale('ru', 'RU'),
+          locale: Prefs.selectedLang != null
+              ? Locale(Prefs.selectedLang,
+                  Prefs.selectedLang.toString().toUpperCase())
+              : Locale('ru', 'RU'),
           translations: AppTranslations(),
           title: 'title'.tr,
           theme: AppTheme.lightTheme.themeData,

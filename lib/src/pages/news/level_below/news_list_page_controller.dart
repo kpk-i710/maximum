@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:maxkgapp/src/helpers/helper.dart';
 
 import '../../../models/news.dart';
@@ -20,6 +21,10 @@ class NewsListPageController extends GetxController {
       isLoaded.value = true;
     }
     super.onInit();
+  }
+  String getPrice(int? price){
+    NumberFormat numberFormat = NumberFormat("#,##0", "en_US");
+    return  numberFormat.format(price).replaceAll(",", " ");
   }
 
   @override

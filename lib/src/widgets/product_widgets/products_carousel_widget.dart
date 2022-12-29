@@ -20,15 +20,15 @@ class ProductsCarouselWidget extends StatelessWidget {
 
           physics: BouncingScrollPhysics(),
           itemBuilder: (context, index) {
-            return list.isEmpty
+            return 4!=4
                 ? widgets.productPlaceholder(width: 180, height: 160)
                 : ProductCarouselItemWidget(
-                    product: list.elementAt(index),
+
                     width: Get.width / 2.8,
                   );
           },
 
-          itemCount: list.isEmpty ? 4 : list.length,
+          itemCount: 4,
           primary: false,
           // shrinkWrap: true,
           scrollDirection: Axis.horizontal,   separatorBuilder: (context, index) => SizedBox(

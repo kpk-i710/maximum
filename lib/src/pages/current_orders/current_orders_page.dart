@@ -78,7 +78,7 @@ class CurrentOrdersPage extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "ИТОГО: 1500",
+                            "ИТОГО: 1 500",
                             style: widgets.robotoConsid(fontSize: 16),
                           ),
                           Text(
@@ -86,7 +86,7 @@ class CurrentOrdersPage extends StatelessWidget {
                             style: widgets.robotoConsid(fontSize: 16),
                           ),
                           Text(
-                            "Оплачено: 1000 с",
+                            "Оплачено: 1 000 с",
                             style: widgets.robotoConsid(
                                 color: Color(0xff62656A), fontSize: 16),
                           ),

@@ -83,6 +83,11 @@ class PersonalDataPage extends StatelessWidget {
                       ),
                       sizeTextFild(
                         child: TextFormField(
+                          controller: controller.dataBirfController,
+                          onTap: () {
+                            controller.showDatePicer(context: context);
+                          },
+                          readOnly: true,
                           onSaved: (value) {},
                           validator: (value) {},
                           decoration: InputDecoration(
@@ -118,12 +123,7 @@ class PersonalDataPage extends StatelessWidget {
                           onPressed: () {
                             controller.checkSave();
                           }),
-                      SizedBox(height: 20),
-                      Text(
-                        "send_confirm_code_to_phone".tr,
-                        textAlign: TextAlign.center,
-                        style: widgets.robotoConsid(fontSize: 12),
-                      ),
+                      SizedBox(height: 100),
                     ],
                   ),
                 ),

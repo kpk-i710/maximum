@@ -41,22 +41,26 @@ class BoughtTodayItemRedWidget extends StatelessWidget {
                     maxLines: 1,
                     textAlign: TextAlign.center,
                     style: widgets.robotoConsid(
-
-                        ),
+                        fontSize: 14,
+                        color: AppTextStyles.colorRedMy,
+                        fontWeight: FontWeight.w900),
                   ),
                   SizedBox(width: 5),
                   Padding(
                     padding: const EdgeInsets.only(top: 3.0),
-                    child: AutoSizeText(
-                      "46 850 с",
-                      maxLines: 1,
-                      textAlign: TextAlign.center,
-                      maxFontSize: 12,
-                      style: widgets.robotoConsid(
-                        fontSize: 12,
-                        color: AppTextStyles.colorGreyThrou,
-                        decoration: TextDecoration.lineThrough,
+                    child: widgets.strikeThroughWidget(
+                      child: Text(
+                        "46 850 с",
+                        maxLines: 1,
+                        textAlign: TextAlign.center,
+                        style: widgets.robotoConsid(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12,
+                          color: AppTextStyles.colorGreyThrou,
+                        ),
                       ),
+                      length: "46 850 с".length,
+                      fontSize: 12,
                     ),
                   ),
                 ],

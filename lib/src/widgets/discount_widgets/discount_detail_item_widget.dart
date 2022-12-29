@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:maxkgapp/src/pages/discounts/discount_list_page/discount_page_list_view/discount_page_list_view_controller.dart';
 import '../../models/dicount_list_model.dart';
 import '../../styles.dart';
 import '../../widgets/widgets.dart' as widgets;
@@ -14,6 +15,8 @@ class DiscountDetailItemWidget extends StatelessWidget {
 
   DiscountDetailItemWidget(
       {super.key, required this.product, required this.onPress, this.index});
+
+  final controller = Get.put(DiscountPageNewController());
 
   @override
   Widget build(BuildContext context) {
@@ -89,9 +92,9 @@ class DiscountDetailItemWidget extends StatelessWidget {
                       height: 13,
                     ),
                     widgets.titleDescrpPriceWithoutCar(
-                      price: product?.cenaok.toString(),
+                      price: controller.getPrice(product?.cenaok),
                       title: product?.naim.toString(),
-                      oldPrice: product?.oldPrice.toString(),
+                      oldPrice: controller.getPrice(product?.oldPrice),
                     ),
                     Spacer(),
                     widgets.addCardAndFavoriteAndCar(

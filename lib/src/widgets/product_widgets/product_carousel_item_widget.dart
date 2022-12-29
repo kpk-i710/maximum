@@ -11,10 +11,10 @@ import '../../models/product.dart';
 import '../../widgets/widgets.dart' as widgets;
 
 class ProductCarouselItemWidget extends StatelessWidget {
-  final Product product;
+
   final double? width;
 
-  ProductCarouselItemWidget({Key? key, required this.product, this.width})
+  ProductCarouselItemWidget({Key? key,   this.width})
       : super(key: key);
 
   final inCart = false.obs;

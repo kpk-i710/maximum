@@ -1,16 +1,27 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class PersonalDataPageController extends GetxController {
-
   RxInt selectedGender = 0.obs;
   final GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
   String name = "";
   String lastName = "";
   late TextEditingController nameController,
+      dataBirfController,
       lastNameController;
+
+  Rx<DateTime> dateTime = DateTime.now().obs;
+
+  void showDatePicer({required BuildContext context}) {
+    showDatePicker(
+            context: context,
+            initialDate: DateTime(2000),
+            firstDate: DateTime(1950),
+            lastDate: DateTime.now())
+        .then((value) =>
+            dataBirfController.text = DateFormat('dd-MM-yyyy').format(value!));
+  }
 
   String? validateName(String value) {
     if (value.length < 3) {
@@ -39,8 +50,8 @@ class PersonalDataPageController extends GetxController {
   void onInit() {
     nameController = TextEditingController();
     lastNameController = TextEditingController();
+    dataBirfController = TextEditingController();
     // TODO: implement onInit
     super.onInit();
   }
-
 }

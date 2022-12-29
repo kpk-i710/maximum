@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import '../../../widgets/news_widgets/news_grid_item_widget.dart';
 import '../../../widgets/search_widgets/search_bar_2.dart';
 import 'news_list_page_controller.dart';
-import 'level_below/page_news.dart';
+import '../../detail_all/detail_all.dart';
 import '../../../widgets/widgets.dart' as widgets;
 
 class NewsListPage extends StatelessWidget {
@@ -24,7 +24,8 @@ class NewsListPage extends StatelessWidget {
       body: Obx(() {
         return newsListPageController.isLoaded.value
             ? ListView.separated(
-                itemCount: newsListPageController.newsList?.result[0][0].length??0,
+                itemCount:
+                    newsListPageController.newsList?.result[0][0].length ?? 0,
                 itemBuilder: (context, index) {
                   if (index == 0) {
                     return Html(
@@ -35,11 +36,16 @@ class NewsListPage extends StatelessWidget {
                   return NewsGridItemWidget(
                     index: index,
                     onPress: () {
+                      final product =
+                          newsListPageController.newsList?.result[0][0][index];
+
                       Get.to(
-                          PageNews(
-                            result: newsListPageController.newsList?.result[0]
-                                [0][index],
-                          ),
+                          () => DetailAll(
+                                idPost: product?.idPost,
+                                img: product?.img,
+                                price: product?.price,
+                                naim: product?.naim,
+                              ),
                           arguments: {
                             "title": newsListPageController
                                 .newsList?.result[0][0][index].naim,

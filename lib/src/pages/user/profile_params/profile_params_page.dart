@@ -121,76 +121,7 @@ class ProfileParamsPage extends StatelessWidget {
                         onTap: () {}),
                   ),
                   SizedBox(height: 20),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20.0),
-                    child: Text(
-                      "language".tr,
-                      style: widgets.robotoConsid(),
-                    ),
-                  ),
-                  SizedBox(height: 15),
-                  SizedBox(
-                    height: 60,
-                    child: Center(
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        itemCount: controller.languageIcons.length,
-                        itemBuilder: (context, index) {
-                          return Obx(() {
-                            return Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: widgets.customButton(
-                                onTap: () {
-                                  controller.selectedLang.value =
-                                      controller.languageIcons[index];
-
-                                  controller.changeLang();
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      border: Border.all(
-                                          color:
-                                              controller.selectedLang.value ==
-                                                      controller
-                                                          .languageIcons[index]
-                                                  ? AppTextStyles.colorBlueMy
-                                                  : Colors.white)),
-                                  child: Padding(
-                                    padding: EdgeInsets.all(5.0),
-                                    child: controller.languageIcons[index] ==
-                                            "en"
-                                        ? widgets.imagePng(name: "lang/en.png")
-                                        : widgets.anySvg(
-                                            nameSvg:
-                                                "lang/${controller.languageIcons[index]}",
-                                            size: Size(40, 40)),
-                                  ),
-                                ),
-                              ),
-                            );
-                          });
-                        },
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20.0),
-                    child: Text(
-                      "app_theme".tr,
-                      style: widgets.robotoConsid(),
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      widgets.radioTheme(index: 0, text: "light"),
-                      widgets.radioTheme(index: 1, text: "dark"),
-                    ],
-                  ),
+                  widgets.chooseLangAndTheme(),
                   SizedBox(height: 15),
                   widgets.helpDariaNew(),
                   SizedBox(height: 50),

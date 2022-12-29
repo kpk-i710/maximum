@@ -2,7 +2,10 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/get_instance.dart';
 import 'package:get/get_utils/get_utils.dart';
+import 'package:maxkgapp/src/pages/news/level_below/news_list_page_controller.dart';
 
 import '../../models/news_list.dart';
 import '../../styles.dart';
@@ -15,11 +18,12 @@ class NewsGridItemWidget extends StatelessWidget {
   VoidCallback onPress;
   Result? result;
   final index;
+  final newsListPageController = Get.put(NewsListPageController());
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(  horizontal: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 10),
       child: GestureDetector(
         onTap: onPress,
         child: Container(
@@ -86,9 +90,10 @@ class NewsGridItemWidget extends StatelessWidget {
                       height: 13,
                     ),
                     widgets.titleDescrpPriceWithoutCar(
-                      price: result?.cenaok.toString(),
+                      price: newsListPageController.getPrice(result?.cenaok),
                       title: result?.naim.toString(),
-                      oldPrice: result?.oldPrice.toString(),
+                      oldPrice:
+                          newsListPageController.getPrice(result?.oldPrice),
                     ),
                     Spacer(),
                     widgets.addCardAndFavoriteAndCar(
