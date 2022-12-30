@@ -10,21 +10,11 @@ class DetalAllController extends GetxController {
   YoutubePlayerController  controller = YoutubePlayerController(
     initialVideoId: '-HKRoeeVv9E',
     flags: YoutubePlayerFlags(
-      autoPlay: true,
+      autoPlay: false,
       mute: true,
     ),
   );
 
-  String getPrice(int?  price){
-    NumberFormat numberFormat = NumberFormat("#,##0", "en_US");
-   return  numberFormat.format(price).replaceAll(",", " ");
-  }
 
-  double LessThanTwelth(int fontSize){
-    if(fontSize<=12){
-      return 1;
-    }else return fontSize-12;
-
-  }
 
 }

@@ -79,7 +79,7 @@ class PopularGoodsItemBlackWidget extends StatelessWidget {
                   fontWeight: FontWeight.w900),
             ),
           ),
-         widgets.bottomPopularCards(index: index)
+         widgets.bottomPopularCards(index: index, context: context)
         ],
       ),
     );

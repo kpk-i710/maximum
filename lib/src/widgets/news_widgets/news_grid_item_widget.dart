@@ -6,6 +6,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/get_instance.dart';
 import 'package:get/get_utils/get_utils.dart';
 import 'package:maxkgapp/src/pages/news/level_below/news_list_page_controller.dart';
+import 'package:maxkgapp/src/widgets/discount_widgets/discount_swipe_widget_offline.dart';
 
 import '../../models/news_list.dart';
 import '../../styles.dart';
@@ -49,17 +50,9 @@ class NewsGridItemWidget extends StatelessWidget {
                   height: 180,
                   child: Stack(
                     children: [
-                      CachedNetworkImage(
-                        imageUrl:
-                            "https://max.kg/nal/img/${result?.idPost}/b_${result?.img}",
-                        fit: BoxFit.cover,
-                        progressIndicatorBuilder: (context, url, progress) {
-                          return CircularProgressIndicator(
-                              value: progress.totalSize != null
-                                  ? progress.downloaded / progress.totalSize!
-                                  : null);
-                        },
-                      ),
+                      DiscountSwipeWidgetOffline(
+                          image: "assets/images/sofa.png"),
+
                       Align(
                         alignment: Alignment(-0.8, 0.6),
                         child: Container(
@@ -99,7 +92,8 @@ class NewsGridItemWidget extends StatelessWidget {
                     widgets.addCardAndFavoriteAndCar(
                         textCard: 'to_cart'.tr,
                         onPressedCard: () {},
-                        isSelectedFavorite: index == 1 ? true : false),
+                        isSelectedFavorite: index == 1 ? true : false,
+                        context: context),
                     SizedBox(
                       height: 10,
                     )

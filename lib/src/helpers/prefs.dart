@@ -63,6 +63,11 @@ class Prefs {
   static get selectedLang => _selectedLang.val;
   static set selectedLang(val) => _selectedLang.val = val;
 
+
+  static final _isAddedToFavorite = false.val('ADDED_FAVORIDE');
+  static get isAddedToFavorite => _isAddedToFavorite.val;
+  static set isAddedToFavorite(val) => _isAddedToFavorite.val = val;
+
   static listenKey(key, Function(dynamic val) callBack) {
     return _box.listenKey(key, callBack);
   }

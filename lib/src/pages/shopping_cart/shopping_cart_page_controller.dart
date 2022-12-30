@@ -5,7 +5,7 @@ import '../../models/checkBox.dart';
 import '../../widgets/widgets.dart' as widgets;
 
 class ShoppingCartPageController extends GetxController {
-  var counter = 0.obs;
+
 
   var demoList = <bool>[
     false,
@@ -54,11 +54,5 @@ class ShoppingCartPageController extends GetxController {
   final selectedCity = Rxn<String>();
   final selectedStreetHouse = Rxn<String>();
 
-  minus() {
-    if (counter >= 1) counter = counter - 1;
-  }
 
-  plus() {
-    counter = counter + 1;
-  }
 }

@@ -154,7 +154,7 @@ class ProductItemWidget extends StatelessWidget {
                 ),
                 SizedBox(width: 9.00),
                 widgets.addFavorite(
-                  onPressed: () {},
+                  onPressed: () {}, context: context,
                 ),
                 SizedBox(width: 9.00),
               ],

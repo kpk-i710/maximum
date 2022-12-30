@@ -10,6 +10,7 @@ class CurrentOrdersPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double space = 2;
     return Scaffold(
       backgroundColor: context.theme.background2,
       bottomNavigationBar: widgets.bottomNavigation(
@@ -81,15 +82,18 @@ class CurrentOrdersPage extends StatelessWidget {
                             "ИТОГО: 1 500",
                             style: widgets.robotoConsid(fontSize: 16),
                           ),
+                          SizedBox(height: space),
                           Text(
-                            "скидка:",
+                            "Скидка:",
                             style: widgets.robotoConsid(fontSize: 16),
                           ),
+                          SizedBox(height: space),
                           Text(
                             "Оплачено: 1 000 с",
                             style: widgets.robotoConsid(
                                 color: Color(0xff62656A), fontSize: 16),
                           ),
+                          SizedBox(height: space),
                           Text("Остаток: 500 с",
                               style: widgets.robotoConsid(
                                   color: Color(0xff62656A), fontSize: 16)),
@@ -100,11 +104,13 @@ class CurrentOrdersPage extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      SizedBox(height: 10),
                       Text(
                         "payment_method".tr,
                         style: widgets.robotoConsid(
                             color: Color(0xff112B66), fontSize: 16),
                       ),
+                      SizedBox(height: space),
                       Text(
                         "visa_elcart".tr,
                         style: widgets.robotoConsid(

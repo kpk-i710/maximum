@@ -194,14 +194,14 @@ class AppTheme {
 
 // Text styles
 class AppTextStyles {
-  static Color colorBlueMy = Color(0xff112B66);
-  static Color colorGrayMy = Color(0xff696A6A);
-  static const Color colorBlackMy = Color(0xff424242);
-  static Color colorRedMy = Color(0xff991A4E);
+  static const Color colorBlueMy = Color(0xff112B66);
+  static const Color colorGrayMy = Color(0xff696A6A);
+  static const   Color colorBlackMy = Color(0xff424242);
+  static const Color colorRedMy = Color(0xff991A4E);
   static const Color colorGrayDividar = Color(0xffEAEAEA);
-  static Color colorBurgundy = Color(0xff292862);
-  static Color colorGreyThrou = Color( 0xffCCCCCC);
-  static Color colorFocus = Color( 0xffF9F9F9);
+  static const Color colorBurgundy = Color(0xff292862);
+  static const Color colorGreyThrou = Color( 0xffCCCCCC);
+  static const Color colorFocus = Color( 0xffF9F9F9);
 
   static mPlusRounded1c(
           {double fontSize = 12.0,

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:maxkgapp/src/pages/discounts/discount_list_page/discount_page_list_view/discount_page_list_view_controller.dart';
+import 'package:maxkgapp/src/widgets/discount_widgets/discount_swipe_widget_offline.dart';
 import '../../models/dicount_list_model.dart';
 import '../../styles.dart';
 import '../../widgets/widgets.dart' as widgets;
@@ -49,19 +50,8 @@ class DiscountDetailItemWidget extends StatelessWidget {
                   height: 180,
                   child: Stack(
                     children: [
-                      CachedNetworkImage(
-                        imageUrl:
-                            "https://max.kg/nal/img/${product?.idPost}/b_${product?.img}",
-                        fit: BoxFit.cover,
-                        progressIndicatorBuilder: (context, url, progress) {
-                          return CircularProgressIndicator(
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                  context.theme.primary),
-                              value: progress.totalSize != null
-                                  ? progress.downloaded / progress.totalSize!
-                                  : null);
-                        },
-                      ),
+                      DiscountSwipeWidgetOffline(
+                          image: "assets/images/sofa.png"),
                       Align(
                         alignment: Alignment(-0.8, 0.6),
                         child: Container(
@@ -100,7 +90,8 @@ class DiscountDetailItemWidget extends StatelessWidget {
                     widgets.addCardAndFavoriteAndCar(
                         textCard: 'to_cart'.tr,
                         onPressedCard: () {},
-                        isSelectedFavorite: index == 1 ? true : false),
+                        isSelectedFavorite: index == 1 ? true : false,
+                        context: context),
                     SizedBox(
                       height: 10,
                     )

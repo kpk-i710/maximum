@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get_utils/get_utils.dart';
 import 'package:get/instance_manager.dart';
 import 'package:maxkgapp/src/pages/detail_all/detail_all_controller.dart';
+import 'package:maxkgapp/src/widgets/widgets_controller.dart';
 
 import '../../models/news_list.dart';
 
@@ -12,7 +13,7 @@ import '../widgets.dart' as widgets;
 class DetailAllDiscriptionWidget extends StatelessWidget {
   DetailAllDiscriptionWidget({Key? key, required this.price}) : super(key: key);
   final int? price;
-  final controller = Get.put(DetalAllController());
+  final controller = Get.put(WidgetsControllers());
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +35,8 @@ class DetailAllDiscriptionWidget extends StatelessWidget {
               SizedBox(
                 width: 20,
               ),
-              widgets.strikeThroughWidget(
-                top: 7,
+              widgets.strikeThrough(
+
                 child: Text(
                   "${controller.getPrice(price)} с",
                   style: widgets.robotoConsid(
@@ -45,7 +46,7 @@ class DetailAllDiscriptionWidget extends StatelessWidget {
                       fontSize: 15,
                       fontWeight: FontWeight.w900),
                 ),
-                length: controller.getPrice(price).length, fontSize: 15,
+
               ),
               Spacer(),
               widgets.anySvg(nameSvg: 'share', size: Size(27, 27)),

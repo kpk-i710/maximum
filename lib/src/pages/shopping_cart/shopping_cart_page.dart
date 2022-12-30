@@ -76,18 +76,18 @@ class ShoppingCartPage extends StatelessWidget {
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10),
-                  child: widgets.productWidgetWithCount(),
+                  child: widgets.productWidgetWithCount(context: context ),
                 ),
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10),
                   child:
-                      widgets.productWidgetWithCount(additionalService: false),
+                      widgets.productWidgetWithCount(additionalService: false,context: context ),
                 ),
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10),
-                  child: widgets.productWidgetWithCount(),
+                  child: widgets.productWidgetWithCount(context: context ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(

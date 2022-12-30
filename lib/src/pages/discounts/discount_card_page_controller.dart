@@ -38,8 +38,9 @@ class DicountCardPageController extends GetxController {
       saveCounter();
     }
     if (counter == 0) {
-      widgets.deletedFromCardSnackBar(context: context);
+      widgets.showMassageOneSecondSnackBar(context: context, massgae: 'removed_from_card');
     }
+
   }
 
   plus() {

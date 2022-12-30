@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
+import 'package:maxkgapp/src/widgets/discount_widgets/discount_swipe_widget_offline.dart';
 
 import '../../styles.dart';
 import '../../models/product.dart';
@@ -46,19 +47,8 @@ class ProductListItemWidget extends StatelessWidget {
                     children: [
                       Padding(
                         padding: const EdgeInsets.all(5.0),
-                        child: CachedNetworkImage(
-                          imageUrl:
-                              "https://max.kg/nal/img/1051/b_tov_11270015_7e11f3ef.jpg",
-                          fit: BoxFit.cover,
-                          progressIndicatorBuilder: (context, url, progress) {
-                            return CircularProgressIndicator(
-                                valueColor: AlwaysStoppedAnimation<Color>(
-                                    context.theme.primary),
-                                value: progress.totalSize != null
-                                    ? progress.downloaded / progress.totalSize!
-                                    : null);
-                          },
-                        ),
+                        child: DiscountSwipeWidgetOffline(
+                            alignUp: 0.7, image: "assets/images/sofa.png"),
                       ),
                       Align(
                         alignment: Alignment(-0.8, 0.8),
@@ -79,7 +69,7 @@ class ProductListItemWidget extends StatelessWidget {
                         ),
                       ),
                       Align(
-                        alignment: Alignment(-0.0,  0.8),
+                        alignment: Alignment(-0.0, 0.8),
                         child: Container(
                           decoration: BoxDecoration(
                             color: Color(0xff991A4E),
@@ -109,15 +99,16 @@ class ProductListItemWidget extends StatelessWidget {
                       height: 13,
                     ),
                     widgets.titleDescrpPriceWithoutCar(
-                      price: "1 000с",
+                      price: "1 000",
                       title: "Мультиварка Redmond RMC-M36",
-                      oldPrice: "1 200c",
+                      oldPrice: "1 200",
                     ),
                     Spacer(),
                     widgets.addCardAndFavoriteAndCar(
                         textCard: 'to_cart'.tr,
                         onPressedCard: () {},
-                        isSelectedFavorite: false),
+                        isSelectedFavorite: false,
+                        context: context),
                     SizedBox(
                       height: 10,
                     )

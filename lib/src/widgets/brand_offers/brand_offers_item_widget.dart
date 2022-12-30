@@ -50,7 +50,7 @@ class BrandOffersItemWidget extends StatelessWidget {
                   SizedBox(width: 5),
                   Padding(
                     padding: const EdgeInsets.only(top: 3.0),
-                    child: widgets.strikeThroughWidget(
+                    child: widgets.strikeThrough(
                       child: Text(
                         "46 850 с",
                         maxLines: 1,
@@ -61,7 +61,7 @@ class BrandOffersItemWidget extends StatelessWidget {
                           color: AppTextStyles.colorGreyThrou,
                           fontWeight: FontWeight.w600,
                         ),
-                      ), length:    "46 850 с".length, fontSize: 12,
+                      ),
                     ),
                   ),
                 ],

@@ -59,18 +59,17 @@ class Helper {
   }
 
   static void tabSelect(int index) {
-        print('helper tabSelect $index');
+    print('helper tabSelect $index');
     if (index == 1) {
       Get.dialog(CatalogPage(
-          bottomNavigation: true,
-          dialog: true,
-      )).then((_index) {
-        print('helper tabSelect $_index');
-        if (_index != null)
-          tabSelect(_index);
+        bottomNavigation: true,
+        dialog: true,
+      )).then((_index)   {
+        if (_index != null) tabSelect(_index);
       });
       return;
     }
+
     Get.offAllNamed(AppRouter.main, arguments: index);
   }
 

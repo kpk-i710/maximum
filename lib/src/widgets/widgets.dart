@@ -35,7 +35,7 @@ import '../styles.dart';
 import 'app_icon.dart';
 import 'orders_widgets/time_line_vertical.dart';
 import '../models/news.dart';
-import 'other_controllers_for_widgets/additional_service_controller.dart';
+import 'widgets_controller.dart';
 import '../widgets/widgets.dart' as widgets;
 import 'package:badges/badges.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart' as svg;
@@ -448,32 +448,6 @@ Widget fullReadNoty(
       ));
 }
 
-Widget buttonCounterTest({
-  required String text,
-  required Function() onTap,
-}) {
-  return Container(
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(5),
-      color: Colors.white,
-    ),
-    width: 25,
-    height: 25,
-    child: Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        splashColor: Colors.grey,
-        child: Center(
-          child: Text(
-            text,
-            style: robotoConsid(color: AppTextStyles.colorBlueMy, fontSize: 15),
-          ),
-        ),
-      ),
-    ),
-  );
-}
 
 Widget buttonCounter({
   required String text,
@@ -551,7 +525,7 @@ Widget counterCardRuntime(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          favoriteWithPrice(price: price),
+          favoriteWithPrice(price: price, context: context),
           if (controller.counter.value > 1)
             counterCardManyProduct(context: context),
           if (controller.counter.value == 1)
@@ -615,7 +589,7 @@ Widget optionCountProductSheet(
 }
 
 Widget productWidgetOption({required BuildContext context}) {
-  final controller = Get.put(DicountCardPageController());
+  final controller = Get.put(WidgetsControllers());
   return Expanded(
     child: Column(
       children: [
@@ -646,19 +620,20 @@ Widget productWidgetOption({required BuildContext context}) {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
-                        '2000 с',
+                        controller.getPrice(2000) + " с",
                         style: robotoConsid(
                             color: Color(0xff494949),
                             fontSize: 18,
                             fontWeight: FontWeight.bold),
                       ),
                       SizedBox(width: 10),
-                      Text(
-                        '3 200 сом',
-                        style: robotoConsid(
-                          color: Color(0xff62656A),
-                          decoration: TextDecoration.lineThrough,
-                          fontSize: 16,
+                      strikeThrough(
+                        child: Text(
+                          controller.getPrice(3200) + "с",
+                          style: robotoConsid(
+                            color: AppTextStyles.colorGreyThrou,
+                            fontSize: 16,
+                          ),
                         ),
                       ),
                     ],
@@ -708,7 +683,7 @@ Widget productWidgetOption({required BuildContext context}) {
             buttonCounterOption(
                 text: "-",
                 onTap: () {
-                  controller.minus(context: context);
+                  controller.minus();
                 }),
             Text(
               controller.counter.value.toString(),
@@ -762,33 +737,10 @@ Widget buttonCounterOption({
   );
 }
 
-Widget strikeThroughWidget(
-    {required Widget child,
-    double width = 40,
-    double top = 5,
-    required int length,
-    required int fontSize}) {
-  final controller = Get.put(DetalAllController());
-  return Stack(
-    children: [
-      Positioned(
-        top: top,
-        child: Transform.rotate(
-            angle: math.pi / 25,
-            child: Container(
-                width: length.toDouble() * 6 +
-                    (controller.LessThanTwelth(fontSize) * 4),
-                height: 2,
-                color: AppTextStyles.colorGreyThrou)),
-      ),
-      child
-    ],
-  );
-}
-
-void deletedFromCardSnackBar({required BuildContext context}) {
+void showMassageOneSecondSnackBar(
+    {required BuildContext context, required String massgae}) {
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-    duration: Duration(milliseconds: 500),
+    duration: Duration(milliseconds: 1000),
     margin: EdgeInsets.all(0),
     padding: EdgeInsets.only(
       bottom: 60,
@@ -799,7 +751,7 @@ void deletedFromCardSnackBar({required BuildContext context}) {
         padding:
             const EdgeInsets.only(left: 22.0, right: 20, top: 8, bottom: 8),
         child: Text(
-          "removed_from_card".tr,
+          "$massgae".tr,
           textAlign: TextAlign.center,
           style: widgets.robotoConsid(color: Colors.white),
         ),
@@ -871,12 +823,9 @@ Widget counterCardOneProduct({required BuildContext context}) {
                 },
                 child: Container(
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: Colors.white,
-                      border: Border.all(
-                        color: Color(0xffCCCCCC),
-                        width: 1,
-                      )),
+                    borderRadius: BorderRadius.circular(5),
+                    color: Colors.white,
+                  ),
                   width: 35,
                   height: 35,
                   child: Center(child: anySvg(nameSvg: 'trash_full')),
@@ -1010,7 +959,7 @@ Widget selectCheckBox({
   required int index,
   required String price,
 }) {
-  final controller = Get.put(AdditionlServiceController());
+  final controller = Get.put(WidgetsControllers());
   return Obx(() {
     return Theme(
       data: ThemeData(toggleableActiveColor: AppTextStyles.colorBlueMy),
@@ -1025,7 +974,8 @@ Widget selectCheckBox({
                 SizedBox(
                   width: 20,
                   child: Checkbox(
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(3.0))),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(5.0))),
                     checkColor: Colors.white,
                     value: controller.checkBoxList[index].isSelected,
                     onChanged: (newValue) {
@@ -1064,7 +1014,7 @@ Widget selectCheckBox({
 }
 
 Widget additionalService() {
-  final controller = Get.put(AdditionlServiceController());
+  final controller = Get.put(WidgetsControllers());
   return Obx(() {
     return ListTileTheme(
       contentPadding: EdgeInsets.all(0),
@@ -2302,8 +2252,9 @@ Widget floatingCard(
       ));
 }
 
-Widget productWidgetWithCount({bool additionalService = true}) {
-  final controller = Get.put(ShoppingCartPageController());
+Widget productWidgetWithCount(
+    {bool additionalService = true, required BuildContext context}) {
+  final controller = Get.put(WidgetsControllers());
   return Obx(() {
     return boxShadows(
       child: Column(
@@ -2342,8 +2293,7 @@ Widget productWidgetWithCount({bool additionalService = true}) {
                               fontWeight: FontWeight.bold),
                         ),
                         SizedBox(width: 10),
-                        strikeThroughWidget(
-                          top: 7,
+                        strikeThrough(
                           child: Text(
                             "3 200c",
                             style: robotoConsid(
@@ -2351,8 +2301,6 @@ Widget productWidgetWithCount({bool additionalService = true}) {
                               fontSize: 16,
                             ),
                           ),
-                          length: "3 200c".length,
-                          fontSize: 16,
                         ),
                       ],
                     ),
@@ -2400,7 +2348,11 @@ Widget productWidgetWithCount({bool additionalService = true}) {
                         SizedBox(
                           width: 4,
                         ),
-                        addFavorite(onPressed: () {}),
+                        addFavorite(
+                            onPressed: () {
+                              controller.showMassage(context: context);
+                            },
+                            context: context),
                         SizedBox(
                           width: 4,
                         ),
@@ -2577,8 +2529,19 @@ Widget orderWithDateDark() {
   );
 }
 
-Widget favoriteWithPrice({required int? price}) {
-  final controller = Get.put(DetalAllController());
+Widget strikeThrough({required Widget child}) {
+  return Container(
+    child: child,
+    decoration: BoxDecoration(
+      image: DecorationImage(
+          image: AssetImage('assets/images/strike.png'), fit: BoxFit.fitWidth),
+    ),
+  );
+}
+
+Widget favoriteWithPrice({required int? price, required BuildContext context}) {
+  final controller = Get.put(WidgetsControllers());
+
   return Expanded(
     child: Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -2600,15 +2563,14 @@ Widget favoriteWithPrice({required int? price}) {
             SizedBox(
               height: 10,
             ),
-            Text(
-              "$price с",
-              style: robotoConsid(
-                  color: Color(
-                    0xffCCCCCC,
-                  ),
-                  decoration: (TextDecoration.lineThrough),
-                  fontSize: 15,
-                  fontWeight: FontWeight.w900),
+            strikeThrough(
+              child: Text(
+                controller.getPrice(price) + " с",
+                style: robotoConsid(
+                    color: AppTextStyles.colorGreyThrou,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w900),
+              ),
             ),
           ],
         ),
@@ -2617,7 +2579,9 @@ Widget favoriteWithPrice({required int? price}) {
           color: Colors.transparent,
           sizeButton: 60,
           sizeFavorite: 30,
-          onPressed: () {},
+          onPressed: () {
+            controller.showMassage(context: context);
+          },
         ),
         SizedBox(width: 8),
       ],
@@ -2684,17 +2648,14 @@ Widget productWidget() {
                             fontWeight: FontWeight.bold),
                       ),
                       SizedBox(width: 10),
-                      strikeThroughWidget(
+                      strikeThrough(
                         child: Text(
                           '3 200 с',
                           style: robotoConsid(
-                            color: Color(0xff62656A),
-                            decoration: TextDecoration.lineThrough,
+                            color: AppTextStyles.colorGreyThrou,
                             fontSize: 16,
                           ),
                         ),
-                        length: '3 200 с'.length,
-                        fontSize: 16,
                       ),
                     ],
                   ),
@@ -2762,30 +2723,31 @@ Widget delivryBox({required BuildContext context}) {
           onTap: () {
             showTimeLineSheet(context: context);
           },
-          child: Row(
-            children: [
-              SizedBox(
-                width: 9,
-              ),
-              underLineDashed(
-                color: AppTextStyles.colorRedMy,
-                child: Text(
-                  "arrived_at_pickup_point".tr,
-                  style: robotoConsid(
-                      color: AppTextStyles.colorRedMy, fontSize: 18),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 9.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                underLineDashed(
+                  color: AppTextStyles.colorRedMy,
+                  child: Text(
+                    "arrived_at_pickup_point".tr,
+                    style: robotoConsid(
+                        color: AppTextStyles.colorRedMy, fontSize: 18),
+                  ),
                 ),
-              ),
-              Expanded(
-                child: underLineDashed(
+                SizedBox(height: 5),
+                Padding(
+                  padding: const EdgeInsets.only(top: 3.0),
                   child: Text(
                     "detailing".tr,
                     style: robotoConsid(
                         color: AppTextStyles.colorBlueMy, fontSize: 14),
                   ),
                 ),
-              ),
-              SizedBox(width: 10),
-            ],
+                SizedBox(width: 10),
+              ],
+            ),
           ),
         ),
         SizedBox(height: 15),
@@ -3693,6 +3655,7 @@ Widget addCartButton({required String text, Function()? onPressed}) {
 
 Widget addCardAndFavoriteAndCar(
     {required String textCard,
+    required BuildContext context,
     Function()? onPressedCard,
     Function()? onPressedFavorite,
     bool isSelectedFavorite = false,
@@ -3748,7 +3711,9 @@ Widget addCardAndFavoriteAndCar(
                 ),
           SizedBox(width: 5.00),
           widgets.addFavorite(
-              onPressed: onPressedFavorite, isSelected: isSelectedFavorite),
+              onPressed: onPressedFavorite,
+              isSelected: isSelectedFavorite,
+              context: context),
           SizedBox(width: 9.00),
         ],
       ),
@@ -3758,6 +3723,7 @@ Widget addCardAndFavoriteAndCar(
 
 Widget addCardAndFavorite(
     {required String textCard,
+    required BuildContext context,
     Function()? onPressedCard,
     Function()? onPressedFavorite,
     bool isSelectedFavorite = false,
@@ -3785,7 +3751,9 @@ Widget addCardAndFavorite(
             ),
       SizedBox(width: 5.00),
       widgets.addFavorite(
-          onPressed: onPressedFavorite, isSelected: isSelectedFavorite),
+          onPressed: onPressedFavorite,
+          isSelected: isSelectedFavorite,
+          context: context),
       SizedBox(width: rightPadding),
     ],
   );
@@ -3809,17 +3777,19 @@ Widget addFavoriteBig(
         color: isSelected ? AppTextStyles.colorRedMy : Color(0xff7B7B7B),
       ),
     ),
-    onTap: () {},
+    onTap: onPressed,
   );
 }
 
 Widget addFavorite(
     {required Function()? onPressed,
+    required BuildContext context,
     double? sizeFavorite,
     double? sizeButton,
     IconData? icon = Icons.favorite,
     bool isSelected = false,
     Color color = const Color(0xffE5E5E5)}) {
+  final controller = Get.put(WidgetsControllers());
   return colorCustomButton(
     color: AppTextStyles.colorGrayDividar,
     child: Center(
@@ -3829,7 +3799,9 @@ Widget addFavorite(
         color: isSelected ? AppTextStyles.colorRedMy : Color(0xff7B7B7B),
       ),
     ),
-    onTap: () {},
+    onTap: () {
+      controller.showMassage(context: context);
+    },
   );
 }
 
@@ -3931,17 +3903,15 @@ Widget titleDescrpPrice({
                   fontWeight: FontWeight.w900),
             ),
           ),
-          Expanded(
-            child: AutoSizeText(
+          strikeThrough(
+            child: Text(
               "${oldPrice ?? ""} с",
               maxLines: 1,
               textAlign: TextAlign.center,
-              maxFontSize: 14,
               style: widgets.robotoConsid(
                 fontSize: 14,
                 color: AppTextStyles.colorGreyThrou,
                 fontWeight: FontWeight.w600,
-                decoration: TextDecoration.lineThrough,
               ),
             ),
           ),
@@ -4009,10 +3979,9 @@ Widget titleDescrpPriceWithoutCar({
         children: [
           Padding(
             padding: const EdgeInsets.only(left: 9.0),
-            child: AutoSizeText(
+            child: Text(
               "${price ?? ""} с",
               maxLines: 1,
-              maxFontSize: 16,
               textAlign: TextAlign.center,
               style: widgets.robotoConsid(
                   fontSize: 16,
@@ -4021,20 +3990,16 @@ Widget titleDescrpPriceWithoutCar({
             ),
           ),
           SizedBox(width: 10),
-          Expanded(
-            child: widgets.strikeThroughWidget(
-              child: Text(
-                "${oldPrice ?? ""} с",
-                maxLines: 1,
-                textAlign: TextAlign.center,
-                style: widgets.robotoConsid(
-                  fontSize: 14,
-                  color: AppTextStyles.colorGreyThrou,
-                  fontWeight: FontWeight.w600,
-                ),
+          widgets.strikeThrough(
+            child: Text(
+              "${oldPrice ?? ""} с",
+              maxLines: 1,
+              textAlign: TextAlign.center,
+              style: widgets.robotoConsid(
+                fontSize: 14,
+                color: AppTextStyles.colorGreyThrou,
+                fontWeight: FontWeight.w600,
               ),
-              length: oldPrice == null ? 0 : oldPrice.length,
-              fontSize: 14,
             ),
           ),
         ],
@@ -4043,7 +4008,7 @@ Widget titleDescrpPriceWithoutCar({
   );
 }
 
-Widget bottomPopularCards({int? index}) {
+Widget bottomPopularCards({int? index, required BuildContext context}) {
   return Column(
     children: [
       Padding(
@@ -4086,7 +4051,8 @@ Widget bottomPopularCards({int? index}) {
           textCard: 'to_cart'.tr,
           onPressedCard: () {},
           onPressedFavorite: () {},
-          isSelectedFavorite: index == 0 ? true : false),
+          isSelectedFavorite: index == 0 ? true : false,
+          context: context),
       SizedBox(
         height: 8,
       )
@@ -4315,7 +4281,8 @@ Widget checkBoxWithText(
           SizedBox(
             width: 20,
             child: Checkbox(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5.0))),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(5.0))),
               value: value,
               activeColor: Get.context!.theme.primary,
               onChanged: (bool? value) {
@@ -4356,7 +4323,8 @@ Widget checkBoxWithIcon(
         SizedBox(
           width: 30,
           child: Checkbox(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5.0))),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(5.0))),
             value: value,
             activeColor: Get.context!.theme.primary,
             onChanged: (bool? value) {

@@ -49,6 +49,7 @@ class CatalogPage extends StatelessWidget {
                     Get.back();
                     return;
                   }
+
                   Get.back(result: index);
                 }
               })

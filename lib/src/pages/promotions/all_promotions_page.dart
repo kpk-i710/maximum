@@ -7,7 +7,6 @@ import '../../helpers/app_router.dart';
 import '../../widgets/search_widgets/search_bar_2.dart';
 import '../../widgets/widgets.dart' as widgets;
 import 'all_promotions_controller.dart';
-import 'level_below/promotions_list_page.dart';
 
 class AllPromotionsPage extends StatelessWidget {
   const AllPromotionsPage({Key? key}) : super(key: key);
@@ -28,16 +27,15 @@ class AllPromotionsPage extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: GestureDetector(
                   onTap: () {
-                    Get.to(
-                      () => PromotionsListPage(),
+                    Get.toNamed(
+                      AppRouter.listNews,
                       arguments: {
                         "idNews":
                             allPromotionsController.promotionsList[index].id,
                       },
                     );
                   },
-                  child: widgets
-                      .DiscountItemWidget(allPromotionsController
+                  child: widgets.DiscountItemWidget(allPromotionsController
                           .promotionsList[index].logoUrl!)
                       .marginOnly(bottom: 20),
                 ),

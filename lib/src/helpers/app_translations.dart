@@ -4,6 +4,8 @@ class AppTranslations extends Translations {
   @override
   Map<String, Map<String, String>> get keys => {
         'ru_RU': {
+          "added_to_favorites": "Товар добавлен в избранное",
+          "removed_from_favorites": "Товар удален из избранного",
           "permission_position": "Разрешите получить местополжение?",
           "streetShort": "ул.",
           "welcome": "Добро пожаловать",
@@ -244,7 +246,7 @@ class AppTranslations extends Translations {
           "to_favorites": "В избранное",
           "delete": "Удалить",
           "remove": "Удалить",
-          "removed_from_card": "Удалено с корзины",
+          "removed_from_card": "Товар удален с корзины",
           "order": "Заказ",
           "close": "Закрыт",
           "not_verified_wait_for_call":

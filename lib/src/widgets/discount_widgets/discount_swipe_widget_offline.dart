@@ -12,11 +12,12 @@ import '../widgets.dart' as widgets;
 
 class DiscountSwipeWidgetOffline extends StatelessWidget {
   final double height;
+  final double alignUp;
   final EdgeInsets? margin;
   final String image;
 
   DiscountSwipeWidgetOffline(
-      {this.height = 80, this.margin, required this.image});
+      {this.height = 80, this.margin, required this.image,  this.alignUp = 1.2});
 
   final currentIndex = 0.obs;
 
@@ -26,9 +27,7 @@ class DiscountSwipeWidgetOffline extends StatelessWidget {
       return Container(
         height: height.w,
         margin: margin ?? EdgeInsets.only(top: 13),
-        child: false
-            ? widgets.blockPlaceholder()
-            : Stack(children: [
+        child:  Stack(children: [
                 Swiper(
                   itemBuilder: (context, index) {
                     return Image.asset(image);
@@ -42,7 +41,7 @@ class DiscountSwipeWidgetOffline extends StatelessWidget {
                 ),
 
                 Align(
-                    alignment: Alignment(0, 1.2),
+                    alignment: Alignment(0,alignUp),
                     child: widgets.indicatorDotsOffline(
                         currentIndex: currentIndex.value, length: 3)),
 

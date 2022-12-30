@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:maxkgapp/src/pages/detail_all/detail_all_controller.dart';
+import 'package:maxkgapp/src/styles.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import '../../widgets/bought_today/bought_today_grid_widget.dart';
 import '../../widgets/brand_offers/brand_offers_grid_widget.dart';
 import '../../widgets/detail_all_widget/detail_all_dicscription.dart';
-import '../../widgets/discount_widgets/discount_cart_help.dart';
+import '../../widgets/detail_all_widget/detail_all_cart_help.dart';
 import '../../widgets/discount_widgets/discount_swipe_widget.dart';
 import '../../widgets/search_widgets/search_bar_2.dart';
 import '../../widgets/widgets.dart' as widgets;
@@ -28,10 +29,11 @@ class DetailAll extends StatelessWidget {
     required this.naim,
   }) : super(key: key);
   final controller = Get.put(DetalAllController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: SearchBar2(title: Get.arguments['title']),
+        appBar: SearchBar2(title: Get.arguments['title'],fontWeight: FontWeight.bold,),
         bottomNavigationBar: widgets.bottomNavigation(
             currentTab: 0, onSelectTab: homeController.tabSelect),
         body: Stack(
@@ -44,14 +46,13 @@ class DetailAll extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     DiscountSwipeWidget(
-                        image:
-                        "https://max.kg/nal/img/${idPost}/b_${img}"),
+                        image: "https://max.kg/nal/img/${idPost}/b_${img}"),
                     SizedBox(height: 20),
                     DetailAllDiscriptionWidget(
-                      price: price??0,
+                      price: price ?? 0,
                     ),
                     SizedBox(height: 22),
-                    DiscoiuntCartHelp(),
+                    DetailCartHelp(),
                     SizedBox(
                       height: 50,
                     ),
@@ -68,19 +69,20 @@ class DetailAll extends StatelessWidget {
                       expandOnGesture: true,
                       maxLines: 3,
                       "expample_card2".tr,
-                      style: widgets.robotoConsid(color: Color(0xff000000)),
-                      indicatorBuilder: (context, onTap, expanded) =>
-                          InkWell(
-                              onTap: onTap,
-                              child: Padding(
-                                padding: const EdgeInsets.only(top: 8.0),
-                                child: widgets.underLineDashed(
-                                    child: Text(
-                                      !expanded ? "more".tr : "collapse".tr,
-                                      style: widgets.robotoConsid(
-                                          color: Color(0xff142A65)),
-                                    )),
-                              )),
+                      style: widgets.robotoConsid( fontSize: 14, height:    1.25),
+                      indicatorBuilder: (context, onTap, expanded) => InkWell(
+                          onTap: onTap,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: widgets.underLineDashed(
+                                child: Text(
+                              !expanded ? "more".tr : "collapse".tr,
+                              style: widgets.robotoConsid(
+                                color: AppTextStyles.colorBlueMy,
+
+                              ),
+                            )),
+                          )),
                     ),
                     SizedBox(
                       height: 11,
@@ -96,19 +98,19 @@ class DetailAll extends StatelessWidget {
                       expandOnGesture: true,
                       maxLines: 3,
                       "expample_card3".tr,
-                      style: widgets.robotoConsid(color: Color(0xff000000)),
-                      indicatorBuilder: (context, onTap, expanded) =>
-                          InkWell(
-                              onTap: onTap,
-                              child: Padding(
-                                padding: const EdgeInsets.only(top: 8.0),
-                                child: widgets.underLineDashed(
-                                    child: Text(
-                                      !expanded ? "more".tr : "collapse".tr,
-                                      style: widgets.robotoConsid(
-                                          color: Color(0xff142A65)),
-                                    )),
-                              )),
+                      style: widgets.robotoConsid( fontSize: 14, height:    1.25),
+                      indicatorBuilder: (context, onTap, expanded) => InkWell(
+                          onTap: onTap,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: widgets.underLineDashed(
+                                child: Text(
+                              !expanded ? "more".tr : "collapse".tr,
+                              style: widgets.robotoConsid(
+
+                                  color: Color(0xff142A65)),
+                            )),
+                          )),
                     ),
                     SizedBox(height: 8),
                     Text(
@@ -188,7 +190,7 @@ class DetailAll extends StatelessWidget {
                         Text(
                           "reviews".tr.toUpperCase() + " /",
                           style:
-                          widgets.robotoConsid(fontWeight: FontWeight.bold),
+                              widgets.robotoConsid(fontWeight: FontWeight.bold),
                         ),
                         SizedBox(width: 13),
                         RatingBar.builder(
@@ -198,12 +200,11 @@ class DetailAll extends StatelessWidget {
                           allowHalfRating: true,
                           itemCount: 5,
                           itemSize: 15,
-                          itemBuilder: (context, _) =>
-                              Icon(
-                                Icons.star,
-                                color: Colors.amber,
-                                size: 2,
-                              ),
+                          itemBuilder: (context, _) => Icon(
+                            Icons.star,
+                            color: Colors.amber,
+                            size: 2,
+                          ),
                           onRatingUpdate: (rating) {
                             print(rating);
                           },
@@ -219,8 +220,8 @@ class DetailAll extends StatelessWidget {
                     ),
                     SizedBox(height: 20),
                     Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: Get.width * 0.2),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: Get.width * 0.2),
                       child: widgets.OrderPayButton(
                           text: 'leave_feedback'.tr,
                           fontSize: 15,
@@ -231,18 +232,17 @@ class DetailAll extends StatelessWidget {
                     SizedBox(height: 30),
                     ExpandChild(
                       collapsedVisibilityFactor: 0.6,
-                      indicatorBuilder: (context, onTap, expanded) =>
-                          InkWell(
-                              onTap: onTap,
-                              child: Padding(
-                                padding: const EdgeInsets.only(top: 8.0),
-                                child: widgets.underLineDashed(
-                                    child: Text(
-                                      !expanded ? "more".tr : "collapse".tr,
-                                      style: widgets.robotoConsid(
-                                          color: Color(0xff142A65)),
-                                    )),
-                              )),
+                      indicatorBuilder: (context, onTap, expanded) => InkWell(
+                          onTap: onTap,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: widgets.underLineDashed(
+                                child: Text(
+                              !expanded ? "more".tr : "collapse".tr,
+                              style: widgets.robotoConsid(
+                                  color: Color(0xff142A65)),
+                            )),
+                          )),
                       child: Column(
                         children: [
                           widgets.userFeedback(),
@@ -253,44 +253,43 @@ class DetailAll extends StatelessWidget {
                     SizedBox(height: 30),
                     widgets.boxShadows(
                         child: Row(
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                            Text(
+                              "all_products_category".tr,
+                              style: widgets.robotoConsid(),
+                            ),
+                            Row(
                               children: [
-                                Text(
-                                  "all_products_category".tr,
-                                  style: widgets.robotoConsid(),
+                                widgets.underLineDashed(
+                                    child: Text(
+                                  "Ноутбуки".tr,
+                                  style: widgets.robotoConsid(
+                                      color: Color(0xff142A65), height: 2),
+                                )),
+                                SizedBox(width: 6),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 14.0),
+                                  child: Icon(
+                                    Icons.arrow_forward_ios,
+                                    size: 12,
+                                    color: Color(0xff142A65),
+                                  ),
                                 ),
-                                Row(
-                                  children: [
-                                    widgets.underLineDashed(
-                                        child: Text(
-                                          "Ноутбуки".tr,
-                                          style: widgets.robotoConsid(
-                                              color: Color(0xff142A65),
-                                              height: 2),
-                                        )),
-                                    SizedBox(width: 6),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 14.0),
-                                      child: Icon(
-                                        Icons.arrow_forward_ios,
-                                        size: 12,
-                                        color: Color(0xff142A65),
-                                      ),
-                                    ),
-                                  ],
-                                )
                               ],
-                            ),
-                            Spacer(),
-                            Image.asset(
-                              "assets/images/imagePc.png",
-                              width: 60,
-                              height: 60,
-                            ),
+                            )
                           ],
-                        )),
+                        ),
+                        Spacer(),
+                        Image.asset(
+                          "assets/images/imagePc.png",
+                          width: 60,
+                          height: 60,
+                        ),
+                      ],
+                    )),
                     SizedBox(height: 31),
                     Column(
                       children: [
@@ -316,19 +315,16 @@ class DetailAll extends StatelessWidget {
                       style: widgets.robotoConsid(fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 23),
-                    Obx(() =>
-                        BrandOffersGridWidget(
+                    Obx(() => BrandOffersGridWidget(
                           list: homeController.discountList.value,
                         )),
                     SizedBox(height: 20),
-
                     Text(
                       "you_watched".tr.toUpperCase() + " /",
                       style: widgets.robotoConsid(fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 18),
-                    Obx(() =>
-                        BoughtTodayGridWidget(
+                    Obx(() => BoughtTodayGridWidget(
                           list: homeController.discountList.value,
                         )),
                   ],
@@ -336,7 +332,7 @@ class DetailAll extends StatelessWidget {
               ),
             ),
             widgets.floatingCard(
-                context: context, price: price??0, name: naim),
+                context: context, price: price ?? 0, name: naim),
           ],
         ));
   }

@@ -46,7 +46,7 @@ class ProductBlockItemWidget extends StatelessWidget {
                 child: widgets.addCardAndFavorite(
                     rightPadding: 0,
                     textCard: 'to_cart'.tr,
-                    onPressedCard: () {}),
+                    onPressedCard: () {}, context: context),
               ),
             ],
           )

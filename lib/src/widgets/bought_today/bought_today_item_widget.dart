@@ -48,7 +48,7 @@ class BoughtTodayItemRedWidget extends StatelessWidget {
                   SizedBox(width: 5),
                   Padding(
                     padding: const EdgeInsets.only(top: 3.0),
-                    child: widgets.strikeThroughWidget(
+                    child: widgets.strikeThrough(
                       child: Text(
                         "46 850 с",
                         maxLines: 1,
@@ -59,8 +59,7 @@ class BoughtTodayItemRedWidget extends StatelessWidget {
                           color: AppTextStyles.colorGreyThrou,
                         ),
                       ),
-                      length: "46 850 с".length,
-                      fontSize: 12,
+
                     ),
                   ),
                 ],

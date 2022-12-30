@@ -44,34 +44,49 @@ class _MainPageState extends State<MainPage> {
 
   void tabSelect(int index) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-     setState(() {
-       if (index == 1) {
-         Get.dialog(pages[index]).then((_index) {
-           if (_index != null) tabSelect(_index);
-         });
-         return;
-       }
-       currentTab = index;
-       currentPage = pages[index];
-     });
+      setState(() {
+        if (index == 1) {
+          Get.dialog(pages[index]).then((_index) {
+            if (_index != null) tabSelect(_index);
+          });
+          return;
+        }
+        currentTab = index;
+        currentPage = pages[index];
+      });
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: AnimatedSwitcher(
-        transitionBuilder: (child, animation) {
-          return ScaleTransition(child: child, scale: animation);
-        },
-        duration: const Duration(milliseconds: 300),
-        child: currentPage,
-        switchOutCurve: Curves.easeInOutCubic,
-        switchInCurve: Curves.easeOut,
-      ),
-      bottomNavigationBar: widgets.bottomNavigation(
-        currentTab: currentTab,
-        onSelectTab: tabSelect,
+    return WillPopScope(
+      onWillPop: () async {
+        print("текущая страница");
+        print(currentTab);
+        if (currentTab > 0) {
+          setState(() {
+            tabSelect(0);
+          });
+        }
+        if (currentTab == 0) {
+          return true;
+        }
+        return false;
+      },
+      child: Scaffold(
+        body: AnimatedSwitcher(
+          transitionBuilder: (child, animation) {
+            return ScaleTransition(child: child, scale: animation);
+          },
+          duration: const Duration(milliseconds: 300),
+          child: currentPage,
+          switchOutCurve: Curves.easeInOutCubic,
+          switchInCurve: Curves.easeOut,
+        ),
+        bottomNavigationBar: widgets.bottomNavigation(
+          currentTab: currentTab,
+          onSelectTab: tabSelect,
+        ),
       ),
     );
   }
