@@ -448,6 +448,32 @@ Widget fullReadNoty(
       ));
 }
 
+Widget buttonCounterTest({
+  required String text,
+  required Function() onTap,
+}) {
+  return Container(
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(5),
+      color: Colors.white,
+    ),
+    width: 25,
+    height: 25,
+    child: Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        splashColor: Colors.grey,
+        child: Center(
+          child: Text(
+            text,
+            style: robotoConsid(color: AppTextStyles.colorBlueMy, fontSize: 15),
+          ),
+        ),
+      ),
+    ),
+  );
+}
 
 Widget buttonCounter({
   required String text,
