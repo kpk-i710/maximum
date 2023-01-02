@@ -8,8 +8,7 @@ import '../../widgets/widgets.dart' as widgets;
 import '../../styles.dart';
 
 class BrandOffersItemBlackWidget extends StatelessWidget {
-  const BrandOffersItemBlackWidget(
-      {Key? key, required this.list , this.index})
+  const BrandOffersItemBlackWidget({Key? key, required this.list, this.index})
       : super(key: key);
 
   final List<Discount> list;
@@ -19,7 +18,7 @@ class BrandOffersItemBlackWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(right: 16.0,top: 8,bottom: 8),
+      padding: const EdgeInsets.only(right: 16.0, top: 8, bottom: 8),
       child: SizedBox(
         width: Get.width / 2.7,
         child: widgets.boxShadows(
@@ -36,28 +35,18 @@ class BrandOffersItemBlackWidget extends StatelessWidget {
                 child: Text(
                   "19 000 c",
                   maxLines: 1,
-
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontFamily: "MPLUSRounded1c-Black",
-                      fontSize: 14,
-                      color: Color(0xff2C2D2E),
-                      fontWeight: FontWeight.w900),
+                  style: widgets.robotoConsid(
+                      fontSize: 16, fontWeight: FontWeight.w900),
                 ),
               ),
-
               Padding(
                 padding: const EdgeInsets.only(left: 5.0, bottom: 4),
-                child: AutoSizeText(
+                child: Text(
                   "Менделейка / Набор для опытов 6шт /Детский наборdsfffffffffffffffff",
-                  maxFontSize: 14,
-                  minFontSize: 14,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 2,
-                  style: TextStyle(
-                      fontFamily: "RobotoCondensed-Regular",
-                      fontSize: 14,
-                      fontWeight: FontWeight.w200),
+                  style: widgets.robotoConsid(),
                 ),
               ),
               Padding(

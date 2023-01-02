@@ -41,10 +41,8 @@ class BoughtTodayItemBlackWidget extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 5.0, bottom: 4),
-                child: AutoSizeText(
+                child: Text(
                   "Менделейка / Набор для опытов 6шт /Детский наборdsfffffffffffffffff",
-                  maxFontSize: 14,
-                  minFontSize: 14,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 2,
                   style: widgets.robotoConsid(
@@ -52,7 +50,7 @@ class BoughtTodayItemBlackWidget extends StatelessWidget {
                 ),
               ),
               Padding(
-                  padding: EdgeInsets.only(left: 5, bottom: 20),
+                  padding: EdgeInsets.only(left: 5, bottom: 0),
                   child: widgets.rating(3))
             ],
           ),

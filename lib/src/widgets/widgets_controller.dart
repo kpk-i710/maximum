@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:maxkgapp/src/helpers/prefs.dart';
 import 'widgets.dart' as widgets;
@@ -20,9 +21,60 @@ class WidgetsControllers extends GetxController {
     CheckBox(price: '500', isSelected: false)
   ].obs;
 
+  minusWithOutSheet() {
+    if (counter >= 1) {
+      counter = counter - 1;
+      Prefs.counterCard = counter.value;
+    }
+  }
+
+
+  @override
+  void onInit() {
+    counter.value =  Prefs.counterCard;
+  }
+
+  minus({required BuildContext context}) {
+    if (counter >= 1) {
+      counter = counter - 1;
+      Prefs.counterCard = counter.value;
+    }
+    if (counter == 0) {
+      widgets.showMassageOneSecondSnackBar(context: context, massgae: 'removed_from_card');
+    }
+
+  }
+
+
+  plus() {
+    counter = counter + 1;
+    Prefs.counterCard = counter.value;
+  }
+
   void changeBoxList({required int index}) {
     checkBoxList[index].isSelected = !checkBoxList[index].isSelected;
     checkBoxList.refresh();
+  }
+
+  String getDate(String date) {
+    DateTime tempDate = DateFormat("yyyy-MM-dd hh:mm:ss").parse(date);
+    print("день появления");
+    print(tempDate.day);
+    print("разница");
+    final dates = (DateFormat('d').format(DateTime.now()));
+
+    tempDate.difference(DateTime.now()).inDays;
+    if (tempDate
+        .difference(DateTime.now())
+        .inDays
+        .toString()
+        .replaceAll("-", "") ==
+        "0") return "today".tr;
+    return tempDate
+        .difference(DateTime.now())
+        .inDays
+        .toString()
+        .replaceAll("-", "") + " " + "daysShort".tr;
   }
 
   void showMassage({required BuildContext context}) {
@@ -45,13 +97,6 @@ class WidgetsControllers extends GetxController {
     return numberFormat.format(price).replaceAll(",", " ");
   }
 
-  minus() {
-    if (counter >= 1) counter = counter - 1;
-  }
-
-  plus() {
-    counter = counter + 1;
-  }
 
   bool checkForServices() {
     for (int i = 0; i < checkBoxList.length; i++) {

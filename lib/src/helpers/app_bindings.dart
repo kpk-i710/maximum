@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:maxkgapp/src/pages/network/network_controller.dart';
 import 'package:maxkgapp/src/repositories/app_repo.dart';
 import 'package:maxkgapp/src/repositories/cart_repo.dart';
 import 'package:maxkgapp/src/repositories/catalog_repo.dart';
@@ -9,19 +10,20 @@ import 'package:maxkgapp/src/repositories/user_repo.dart';
 
 import '../cart_controller.dart';
 
-  class AppBindings implements Bindings {
-    @override
-    void dependencies() {
-      // repositories
-      Get.put(AppRepo());
-      Get.put(CartRepo());
-      Get.put(CatalogRepo());
-      Get.put(DiscountRepo());
-      Get.put(OrderRepo());
-      Get.put(ProductRepo());
-      Get.put(UserRepo());
+class AppBindings implements Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut<NetWorkController>(() => NetWorkController());
+    // repositories
+    Get.put(AppRepo());
+    Get.put(CartRepo());
+    Get.put(CatalogRepo());
+    Get.put(DiscountRepo());
+    Get.put(OrderRepo());
+    Get.put(ProductRepo());
+    Get.put(UserRepo());
 
-      // controllers
-      Get.put(CartController());
-    }
+    // controllers
+    Get.put(CartController());
   }
+}

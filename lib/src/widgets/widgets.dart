@@ -481,12 +481,37 @@ Widget buttonCounter({
 }) {
   return Container(
     decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(5),
-        color: Colors.white,
-        border: Border.all(
-          color: Color(0xffCCCCCC),
-          width: 1,
-        )),
+      borderRadius: BorderRadius.circular(5),
+      color: Colors.white,
+    ),
+    width: 35,
+    height: 35,
+    child: Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        splashColor: Colors.grey,
+        child: Center(
+          child: Text(
+            text,
+            style: robotoConsid(color: AppTextStyles.colorBlueMy, fontSize: 20),
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+Widget buttonCounterWithBorder({
+  required String text,
+  required Function() onTap,
+}) {
+  return Container(
+    decoration: BoxDecoration(
+      border: Border.all(width: 1, color: AppTextStyles.colorGreyThrou),
+      borderRadius: BorderRadius.circular(5),
+      color: Colors.white,
+    ),
     width: 35,
     height: 35,
     child: Material(
@@ -506,7 +531,7 @@ Widget buttonCounter({
 }
 
 Widget counterCardManyProduct({required BuildContext context}) {
-  final controller = Get.put(DicountCardPageController());
+  final controller = Get.put(WidgetsControllers());
   return Row(
     children: [
       dark(
@@ -524,7 +549,7 @@ Widget counterCardManyProduct({required BuildContext context}) {
                   }),
               Spacer(),
               Text(
-                controller.counter.value.toString(),
+                "${controller.counter.value}",
                 style: robotoConsid(color: Colors.white, fontSize: 18),
               ),
               Spacer(),
@@ -543,7 +568,7 @@ Widget counterCardManyProduct({required BuildContext context}) {
 
 Widget counterCardRuntime(
     {int? price, Function()? onTap, required BuildContext context}) {
-  final controller = Get.put(DicountCardPageController());
+  final controller = Get.put(WidgetsControllers());
   return Obx(() {
     return SizedBox(
       height: 100,
@@ -709,7 +734,7 @@ Widget productWidgetOption({required BuildContext context}) {
             buttonCounterOption(
                 text: "-",
                 onTap: () {
-                  controller.minus();
+                  controller.minus(context: context);
                 }),
             Text(
               controller.counter.value.toString(),
@@ -791,7 +816,7 @@ void showMassageOneSecondSnackBar(
 }
 
 Widget counterCardOneProductTest() {
-  final controller = Get.put(DicountCardPageController());
+  final controller = Get.put(WidgetsControllers());
   return Obx(() {
     return Expanded(
       child: Row(
@@ -832,7 +857,7 @@ Widget counterCardOneProductTest() {
 }
 
 Widget counterCardOneProduct({required BuildContext context}) {
-  final controller = Get.put(DicountCardPageController());
+  final controller = Get.put(WidgetsControllers());
   return Row(
     children: [
       dark(
@@ -859,7 +884,7 @@ Widget counterCardOneProduct({required BuildContext context}) {
               ),
               Spacer(),
               Text(
-                controller.counter.value.toString(),
+                "${controller.counter.value}",
                 style: robotoConsid(color: Colors.white, fontSize: 18),
               ),
               Spacer(),
@@ -1109,7 +1134,7 @@ Widget titleWidget(
       Padding(
         padding: EdgeInsets.only(bottom: bottom, left: left),
         child: Text(
-          '$title'.tr.toUpperCase(),
+          '$title'.tr ,
           style: widgets.robotoConsid(
             fontSize: 16,
           ),
@@ -1212,7 +1237,7 @@ Widget DiscountItemWidget(String image) {
 }
 
 Widget newsItemWidget(News1 newss) {
-  AllNewsController controllerNewss = Get.put(AllNewsController());
+  final controllerWidget = Get.put(WidgetsControllers());
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -1238,7 +1263,7 @@ Widget newsItemWidget(News1 newss) {
           Row(
             children: [
               Text(
-                "${controllerNewss.getDate(newss.date!)} ",
+                "${controllerWidget.getDate(newss.date!)} ",
                 style: robotoConsid(
                     fontSize: 14, color: AppTextStyles.colorGrayMy),
               ),
@@ -1306,33 +1331,35 @@ SizedBox bottomNavigation(
 }
 
 Widget cardIcon({bool isSelected = false}) {
-  final controller = Get.put(DicountCardPageController());
-  return Badge(
-    showBadge: false,
-    badgeContent: Padding(
-      padding: const EdgeInsets.only(right: 2.0),
-      child: RichText(
-        text: TextSpan(
-          text: " ${controller.counter}",
-          style: robotoConsid(color: Colors.white, fontSize: 12),
-          children: <TextSpan>[
-            TextSpan(
-                text: "  ${controller.counter.value}",
-                style: TextStyle(fontSize: 0)),
-          ],
+  final controller = Get.put(WidgetsControllers());
+  return Obx(() {
+    return Badge(
+      showBadge: controller.counter.value > 0,
+      badgeContent: Padding(
+        padding: const EdgeInsets.only(right: 2.0),
+        child: RichText(
+          text: TextSpan(
+            text: " ${controller.counter.value}",
+            style: robotoConsid(color: Colors.white, fontSize: 12),
+            children: <TextSpan>[
+              TextSpan(
+                  text: "  ${controller.counter.value}",
+                  style: TextStyle(fontSize: 0)),
+            ],
+          ),
         ),
       ),
-    ),
-    child: Padding(
-      padding: const EdgeInsets.only(bottom: 2.5, top: 2.5),
-      child: anySvg(
-          nameSvg: 'card',
-          color: isSelected
-              ? AppTextStyles.colorBlueMy
-              : AppTextStyles.colorGrayMy,
-          size: Size(22, 22)),
-    ),
-  );
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 2.5, top: 2.5),
+        child: anySvg(
+            nameSvg: 'card',
+            color: isSelected
+                ? AppTextStyles.colorBlueMy
+                : AppTextStyles.colorGrayMy,
+            size: Size(22, 22)),
+      ),
+    );
+  });
 }
 
 Widget location({required String adress, required Function() onTap}) {
@@ -2257,7 +2284,7 @@ Widget floatingCard(
     {required BuildContext context,
     required int? price,
     required String? name}) {
-  final controller = Get.put(DicountCardPageController());
+  final controller = Get.put(WidgetsControllers());
   return Align(
       alignment: Alignment(0, 1),
       child: Container(
@@ -2347,10 +2374,10 @@ Widget productWidgetWithCount(
                       children: [
                         Row(
                           children: [
-                            buttonCounter(
+                            buttonCounterWithBorder(
                                 text: "-",
                                 onTap: () {
-                                  controller.minus();
+                                  controller.minus(context: context);
                                 }),
                             Container(
                               width: 40,
@@ -2364,7 +2391,7 @@ Widget productWidgetWithCount(
                                 ),
                               ),
                             ),
-                            buttonCounter(
+                            buttonCounterWithBorder(
                                 text: "+",
                                 onTap: () {
                                   controller.plus();

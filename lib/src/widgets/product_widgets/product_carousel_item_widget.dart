@@ -11,13 +11,9 @@ import '../../models/product.dart';
 import '../../widgets/widgets.dart' as widgets;
 
 class ProductCarouselItemWidget extends StatelessWidget {
-
   final double? width;
 
-  ProductCarouselItemWidget({Key? key,   this.width})
-      : super(key: key);
-
-  final inCart = false.obs;
+  ProductCarouselItemWidget({Key? key, this.width}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -52,38 +48,29 @@ class ProductCarouselItemWidget extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 9.0, top: 2.0),
-              child: AutoSizeText(
+              padding: const EdgeInsets.only(left: 5.0, top: 2.0),
+              child: Text(
                 "19 000 c",
                 maxLines: 1,
-                maxFontSize: 16,
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontFamily: "MPLUSRounded1c-Black",
-                    fontSize: 16,
-                    color: Color(0xff2C2D2E),
-                    fontWeight: FontWeight.w900),
+                style: widgets.robotoConsid(
+                    fontSize: 16, fontWeight: FontWeight.w900),
               ),
             ),
             SizedBox(
               width: width,
               child: Padding(
-                padding: const EdgeInsets.only(left: 9.0, bottom: 4),
-                child: AutoSizeText(
+                padding: const EdgeInsets.only(left: 5.0, bottom: 4),
+                child: Text(
                   "Менделейка / Набор для опытов 6шт /Детский наборdsfffffffffffffffff",
-                  maxFontSize: 14,
-                  minFontSize: 14,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 2,
-                  style: TextStyle(
-                      fontFamily: "RobotoCondensed-Regular",
-                      fontSize: 14,
-                      fontWeight: FontWeight.w200),
+                  style: widgets.robotoConsid(),
                 ),
               ),
             ),
             Padding(
-                padding: EdgeInsets.only(left: 9, bottom: 20),
+                padding: EdgeInsets.only(left: 5, bottom: 20),
                 child: widgets.rating(3))
           ],
         ),

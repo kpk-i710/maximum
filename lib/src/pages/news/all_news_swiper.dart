@@ -11,12 +11,13 @@ import 'package:maxkgapp/src/models/news.dart';
 import 'package:maxkgapp/src/pages/home/home_page_controller.dart';
 import 'package:maxkgapp/src/pages/news/all_news_controller.dart';
 import 'package:maxkgapp/src/styles.dart';
+import 'package:maxkgapp/src/widgets/widgets_controller.dart';
 import '../../widgets/widgets.dart' as widgets;
 
 class AllNewsSwiper extends StatelessWidget {
   AllNewsSwiper({required this.list});
 
-  final controllerNewss = Get.put(AllNewsController());
+  final controllerWidget = Get.put(WidgetsControllers());
   final List<News1> list;
   final homeController = Get.put(HomePageController());
   final currentIndex = 0.obs;
@@ -29,7 +30,7 @@ class AllNewsSwiper extends StatelessWidget {
           Get.toNamed(
             AppRouter.listNews,
             arguments: {
-              "idNews": homeController.newsList[0].id,
+              "idNews": homeController.newsList[currentIndex.value].id,
             },
           );
         },
@@ -71,8 +72,8 @@ class AllNewsSwiper extends StatelessWidget {
                               child: Text(
                                 "${currentIndex.value + 1}/${list.length > 5 ? 5 : list.length}",
                                 style: widgets.robotoConsid(
-                                  color: AppTextStyles.colorGrayMy,fontSize: 12
-                                ),
+                                    color: AppTextStyles.colorGrayMy,
+                                    fontSize: 12),
                               ),
                             )),
                       ),
@@ -83,32 +84,34 @@ class AllNewsSwiper extends StatelessWidget {
                               length: list.length)),
                     ]),
             ),
-            Row(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: 15),
-                    Text(
-                      homeController.newsList[currentIndex.value].title!,
-                      style: widgets.robotoConsid(
-                          fontSize: 15, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      "${controllerNewss.getDate(homeController.newsList[currentIndex.value].date!)} ",
-                      style: widgets.robotoConsid(
-                          fontSize: 14, color: AppTextStyles.colorGrayMy),
-                    ),
-                  ],
-                ),
-                Spacer(),
-                Padding(
-                    padding: const EdgeInsets.only(top: 30.0),
-                    child:
-                        widgets.anySvg(nameSvg: 'share', size: Size(27, 27))),
-              ],
-            ),
+            list.isNotEmpty
+                ? Row(
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: 15),
+                          Text(
+                            homeController.newsList[currentIndex.value].title!,
+                            style: widgets.robotoConsid(
+                                fontSize: 15, fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            "${controllerWidget.getDate(homeController.newsList[currentIndex.value].date!)} ",
+                            style: widgets.robotoConsid(
+                                fontSize: 14, color: AppTextStyles.colorGrayMy),
+                          ),
+                        ],
+                      ),
+                      Spacer(),
+                      Padding(
+                          padding: const EdgeInsets.only(top: 30.0),
+                          child: widgets.anySvg(
+                              nameSvg: 'share', size: Size(27, 27))),
+                    ],
+                  )
+                : SizedBox(),
             SizedBox(height: 10),
           ],
         ),

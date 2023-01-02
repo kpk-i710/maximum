@@ -12,4 +12,6 @@ class ProductsByCatalogPageController extends GetxController {
 
   void tabSelect(int index) => Helper.tabSelect(index);
 
+  var currentVersionCatalog = 0.obs;
+
 }

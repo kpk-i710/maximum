@@ -14,13 +14,11 @@ class BoughtTodayGridWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: ConstrainedBox(
-        constraints: BoxConstraints(maxHeight: Get.width / 2.7 + 130),
+        constraints: BoxConstraints(maxHeight: Get.width / 2.7 + 95),
         child: ListView.builder(
           physics: BouncingScrollPhysics(),
           itemBuilder: (contexwidgetst, index) {
-            return list.isEmpty
-                ? widgets.productPlaceholder(width: 180, height: 160)
-                : currentItem(index: index);
+            return   currentItem(index: index);
           },
           itemCount: 3,
           primary: false,

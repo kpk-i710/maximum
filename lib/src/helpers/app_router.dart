@@ -1,5 +1,6 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
+import 'package:maxkgapp/src/pages/network/network.dart';
 import 'package:maxkgapp/src/pages/orders_history/orders_history_page.dart';
 import 'package:maxkgapp/src/pages/user/notifications_settings/notifications_page.dart';
 import 'package:maxkgapp/src/pages/user/organization/organization_page.dart';
@@ -40,6 +41,7 @@ import '../helpers/prefs.dart';
 
 class AppRouter {
   static const String pageNews = '/pageNews';
+  static const String netWork = '/netWork';
   static const String listNews = '/newsList';
   static const String listBanners = '/listBanner';
   static const String organizationPage = '/organizationPage';
@@ -89,9 +91,10 @@ class AppRouter {
   static const String paymentMethod = '/payment_method';
   static const String map = '/map';
 
-  static String get initialRoute =>   main;
+  static String get initialRoute => main;
 
   static final pages = [
+    GetPage(name: netWork, page: () => NetWork()),
     GetPage(name: listNews, page: () => NewsListPage()),
     GetPage(name: listBanners, page: () => listBanner()),
     GetPage(name: organizationPage, page: () => OrganizationPage()),

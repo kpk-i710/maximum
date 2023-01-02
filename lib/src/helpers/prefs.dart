@@ -64,9 +64,17 @@ class Prefs {
   static set selectedLang(val) => _selectedLang.val = val;
 
 
+  static final _counterCard = 0.val('COUNTER_CARD');
+  static get counterCard => _counterCard.val;
+  static set counterCard(val) => _counterCard.val = val;
+
   static final _isAddedToFavorite = false.val('ADDED_FAVORIDE');
   static get isAddedToFavorite => _isAddedToFavorite.val;
   static set isAddedToFavorite(val) => _isAddedToFavorite.val = val;
+
+  static final _catalogVersion = 0.val('CATALOG_VERSION');
+  static get catalogVersion => _catalogVersion.val;
+  static set catalogVersion(val) => _catalogVersion.val = val;
 
   static listenKey(key, Function(dynamic val) callBack) {
     return _box.listenKey(key, callBack);

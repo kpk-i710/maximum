@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/route_manager.dart';
 import 'package:maxkgapp/src/helpers/app_router.dart';
+import 'package:maxkgapp/src/pages/home/home_page_controller.dart';
 
 import '../../helpers/helper.dart';
 import '../../models/discount.dart';
@@ -10,7 +12,7 @@ import 'discount_grid_item_widget.dart';
 
 class DiscountGridWidget extends StatelessWidget {
   final List<Discount> list;
-
+  final homeController = Get.put(HomePageController());
   DiscountGridWidget({Key? key, required this.list});
 
   @override
@@ -29,12 +31,11 @@ class DiscountGridWidget extends StatelessWidget {
                   child: widgets.blockPlaceholder())
               : InkWell(
                   onTap: () {
+
                     Get.toNamed(
-                      AppRouter.discount,
-                      // arguments: list[index]
+                      AppRouter.listNews,
                       arguments: {
-                        "idDiscount": list[index].id,
-                        "title": list[index].title,
+                        "idNews": homeController.newsList[1].id,
                       },
                     );
                   },

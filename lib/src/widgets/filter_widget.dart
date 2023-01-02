@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
+import 'package:maxkgapp/src/helpers/prefs.dart';
+import 'package:maxkgapp/src/pages/products_by_catalog/products_by_catalog_page_controller.dart';
 
 import '../styles.dart';
 
@@ -11,7 +13,10 @@ class FilterWidget extends StatelessWidget {
 
   final Function(String val)? callBack;
   final Function()? onFilterTap;
+
   FilterWidget({this.callBack, this.onFilterTap});
+
+  final controller = Get.put(ProductsByCatalogPageController());
 
   @override
   Widget build(BuildContext context) {
@@ -88,18 +93,13 @@ class FilterWidget extends StatelessWidget {
               children: [
                 Obx(() => InkWell(
                     onTap: () {
-                      final f = callBack != null ? callBack! : (a) {};
-                      if (icon.value == MaterialCommunityIcons.view_grid) {
-                        icon.value = MaterialCommunityIcons.view_list;
-                        f('list');
-                      } else if (icon.value ==
-                          MaterialCommunityIcons.view_list) {
-                        icon.value = MaterialCommunityIcons.view_day;
-                        f('block');
+                      if (controller.currentVersionCatalog.value < 2) {
+                        controller.currentVersionCatalog.value =
+                            controller.currentVersionCatalog.value + 1;
                       } else {
-                        icon.value = MaterialCommunityIcons.view_grid;
-                        f('grid');
+                        controller.currentVersionCatalog.value = 0;
                       }
+
                     },
                     child: Icon(icon.value, color: context.theme.primary))),
                 const SizedBox(width: 10),

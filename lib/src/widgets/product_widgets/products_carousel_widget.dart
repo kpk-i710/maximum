@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_core/get_core.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:maxkgapp/src/widgets/bought_today/bought_today_item_black_widget.dart';
 
 import '../../widgets/product_widgets/product_carousel_item_widget.dart';
 import '../../models/product.dart';
@@ -17,23 +18,20 @@ class ProductsCarouselWidget extends StatelessWidget {
       child: ConstrainedBox(
         constraints: BoxConstraints(maxHeight: 240),
         child: ListView.separated(
-
           physics: BouncingScrollPhysics(),
           itemBuilder: (context, index) {
-            return 4!=4
-                ? widgets.productPlaceholder(width: 180, height: 160)
-                : ProductCarouselItemWidget(
-
-                    width: Get.width / 2.8,
-                  );
+            return BoughtTodayItemBlackWidget(
+              list: [],
+            );
           },
 
           itemCount: 4,
           primary: false,
           // shrinkWrap: true,
-          scrollDirection: Axis.horizontal,   separatorBuilder: (context, index) => SizedBox(
-          width: 10,
-        ),
+          scrollDirection: Axis.horizontal,
+          separatorBuilder: (context, index) => SizedBox(
+            width: 0,
+          ),
         ),
       ),
     );

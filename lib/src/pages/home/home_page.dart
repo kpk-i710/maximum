@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:maxkgapp/src/pages/network/network_controller.dart';
 import 'package:maxkgapp/src/pages/news/all_news_swiper.dart';
 import 'package:maxkgapp/src/widgets/popular_goods/popular_goods_grid_widget.dart';
 import 'package:maxkgapp/src/widgets/promotions_widgets/promotions_swiper.dart';
@@ -24,6 +25,7 @@ import 'home_page_controller.dart';
 
 class HomePage extends StatelessWidget {
   final homeController = Get.put(HomePageController());
+  final networkController = Get.put(NetWorkController());
   final controllerShoppingCart = Get.put(ShoppingCartPageController());
 
   HomePage({key}) : super(key: key);
@@ -41,18 +43,16 @@ class HomePage extends StatelessWidget {
                     return Column(
                       children: [
                         SearchWidget(),
-                        Obx(() {
-                          return widgets.location(
-                              adress:
-                                  (controllerShoppingCart.selectedCity.value ??
-                                          "specify_the_city".tr) +
-                                      (controllerShoppingCart
-                                              .selectedStreetHouse.value ??
-                                          ""),
-                              onTap: () {
-                                Get.to(ShippingMethodsPage());
-                              });
-                        }),
+                        widgets.location(
+                            adress:
+                                (controllerShoppingCart.selectedCity.value ??
+                                        "specify_the_city".tr) +
+                                    (controllerShoppingCart
+                                            .selectedStreetHouse.value ??
+                                        ""),
+                            onTap: () {
+                              Get.to(ShippingMethodsPage());
+                            }),
                         Obx(() => BannerWidget(
                             list: homeController.bannerList.value)),
                         if (Prefs.isLogin)
@@ -120,16 +120,8 @@ class HomePage extends StatelessWidget {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: homeController.left),
-                              child: Text(
-                                'popular_categories'.tr.toUpperCase(),
-                                style: widgets.robotoConsid(
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ),
+                            widgets.titleWidget(
+                                title: "popular_categories".tr, left: 10),
                             SizedBox(height: 10),
                             Obx(() => PopularCategoriesGridWidget(
                                   list:
@@ -184,21 +176,21 @@ class HomePage extends StatelessWidget {
                               widgets.subTitleWidget(
                                 title: 'Asus',
                               ),
-                              Obx(() => BrandOffersGridWidget(
+                              Obx(() => BoughtTodayGridWidget(
                                     list: homeController.discountList.value,
                                   )),
                               SizedBox(height: 10),
                               widgets.subTitleWidget(
                                 title: 'Мечта',
                               ),
-                              Obx(() => BrandOffersGridWidget(
+                              Obx(() => BoughtTodayGridWidget(
                                     list: homeController.discountList.value,
                                   )),
                               SizedBox(height: 10),
                               widgets.subTitleWidget(
                                 title: 'Launch',
                               ),
-                              Obx(() => BrandOffersGridWidget(
+                              Obx(() => BoughtTodayGridWidget(
                                     list: homeController.discountList.value,
                                   )),
                             ],

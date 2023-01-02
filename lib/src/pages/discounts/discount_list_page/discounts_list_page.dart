@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:maxkgapp/src/pages/home/home_page_controller.dart';
 
 import '../../../helpers/app_router.dart';
 import '../../../widgets/search_widgets/search_bar_2.dart';
@@ -11,7 +12,7 @@ import '../discount_list_page_controller.dart';
 
 class DiscountsListPage extends StatelessWidget {
   final DiscountController = Get.put(DiscountsListPageController());
-
+  final homeController = Get.put(HomePageController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,12 +33,9 @@ class DiscountsListPage extends StatelessWidget {
                     list: DiscountController.discountList.value,
                     onItemTap: (index) {
                       Get.toNamed(
-                        AppRouter.discount,
-                        // arguments: DiscountController.discountList[index]
+                        AppRouter.listNews,
                         arguments: {
-                          "idDiscount":
-                              DiscountController.discountList[index].id,
-                          "title": DiscountController.discountList[index].title,
+                          "idNews": homeController.newsList[1].id,
                         },
                       );
                     })),
