@@ -10,12 +10,12 @@ import '../../styles.dart';
 import '../../widgets/widgets.dart' as widgets;
 
 class DiscountDetailItemWidget extends StatelessWidget {
-  Product? product;
+
   VoidCallback onPress;
   final index;
 
   DiscountDetailItemWidget(
-      {super.key, required this.product, required this.onPress, this.index});
+      {super.key,  required this.onPress, this.index});
 
   final controller = Get.put(DiscountPageNewController());
 
@@ -62,7 +62,7 @@ class DiscountDetailItemWidget extends StatelessWidget {
                           padding:
                               EdgeInsets.symmetric(horizontal: 5, vertical: 3),
                           child: Text(
-                            '- ${product?.discountPrc}%',
+                            '- 20%',
                             style: AppTextStyles.robotoCondensed(
                                 color: context.theme.onAccent,
                                 fontSize: 14,
@@ -82,9 +82,9 @@ class DiscountDetailItemWidget extends StatelessWidget {
                       height: 13,
                     ),
                     widgets.titleDescrpPriceWithoutCar(
-                      price: controller.getPrice(product?.cenaok),
-                      title: product?.naim.toString(),
-                      oldPrice: controller.getPrice(product?.oldPrice),
+                      price: controller.getPrice(15000),
+                      title: "Скандинавские палки",
+                      oldPrice: controller.getPrice(15000),
                     ),
                     Spacer(),
                     widgets.addCardAndFavoriteAndCar(

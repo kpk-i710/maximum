@@ -216,8 +216,15 @@ class ProfilePage extends StatelessWidget {
                 text: 'organizations_and_business'),
             widgets.arrowButtonProfile(icon: "faq", text: 'faq'),
             SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.only(left: 20.0),
+              child: Text(
+                "language".tr,
+                style: widgets.robotoConsid(),
+              ),
+            ),
             Obx(() {
-              return widgets.chooseLangAndTheme();
+              return widgets.chooseLang();
             }),
           ],
         ),

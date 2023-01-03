@@ -28,7 +28,7 @@ class DiscountPageListView extends StatelessWidget {
               itemBuilder: (context, index) {
                 return DiscountDetailItemWidget(
                   index: index,
-                  product: controller.dicount_list?.product[0][index],
+                  // product: controller.dicount_list?.product[0][index],
                   onPress: () {
                     final product = controller.dicount_list?.product[0][index];
 

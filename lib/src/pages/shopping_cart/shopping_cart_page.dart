@@ -48,11 +48,14 @@ class ShoppingCartPage extends StatelessWidget {
                               SizedBox(height: 15),
                               widgets.colorCustomButton(
                                   color: AppTextStyles.colorRedMy,
-                                  width: 100,
+                                  width: Get.width,
+                                  height: 50,
                                   child: Text(
-                                    "В каталог",
+                                    "Посмотреть каталог",
                                     style: widgets.robotoConsid(
-                                        color: Colors.white),
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
                                   ),
                                   onTap: () {}),
                               SizedBox(height: 15),
@@ -60,7 +63,7 @@ class ShoppingCartPage extends StatelessWidget {
                           ),
                         ),
                       ),
-                      twoList()
+                      widgets.twoList()
                     ],
                   ),
                 )),
@@ -193,35 +196,11 @@ class ShoppingCartPage extends StatelessWidget {
               ),
             ),
           ),
-          twoList(),
+          widgets.twoList()
         ],
       ),
     );
   }
 
-  Widget twoList() {
-    return Column(
-      children: [
-        widgets
-            .titleWidget(title: 'you_watched'.tr)
-            .paddingSymmetric(horizontal: 10),
-        Obx(() => Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 11.0),
-              child: BoughtTodayGridWidget(
-                list: homeController.discountList.value,
-              ),
-            )),
-        SizedBox(height: 10),
-        widgets
-            .titleWidget(title: 'popular_goods'.tr)
-            .paddingSymmetric(horizontal: 10),
-        Obx(() => Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 11.0),
-              child: BoughtTodayGridWidget(
-                list: homeController.discountList.value,
-              ),
-            )),
-      ],
-    );
-  }
+
 }

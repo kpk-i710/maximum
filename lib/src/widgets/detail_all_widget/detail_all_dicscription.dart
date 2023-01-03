@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get_utils/get_utils.dart';
 import 'package:get/instance_manager.dart';
 import 'package:maxkgapp/src/pages/detail_all/detail_all_controller.dart';
+import 'package:maxkgapp/src/styles.dart';
 import 'package:maxkgapp/src/widgets/widgets_controller.dart';
 
 import '../../models/news_list.dart';
@@ -36,7 +37,6 @@ class DetailAllDiscriptionWidget extends StatelessWidget {
                 width: 20,
               ),
               widgets.strikeThrough(
-
                 child: Text(
                   "${controller.getPrice(price)} с",
                   style: widgets.robotoConsid(
@@ -46,10 +46,9 @@ class DetailAllDiscriptionWidget extends StatelessWidget {
                       fontSize: 15,
                       fontWeight: FontWeight.w900),
                 ),
-
               ),
               Spacer(),
-              widgets.anySvg(nameSvg: 'share', size: Size(27, 27)),
+              widgets.share(),
               SizedBox(
                 width: 10,
               ),
@@ -104,7 +103,7 @@ class DetailAllDiscriptionWidget extends StatelessWidget {
           SizedBox(height: 24),
           Text(
             "expample_card".tr,
-            style: widgets.robotoConsid(),
+            style: widgets.robotoConsid(fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 33),
           Row(

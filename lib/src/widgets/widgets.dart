@@ -9,10 +9,12 @@ import 'package:flutter_swiper_view/flutter_swiper_view.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
 import 'package:maxkgapp/src/pages/detail_all/detail_all_controller.dart';
+import 'package:maxkgapp/src/pages/home/home_page_controller.dart';
 import 'package:maxkgapp/src/pages/intro/intro_controller.dart';
 import 'package:maxkgapp/src/pages/orders_history/order_history_page_controller.dart';
 import 'package:maxkgapp/src/pages/shopping_cart/shopping_cart_page.dart';
 import 'package:maxkgapp/src/pages/user/profile_params/profile_params_page_controller.dart';
+import 'package:maxkgapp/src/widgets/bought_today/bought_today_grid_widget.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
@@ -40,6 +42,7 @@ import '../widgets/widgets.dart' as widgets;
 import 'package:badges/badges.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart' as svg;
 import 'dart:math' as math;
+import 'package:share_plus/share_plus.dart';
 
 Widget priceWidget(double price, {TextStyle? style}) {
   if (style != null) {
@@ -114,6 +117,45 @@ Widget SwiperImage({required String image}) {
       ]),
     );
   });
+}
+
+Widget indicatorImage(
+    {required int length, required int currentIndex, required String image}) {
+  final detailController = Get.put(DetalAllController());
+
+  return SizedBox(
+    height: 100,
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        for (int i = 0; i < (length > 5 ? 5 : length); i++)
+          GestureDetector(
+            onTap: () {
+              print("нажал");
+              detailController.controllerSwipe.animateToPage(i,
+                  duration: Duration(milliseconds: 100), curve: Curves.ease);
+            },
+            child: Container(
+              height: 50,
+              width: 50,
+              margin: EdgeInsets.only(right: 5),
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: NetworkImage(image),
+                    fit: BoxFit.contain,
+                  ),
+                  border: Border.all(
+                    width: 2,
+                    color: currentIndex == i
+                        ? AppTextStyles.colorBlueMy
+                        : Colors.white,
+                  ),
+                  borderRadius: BorderRadius.circular(5)),
+            ),
+          )
+      ],
+    ),
+  );
 }
 
 Widget indicatorDots({required int length, required int currentIndex}) {
@@ -789,30 +831,75 @@ Widget buttonCounterOption({
 }
 
 void showMassageOneSecondSnackBar(
-    {required BuildContext context, required String massgae}) {
+    {required BuildContext context,
+    required String massgae,
+    double bottom = 0}) {
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
     duration: Duration(milliseconds: 1000),
     margin: EdgeInsets.all(0),
     padding: EdgeInsets.only(
-      bottom: 60,
+      left: Get.width * 0.1,
+      right: Get.width * 0.1,
+      bottom: bottom,
     ),
     content: Container(
       width: Get.width,
       child: Padding(
         padding:
             const EdgeInsets.only(left: 22.0, right: 20, top: 8, bottom: 8),
-        child: Text(
-          "$massgae".tr,
-          textAlign: TextAlign.center,
-          style: widgets.robotoConsid(color: Colors.white),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            massgae == "added_to_favorites"
+                ? Icon(Icons.check, color: Colors.white, size: 20)
+                : SizedBox(width: 10),
+            SizedBox(width: 20),
+            Text(
+              "$massgae".tr,
+              textAlign: TextAlign.center,
+              style: widgets.robotoConsid(color: Colors.white),
+            ),
+          ],
         ),
       ),
-      color: AppTextStyles.colorBlackMy,
+      decoration: BoxDecoration(
+        color: AppTextStyles.colorBlackMy,
+        borderRadius: BorderRadius.all(
+            Radius.circular(5.0) //                 <--- border radius here
+            ),
+      ),
     ),
     behavior: SnackBarBehavior.floating,
     backgroundColor: Colors.transparent,
     elevation: 0,
   ));
+}
+
+Widget twoList() {
+  final homeController = Get.put(HomePageController());
+  return Column(
+    children: [
+      widgets
+          .titleWidget(title: 'you_watched'.tr)
+          .paddingSymmetric(horizontal: 10),
+      Obx(() => Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 11.0),
+            child: BoughtTodayGridWidget(
+              list: homeController.discountList.value,
+            ),
+          )),
+      SizedBox(height: 10),
+      widgets
+          .titleWidget(title: 'popular_goods'.tr)
+          .paddingSymmetric(horizontal: 10),
+      Obx(() => Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 11.0),
+            child: BoughtTodayGridWidget(
+              list: homeController.discountList.value,
+            ),
+          )),
+    ],
+  );
 }
 
 Widget counterCardOneProductTest() {
@@ -1134,7 +1221,7 @@ Widget titleWidget(
       Padding(
         padding: EdgeInsets.only(bottom: bottom, left: left),
         child: Text(
-          '$title'.tr ,
+          '$title'.tr,
           style: widgets.robotoConsid(
             fontSize: 16,
           ),
@@ -1268,10 +1355,7 @@ Widget newsItemWidget(News1 newss) {
                     fontSize: 14, color: AppTextStyles.colorGrayMy),
               ),
               Spacer(),
-              Icon(
-                Icons.share,
-                size: 20,
-              ),
+              widgets.share(),
               SizedBox(width: 10),
             ],
           ),
@@ -2583,12 +2667,15 @@ Widget orderWithDateDark() {
 }
 
 Widget strikeThrough({required Widget child}) {
-  return Container(
-    child: child,
-    decoration: BoxDecoration(
-      image: DecorationImage(
-          image: AssetImage('assets/images/strike.png'), fit: BoxFit.fitWidth),
-    ),
+  return Stack(
+    children: [
+      child,
+      Positioned(
+          top: 3,
+          child: SvgPicture.asset(
+            'assets/icons/strike.svg',
+          )),
+    ],
   );
 }
 
@@ -2633,13 +2720,27 @@ Widget favoriteWithPrice({required int? price, required BuildContext context}) {
           sizeButton: 60,
           sizeFavorite: 30,
           onPressed: () {
-            controller.showMassage(context: context);
+            controller.showMassage(context: context, bottom: 60);
           },
         ),
         SizedBox(width: 8),
       ],
     ),
   );
+}
+
+Widget share() {
+  return customButton(
+      onTap: () {
+        Share.share('check out my website https://example.com');
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: widgets.anySvg(
+            nameSvg: 'share',
+            size: Size(25, 25),
+            color: AppTextStyles.colorBlackMy),
+      ));
 }
 
 Widget dark(
@@ -2838,26 +2939,138 @@ void showSnackBar({required BuildContext context}) {
 }
 
 void getLocationSheet() {
-  WidgetsBinding.instance.addPostFrameCallback((_) {
-    Get.bottomSheet(
-      getLocation(),
-      backgroundColor: Colors.transparent,
+  Get.bottomSheet(
+    getLocation(),
+    backgroundColor: Colors.transparent,
+  );
+}
+
+Widget getLocation() {
+  return Obx(() {
+    return boxShadows(
+      padding: 0,
+      radius: 10,
+      child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          height: Get.height,
+          child: PageView(
+            children: [
+              qestionLang(),
+              qestionLocat(),
+            ],
+          )),
     );
   });
 }
 
-Widget chooseLangAndTheme() {
+Widget qestionLang() {
+  return Column(
+    children: [
+      Expanded(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Center(
+            child: Text(
+              "choose_language".tr,
+              textAlign: TextAlign.center,
+              style: widgets.robotoConsid(fontSize: 20),
+            ),
+          ),
+        ),
+      ),
+      Expanded(
+        child: Column(
+          children: [
+            widgets.chooseLang(),
+          ],
+        ),
+      ),
+      Expanded(
+          child: customButton(
+              child: Text("save".tr, style: robotoConsid()),
+              onTap: () {
+                Prefs.firstTime = false;
+                Get.back();
+              }))
+    ],
+  );
+}
+
+Widget qestionLocat() {
+  final controller = Get.put(IntroController());
+  return Column(
+    children: [
+      Expanded(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "permission_position".tr,
+                  textAlign: TextAlign.center,
+                  style: widgets.robotoConsid(fontSize: 20),
+                ),
+                SizedBox(height: 20),
+                Text(
+                  "Чтобы знать в какой\nгород доставлять товар",
+                  textAlign: TextAlign.center,
+                  style: widgets.robotoConsid(fontSize: 15),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+      Expanded(
+        child: Column(
+          children: [
+            widgets.customButton(
+              child: Container(
+                height: 100,
+                child: Center(
+                  child: Text(
+                    "not".tr,
+                    style: widgets.robotoConsid(),
+                  ),
+                ),
+              ),
+              onTap: () {
+                controller.onDonePress();
+              },
+            ),
+            widgets.customButton(
+              child: Container(
+                height: 100,
+                child: Center(
+                  child: Text(
+                    "yes".tr,
+                    style: widgets.robotoConsid(),
+                  ),
+                ),
+              ),
+              onTap: () {
+                controller.streamPosition();
+                controller.onDonePress();
+                Get.back();
+              },
+            ),
+          ],
+        ),
+      )
+    ],
+  );
+}
+
+Widget chooseLang() {
   final controller = Get.put(ProfileParamsPageController());
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      Padding(
-        padding: const EdgeInsets.only(left: 20.0),
-        child: Text(
-          "language".tr,
-          style: widgets.robotoConsid(),
-        ),
-      ),
       SizedBox(height: 15),
       SizedBox(
         height: 60,
@@ -2903,6 +3116,13 @@ Widget chooseLangAndTheme() {
         ),
       ),
       SizedBox(height: 20),
+    ],
+  );
+}
+
+Widget seletTheme() {
+  return Column(
+    children: [
       Padding(
         padding: const EdgeInsets.only(left: 20.0),
         child: Text(
@@ -2922,81 +3142,15 @@ Widget chooseLangAndTheme() {
   );
 }
 
-Widget getLocation() {
-  final controller = Get.put(IntroController());
-  return boxShadows(
-    padding: 0,
-    radius: 10,
-    child: Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      height: Get.height,
-      child: Column(
-        children: [
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "permission_position".tr,
-                      textAlign: TextAlign.center,
-                      style: widgets.robotoConsid(fontSize: 20),
-                    ),
-                    SizedBox(height: 20),
-                    Text(
-                      "Чтобы знать в какой\nгород доставлять товар",
-                      textAlign: TextAlign.center,
-                      style: widgets.robotoConsid(fontSize: 15),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          Expanded(
-            child: Column(
-              children: [
-                widgets.customButton(
-                  child: Container(
-                    height: 100,
-                    child: Center(
-                      child: Text(
-                        "not".tr,
-                        style: widgets.robotoConsid(),
-                      ),
-                    ),
-                  ),
-                  onTap: () {
-                    controller.onDonePress();
-                  },
-                ),
-                widgets.customButton(
-                  child: Container(
-                    height: 100,
-                    child: Center(
-                      child: Text(
-                        "yes".tr,
-                        style: widgets.robotoConsid(),
-                      ),
-                    ),
-                  ),
-                  onTap: () {
-                    controller.streamPosition();
-                    controller.onDonePress();
-                    Get.back();
-                  },
-                ),
-              ],
-            ),
-          )
-        ],
-      ),
+Widget appBarFloating() {
+  return SliverAppBar(
+    iconTheme: IconThemeData(color: AppTextStyles.colorBlackMy),
+    title: Text(
+      Get.arguments['title'] ?? "",
+      style: widgets.robotoConsid(fontSize: 16),
     ),
+    backgroundColor: Colors.white,
+    floating: true,
   );
 }
 
@@ -3014,8 +3168,8 @@ void scaleImageSheet({required BuildContext context, required String image}) {
 Widget scaleImage({required BuildContext context, required String image}) {
   TransformationController controller = TransformationController();
   TapDownDetails? tapDownDetails;
+  final detailController = Get.put(DetalAllController());
 
-  final currentIndex = 0.obs;
   return Obx(() {
     return boxShadows(
       padding: 0,
@@ -3027,47 +3181,51 @@ Widget scaleImage({required BuildContext context, required String image}) {
         ),
         height: Get.height,
         child: Stack(children: [
-          Swiper(
-            itemBuilder: (context, index) {
-              return GestureDetector(
-                onDoubleTapDown: (details) => tapDownDetails = details,
-                onDoubleTap: () {
-                  double correctScaleValue =
-                      controller.value.getMaxScaleOnAxis();
-                  final position = tapDownDetails!.localPosition;
-                  double scale = 2;
-                  if (correctScaleValue == 2) {
-                    scale = 4;
-                  }
+          PageView(
+            physics: detailController.isScrollAble.value
+                ? AlwaysScrollableScrollPhysics()
+                : NeverScrollableScrollPhysics(),
+            children: [
+              for (int i = 0; i < 3; i++)
+                GestureDetector(
+                  onDoubleTapDown: (details) => tapDownDetails = details,
+                  onDoubleTap: () {
+                    double correctScaleValue =
+                        controller.value.getMaxScaleOnAxis();
+                    final position = tapDownDetails!.localPosition;
+                    double scale = 2;
+                    detailController.isScrollAble.value = false;
+                    if (correctScaleValue == 2) {
+                      scale = 4;
+                    }
 
-                  final x = -position.dx * (scale - 1);
-                  final y = -position.dy * (scale - 1);
-                  final zoomed = Matrix4.identity()
-                    ..translate(x, y)
-                    ..scale(scale);
+                    final x = -position.dx * (scale - 1);
+                    final y = -position.dy * (scale - 1);
+                    final zoomed = Matrix4.identity()
+                      ..translate(x, y)
+                      ..scale(scale);
 
-                  // controller.value.isIdentity()
-                  final value =
-                      correctScaleValue < 4 ? zoomed : Matrix4.identity();
-                  controller.value = value;
-                },
-                child: Container(
-                  child: InteractiveViewer(
-                      transformationController: controller,
-                      maxScale: 4,
-                      minScale: 1,
-                      child: CachedNetworkImage(
-                          imageUrl: image, fit: BoxFit.contain)),
-                ),
-              );
-            },
-            itemCount: 3,
-            controller: SwiperController(),
-            onIndexChanged: (index) {
-              currentIndex.value = index;
+                    // controller.value.isIdentity()
+                    final value = correctScaleValue < 4
+                        ? zoomed
+                        : detailController.defaultMetrixAnaibleScroll();
+                    controller.value = value;
+                  },
+                  child: Container(
+                    child: InteractiveViewer(
+                        transformationController: controller,
+                        maxScale: 4,
+                        minScale: 1,
+                        child: CachedNetworkImage(
+                            imageUrl: image, fit: BoxFit.contain)),
+                  ),
+                )
+            ],
+            controller: detailController.controllerSwipe,
+            onPageChanged: (index) {
+              detailController.currentIndex.value = index;
               controller.value = Matrix4.identity();
             },
-            autoplay: false,
           ),
           Align(
               alignment: Alignment(0.9, -0.9),
@@ -3078,14 +3236,63 @@ Widget scaleImage({required BuildContext context, required String image}) {
                     Get.back();
                   })),
           Align(
-              alignment: Alignment(0, 1),
-              child: widgets.indicatorDots(
-                  currentIndex: currentIndex.value, length: 3)),
+              alignment: Alignment(0, 1.03),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: widgets.indicatorImage(
+                    currentIndex: detailController.currentIndex.value,
+                    length: 3,
+                    image: image),
+              )),
         ]),
       ),
     );
   });
 }
+// Widget interView({required String image}) {
+//   TransformationController controller = TransformationController();
+//   final detailController  = Get.put(DetalAllController());
+//   TapDownDetails? tapDownDetails;
+//   return GestureDetector(
+//     onDoubleTapDown: (details) => tapDownDetails = details,
+//     onDoubleTap: () {
+//       double correctScaleValue = controller.value.getMaxScaleOnAxis();
+//       final position = tapDownDetails!.localPosition;
+//       detailController.scale = 2.0;
+//       detailController.isScrollAble.value = false;
+//
+//       if (correctScaleValue == 2) {
+//         detailController.scale = 4.0;
+//         detailController.isScrollAble.value = false;
+//       }
+//
+//       final x = -position.dx * (detailController.scale - 1);
+//       final y = -position.dy * (detailController.scale - 1);
+//       final zoomed = Matrix4.identity()
+//         ..translate(x, y)
+//         ..scale(detailController.scale);
+//
+//       // controller.value.isIdentity()
+//       Matrix4 value;
+//       if (correctScaleValue < 4) {
+//         value = zoomed;
+//       } else {
+//         value = Matrix4.identity();
+//         detailController.scale = 1.0;
+//         print("можно двигать");
+//         detailController.isScrollAble.value = true;
+//       }
+//       controller.value = value;
+//     },
+//     child: Container(
+//       child: InteractiveViewer(
+//           transformationController: controller,
+//           maxScale: 4,
+//           minScale: 1,
+//           child: CachedNetworkImage(imageUrl: image, fit: BoxFit.contain)),
+//     ),
+//   );
+// }
 
 void showConfirmCodePhone(
     {required BuildContext context, required String number}) {

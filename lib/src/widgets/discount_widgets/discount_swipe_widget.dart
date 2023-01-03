@@ -24,18 +24,16 @@ class DiscountSwipeWidget extends StatelessWidget {
     return Obx(() {
       return GestureDetector(
         onTap: () {
+
           widgets.scaleImageSheet(context: context, image: image);
         },
         child: Container(
-          height: height.w,
-          margin: margin ?? EdgeInsets.only(top: 13),
-          child: false
-              ? widgets.blockPlaceholder()
-              : Stack(children: [
+          height: height,
+          child:  Stack(children: [
                   Swiper(
                     itemBuilder: (context, index) {
                       return CachedNetworkImage(
-                          imageUrl: image, fit: BoxFit.contain);
+                          imageUrl: image, fit: BoxFit.cover);
                     },
                     itemCount: 3,
                     controller: SwiperController(),

@@ -77,17 +77,17 @@ class WidgetsControllers extends GetxController {
         .replaceAll("-", "") + " " + "daysShort".tr;
   }
 
-  void showMassage({required BuildContext context}) {
+  void showMassage({required BuildContext context,double bottom = 0}) {
     if (Prefs.isAddedToFavorite) {
       widgets.showMassageOneSecondSnackBar(
-          context: context, massgae: "removed_from_favorites");
+          context: context, massgae: "removed_from_favorites",bottom: bottom);
       Prefs.isAddedToFavorite = !Prefs.isAddedToFavorite;
       return;
     }
 
     if (!Prefs.isAddedToFavorite) {
       widgets.showMassageOneSecondSnackBar(
-          context: context, massgae: "added_to_favorites");
+          context: context, massgae: "added_to_favorites",bottom: bottom);
       Prefs.isAddedToFavorite = !Prefs.isAddedToFavorite;
     }
   }

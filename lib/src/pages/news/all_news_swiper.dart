@@ -107,8 +107,7 @@ class AllNewsSwiper extends StatelessWidget {
                       Spacer(),
                       Padding(
                           padding: const EdgeInsets.only(top: 30.0),
-                          child: widgets.anySvg(
-                              nameSvg: 'share', size: Size(27, 27))),
+                          child: widgets.share()),
                     ],
                   )
                 : SizedBox(),

@@ -39,13 +39,19 @@ class HomePageController extends GetxController {
 
   @override
   void onInit() {
-    super.onInit();
-
-    if (Prefs.firstTime) {
-
-      widgets.getLocationSheet();
-    }
     refreshAll();
+    if (Prefs.firstTime) {
+      print("первый раз");
+
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        print("первый показал");
+        Future.delayed(const Duration(seconds: 2), (){
+          widgets.getLocationSheet();
+        });
+
+      });
+    }
+    super.onInit();
   }
 
   Future<void> refreshAll() async {

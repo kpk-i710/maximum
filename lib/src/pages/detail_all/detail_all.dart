@@ -33,7 +33,9 @@ class DetailAll extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: SearchBar2(title: Get.arguments['title'],fontWeight: FontWeight.bold,),
+        appBar: SearchBar2(
+          title: Get.arguments['title' ?? ""],
+        ),
         bottomNavigationBar: widgets.bottomNavigation(
             currentTab: 0, onSelectTab: homeController.tabSelect),
         body: Stack(
@@ -46,6 +48,7 @@ class DetailAll extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     DiscountSwipeWidget(
+                        height: Get.width,
                         image: "https://max.kg/nal/img/${idPost}/b_${img}"),
                     SizedBox(height: 20),
                     DetailAllDiscriptionWidget(
@@ -69,7 +72,7 @@ class DetailAll extends StatelessWidget {
                       expandOnGesture: true,
                       maxLines: 3,
                       "expample_card2".tr,
-                      style: widgets.robotoConsid( fontSize: 14, height:    1.25),
+                      style: widgets.robotoConsid(fontSize: 14, height: 1.25),
                       indicatorBuilder: (context, onTap, expanded) => InkWell(
                           onTap: onTap,
                           child: Padding(
@@ -79,7 +82,6 @@ class DetailAll extends StatelessWidget {
                               !expanded ? "more".tr : "collapse".tr,
                               style: widgets.robotoConsid(
                                 color: AppTextStyles.colorBlueMy,
-
                               ),
                             )),
                           )),
@@ -98,7 +100,7 @@ class DetailAll extends StatelessWidget {
                       expandOnGesture: true,
                       maxLines: 3,
                       "expample_card3".tr,
-                      style: widgets.robotoConsid( fontSize: 14, height:    1.25),
+                      style: widgets.robotoConsid(fontSize: 14, height: 1.25),
                       indicatorBuilder: (context, onTap, expanded) => InkWell(
                           onTap: onTap,
                           child: Padding(
@@ -107,7 +109,6 @@ class DetailAll extends StatelessWidget {
                                 child: Text(
                               !expanded ? "more".tr : "collapse".tr,
                               style: widgets.robotoConsid(
-
                                   color: Color(0xff142A65)),
                             )),
                           )),
