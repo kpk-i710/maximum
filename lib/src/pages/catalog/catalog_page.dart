@@ -5,7 +5,6 @@ import '../../styles.dart';
 import '../../pages/catalog/catalog_page_controller.dart';
 import '../../widgets/search_widget_2/searchCatalogWidget.dart';
 import '../../widgets/widgets.dart' as widgets;
-import '../products_by_catalog/products_by_catalog_page_controller.dart';
 
 class CatalogPage extends StatelessWidget {
   final bool bottomNavigation;
@@ -18,28 +17,6 @@ class CatalogPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: context.theme.background,
-      // appBar: AppBar(
-      //   elevation: 1,
-      //   backgroundColor: context.theme.background,
-      //   automaticallyImplyLeading: false,
-      //   centerTitle: true,
-      //   title: Text('catalog'.tr,
-      //     style: AppTextStyles.roboto(
-      //       fontSize: 24,
-      //     ),
-      //   ),
-      //   actions: [
-      //     GetBuilder<CatalogPageController>(
-      //       builder: (controller) {
-      //         return IconButton(
-      //           icon: Image.asset('assets/images/icon_left.png',
-      //               color: context.theme.greyMedium),
-      //           onPressed: () { controller.back(); },
-      //         );
-      //       }
-      //     ),
-      //   ],
-      // ),
       bottomNavigationBar: bottomNavigation
           ? widgets.bottomNavigation(
               currentTab: 1,
@@ -58,13 +35,12 @@ class CatalogPage extends StatelessWidget {
         child: GetBuilder<CatalogPageController>(
             init: CatalogPageController(),
             builder: (controller) {
-              print('list size ${controller.catalogList.length}');
               return RefreshIndicator(
                 onRefresh: controller.onRefresh,
                 child: SingleChildScrollView(
                   physics: BouncingScrollPhysics(),
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 10.0,right: 10),
+                    padding: const EdgeInsets.only(left: 10.0, right: 10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -75,7 +51,7 @@ class CatalogPage extends StatelessWidget {
                         SizedBox(height: 20),
                         Text(
                           "catalog".tr,
-                          style:  widgets.robotoConsid(
+                          style: widgets.robotoConsid(
                               fontSize: 23, fontWeight: FontWeight.bold),
                         ),
                         SizedBox(height: 20),
@@ -91,7 +67,8 @@ class CatalogPage extends StatelessWidget {
                                     offset: Offset(-25, 0),
                                     child: Text(
                                         '${controller.histList[i].name}',
-                                        style:  widgets.robotoConsid(fontSize: 16)),
+                                        style:
+                                            widgets.robotoConsid(fontSize: 16)),
                                   ),
                                   onTap: () {
                                     controller
@@ -102,34 +79,14 @@ class CatalogPage extends StatelessWidget {
                               ],
                             ),
 
-                        // if (controller.histList.isNotEmpty)
-                        //   Container(
-                        //     width: double.infinity,
-                        //     margin: const EdgeInsets.symmetric(horizontal: 8.0),
-                        //     padding: const EdgeInsets.symmetric(
-                        //         vertical: 15.0, horizontal: 40.0),
-                        //     decoration: BoxDecoration(
-                        //       color: context.theme.primary,
-                        //       borderRadius: BorderRadius.circular(8.0),
-                        //     ),
-                        //     child: Text(
-                        //       '${controller.histList.last.name}',
-                        //       style: AppTextStyles.mPlusRounded1c(
-                        //         fontSize: 16,
-                        //         fontWeight: FontWeight.w400,
-                        //         color: context.theme.onPrimary,
-                        //       ),
-                        //     ),
-                        //   ),
-
                         for (int i = 0; i < controller.catalogList.length; i++)
                           Column(
                             children: [
                               CatalogListItemWidget(
                                 catalog: controller.catalogList[i],
-                                heroTag: 'catalog_',
                                 onTap: () => controller
                                     .openCatalog(controller.catalogList[i]),
+                                index: i,
                               ),
                               Divider(endIndent: 30),
                             ],
@@ -151,7 +108,7 @@ class CatalogPage extends StatelessWidget {
             offset: Offset(-25, 0),
             child: Text(
               'Главное меню',
-              style:  widgets.robotoConsid(
+              style: widgets.robotoConsid(
                 fontSize: 16,
                 fontWeight: FontWeight.w400,
               ),

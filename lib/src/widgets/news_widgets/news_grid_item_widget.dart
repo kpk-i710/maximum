@@ -19,7 +19,7 @@ class NewsGridItemWidget extends StatelessWidget {
   VoidCallback onPress;
   Result? result;
   final index;
-  final newsListPageController = Get.put(NewsListPageController());
+  final newsListPageController = Get.put(BetweenAllPagesController());
 
   @override
   Widget build(BuildContext context) {

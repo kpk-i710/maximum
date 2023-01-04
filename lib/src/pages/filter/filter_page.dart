@@ -1,239 +1,200 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:maxkgapp/src/styles.dart';
 
 import '../../helpers/prefs.dart';
-import '../../styles.dart';
 import 'filter_page_controller.dart';
+import '../../widgets/widgets.dart' as widgets;
 
 class FilterPage extends StatelessWidget {
-  final c = Get.put(FilterPageController());
+  final controller = Get.put(FilterPageController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.grey.shade300,
-        leading: InkWell(
-            onTap: () {
-              print('back');
-              Get.back(result: 'result');
-            },
-            child: Icon(Icons.close, color: Colors.blue)),
-        title: Text(
-          'filters'.tr,
-          style: TextStyle(color: Colors.black),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => c.reset(),
-            child: Center(
-              child: Text('reset'.tr.toUpperCase(),
-                  style: TextStyle(
-                    color: Colors.blue,
-                    fontWeight: FontWeight.bold))),
-          )
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.fromLTRB(8, 18, 8, 18),
-          child: Column(
+      appBar: widgets.appBarFilter(),
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 10),
+        child: Obx(() {
+          return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('price'.tr,
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              Text('price'.tr + ", сом",
+                  style: widgets.robotoConsid(
+                      fontSize: 16, fontWeight: FontWeight.bold)),
               SizedBox(height: 10),
+              Obx(() {
+                return Row(
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: TextField(
+                          controller: controller.priceStartCont,
+                          onChanged: (val) {
+                            controller.onStartPriceChanged(val);
+                          },
+                          keyboardType: TextInputType.number,
+                          decoration: decor(start: 'from')),
+                    ),
+                    SizedBox(width: 10),
+                    Expanded(
+                      flex: 1,
+                      child: TextField(
+                          controller: controller.priceEndCont,
+                          onChanged: (val) {
+                            controller.onEndPriceChanged(val);
+                          },
+                          keyboardType: TextInputType.number,
+                          decoration: decor(start: 'to')),
+                    ),
+                  ],
+                );
+              }),
+              SizedBox(height: 20),
               Row(
                 children: [
-                  Obx(() => Expanded(
-                    flex: 1,
-                    child: TextField(
-                      controller: c.priceStartCont.value,
-                      keyboardType: TextInputType.number,
-                      onChanged: c.onStartPriceChanged,
-                      decoration: InputDecoration(
-                        prefixIcon: Container(
-                            width: 5,
-                            child: Center(
-                              child: Text('from'.tr,
-                                  style: TextStyle(
-                                      color: Colors.grey.shade800)),
-                            )),
-                        suffixIcon: Container(
-                            width: 5,
-                            child: Center(
-                              child: Text(Prefs.defaultCurrency,
-                                  style: TextStyle(
-                                      color: Colors.grey.shade500)),
-                            )),
-                        contentPadding: EdgeInsets.symmetric(
-                            vertical: 8.0, horizontal: 4.0),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                            borderSide: BorderSide(
-                                width: 0.5, color: Colors.grey.shade500)),
-                        hintText: c.ranges.value.start.toString(),
-                      ),
+                  Text("brand".tr,
+                      style:
+                          widgets.robotoConsid(fontWeight: FontWeight.bold)),
+                  Spacer(),
+                  widgets.underLineDashed(
+                    child: Text(
+                      "reset".tr,
+                      style: widgets.robotoConsid(
+                          color: AppTextStyles.colorBlueMy, fontSize: 14),
                     ),
-                  )),
-                  SizedBox(width: 10),
-                  Obx(() => Expanded(
-                    flex: 1,
-                    child: TextField(
-                      controller: c.priceEndCont.value,
-                      keyboardType: TextInputType.number,
-                      onChanged: c.onEndPriceChanged,
-                      decoration: InputDecoration(
-                        prefixIcon: Container(
-                            width: 5,
-                            child: Center(
-                              child: Text('to'.tr,
-                                  style: TextStyle(
-                                      color: Colors.grey.shade500)),
-                            )),
-                        suffixIcon: Container(
-                            width: 5,
-                            child: Center(
-                              child: Text(Prefs.defaultCurrency,
-                                  style: TextStyle(
-                                      color: Colors.grey.shade500),
-                              ),
-                            )),
-                        contentPadding: EdgeInsets.symmetric(
-                            vertical: 8.0, horizontal: 4.0),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                            borderSide: BorderSide(
-                                width: 0.5, color: Colors.grey.shade400)),
-                        hintText: c.ranges.value.end.toString(),
-                      ),
-                    ),
-                  )),
+                  ),
                 ],
               ),
-              SizedBox(height: 15),
-              Obx(() => RangeSlider(
-                  max: 10000,
-                  min: 0,
-                  activeColor: context.theme.primary,
-                  values: c.ranges.value,
-                  onChanged: (val) {
-                    c.changeRanges(val);
-                  })),
               SizedBox(height: 10),
-              Obx(() => Container(
-                height: 35,
-                child: Row(
-                  children: [
-                    Checkbox(
-                        value: c.getTodayCheck.value,
-                        onChanged: (val) {
-                          c.getTodayCheck.value = val!;
-                        }),
-                    SizedBox(width: 5),
-                    Text('get_today'.tr,
-                        style: TextStyle(fontWeight: FontWeight.w500),
-                    ),
-                  ],
-                ),
-              )),
-              Obx(() => Container(
-                height: 35,
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Checkbox(
-                        value: c.bestPriceCheck.value,
-                        onChanged: (val) {
-                          c.bestPriceCheck.value = val!;
-                        }),
-                    SizedBox(width: 5),
-                    Text('best_price_guaranteed'.tr,
-                        style: TextStyle(fontWeight: FontWeight.w500),
-                    )
-                  ],
-                ),
-              )),
-              Obx(() => Container(
-                height: 35,
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Checkbox(
-                        value: c.cashb.value,
-                        onChanged: (val) {
-                          c.cashb.value = val!;
-                        }),
-                    SizedBox(width: 5),
-                    Text('increased_cashback'.tr,
-                        style: TextStyle(fontWeight: FontWeight.w500))
-                  ],
-                ),
-              )),
-              ListTile(
-                onTap: () {},
-                leading: Text('brand'.tr,
-                    style:
-                    TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                trailing: Icon(Icons.arrow_forward_ios),
+              Wrap(
+                spacing: 10,
+                runSpacing: 10,
+                children: List.generate(
+                    10,
+                    (index) => chooseButton(
+                          index: index,
+                          selectedIndex: controller.selectedBrend.value,
+                          onTap: (bool value) {
+                            if (value)
+                              controller.selectedBrend.value = index;
+                            else
+                              controller.selectedBrend.value = 100;
+                          },
+                        )).toList(),
               ),
-              ListTile(
-                onTap: () {},
-                leading: Text('rating_by_reviews'.tr,
-                    style:
-                    TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                trailing: Icon(Icons.arrow_forward_ios),
+              SizedBox(height: 10),
+              Text("delivery_terms".tr,
+                  style: widgets.robotoConsid(fontWeight: FontWeight.bold)),
+              SizedBox(height: 10),
+              Wrap(
+                spacing: 10,
+                runSpacing: 10,
+                children: List.generate(
+                    3,
+                    (index) => chooseButton(
+                          selectedIndex: controller.selectedDelivery.value,
+                          index: index,
+                          text: controller.delivryTimeList[index],
+                          onTap: (bool value) {
+                            if (value)
+                              controller.selectedDelivery.value = index;
+                            else
+                              controller.selectedDelivery.value = 100;
+                          },
+                        )).toList(),
               ),
-              ListTile(
-                onTap: () {},
-                leading: Text('seller'.tr,
-                    style:
-                    TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                trailing: Icon(Icons.arrow_forward_ios),
+              SizedBox(height: 10),
+              Text("discounts".tr,
+                  style: widgets.robotoConsid(fontWeight: FontWeight.bold)),
+              SizedBox(height: 10),
+              Wrap(
+                spacing: 10,
+                runSpacing: 10,
+                children: List.generate(
+                    2,
+                    (index) => chooseButton(
+                          selectedIndex: controller.selectedDiscounts.value,
+                          index: index,
+                          text: controller.discountsList[index],
+                          onTap: (bool value) {
+                            if (value)
+                              controller.selectedDiscounts.value = index;
+                            else
+                              controller.selectedDiscounts.value = 100;
+                          },
+                        )).toList(),
               ),
-              ListTile(
-                onTap: () {},
-                leading: Text('filler_type'.tr,
-                    style:
-                    TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                trailing: Icon(Icons.arrow_forward_ios),
-              ),
-              ListTile(
-                onTap: () {},
-                leading: Text('filler_features'.tr,
-                    style:
-                    TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                trailing: Icon(Icons.arrow_forward_ios),
-              ),
-              ListTile(
-                onTap: () {},
-                leading: Text('smell'.tr,
-                    style:
-                    TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                trailing: Icon(Icons.arrow_forward_ios),
-              ),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    primary: context.theme.primary,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18.0)),
-                  ),
-                  onPressed: () {
-                    Get.back(result: 'result');
-                  },
-                  child: Text(
-                    'show_count_of_products'.trParams({'count': '0', 'of': '0'})!
-                        .toUpperCase(),
-                    style: TextStyle(color: Colors.white, fontSize: 14),
-                  ),
-                ),
-              )
+              Spacer(),
+              widgets.saveButton(text: 'apply',onPressed: (){
+                print("применить");
+              }),
+              SizedBox(height: 20),
             ],
-          ),
-        ),
+          );
+        }),
       ),
+    );
+  }
+
+  Widget chooseButton(
+      {required int index,
+      String text = "Acer",
+      required int selectedIndex,
+      required Function(bool value) onTap}) {
+    return ChoiceChip(
+        padding: EdgeInsets.all(0),
+        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        selectedColor: AppTextStyles.colorBlueMy,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(5))),
+        label: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (index == selectedIndex)
+              Icon(
+                Icons.check,
+                color: Colors.white,
+                size: 12,
+              ),
+            SizedBox(width: 2),
+            Text(
+              text,
+              style: TextStyle(
+                  color: index == selectedIndex
+                      ? Colors.white
+                      : AppTextStyles.colorBlackMy),
+            ),
+          ],
+        ),
+        selected: index == selectedIndex ? true : false,
+        onSelected: onTap);
+  }
+
+  InputDecoration decor({required String start}) {
+    return InputDecoration(
+      filled: true,
+      fillColor: AppTextStyles.colorGrayDividar,
+      prefixIcon: Container(
+          width: 5,
+          child: Center(
+            child: Text('$start'.tr,
+                style: widgets.robotoConsid(color: AppTextStyles.colorGrayMy)),
+          )),
+      contentPadding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+      enabledBorder: OutlineInputBorder(
+        borderSide:
+            BorderSide(width: 3, color: Colors.transparent), //<-- SEE HERE
+      ),
+      border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(5.0),
+          borderSide: BorderSide(width: 1, color: Colors.transparent)),
+      focusedBorder: OutlineInputBorder(
+        borderSide:
+            const BorderSide(color: AppTextStyles.colorBlueMy, width: 1.0),
+        borderRadius: BorderRadius.circular(5.0),
+      ),
+      hintText: controller.ranges.value.start.toString(),
     );
   }
 }

@@ -7,11 +7,28 @@ import '../../widgets/widgets.dart' as widgets;
 
 class CatalogListItemWidget extends StatelessWidget {
   final Catalog catalog;
-  final String heroTag;
+
   final Function()? onTap;
 
-  const CatalogListItemWidget(
-      {required this.catalog, this.heroTag = 'catalog_item_', this.onTap});
+  final int index;
+
+  CatalogListItemWidget(
+      {required this.catalog, this.onTap, required this.index});
+
+  List<String> images = [
+    "candy",
+    "tea",
+    "candy",
+    "tea",
+    "candy",
+    "tea",
+    "candy",
+    "tea",
+    "candy",
+    "tea",
+    "candy",
+    "tea"
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -19,20 +36,24 @@ class CatalogListItemWidget extends StatelessWidget {
       onTap: onTap,
       child: Container(
         width: double.infinity,
-        padding: const EdgeInsets.symmetric(vertical: 13.0),
+        padding: const EdgeInsets.symmetric(vertical: 5.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
               child: Row(
                 children: [
-                  catalog.image != null && catalog.image!.isNotEmpty
-                      ? CachedNetworkImage(
-                          imageUrl: catalog.imageUrl!,
-                          height: 50,
-                          width: 50,
-                        )
-                      : SizedBox(width: 0),
+                  widgets.boxShadowsCatalog(
+                    child: Container(
+                      child: Image.asset("assets/images/${images[index]}.jpg"),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      width: 50,
+                      height: 50,
+                    ),
+                  ),
+                  SizedBox(width: 20),
                   Text(
                     '${catalog.name}',
                     overflow: TextOverflow.ellipsis,

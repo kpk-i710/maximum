@@ -7,7 +7,7 @@ import '../../models/news_list.dart';
 import '../../repositories/app_repo.dart';
 import '../../repositories/dicount_repo_list.dart';
 
-class NewsListPageController extends GetxController {
+class BetweenAllPagesController extends GetxController {
 
   NewsList? newsList  ;
   var isLoaded = false.obs;

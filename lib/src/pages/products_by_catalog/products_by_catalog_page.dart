@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:maxkgapp/src/helpers/app_router.dart';
 import 'package:maxkgapp/src/widgets/bought_today/bought_today_grid_widget.dart';
 import 'package:maxkgapp/src/widgets/popular_goods/popular_goods_grid_widget.dart';
 import 'package:maxkgapp/src/widgets/product_widgets/product_hight_item_widget.dart';
+import 'package:maxkgapp/src/widgets/widgets_controller.dart';
 import '../../widgets/discount_widgets/discount_detail_item_widget.dart';
 import '../../widgets/banner_widget.dart';
 import '../../widgets/filter_widget.dart';
@@ -13,6 +15,7 @@ import 'products_by_catalog_page_controller.dart';
 class ProductsByCatalogPage extends StatelessWidget {
   final controller = Get.put(ProductsByCatalogPageController());
   final homeController = Get.put(HomePageController());
+  final widgetController = Get.put(WidgetsControllers());
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +27,7 @@ class ProductsByCatalogPage extends StatelessWidget {
           floatHeaderSlivers: true,
           headerSliverBuilder:
               (BuildContext context, bool innerBoxIsScrolled) =>
-                  [widgets.appBarFloating()],
+                  [widgets.appBarFloating(title: Get.arguments['title'])],
           body: Stack(
             children: [
               SingleChildScrollView(
@@ -49,7 +52,7 @@ class ProductsByCatalogPage extends StatelessWidget {
                                 list: homeController.discountList.value,
                               ),
                             )),
-                        if (controller.currentVersionCatalog.value == 0)
+                        if (widgetController.currentVersionCatalog.value == 0)
                           Column(
                             children: [
                               for (int i = 0; i < 20; i++)
@@ -64,14 +67,14 @@ class ProductsByCatalogPage extends StatelessWidget {
                                 ),
                             ],
                           ),
-                        if (controller.currentVersionCatalog.value == 1)
+                        if (widgetController.currentVersionCatalog.value == 1)
                           Column(
                             children: [
                               for (int i = 0; i < 20; i++)
                                 ProductBlockItemWidget(),
                             ],
                           ),
-                        if (controller.currentVersionCatalog.value == 2)
+                        if (widgetController.currentVersionCatalog.value == 2)
                           Column(
                             children: [
                               for (int i = 0; i < 20; i++)
@@ -89,7 +92,14 @@ class ProductsByCatalogPage extends StatelessWidget {
                       ],
                     );
                   })),
-              FilterWidget(onFilterTap: () async {}, callBack: (type) {}),
+              FilterWidget(
+                  onFilterTap: () async {
+                    Get.toNamed(AppRouter.filter);
+                  },
+                  onSortTap: () {
+                    widgets.getSortSheet();
+                  },
+                  callBack: (type) {}),
             ],
           ),
         ),

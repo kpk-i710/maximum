@@ -4,12 +4,21 @@ import 'package:get/get.dart';
 class FilterPageController extends GetxController {
   final ranges = RangeValues(0, 10000).obs;
 
-  final priceStartCont = TextEditingController().obs;
-  final priceEndCont = TextEditingController().obs;
+
+  final RxInt selectedBrend = 100.obs;
+  final RxInt selectedDelivery = 100.obs;
+  final RxInt selectedDiscounts = 100.obs;
+
+  final priceStartCont = TextEditingController();
+
+  final priceEndCont = TextEditingController();
 
   final getTodayCheck = false.obs;
   final bestPriceCheck = false.obs;
   final cashb = false.obs;
+
+  List<String> delivryTimeList = ['В течении часа','1-2 дня','10-14 дней',];
+  List<String> discountsList = ['Есть','Нет',];
 
   @override
   void onInit() {
@@ -20,31 +29,22 @@ class FilterPageController extends GetxController {
 
   changeRanges(RangeValues val) {
     ranges.value = val;
-    priceStartCont.value.text = val.start.toStringAsFixed(2);
-    priceEndCont.value.text = val.end.toStringAsFixed(2);
+    priceStartCont.text = val.start.toStringAsFixed(2);
+    priceEndCont.text = val.end.toStringAsFixed(2);
   }
 
   onStartPriceChanged(String val) {
-    double price = double.tryParse(val) ?? 0;
-    if (price <= ranges.value.end && price > 0) {
-      ranges.value = RangeValues(price, ranges.value.end);
-    } else {
-      priceStartCont.value.text = ranges.value.start.toStringAsFixed(2);
-    }
+    print(val);
   }
 
   onEndPriceChanged(String val) {
-    double price = double.tryParse(val) ?? 0;
-    if (price > ranges.value.start && price <= ranges.value.end) {
-      ranges.value = RangeValues(ranges.value.start, price);
-    } else {
-      priceEndCont.value.text = ranges.value.end.toStringAsFixed(2);
-    }
+    print(val);
   }
 
   reset() {
     ranges.value = RangeValues(0, 10000);
-    priceStartCont.value.text = '';priceEndCont.value.text = '';
+    priceStartCont.text = '';
+    priceEndCont.text = '';
     getTodayCheck.value = false;
     bestPriceCheck.value = false;
     cashb.value = false;

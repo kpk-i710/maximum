@@ -13,8 +13,9 @@ import '../widgets/widgets.dart' as widgets;
 class FilterWidget extends StatelessWidget {
   final Function(String val)? callBack;
   final Function()? onFilterTap;
+  final Function()? onSortTap;
 
-  FilterWidget({this.callBack, this.onFilterTap});
+  FilterWidget({this.callBack, this.onFilterTap, this.onSortTap});
 
   final controller = Get.put(ProductsByCatalogPageController());
   final widgetController = Get.put(WidgetsControllers());
@@ -32,31 +33,40 @@ class FilterWidget extends StatelessWidget {
         children: [
           Flexible(
             flex: 3,
-            child: Row(
-              children: [
-                AppIcon(AppIcons.sort, color: AppTextStyles.colorBlueMy),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'sorting'.tr,
-                        overflow: TextOverflow.ellipsis,
-                        style: AppTextStyles.roboto(
-                            fontSize: 14, fontWeight: FontWeight.w500),
-                      ),
-                      Text(
-                        'by_rating'.tr,
-                        overflow: TextOverflow.ellipsis,
-                        style: AppTextStyles.roboto(
-                            color: Colors.black.withAlpha(80), fontSize: 10),
-                      ),
-                    ],
-                  ),
-                )
-              ],
+            child: InkWell(
+              onTap: onSortTap,
+              child: Row(
+                children: [
+                  AppIcon(AppIcons.sort, color: AppTextStyles.colorBlueMy),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'sorting'.tr,
+                          overflow: TextOverflow.ellipsis,
+                          style: AppTextStyles.roboto(
+                              fontSize: 14, fontWeight: FontWeight.w500),
+                        ),
+                        Obx(() {
+                          return Text(
+                            widgetController
+                                .sorts[
+                                    widgetController.selectedRadioFilter.value]
+                                .title,
+                            overflow: TextOverflow.ellipsis,
+                            style: AppTextStyles.roboto(
+                                color: Colors.black.withAlpha(80),
+                                fontSize: 10),
+                          );
+                        }),
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
           Flexible(
@@ -95,14 +105,14 @@ class FilterWidget extends StatelessWidget {
               children: [
                 Obx(() => InkWell(
                     onTap: () {
-                      if (controller.currentVersionCatalog.value < 2) {
-                        controller.currentVersionCatalog.value =
-                            controller.currentVersionCatalog.value + 1;
+                      if (widgetController.currentVersionCatalog.value < 2) {
+                        widgetController.currentVersionCatalog.value =
+                            widgetController.currentVersionCatalog.value + 1;
                       } else {
-                        controller.currentVersionCatalog.value = 0;
+                        widgetController.currentVersionCatalog.value = 0;
                       }
-                      widgetController
-                          .setIcon(controller.currentVersionCatalog.value);
+                      widgetController.setIcon(
+                          widgetController.currentVersionCatalog.value);
                     },
                     child: widgetController.icon.value)),
                 const SizedBox(width: 10),

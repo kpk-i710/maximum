@@ -109,10 +109,10 @@ class _CatalogMenuListWidgetState extends State<CatalogMenuListWidget> {
                   return Divider(indent: 20, endIndent: 20);
                 },
                 itemBuilder: (context, index) {
+
                   Catalog cat = widget.catalogList[index];
                   return CatalogListItemWidget(
                     catalog: cat,
-                    heroTag: widget.heroTag,
                     onTap: () {
                       if ( cat.children == null || cat.children!.length == 0 ) {
                         widget.onTap!(cat.id);
@@ -137,7 +137,7 @@ class _CatalogMenuListWidgetState extends State<CatalogMenuListWidget> {
                             curve: Curves.easeIn,
                         );
                       }
-                    },
+                    }, index: index,
                   );
                 },
               ),

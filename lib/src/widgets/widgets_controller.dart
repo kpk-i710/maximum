@@ -4,11 +4,25 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:maxkgapp/src/helpers/prefs.dart';
+import 'package:maxkgapp/src/models/filter.dart';
 import 'package:maxkgapp/src/styles.dart';
 import 'widgets.dart' as widgets;
 import '../models/checkBox.dart';
 
 class WidgetsControllers extends GetxController {
+  RxInt selectedRadioFilter = 0.obs;
+
+  List<Filter> sorts = [
+    Filter(
+        title: "by_popularity".tr,
+        subtitle: "frequently_bought".tr),
+    Filter(
+        title: "by_rating".tr, subtitle: "highly_rated".tr),
+    Filter(title: "cheapest".tr),
+    Filter(title: "most_expensive".tr),
+    Filter(title: "by_discounts".tr),
+  ];
+
   Rx<Widget> icon = Container(
       child: Icon(
     MaterialCommunityIcons.view_agenda,
@@ -16,6 +30,8 @@ class WidgetsControllers extends GetxController {
   )).obs;
 
   var counter = 0.obs;
+
+  var currentVersionCatalog = 0.obs;
 
   var demoList = <bool>[
     false,

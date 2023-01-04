@@ -9,6 +9,7 @@ import 'package:flutter_swiper_view/flutter_swiper_view.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
 import 'package:maxkgapp/src/pages/detail_all/detail_all_controller.dart';
+import 'package:maxkgapp/src/pages/filter/filter_page_controller.dart';
 import 'package:maxkgapp/src/pages/home/home_page_controller.dart';
 import 'package:maxkgapp/src/pages/intro/intro_controller.dart';
 import 'package:maxkgapp/src/pages/orders_history/order_history_page_controller.dart';
@@ -44,6 +45,7 @@ import 'package:flutter_svg_provider/flutter_svg_provider.dart' as svg;
 import 'dart:math' as math;
 import 'package:share_plus/share_plus.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+
 Widget priceWidget(double price, {TextStyle? style}) {
   if (style != null) {
     style = style.merge(robotoConsid(fontSize: style.fontSize ?? 0 + 2));
@@ -1223,6 +1225,7 @@ Widget titleWidget(
         child: Text(
           '$title'.tr,
           style: widgets.robotoConsid(
+            fontWeight: FontWeight.bold,
             fontSize: 16,
           ),
         ),
@@ -2168,6 +2171,24 @@ Widget radioTheme({required int index, required String text}) {
   );
 }
 
+Widget boxShadowsCatalog({required Widget child, double radius = 5}) {
+  return Container(
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(radius),
+      boxShadow: [
+        BoxShadow(
+          color: Color(0xffD9D9D9).withOpacity(0.9),
+          spreadRadius: 0,
+          blurRadius: 1,
+          offset: Offset(0.1, 0.1), // changes position of shadow
+        ),
+      ],
+    ),
+    child: child,
+  );
+}
+
 Widget boxShadows(
     {required Widget child, double padding = 12, double radius = 5}) {
   return Container(
@@ -2738,23 +2759,24 @@ Widget getViewIcon() {
         borderRadius: BorderRadius.circular(2)),
   );
 }
+
 Widget getViewIconGrid() {
   return Container(
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(20.0),
-
-        child: Icon(
-          MaterialCommunityIcons.view_grid,
-          color: AppTextStyles.colorBlueMy,
-        ),
-      ));
+    borderRadius: BorderRadius.circular(20.0),
+    child: Icon(
+      MaterialCommunityIcons.view_grid,
+      color: AppTextStyles.colorBlueMy,
+    ),
+  ));
 }
+
 Widget getViewArendaIcon() {
   return Container(
       child: Icon(
-        MaterialCommunityIcons.view_agenda,
-        color: AppTextStyles.colorBlueMy,
-      ));
+    MaterialCommunityIcons.view_agenda,
+    color: AppTextStyles.colorBlueMy,
+  ));
 }
 
 Widget share({Color color = AppTextStyles.colorBlackMy}) {
@@ -2964,6 +2986,144 @@ void showSnackBar({required BuildContext context}) {
   ));
 }
 
+void getFilterSheet() {
+  Get.bottomSheet(
+    getFilter(),
+    isScrollControlled: true,
+    backgroundColor: Colors.transparent,
+  );
+}
+
+PreferredSizeWidget appBarFilter() {
+  final c = Get.put(FilterPageController());
+  return AppBar(
+    backgroundColor: Colors.white,
+    elevation: 0,
+    iconTheme: IconThemeData(
+      color: AppTextStyles.colorBlackMy, //change your color here
+    ),
+    title: Row(
+      children: [
+        Row(
+          children: [
+            Text(
+              'filters'.tr,
+              style: widgets.robotoConsid(
+                  color: AppTextStyles.colorBlackMy, fontSize: 16),
+            ),
+            SizedBox(width: 5),
+            Container(
+              decoration: BoxDecoration(
+                  color: AppTextStyles.colorRedMy,
+                  borderRadius: BorderRadius.circular(2)),
+              child: Center(
+                  child: Text(
+                "1",
+                style: widgets.robotoConsid(color: Colors.white, fontSize: 10),
+              )).paddingSymmetric(horizontal: 3, vertical: 1),
+            ),
+          ],
+        ),
+        Spacer(),
+        underLineDashed(
+          child: Text(
+            "Сбросить все",
+            style: widgets.robotoConsid(
+                color: AppTextStyles.colorBlueMy, fontSize: 14),
+          ),
+        ),
+        Spacer(),
+        customButtonOval(
+            child: anySvg(nameSvg: 'close', size: Size(17, 17)),
+            onTap: () {
+              print("нажал");
+              Get.back();
+            })
+      ],
+    ),
+  );
+}
+
+Widget getFilter() {
+  return boxShadows(
+    padding: 0,
+    radius: 10,
+    child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        height: Get.height,
+        child: SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [],
+          ).paddingSymmetric(horizontal: 10),
+        )),
+  );
+}
+
+void getSortSheet() {
+  Get.bottomSheet(
+    getSort(),
+    backgroundColor: Colors.transparent,
+  );
+}
+
+Widget getSort() {
+  return boxShadows(
+    padding: 0,
+    radius: 10,
+    child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        height: Get.height / 2,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.only(left: 10.0),
+              child: Text(
+                "sort2".tr,
+                style: widgets.robotoConsid(
+                    fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+            ),
+            SizedBox(height: 20),
+            for (int i = 0; i < 5; i++) widgets.radioSelect(index: i),
+          ],
+        ).paddingSymmetric(horizontal: 10)),
+  );
+}
+
+Widget radioSelect({required int index}) {
+  final controller = Get.put(WidgetsControllers());
+  return Obx(() {
+    return RadioListTile(
+        activeColor: AppTextStyles.colorRedMy,
+        contentPadding: EdgeInsets.all(0),
+        title: Text(
+          controller.sorts[index].title,
+          style:
+              widgets.robotoConsid(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
+        subtitle: controller.sorts[index].subtitle == ""
+            ? null
+            : Text(controller.sorts[index].subtitle,
+                style: widgets.robotoConsid(
+                    color: AppTextStyles.colorGreyThrou, fontSize: 12)),
+        value: index,
+        groupValue: controller.selectedRadioFilter.value,
+        onChanged: (int? value) {
+          controller.selectedRadioFilter.value = value!;
+          Get.back();
+        });
+  });
+}
+
 void getLocationSheet() {
   Get.bottomSheet(
     getLocation(),
@@ -3168,7 +3328,7 @@ Widget seletTheme() {
   );
 }
 
-Widget appBarFloating() {
+Widget appBarFloating({required String title}) {
   return SliverAppBar(
     iconTheme: IconThemeData(color: AppTextStyles.colorBlackMy),
     title: Text(
@@ -3197,11 +3357,6 @@ Widget scaleImage({required BuildContext context, required String image}) {
   final detailController = Get.put(DetalAllController());
   detailController.isScrollAble.value = true;
 
-  // ever(detailController.scale, (value) {
-  //   if(int.parse(value.toString()) <=2){
-  //     detailController.isScrollAble.value =true;
-  //   } else detailController.isScrollAble.value = false;
-  // });
   return Obx(() {
     return boxShadows(
       padding: 0,
@@ -3887,7 +4042,7 @@ Widget loginButtonNew({required String text, Function()? onPressed}) {
   );
 }
 
-Widget saveButton({required String text, Function()? onPressed}) {
+Widget saveButton({String text = "save", Function()? onPressed}) {
   return Container(
     width: double.infinity,
     height: 50.0,
@@ -3992,7 +4147,7 @@ Widget addCardAndFavoriteAndCar(
                   child: gradientCustomButton(
                       onTap: onPressedCard,
                       child: Center(
-                        child: AutoSizeText(textCard.toUpperCase(),
+                        child: AutoSizeText(textCard,
                             maxFontSize: 14,
                             minFontSize: 5,
                             textAlign: TextAlign.center,
@@ -4032,7 +4187,7 @@ Widget addCardAndFavorite(
               child: gradientCustomButton(
                   onTap: onPressedCard,
                   child: Center(
-                    child: AutoSizeText(textCard.toUpperCase(),
+                    child: AutoSizeText(textCard,
                         maxFontSize: 14,
                         minFontSize: 5,
                         textAlign: TextAlign.center,

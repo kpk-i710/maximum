@@ -96,7 +96,7 @@ class AppRouter {
 
   static final pages = [
     GetPage(name: netWork, page: () => NetWork()),
-    GetPage(name: listNews, page: () => NewsListPage()),
+    GetPage(name: listNews, page: () => BetweenAllPages()),
     GetPage(name: listBanners, page: () => listBanner()),
     GetPage(name: organizationPage, page: () => OrganizationPage()),
     GetPage(name: test, page: () => TestPage()),
