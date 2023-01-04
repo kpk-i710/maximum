@@ -8,8 +8,10 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class DetalAllController extends GetxController {
 
+
+
+
   final currentIndex = 0.obs;
-  double scale =  1.0  ;
   PageController controllerSwipe =  PageController();
 
   RxBool isScrollAble = true.obs;
@@ -18,6 +20,7 @@ class DetalAllController extends GetxController {
      isScrollAble.value = true;
      return Matrix4.identity();
   }
+
 
   YoutubePlayerController  controller = YoutubePlayerController(
     initialVideoId: '-HKRoeeVv9E',

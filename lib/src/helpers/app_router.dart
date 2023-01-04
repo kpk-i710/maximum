@@ -15,7 +15,7 @@ import '../pages/discounts/discount_list_page/discounts_list_page.dart';
 import '../pages/discounts/discount_list_page/discount_page_list_view/discount_page_list_view.dart';
 import '../pages/map/map_page.dart';
 import '../pages/news/all_news_page.dart';
-import '../pages/news/level_below/news_list_page.dart';
+import '../pages/between_pages_all/between_all_pages.dart';
 import '../pages/promotions/all_promotions_page.dart';
 import '../pages/shopping_cart/before_payment_delivry/shipping_methods/shipping_methods_page.dart';
 import '../pages/support_service/support_service_page.dart';
@@ -40,6 +40,7 @@ import '../pages/user/profile_params/profile_params_page.dart';
 import '../helpers/prefs.dart';
 
 class AppRouter {
+  static const String spashScreen = '/spashScreen';
   static const String pageNews = '/pageNews';
   static const String netWork = '/netWork';
   static const String listNews = '/newsList';

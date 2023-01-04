@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:maxkgapp/src/helpers/prefs.dart';
-import 'package:maxkgapp/src/styles.dart';
 import 'package:maxkgapp/src/widgets/bought_today/bought_today_grid_widget.dart';
 import 'package:maxkgapp/src/widgets/popular_goods/popular_goods_grid_widget.dart';
 import 'package:maxkgapp/src/widgets/product_widgets/product_hight_item_widget.dart';
-import '../../helpers/app_router.dart';
 import '../../widgets/discount_widgets/discount_detail_item_widget.dart';
-import '../../widgets/product_widgets/product_list_item_widget.dart';
-import '../../widgets/search_widgets/search_bar_2.dart';
 import '../../widgets/banner_widget.dart';
 import '../../widgets/filter_widget.dart';
 import '../../widgets/widgets.dart' as widgets;
@@ -58,11 +53,12 @@ class ProductsByCatalogPage extends StatelessWidget {
                           Column(
                             children: [
                               for (int i = 0; i < 20; i++)
-
                                 Column(
                                   children: [
                                     SizedBox(height: 10),
-                                    DiscountDetailItemWidget(onPress: () {  }, )
+                                    DiscountDetailItemWidget(
+                                      onPress: () {},
+                                    )
                                     // ProductListItemWidget(),
                                   ],
                                 ),
@@ -73,7 +69,6 @@ class ProductsByCatalogPage extends StatelessWidget {
                             children: [
                               for (int i = 0; i < 20; i++)
                                 ProductBlockItemWidget(),
-
                             ],
                           ),
                         if (controller.currentVersionCatalog.value == 2)
@@ -94,11 +89,7 @@ class ProductsByCatalogPage extends StatelessWidget {
                       ],
                     );
                   })),
-              FilterWidget(
-                  onFilterTap: () async {
-                    // final res = await Get.toNamed(AppRouter.profile);
-                  },
-                  callBack: (type) {}),
+              FilterWidget(onFilterTap: () async {}, callBack: (type) {}),
             ],
           ),
         ),

@@ -43,7 +43,7 @@ import 'package:badges/badges.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart' as svg;
 import 'dart:math' as math;
 import 'package:share_plus/share_plus.dart';
-
+import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 Widget priceWidget(double price, {TextStyle? style}) {
   if (style != null) {
     style = style.merge(robotoConsid(fontSize: style.fontSize ?? 0 + 2));
@@ -2729,17 +2729,43 @@ Widget favoriteWithPrice({required int? price, required BuildContext context}) {
   );
 }
 
-Widget share() {
+Widget getViewIcon() {
+  return Container(
+    width: 20,
+    height: 20,
+    decoration: BoxDecoration(
+        color: AppTextStyles.colorBlueMy,
+        borderRadius: BorderRadius.circular(2)),
+  );
+}
+Widget getViewIconGrid() {
+  return Container(
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20.0),
+
+        child: Icon(
+          MaterialCommunityIcons.view_grid,
+          color: AppTextStyles.colorBlueMy,
+        ),
+      ));
+}
+Widget getViewArendaIcon() {
+  return Container(
+      child: Icon(
+        MaterialCommunityIcons.view_agenda,
+        color: AppTextStyles.colorBlueMy,
+      ));
+}
+
+Widget share({Color color = AppTextStyles.colorBlackMy}) {
   return customButton(
       onTap: () {
         Share.share('check out my website https://example.com');
       },
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: widgets.anySvg(
-            nameSvg: 'share',
-            size: Size(25, 25),
-            color: AppTextStyles.colorBlackMy),
+        padding: const EdgeInsets.only(left: 8.0, top: 8, bottom: 8),
+        child:
+            widgets.anySvg(nameSvg: 'share', size: Size(25, 25), color: color),
       ));
 }
 
@@ -3169,7 +3195,13 @@ Widget scaleImage({required BuildContext context, required String image}) {
   TransformationController controller = TransformationController();
   TapDownDetails? tapDownDetails;
   final detailController = Get.put(DetalAllController());
+  detailController.isScrollAble.value = true;
 
+  // ever(detailController.scale, (value) {
+  //   if(int.parse(value.toString()) <=2){
+  //     detailController.isScrollAble.value =true;
+  //   } else detailController.isScrollAble.value = false;
+  // });
   return Obx(() {
     return boxShadows(
       padding: 0,
@@ -3197,6 +3229,7 @@ Widget scaleImage({required BuildContext context, required String image}) {
                     detailController.isScrollAble.value = false;
                     if (correctScaleValue == 2) {
                       scale = 4;
+                      detailController.isScrollAble.value = false;
                     }
 
                     final x = -position.dx * (scale - 1);
@@ -3223,6 +3256,7 @@ Widget scaleImage({required BuildContext context, required String image}) {
             ],
             controller: detailController.controllerSwipe,
             onPageChanged: (index) {
+              detailController.isScrollAble.value = true;
               detailController.currentIndex.value = index;
               controller.value = Matrix4.identity();
             },

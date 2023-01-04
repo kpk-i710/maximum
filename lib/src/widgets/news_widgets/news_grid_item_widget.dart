@@ -5,7 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/get_instance.dart';
 import 'package:get/get_utils/get_utils.dart';
-import 'package:maxkgapp/src/pages/news/level_below/news_list_page_controller.dart';
+import 'package:maxkgapp/src/pages/between_pages_all/bewtween_all_pages_controller.dart';
 import 'package:maxkgapp/src/widgets/discount_widgets/discount_swipe_widget_offline.dart';
 
 import '../../models/news_list.dart';

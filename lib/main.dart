@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:maxkgapp/src/helpers/prefs.dart';
@@ -15,7 +16,9 @@ import 'src/styles.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
-  await DBHelper().init();
+  await DBHelper().init(); 
+
+  FlutterNativeSplash.remove();
 
   runApp(MyApp());
 }
@@ -34,7 +37,7 @@ class MyApp extends StatelessWidget {
                   Prefs.selectedLang.toString().toUpperCase())
               : Locale('ru', 'RU'),
           translations: AppTranslations(),
-          title: 'title'.tr,
+          title: 'Max.kg',
           theme: AppTheme.lightTheme.themeData,
           darkTheme: AppTheme.darkTheme.themeData,
           themeMode: ThemeMode.light,

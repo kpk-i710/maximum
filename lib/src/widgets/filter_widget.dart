@@ -3,20 +3,21 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 import 'package:maxkgapp/src/helpers/prefs.dart';
 import 'package:maxkgapp/src/pages/products_by_catalog/products_by_catalog_page_controller.dart';
+import 'package:maxkgapp/src/widgets/widgets_controller.dart';
 
 import '../styles.dart';
 
 import 'app_icon.dart';
+import '../widgets/widgets.dart' as widgets;
 
 class FilterWidget extends StatelessWidget {
-  final icon = MaterialCommunityIcons.view_grid.obs;
-
   final Function(String val)? callBack;
   final Function()? onFilterTap;
 
   FilterWidget({this.callBack, this.onFilterTap});
 
   final controller = Get.put(ProductsByCatalogPageController());
+  final widgetController = Get.put(WidgetsControllers());
 
   @override
   Widget build(BuildContext context) {
@@ -24,16 +25,16 @@ class FilterWidget extends StatelessWidget {
       height: 50,
       padding: const EdgeInsets.symmetric(horizontal: 10.0),
       decoration: BoxDecoration(
-        color: Colors.white,
+          color: Colors.white,
           border: Border.symmetric(
               horizontal: BorderSide(color: Colors.grey.shade200, width: 1))),
       child: Row(
         children: [
           Flexible(
-            flex: 2,
+            flex: 3,
             child: Row(
               children: [
-                AppIcon(AppIcons.sort, color: context.theme.primary),
+                AppIcon(AppIcons.sort, color: AppTextStyles.colorBlueMy),
                 const SizedBox(width: 10),
                 Expanded(
                   child: Column(
@@ -59,12 +60,12 @@ class FilterWidget extends StatelessWidget {
             ),
           ),
           Flexible(
-            flex: 2,
+            flex: 3,
             child: InkWell(
               onTap: onFilterTap,
               child: Row(
                 children: [
-                  AppIcon(AppIcons.filter, color: context.theme.primary),
+                  AppIcon(AppIcons.filter, color: AppTextStyles.colorBlueMy),
                   const SizedBox(width: 10),
                   Expanded(
                     child: Column(
@@ -88,7 +89,7 @@ class FilterWidget extends StatelessWidget {
             ),
           ),
           Flexible(
-            flex: 1,
+            flex: 2,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -100,11 +101,12 @@ class FilterWidget extends StatelessWidget {
                       } else {
                         controller.currentVersionCatalog.value = 0;
                       }
-
+                      widgetController
+                          .setIcon(controller.currentVersionCatalog.value);
                     },
-                    child: Icon(icon.value, color: context.theme.primary))),
+                    child: widgetController.icon.value)),
                 const SizedBox(width: 10),
-                AppIcon(AppIcons.share, color: context.theme.primary),
+                widgets.share(color: AppTextStyles.colorBlueMy),
               ],
             ),
           ),

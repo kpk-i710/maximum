@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
-
 import '../../pages/user/profile/profile_page.dart';
 import '../../widgets/widgets.dart' as widgets;
 import '../../pages/catalog/catalog_page.dart';
 import '../../pages/favorite/favorite_page.dart';
 import '../../pages/home/home_page.dart';
 import '../shopping_cart/shopping_cart_page.dart';
+
 
 class MainPage extends StatefulWidget {
   @override

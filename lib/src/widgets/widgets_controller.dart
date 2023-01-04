@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:maxkgapp/src/helpers/prefs.dart';
+import 'package:maxkgapp/src/styles.dart';
 import 'widgets.dart' as widgets;
 import '../models/checkBox.dart';
 
 class WidgetsControllers extends GetxController {
+  Rx<Widget> icon = Container(
+      child: Icon(
+    MaterialCommunityIcons.view_agenda,
+    color: AppTextStyles.colorBlueMy,
+  )).obs;
+
   var counter = 0.obs;
 
   var demoList = <bool>[
@@ -28,10 +36,25 @@ class WidgetsControllers extends GetxController {
     }
   }
 
-
   @override
   void onInit() {
-    counter.value =  Prefs.counterCard;
+    counter.value = Prefs.counterCard;
+  }
+
+  setIcon(int index) {
+    if (index == 1) {
+      icon.value = widgets.getViewIcon();
+    }
+    if (index == 0) {
+      icon.value = Container(
+          child: Icon(
+        MaterialCommunityIcons.view_agenda,
+        color: AppTextStyles.colorBlueMy,
+      ));
+    }
+    if (index == 2) {
+      icon.value = widgets.getViewIconGrid();
+    }
   }
 
   minus({required BuildContext context}) {
@@ -40,11 +63,10 @@ class WidgetsControllers extends GetxController {
       Prefs.counterCard = counter.value;
     }
     if (counter == 0) {
-      widgets.showMassageOneSecondSnackBar(context: context, massgae: 'removed_from_card');
+      widgets.showMassageOneSecondSnackBar(
+          context: context, massgae: 'removed_from_card');
     }
-
   }
-
 
   plus() {
     counter = counter + 1;
@@ -65,29 +87,31 @@ class WidgetsControllers extends GetxController {
 
     tempDate.difference(DateTime.now()).inDays;
     if (tempDate
-        .difference(DateTime.now())
-        .inDays
-        .toString()
-        .replaceAll("-", "") ==
+            .difference(DateTime.now())
+            .inDays
+            .toString()
+            .replaceAll("-", "") ==
         "0") return "today".tr;
     return tempDate
-        .difference(DateTime.now())
-        .inDays
-        .toString()
-        .replaceAll("-", "") + " " + "daysShort".tr;
+            .difference(DateTime.now())
+            .inDays
+            .toString()
+            .replaceAll("-", "") +
+        " " +
+        "daysShort".tr;
   }
 
-  void showMassage({required BuildContext context,double bottom = 0}) {
+  void showMassage({required BuildContext context, double bottom = 0}) {
     if (Prefs.isAddedToFavorite) {
       widgets.showMassageOneSecondSnackBar(
-          context: context, massgae: "removed_from_favorites",bottom: bottom);
+          context: context, massgae: "removed_from_favorites", bottom: bottom);
       Prefs.isAddedToFavorite = !Prefs.isAddedToFavorite;
       return;
     }
 
     if (!Prefs.isAddedToFavorite) {
       widgets.showMassageOneSecondSnackBar(
-          context: context, massgae: "added_to_favorites",bottom: bottom);
+          context: context, massgae: "added_to_favorites", bottom: bottom);
       Prefs.isAddedToFavorite = !Prefs.isAddedToFavorite;
     }
   }
@@ -96,7 +120,6 @@ class WidgetsControllers extends GetxController {
     NumberFormat numberFormat = NumberFormat("#,##0", "en_US");
     return numberFormat.format(price).replaceAll(",", " ");
   }
-
 
   bool checkForServices() {
     for (int i = 0; i < checkBoxList.length; i++) {
