@@ -1,5 +1,6 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
+import 'package:maxkgapp/src/pages/configurator/configurator.dart';
 import 'package:maxkgapp/src/pages/network/network.dart';
 import 'package:maxkgapp/src/pages/orders_history/orders_history_page.dart';
 import 'package:maxkgapp/src/pages/user/notifications_settings/notifications_page.dart';
@@ -68,6 +69,7 @@ class AppRouter {
   static const String discount = '/discount';
   static const String verify = '/verify';
   static const String notificationsDelivry = '/notifications';
+  static const String configurator = '/configurator';
   static const String notifacationsPage = '/notifacationsPage';
   static const String order = '/order';
   static const String deliveryAndTerms = '/delivery_and_terms';
@@ -95,6 +97,7 @@ class AppRouter {
   static String get initialRoute => main;
 
   static final pages = [
+    GetPage(name: configurator, page: () => Confugarator()),
     GetPage(name: netWork, page: () => NetWork()),
     GetPage(name: listNews, page: () => BetweenAllPages()),
     GetPage(name: listBanners, page: () => listBanner()),

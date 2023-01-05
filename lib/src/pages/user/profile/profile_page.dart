@@ -151,6 +151,10 @@ class ProfilePage extends StatelessWidget {
           children: [
             widgets.arrowButtonProfile(
                 icon: "bell",
+                text: 'Конфигуратор',
+                page: AppRouter.configurator),
+            widgets.arrowButtonProfile(
+                icon: "bell",
                 text: 'notifications',
                 notification: true,
                 page: AppRouter.notificationsDelivry),

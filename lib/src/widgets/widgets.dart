@@ -2987,6 +2987,20 @@ void showSnackBar({required BuildContext context}) {
   ));
 }
 
+PreferredSizeWidget appBarJust() {
+  return AppBar(
+    iconTheme: IconThemeData(
+      color: AppTextStyles.colorBlackMy, //change your color here
+    ),
+    backgroundColor: Colors.white,
+    elevation: 0,
+    title: Text(
+      "Конфигуратор ПК",
+      style: widgets.robotoConsid(fontWeight: FontWeight.bold),
+    ),
+  );
+}
+
 PreferredSizeWidget appBarFilter() {
   final controller = Get.put(FilterPageController());
   return AppBar(

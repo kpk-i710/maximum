@@ -131,12 +131,5 @@ class FilterPageController extends GetxController {
     print(val);
   }
 
-  reset() {
-    ranges.value = RangeValues(0, 10000);
-    priceStartCont.text = '';
-    priceEndCont.text = '';
-    getTodayCheck.value = false;
-    bestPriceCheck.value = false;
-    cashb.value = false;
-  }
+
 }

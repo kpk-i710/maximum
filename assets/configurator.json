@@ -1,0 +1,132 @@
+[
+  {
+    "title": "Корпус",
+    "image": "cose",
+    "category": 1
+  },
+  {
+    "title": "Метеринская плата",
+    "image": "motherboard",
+    "category": 1
+  },
+  {
+    "title": "Процессор",
+    "image": "cpu",
+    "category": 1
+  },
+  {
+    "title": "Система охлаждения",
+    "image": "cooling_system",
+    "category": 1
+  },
+  {
+    "title": "Оперативная память",
+    "image": "ram",
+    "category": 1
+  },
+  {
+    "title": "Видеокарта",
+    "image": "video_card",
+    "category": 1
+  },
+  {
+    "title": "Накопитель SSD",
+    "image": "ssd",
+    "category": 1
+  },
+  {
+    "title": "Жеский диск (HDD)",
+    "image": "hdd",
+    "category": 1
+  },
+  {
+    "title": "Блок питания",
+    "image": "power_unit",
+    "category": 1
+  },
+  {
+    "title": "Операционная система",
+    "image": "operating_system",
+    "category": 1
+  },
+  {
+    "title": "Монитор",
+    "image": "monitor",
+    "category": 2
+  },
+  {
+    "title": "Клавиатура",
+    "image": "keyboard",
+    "category": 2
+  },
+  {
+    "title": "Мышь",
+    "image": "mouse",
+    "category": 2
+  },
+  {
+    "title": "Коврик",
+    "image": "mat",
+    "category": 2
+  },
+  {
+    "title": "Наушники",
+    "image": "headphones",
+    "category": 2
+  },
+  {
+    "title": "Колонки",
+    "image": "speakers",
+    "category": 2
+  },
+  {
+    "title": "Микрофон",
+    "image": "microphone",
+    "category": 2
+  },
+  {
+    "title": "Веб камера",
+    "image": "webcam",
+    "category": 2
+  },
+  {
+    "title": "Принтер",
+    "image": "printer",
+    "category": 2
+  },
+  {
+    "title": "МФУ",
+    "image": "",
+    "category": 2
+  },
+  {
+    "title": "Вентилятор для корпуса",
+    "image": "cooling_system",
+    "category": 3
+  },
+  {
+    "title": "Wifi-адаптер",
+    "image": "wifi_adapter",
+    "category": 3
+  },
+  {
+    "title": "Термопаста",
+    "image": "thermal_paste",
+    "category": 3
+  },
+  {
+    "title": "Компьютерный стол",
+    "image": "",
+    "category": 4
+  },
+  {
+    "title": "Игровое кресло",
+    "image": "",
+    "category": 4
+  },
+  {
+    "title": "Кресло для персонала",
+    "image": "",
+    "category": 4
+  }
+]
