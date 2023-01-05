@@ -38,6 +38,7 @@ import '../styles.dart';
 import 'app_icon.dart';
 import 'orders_widgets/time_line_vertical.dart';
 import '../models/news.dart';
+import 'popular_categories/popular_categories_item.dart';
 import 'widgets_controller.dart';
 import '../widgets/widgets.dart' as widgets;
 import 'package:badges/badges.dart';
@@ -2986,16 +2987,8 @@ void showSnackBar({required BuildContext context}) {
   ));
 }
 
-void getFilterSheet() {
-  Get.bottomSheet(
-    getFilter(),
-    isScrollControlled: true,
-    backgroundColor: Colors.transparent,
-  );
-}
-
 PreferredSizeWidget appBarFilter() {
-  final c = Get.put(FilterPageController());
+  final controller = Get.put(FilterPageController());
   return AppBar(
     backgroundColor: Colors.white,
     elevation: 0,
@@ -3012,25 +3005,33 @@ PreferredSizeWidget appBarFilter() {
                   color: AppTextStyles.colorBlackMy, fontSize: 16),
             ),
             SizedBox(width: 5),
-            Container(
-              decoration: BoxDecoration(
-                  color: AppTextStyles.colorRedMy,
-                  borderRadius: BorderRadius.circular(2)),
-              child: Center(
-                  child: Text(
-                "1",
-                style: widgets.robotoConsid(color: Colors.white, fontSize: 10),
-              )).paddingSymmetric(horizontal: 3, vertical: 1),
-            ),
+            Obx(() {
+              return Container(
+                decoration: BoxDecoration(
+                    color: AppTextStyles.colorRedMy,
+                    borderRadius: BorderRadius.circular(2)),
+                child: Center(
+                    child: Text(
+                  "${controller.filtedCounter.value}",
+                  style:
+                      widgets.robotoConsid(color: Colors.white, fontSize: 10),
+                )).paddingSymmetric(horizontal: 3, vertical: 1),
+              );
+            }),
           ],
         ),
         Spacer(),
-        underLineDashed(
-          child: Text(
-            "Сбросить все",
-            style: widgets.robotoConsid(
-                color: AppTextStyles.colorBlueMy, fontSize: 14),
+        customButton(
+          child: underLineDashed(
+            child: Text(
+              "Сбросить все",
+              style: widgets.robotoConsid(
+                  color: AppTextStyles.colorBlueMy, fontSize: 14),
+            ),
           ),
+          onTap: () {
+            controller.resetAll() ;
+          },
         ),
         Spacer(),
         customButtonOval(
@@ -3041,25 +3042,6 @@ PreferredSizeWidget appBarFilter() {
             })
       ],
     ),
-  );
-}
-
-Widget getFilter() {
-  return boxShadows(
-    padding: 0,
-    radius: 10,
-    child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        height: Get.height,
-        child: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [],
-          ).paddingSymmetric(horizontal: 10),
-        )),
   );
 }
 
@@ -3099,28 +3081,92 @@ Widget getSort() {
   );
 }
 
+Widget newsHtml() {
+  final controller = Get.put(FilterPageController());
+  return Obx(() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 50.0),
+      child: Column(
+        children: [
+          // Html(
+          //   data: newsListPageController.newsList?.news.anons,
+          // ),
+          if (controller.filtedCounter.value > 0)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 10.0, horizontal: 10),
+                  child: Text(
+                    "В категориях",
+                    style: widgets.robotoConsid(
+                        color: AppTextStyles.colorBlackMy,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+                SizedBox(
+                  height: 160,
+                  child: ListView.builder(
+                      physics: BouncingScrollPhysics(),
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: SizedBox(
+                            width: 150,
+                            child: popular_categories_item(
+                                index: index, onTap: () {}),
+                          ),
+                        );
+                      }),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20.0),
+                  child: Center(
+                    child: Text(
+                      "По вашему запросу найдено 445 товаров",
+                      style: widgets.robotoConsid(
+                          color: AppTextStyles.colorGrayMy),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+        ],
+      ),
+    );
+  });
+}
+
 Widget radioSelect({required int index}) {
   final controller = Get.put(WidgetsControllers());
   return Obx(() {
-    return RadioListTile(
-        activeColor: AppTextStyles.colorRedMy,
-        contentPadding: EdgeInsets.all(0),
-        title: Text(
-          controller.sorts[index].title,
-          style:
-              widgets.robotoConsid(fontSize: 16, fontWeight: FontWeight.bold),
-        ),
-        subtitle: controller.sorts[index].subtitle == ""
-            ? null
-            : Text(controller.sorts[index].subtitle,
-                style: widgets.robotoConsid(
-                    color: AppTextStyles.colorGreyThrou, fontSize: 12)),
-        value: index,
-        groupValue: controller.selectedRadioFilter.value,
-        onChanged: (int? value) {
-          controller.selectedRadioFilter.value = value!;
-          Get.back();
-        });
+    return widgets.customButton(
+      child: IgnorePointer(
+        child: RadioListTile(
+            activeColor: AppTextStyles.colorRedMy,
+            contentPadding: EdgeInsets.all(0),
+            title: Text(
+              controller.sorts[index].title,
+              style: widgets.robotoConsid(
+                  fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            subtitle: controller.sorts[index].subtitle == ""
+                ? null
+                : Text(controller.sorts[index].subtitle,
+                    style: widgets.robotoConsid(
+                        color: AppTextStyles.colorGreyThrou, fontSize: 12)),
+            value: index,
+            groupValue: controller.selectedRadioFilter.value,
+            onChanged: (int? value) {}),
+      ),
+      onTap: () {
+        controller.selectedRadioFilter.value = index;
+        Get.back();
+      },
+    );
   });
 }
 

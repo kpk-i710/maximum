@@ -3,9 +3,12 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
 import 'package:maxkgapp/src/helpers/app_router.dart';
 import 'package:maxkgapp/src/models/news_list.dart';
+import 'package:maxkgapp/src/pages/filter/filter_page_controller.dart';
 import 'package:maxkgapp/src/pages/home/home_page_controller.dart';
+import 'package:maxkgapp/src/styles.dart';
 import 'package:maxkgapp/src/widgets/discount_widgets/discount_detail_item_widget.dart';
 import 'package:maxkgapp/src/widgets/filter_widget.dart';
+import 'package:maxkgapp/src/widgets/popular_categories/popular_categories_item.dart';
 import 'package:maxkgapp/src/widgets/popular_goods/popular_goods_grid_widget.dart';
 import 'package:maxkgapp/src/widgets/product_widgets/product_hight_item_widget.dart';
 import 'package:maxkgapp/src/widgets/widgets_controller.dart';
@@ -23,6 +26,7 @@ class BetweenAllPages extends StatelessWidget {
   final height = 180.0;
   final widgetController = Get.put(WidgetsControllers());
   final homeController = Get.put(HomePageController());
+  final controller = Get.put(FilterPageController());
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +50,7 @@ class BetweenAllPages extends StatelessWidget {
                                 .newsList?.result[0][0].length ??
                             0,
                         itemBuilder: (context, index) {
-                          if (index == 0) return newsHtml();
+                          if (index == 0) return widgets.newsHtml();
 
                           return getCurrentContainer(index: index);
                         },
@@ -105,14 +109,7 @@ class BetweenAllPages extends StatelessWidget {
     });
   }
 
-  Widget newsHtml() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 50.0),
-      child: Html(
-        data: newsListPageController.newsList?.news.anons,
-      ),
-    );
-  }
+
 
   void goToDetail({required int index}) {
     final product = newsListPageController.newsList?.result[0][0][index];

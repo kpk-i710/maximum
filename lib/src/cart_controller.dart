@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-
 import 'const/const.dart';
 import 'helpers/prefs.dart';
 import 'models/cart.dart';

@@ -52,6 +52,7 @@ class ProductsByCatalogPage extends StatelessWidget {
                                 list: homeController.discountList.value,
                               ),
                             )),
+                        widgets.newsHtml(),
                         if (widgetController.currentVersionCatalog.value == 0)
                           Column(
                             children: [

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:maxkgapp/src/models/multi_select.dart';
 import 'package:maxkgapp/src/styles.dart';
-
-import '../../helpers/prefs.dart';
 import 'filter_page_controller.dart';
 import '../../widgets/widgets.dart' as widgets;
 
@@ -14,133 +13,143 @@ class FilterPage extends StatelessWidget {
     return Scaffold(
       appBar: widgets.appBarFilter(),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 10),
-        child: Obx(() {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('price'.tr + ", сом",
-                  style: widgets.robotoConsid(
-                      fontSize: 16, fontWeight: FontWeight.bold)),
-              SizedBox(height: 10),
-              Obx(() {
-                return Row(
+          padding: EdgeInsets.symmetric(horizontal: 10),
+          child: Obx(() {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('price'.tr + ", сом",
+                    style: widgets.robotoConsid(
+                        fontSize: 16, fontWeight: FontWeight.bold)),
+                SizedBox(height: 10),
+                Obx(() {
+                  return Row(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: TextField(
+                            controller: controller.priceStartCont,
+                            onChanged: (val) {
+                              controller.onStartPriceChanged(val);
+                              controller.calculateCountFilter();
+                            },
+                            keyboardType: TextInputType.number,
+                            decoration: decor(start: 'from')),
+                      ),
+                      SizedBox(width: 10),
+                      Expanded(
+                        flex: 1,
+                        child: TextField(
+                            controller: controller.priceEndCont,
+                            onChanged: (val) {
+                              controller.onEndPriceChanged(val);
+                              controller.calculateCountFilter();
+                            },
+                            keyboardType: TextInputType.number,
+                            decoration: decor(start: 'to')),
+                      ),
+                    ],
+                  );
+                }),
+                SizedBox(height: 20),
+                Row(
                   children: [
-                    Expanded(
-                      flex: 1,
-                      child: TextField(
-                          controller: controller.priceStartCont,
-                          onChanged: (val) {
-                            controller.onStartPriceChanged(val);
-                          },
-                          keyboardType: TextInputType.number,
-                          decoration: decor(start: 'from')),
-                    ),
-                    SizedBox(width: 10),
-                    Expanded(
-                      flex: 1,
-                      child: TextField(
-                          controller: controller.priceEndCont,
-                          onChanged: (val) {
-                            controller.onEndPriceChanged(val);
-                          },
-                          keyboardType: TextInputType.number,
-                          decoration: decor(start: 'to')),
-                    ),
+                    Text("brand".tr,
+                        style:
+                            widgets.robotoConsid(fontWeight: FontWeight.bold)),
+                    Spacer(),
+                    if (controller.brandCounter.value>0)
+                      widgets.customButton(
+                        child: widgets.underLineDashed(
+                          child: Text(
+                            "reset".tr,
+                            style: widgets.robotoConsid(
+                                color: AppTextStyles.colorBlueMy, fontSize: 14),
+                          ),
+                        ),
+                        onTap: () {
+                          controller.resetBrend();
+                        },
+                      ),
                   ],
-                );
-              }),
-              SizedBox(height: 20),
-              Row(
-                children: [
-                  Text("brand".tr,
-                      style:
-                          widgets.robotoConsid(fontWeight: FontWeight.bold)),
-                  Spacer(),
-                  widgets.underLineDashed(
-                    child: Text(
-                      "reset".tr,
-                      style: widgets.robotoConsid(
-                          color: AppTextStyles.colorBlueMy, fontSize: 14),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 10),
-              Wrap(
-                spacing: 10,
-                runSpacing: 10,
-                children: List.generate(
-                    10,
-                    (index) => chooseButton(
-                          index: index,
-                          selectedIndex: controller.selectedBrend.value,
-                          onTap: (bool value) {
-                            if (value)
-                              controller.selectedBrend.value = index;
-                            else
-                              controller.selectedBrend.value = 100;
-                          },
-                        )).toList(),
-              ),
-              SizedBox(height: 10),
-              Text("delivery_terms".tr,
-                  style: widgets.robotoConsid(fontWeight: FontWeight.bold)),
-              SizedBox(height: 10),
-              Wrap(
-                spacing: 10,
-                runSpacing: 10,
-                children: List.generate(
-                    3,
-                    (index) => chooseButton(
-                          selectedIndex: controller.selectedDelivery.value,
-                          index: index,
-                          text: controller.delivryTimeList[index],
-                          onTap: (bool value) {
-                            if (value)
-                              controller.selectedDelivery.value = index;
-                            else
-                              controller.selectedDelivery.value = 100;
-                          },
-                        )).toList(),
-              ),
-              SizedBox(height: 10),
-              Text("discounts".tr,
-                  style: widgets.robotoConsid(fontWeight: FontWeight.bold)),
-              SizedBox(height: 10),
-              Wrap(
-                spacing: 10,
-                runSpacing: 10,
-                children: List.generate(
-                    2,
-                    (index) => chooseButton(
-                          selectedIndex: controller.selectedDiscounts.value,
-                          index: index,
-                          text: controller.discountsList[index],
-                          onTap: (bool value) {
-                            if (value)
-                              controller.selectedDiscounts.value = index;
-                            else
-                              controller.selectedDiscounts.value = 100;
-                          },
-                        )).toList(),
-              ),
-              Spacer(),
-              widgets.saveButton(text: 'apply',onPressed: (){
-                print("применить");
-              }),
-              SizedBox(height: 20),
-            ],
-          );
-        }),
-      ),
+                ),
+                SizedBox(height: 10),
+                Wrap(
+                  spacing: 10,
+                  runSpacing: 10,
+                  children: List.generate(
+                      controller.brandList.length,
+                      (index) => chooseButton(
+                            text: controller.brandList[index].title,
+                            index: index,
+                            baseList: controller.brandList.value,
+                            onTap: (bool value) {
+                              controller.brandList[index].isSelected = value;
+                              controller.brandList.refresh();
+                              controller.calculateCountFilter();
+                            },
+                          )).toList(),
+                ),
+                SizedBox(height: 10),
+                Text("delivery_terms".tr,
+                    style: widgets.robotoConsid(fontWeight: FontWeight.bold)),
+                SizedBox(height: 10),
+                Wrap(
+                  spacing: 10,
+                  runSpacing: 10,
+                  children: List.generate(
+                      controller.delivryTimeList.length,
+                      (index) => chooseButton(
+                            baseList: controller.delivryTimeList,
+                            index: index,
+                            text: controller.delivryTimeList[index].title,
+                            onTap: (bool value) {
+                              controller.delivryTimeList[index].isSelected =
+                                  value;
+                              controller.delivryTimeList.refresh();
+                              controller.calculateCountFilter();
+                            },
+                          )).toList(),
+                ),
+                SizedBox(height: 10),
+                Text("discounts".tr,
+                    style: widgets.robotoConsid(fontWeight: FontWeight.bold)),
+                SizedBox(height: 10),
+                Wrap(
+                  spacing: 10,
+                  runSpacing: 10,
+                  children: List.generate(
+                      controller.discountsList.length,
+                      (index) => chooseButton(
+                            baseList: controller.discountsList,
+                            index: index,
+                            text: controller.discountsList[index].title,
+                            onTap: (bool value) {
+                              controller.discountsList[index].isSelected =
+                                  value;
+                              controller.discountsList.refresh();
+                              controller.calculateCountFilter();
+                            },
+                          )).toList(),
+                ),
+                Spacer(),
+                widgets.saveButton(
+                    text: 'apply',
+                    onPressed: () {
+                      print("применить");
+                      Get.back();
+                    }),
+                SizedBox(height: 20),
+              ],
+            );
+          })),
     );
   }
 
   Widget chooseButton(
       {required int index,
       String text = "Acer",
-      required int selectedIndex,
+      required List<MultiSelect> baseList,
       required Function(bool value) onTap}) {
     return ChoiceChip(
         padding: EdgeInsets.all(0),
@@ -151,7 +160,7 @@ class FilterPage extends StatelessWidget {
         label: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (index == selectedIndex)
+            if (baseList[index].isSelected)
               Icon(
                 Icons.check,
                 color: Colors.white,
@@ -161,13 +170,13 @@ class FilterPage extends StatelessWidget {
             Text(
               text,
               style: TextStyle(
-                  color: index == selectedIndex
+                  color: baseList[index].isSelected
                       ? Colors.white
                       : AppTextStyles.colorBlackMy),
             ),
           ],
         ),
-        selected: index == selectedIndex ? true : false,
+        selected: baseList[index].isSelected,
         onSelected: onTap);
   }
 
