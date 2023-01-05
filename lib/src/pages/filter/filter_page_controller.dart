@@ -11,6 +11,8 @@ class FilterPageController extends GetxController {
 
   RxInt filtedCounter = 0.obs;
   RxInt brandCounter = 0.obs;
+  RxInt delivaryCounter = 0.obs;
+  RxInt discountCounter = 0.obs;
 
   final getTodayCheck = false.obs;
   final bestPriceCheck = false.obs;
@@ -49,6 +51,8 @@ class FilterPageController extends GetxController {
     final endText = priceEndCont.text.length > 0 ? 1 : 0;
     filtedCounter.value = brand + delivry + discount + startText + endText;
     brandCounter.value = brand;
+    discountCounter.value = discount;
+    delivaryCounter.value = delivry;
   }
 
   resetAll() {
@@ -57,13 +61,38 @@ class FilterPageController extends GetxController {
     priceEndCont.text = "";
     final brand =
         brandList.where((item) => item.isSelected == true).toList().length;
+    final discount =
+        discountsList.where((item) => item.isSelected == true).toList().length;
+    final delivry = delivryTimeList
+        .where((item) => item.isSelected == true)
+        .toList()
+        .length;
     brandCounter.value = brand;
+    discountCounter.value = discount;
+    delivaryCounter.value = delivry;
   }
 
   resetBrend() {
     for (int i = 0; i < brandList.length; i++) brandList[i].isSelected = false;
     brandList.refresh();
     brandCounter.value = 0;
+    calculateCountFilter();
+  }
+
+  resetDelivery() {
+    for (int i = 0; i < delivryTimeList.length; i++)
+      delivryTimeList[i].isSelected = false;
+    delivryTimeList.refresh();
+    delivaryCounter.value = 0;
+    calculateCountFilter();
+  }
+
+  resetDiscount() {
+    for (int i = 0; i < discountsList.length; i++)
+      discountsList[i].isSelected = false;
+    discountsList.refresh();
+    discountCounter.value = 0;
+    calculateCountFilter();
   }
 
   resetLists() {

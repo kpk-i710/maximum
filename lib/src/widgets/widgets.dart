@@ -3006,17 +3006,22 @@ PreferredSizeWidget appBarFilter() {
             ),
             SizedBox(width: 5),
             Obx(() {
-              return Container(
-                decoration: BoxDecoration(
-                    color: AppTextStyles.colorRedMy,
-                    borderRadius: BorderRadius.circular(2)),
-                child: Center(
-                    child: Text(
-                  "${controller.filtedCounter.value}",
-                  style:
-                      widgets.robotoConsid(color: Colors.white, fontSize: 10),
-                )).paddingSymmetric(horizontal: 3, vertical: 1),
-              );
+              return controller.filtedCounter.value > 0
+                  ? Container(
+                      decoration: BoxDecoration(
+                          color: AppTextStyles.colorRedMy,
+                          borderRadius: BorderRadius.circular(2)),
+                      child: Center(
+                          child: Text(
+                        "${controller.filtedCounter.value}",
+                        style: widgets.robotoConsid(
+                            color: Colors.white, fontSize: 10),
+                      )).paddingSymmetric(horizontal: 3, vertical: 1),
+                    )
+                  : SizedBox(
+                      width: 0,
+                      height: 0,
+                      child: Text("${controller.filtedCounter.value}"));
             }),
           ],
         ),
@@ -3030,7 +3035,7 @@ PreferredSizeWidget appBarFilter() {
             ),
           ),
           onTap: () {
-            controller.resetAll() ;
+            controller.resetAll();
           },
         ),
         Spacer(),
@@ -3042,6 +3047,19 @@ PreferredSizeWidget appBarFilter() {
             })
       ],
     ),
+  );
+}
+
+Widget resetButton({Function()? onTap}) {
+  return widgets.customButton(
+    child: widgets.underLineDashed(
+      child: Text(
+        "reset".tr,
+        style: widgets.robotoConsid(
+            color: AppTextStyles.colorBlueMy, fontSize: 14),
+      ),
+    ),
+    onTap: onTap,
   );
 }
 

@@ -58,19 +58,10 @@ class FilterPage extends StatelessWidget {
                         style:
                             widgets.robotoConsid(fontWeight: FontWeight.bold)),
                     Spacer(),
-                    if (controller.brandCounter.value>0)
-                      widgets.customButton(
-                        child: widgets.underLineDashed(
-                          child: Text(
-                            "reset".tr,
-                            style: widgets.robotoConsid(
-                                color: AppTextStyles.colorBlueMy, fontSize: 14),
-                          ),
-                        ),
-                        onTap: () {
-                          controller.resetBrend();
-                        },
-                      ),
+                    if (controller.brandCounter.value > 0)
+                      widgets.resetButton(onTap: () {
+                        controller.resetBrend();
+                      })
                   ],
                 ),
                 SizedBox(height: 10),
@@ -91,8 +82,18 @@ class FilterPage extends StatelessWidget {
                           )).toList(),
                 ),
                 SizedBox(height: 10),
-                Text("delivery_terms".tr,
-                    style: widgets.robotoConsid(fontWeight: FontWeight.bold)),
+                Row(
+                  children: [
+                    Text("delivery_terms".tr,
+                        style:
+                            widgets.robotoConsid(fontWeight: FontWeight.bold)),
+                    Spacer(),
+                    if (controller.delivaryCounter.value > 0)
+                      widgets.resetButton(onTap: () {
+                        controller.resetDelivery();
+                      })
+                  ],
+                ),
                 SizedBox(height: 10),
                 Wrap(
                   spacing: 10,
@@ -112,8 +113,18 @@ class FilterPage extends StatelessWidget {
                           )).toList(),
                 ),
                 SizedBox(height: 10),
-                Text("discounts".tr,
-                    style: widgets.robotoConsid(fontWeight: FontWeight.bold)),
+                Row(
+                  children: [
+                    Text("discounts".tr,
+                        style:
+                            widgets.robotoConsid(fontWeight: FontWeight.bold)),
+                    Spacer(),
+                    if (controller.discountCounter.value > 0)
+                      widgets.resetButton(onTap: () {
+                        controller.resetDiscount();
+                      })
+                  ],
+                ),
                 SizedBox(height: 10),
                 Wrap(
                   spacing: 10,
