@@ -5,6 +5,7 @@ import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/get_utils/src/extensions/export.dart';
 import 'package:get/instance_manager.dart';
 import 'package:maxkgapp/src/helpers/app_router.dart';
+import 'package:maxkgapp/src/pages/between_pages_all/between_all_pages.dart';
 import 'package:maxkgapp/src/pages/home/home_page_controller.dart';
 import 'package:maxkgapp/src/styles.dart';
 
@@ -26,8 +27,10 @@ class PromotionsSwiperWidget extends StatelessWidget {
     return Obx(() {
       return GestureDetector(
         onTap: () {
-          Get.toNamed(
-            AppRouter.betweenAllPage,
+          Get.to(
+            BetweenAllPages(
+              title: homeController.newsList[currentIndex.value].title,
+            ),
             arguments: {
               "idNews": homeController.newsList[currentIndex.value].id,
             },
@@ -67,8 +70,7 @@ class PromotionsSwiperWidget extends StatelessWidget {
                           child: Text(
                             "${currentIndex.value + 1}/${list.length > 5 ? 5 : list.length}",
                             style: widgets.robotoConsid(
-                                color: AppTextStyles.colorGrayMy,fontSize: 12
-                            ),
+                                color: AppTextStyles.colorGrayMy, fontSize: 12),
                           ),
                         )),
                   ),

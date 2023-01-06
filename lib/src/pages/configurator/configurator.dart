@@ -169,19 +169,21 @@ class Confugarator extends StatelessWidget {
                       Spacer(),
                       widgets.anySvg(nameSvg: 'select'),
                       SizedBox(width: 5),
-                      Text("Выбрать"),
+                      Text(
+                        "Выбрать",
+                        style: widgets.robotoConsid(),
+                      ),
                       SizedBox(width: 10),
                     ],
                   ),
                 ),
               ),
               onTap: () {
-                Get.toNamed(
-                  AppRouter.betweenAllPage,
-                  arguments: {
-                    "title": "${controller.confList![index].title}",
-                    "idNews": "382"
-                  },
+                Get.to(
+                  BetweenAllPages(
+                    title: controller.confList![index].title,
+                  ),
+                  arguments: {"idNews": "382"},
                 );
                 controller.currentIndex.value = index;
               },

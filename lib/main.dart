@@ -16,10 +16,8 @@ import 'src/styles.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
-  await DBHelper().init(); 
-
+  await DBHelper().init();
   FlutterNativeSplash.remove();
-
   runApp(MyApp());
 }
 

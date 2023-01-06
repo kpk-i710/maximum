@@ -8,6 +8,7 @@ import 'package:get/get_utils/get_utils.dart';
 import 'package:get/route_manager.dart';
 import 'package:maxkgapp/src/helpers/app_router.dart';
 import 'package:maxkgapp/src/models/news.dart';
+import 'package:maxkgapp/src/pages/between_pages_all/between_all_pages.dart';
 import 'package:maxkgapp/src/pages/home/home_page_controller.dart';
 import 'package:maxkgapp/src/pages/news/all_news_controller.dart';
 import 'package:maxkgapp/src/styles.dart';
@@ -27,8 +28,10 @@ class AllNewsSwiper extends StatelessWidget {
     return Obx(() {
       return GestureDetector(
         onTap: () {
-          Get.toNamed(
-            AppRouter.betweenAllPage,
+          Get.to(
+            BetweenAllPages(
+              title: homeController.newsList[currentIndex.value].title,
+            ),
             arguments: {
               "idNews": homeController.newsList[currentIndex.value].id,
             },

@@ -20,13 +20,15 @@ import '../detail_all/detail_all.dart';
 import '../../widgets/widgets.dart' as widgets;
 
 class BetweenAllPages extends StatelessWidget {
-  BetweenAllPages({Key? key}) : super(key: key);
+  BetweenAllPages({Key? key,   this.title}) : super(key: key);
 
   final newsListPageController = Get.put(BetweenAllPagesController());
   final height = 180.0;
   final widgetController = Get.put(WidgetsControllers());
   final homeController = Get.put(HomePageController());
   final controller = Get.put(FilterPageController());
+
+  final String? title;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +43,7 @@ class BetweenAllPages extends StatelessWidget {
                   headerSliverBuilder:
                       (BuildContext context, bool innerBoxIsScrolled) => [
                     widgets.appBarFloating(
-                        title: newsListPageController.newsList?.news.naim ?? "")
+                        title: title ?? "")
                   ],
                   body: Stack(
                     children: [
