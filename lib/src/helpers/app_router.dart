@@ -44,7 +44,7 @@ class AppRouter {
   static const String spashScreen = '/spashScreen';
   static const String pageNews = '/pageNews';
   static const String netWork = '/netWork';
-  static const String listNews = '/newsList';
+  static const String betweenAllPage = '/newsList';
   static const String listBanners = '/listBanner';
   static const String organizationPage = '/organizationPage';
   static const String main = '/main';
@@ -99,7 +99,7 @@ class AppRouter {
   static final pages = [
     GetPage(name: configurator, page: () => Confugarator()),
     GetPage(name: netWork, page: () => NetWork()),
-    GetPage(name: listNews, page: () => BetweenAllPages()),
+    GetPage(name: betweenAllPage, page: () => BetweenAllPages()),
     GetPage(name: listBanners, page: () => listBanner()),
     GetPage(name: organizationPage, page: () => OrganizationPage()),
     GetPage(name: test, page: () => TestPage()),

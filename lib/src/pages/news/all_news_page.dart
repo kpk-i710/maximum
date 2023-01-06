@@ -29,7 +29,7 @@ class AllNewsPage extends StatelessWidget {
                 return GestureDetector(
                   onTap: () {
                     Get.toNamed(
-                      AppRouter.listNews,
+                      AppRouter.betweenAllPage,
                       arguments: {
                         "idNews": allNewsController.newsList[index].id,
                       },

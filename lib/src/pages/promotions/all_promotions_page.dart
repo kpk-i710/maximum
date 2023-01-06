@@ -28,7 +28,7 @@ class AllPromotionsPage extends StatelessWidget {
                 child: GestureDetector(
                   onTap: () {
                     Get.toNamed(
-                      AppRouter.listNews,
+                      AppRouter.betweenAllPage,
                       arguments: {
                         "idNews":
                             allPromotionsController.promotionsList[index].id,

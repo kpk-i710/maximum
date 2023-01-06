@@ -27,7 +27,7 @@ class PromotionsSwiperWidget extends StatelessWidget {
       return GestureDetector(
         onTap: () {
           Get.toNamed(
-            AppRouter.listNews,
+            AppRouter.betweenAllPage,
             arguments: {
               "idNews": homeController.newsList[currentIndex.value].id,
             },

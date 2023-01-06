@@ -3410,7 +3410,7 @@ Widget appBarFloating({required String title}) {
   return SliverAppBar(
     iconTheme: IconThemeData(color: AppTextStyles.colorBlackMy),
     title: Text(
-      Get.arguments['title'] ?? "",
+      title != null ? title : "",
       style: widgets.robotoConsid(fontSize: 16),
     ),
     backgroundColor: Colors.white,

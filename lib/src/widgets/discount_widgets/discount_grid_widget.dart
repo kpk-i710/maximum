@@ -33,7 +33,7 @@ class DiscountGridWidget extends StatelessWidget {
                   onTap: () {
 
                     Get.toNamed(
-                      AppRouter.listNews,
+                      AppRouter.betweenAllPage,
                       arguments: {
                         "idNews": homeController.newsList[1].id,
                       },

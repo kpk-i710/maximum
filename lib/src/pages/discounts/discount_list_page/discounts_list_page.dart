@@ -33,9 +33,10 @@ class DiscountsListPage extends StatelessWidget {
                     list: DiscountController.discountList.value,
                     onItemTap: (index) {
                       Get.toNamed(
-                        AppRouter.listNews,
+                        AppRouter.betweenAllPage,
                         arguments: {
                           "idNews": homeController.newsList[1].id,
+
                         },
                       );
                     })),

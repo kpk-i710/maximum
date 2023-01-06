@@ -15,8 +15,9 @@ class BetweenAllPagesController extends GetxController {
   void tabSelect(int index) => Helper.tabSelect(index);
   @override
   Future<void> onInit() async {
+    print("число");
     newsList =
-        await RemoteService().getNews(Get.arguments['idNews'].toString());
+        await RemoteService().getNews(Get.arguments!=null?Get.arguments['idNews'].toString():"382");
     if (newsList != null) {
       isLoaded.value = true;
     }
