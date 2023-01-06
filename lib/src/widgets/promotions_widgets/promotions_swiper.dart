@@ -27,8 +27,7 @@ class PromotionsSwiperWidget extends StatelessWidget {
     return Obx(() {
       return GestureDetector(
         onTap: () {
-          Get.to(
-            BetweenAllPages(
+          Get.to(() => BetweenAllPages(
               title: homeController.newsList[currentIndex.value].title,
             ),
             arguments: {

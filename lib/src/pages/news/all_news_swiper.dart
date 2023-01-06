@@ -29,7 +29,7 @@ class AllNewsSwiper extends StatelessWidget {
       return GestureDetector(
         onTap: () {
           Get.to(
-            BetweenAllPages(
+                () =>  BetweenAllPages(
               title: homeController.newsList[currentIndex.value].title,
             ),
             arguments: {

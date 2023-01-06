@@ -180,7 +180,7 @@ class Confugarator extends StatelessWidget {
               ),
               onTap: () {
                 Get.to(
-                  BetweenAllPages(
+                  () => BetweenAllPages(
                     title: controller.confList![index].title,
                   ),
                   arguments: {"idNews": "382"},

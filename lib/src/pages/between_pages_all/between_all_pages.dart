@@ -77,7 +77,7 @@ class BetweenAllPages extends StatelessWidget {
     );
   }
 
-  getCurrentContainer({required int index}) {
+   getCurrentContainer({required int index}) {
     return Obx(() {
       return Column(
         children: [

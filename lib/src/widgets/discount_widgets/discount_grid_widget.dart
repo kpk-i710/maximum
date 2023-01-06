@@ -34,7 +34,7 @@ class DiscountGridWidget extends StatelessWidget {
               : InkWell(
                   onTap: () {
                     Get.to(
-                      BetweenAllPages(
+                          () => BetweenAllPages(
                         title: homeController.newsList[1].title,
                       ),
                       arguments: {
