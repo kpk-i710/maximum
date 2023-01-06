@@ -8,7 +8,7 @@ class FilterPageController extends GetxController {
   final priceStartCont = TextEditingController();
 
   final priceEndCont = TextEditingController();
-
+  RxBool isSearched = false.obs;
   RxInt filtedCounter = 0.obs;
   RxInt brandCounter = 0.obs;
   RxInt delivaryCounter = 0.obs;

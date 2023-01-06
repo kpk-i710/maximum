@@ -11,6 +11,7 @@ import 'package:maxkgapp/src/widgets/filter_widget.dart';
 import 'package:maxkgapp/src/widgets/popular_categories/popular_categories_item.dart';
 import 'package:maxkgapp/src/widgets/popular_goods/popular_goods_grid_widget.dart';
 import 'package:maxkgapp/src/widgets/product_widgets/product_hight_item_widget.dart';
+import 'package:maxkgapp/src/widgets/search_widget_2/searchWidget.dart';
 import 'package:maxkgapp/src/widgets/widgets_controller.dart';
 
 import '../../widgets/news_widgets/news_grid_item_widget.dart';
@@ -20,75 +21,88 @@ import '../detail_all/detail_all.dart';
 import '../../widgets/widgets.dart' as widgets;
 
 class BetweenAllPages extends StatelessWidget {
-  BetweenAllPages({Key? key,   this.title}) : super(key: key);
+  BetweenAllPages(
+      {Key? key,
+      this.title = "",
+      this.fromConfigurator = false,
+      this.indexConfigurator = 0})
+      : super(key: key);
 
-  final newsListPageController = Get.put(BetweenAllPagesController());
+  final betweenAllPageController = Get.put(BetweenAllPagesController());
   final height = 180.0;
   final widgetController = Get.put(WidgetsControllers());
   final homeController = Get.put(HomePageController());
   final controller = Get.put(FilterPageController());
 
   final String? title;
+  final bool fromConfigurator;
+  final int indexConfigurator;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: widgets.bottomNavigation(
-          currentTab: 0, onSelectTab: newsListPageController.tabSelect),
-      body: SafeArea(
-        child: Obx(() {
-          return newsListPageController.isLoaded.value
-              ? NestedScrollView(
-                  floatHeaderSlivers: true,
-                  headerSliverBuilder:
-                      (BuildContext context, bool innerBoxIsScrolled) => [
-                    widgets.appBarFloating(
-                        title: title ?? "")
-                  ],
-                  body: Stack(
-                    children: [
-                      ListView.separated(
-                        itemCount: newsListPageController
-                                .newsList?.result[0][0].length ??
-                            0,
-                        itemBuilder: (context, index) {
-                          if (index == 0) return widgets.newsHtml();
-
-                          return getCurrentContainer(index: index);
-                        },
-                        separatorBuilder: (BuildContext context, int index) {
-                          return SizedBox(height: 10);
-                        },
-                      ),
-                      FilterWidget(
-                          onFilterTap: () async {
-                            Get.toNamed(AppRouter.filter);
-                          },
-                          onSortTap: () {
-                            widgets.getSortSheet();
-                          },
-                          callBack: (type) {}),
+    return WillPopScope(
+      onWillPop: () async {
+        controller.isSearched.value = false;
+        return true;
+      },
+      child: Scaffold(
+        bottomNavigationBar: widgets.bottomNavigation(
+            currentTab: 0, onSelectTab: betweenAllPageController.tabSelect),
+        body: SafeArea(
+          child: Obx(() {
+            return betweenAllPageController.isLoaded.value
+                ? NestedScrollView(
+                    floatHeaderSlivers: true,
+                    headerSliverBuilder:
+                        (BuildContext context, bool innerBoxIsScrolled) => [
+                      controller.isSearched.value
+                          ? widgets.appBarSearch()
+                          : widgets.appBarFloating(title: title!)
                     ],
-                  ),
-                )
-              : Center(child: CircularProgressIndicator());
-        }),
+                    body: ListView.separated(
+                      itemCount: betweenAllPageController
+                              .newsList?.result[0][0].length ??
+                          0,
+                      itemBuilder: (context, index) {
+                        if (index == 0)
+                          return Column(
+                            children: [
+                              widgets.isSearched(),
+                              widgets.isFiltered(),
+                            ],
+                          );
+                        return getCurrentContainer(
+                            index: index,
+                            title: title! +
+                                " ${betweenAllPageController.getRandomTitle()}");
+                      },
+                      separatorBuilder: (BuildContext context, int index) {
+                        return SizedBox(height: 10);
+                      },
+                    ),
+                  )
+                : Center(child: CircularProgressIndicator());
+          }),
+        ),
       ),
     );
   }
 
-   getCurrentContainer({required int index}) {
+  getCurrentContainer({required int index, required String title}) {
     return Obx(() {
       return Column(
         children: [
           if (widgetController.currentVersionCatalog.value == 0)
             Container(
               child: NewsGridItemWidget(
+                title: title,
+                indexConfigurator: indexConfigurator,
+                price: betweenAllPageController.getRandomTitle(),
+                fromConfigurator: fromConfigurator,
                 index: index,
                 onPress: () {
                   goToDetail(index: index);
                 },
-                result: newsListPageController.newsList?.result[0][0][index],
               ),
             ),
           if (widgetController.currentVersionCatalog.value == 1)
@@ -111,10 +125,8 @@ class BetweenAllPages extends StatelessWidget {
     });
   }
 
-
-
   void goToDetail({required int index}) {
-    final product = newsListPageController.newsList?.result[0][0][index];
+    final product = betweenAllPageController.newsList?.result[0][0][index];
     Get.to(
         () => DetailAll(
               idPost: product?.idPost,
@@ -124,7 +136,7 @@ class BetweenAllPages extends StatelessWidget {
             ),
         arguments: {
           "title":
-              newsListPageController.newsList?.result[0][0][index].naim ?? "",
+              betweenAllPageController.newsList?.result[0][0][index].naim ?? "",
         });
   }
 

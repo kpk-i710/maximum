@@ -24,50 +24,60 @@ class Confugarator extends StatelessWidget {
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: ListView.separated(
-                      itemBuilder: (context, index) {
-                        if (index == 0) {
-                          return Column(
-                            children: [
-                              systemBloc(),
-                              itemConfigurator(
-                                title: controller.confList![index].title,
-                                image: controller.confList![index].image,
-                                index: index,
-                              )
-                            ],
-                          );
-                        }
-                        if (index == 10) {
-                          return titleMain(
-                              title: 'Переферийные устройства', index: index);
-                        }
+                    child: Obx(() {
+                      return ListView.separated(
+                          itemBuilder: (context, index) {
+                            if (index == 0) {
+                              return Column(
+                                children: [
+                                  systemBloc(),
+                                  mainItem(index: index),
+                                ],
+                              );
+                            }
 
-                        if (index == 20) {
-                          return titleMain(
-                              title: 'Дополнительные комплектующие',
-                              index: index);
-                        }
+                            if (index == 10) {
+                              return titleMain(
+                                  title: 'Переферийные устройства',
+                                  index: index);
+                            }
 
-                        if (index == 23) {
-                          return titleMain(title: 'Мебель', index: index);
-                        }
-                        return itemConfigurator(
-                          title: controller.confList![index].title,
-                          image: controller.confList![index].image,
-                          index: index,
-                        );
-                      },
-                      separatorBuilder: (BuildContext context, int index) {
-                        return SizedBox(height: 10);
-                      },
-                      itemCount: controller.confList!.length ?? 0,
-                    ),
+                            if (index == 20) {
+                              return titleMain(
+                                  title: 'Дополнительные комплектующие',
+                                  index: index);
+                            }
+
+                            if (index == 23) {
+                              return titleMain(title: 'Мебель', index: index);
+                            }
+
+                            return mainItem(index: index);
+                          },
+                          separatorBuilder: (BuildContext context, int index) {
+                            return SizedBox(height: 10);
+                          },
+                          itemCount: controller.configuratorSelected.length);
+                    }),
                   ),
                 ),
             ],
           );
         }));
+  }
+
+  Widget mainItem({required int index}) {
+    return controller.configuratorSelected[index].title == ""
+        ? itemConfigurator(
+            title: controller.confList![index].title,
+            image: controller.confList![index].image,
+            index: index,
+          )
+        : itemConfiguratorSelected(
+            title: controller.confList![index].title,
+            image: controller.confList![index].image,
+            index: index,
+          );
   }
 
   Widget titleMain({required String title, required int index}) {
@@ -96,11 +106,7 @@ class Confugarator extends StatelessWidget {
             ],
           ),
         ),
-        itemConfigurator(
-          title: controller.confList![index].title,
-          image: controller.confList![index].image,
-          index: index,
-        )
+        mainItem(index: index)
       ],
     );
   }
@@ -130,6 +136,7 @@ class Confugarator extends StatelessWidget {
           Spacer(),
           widgets.resetButton(onTap: () {
             print("Сбросить");
+            controller.resetConfigureted();
           })
         ],
       ),
@@ -181,14 +188,139 @@ class Confugarator extends StatelessWidget {
               onTap: () {
                 Get.to(
                   () => BetweenAllPages(
+                    indexConfigurator: index,
+                    fromConfigurator: true,
                     title: controller.confList![index].title,
                   ),
                   arguments: {"idNews": "382"},
                 );
-                controller.currentIndex.value = index;
               },
             ),
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget itemConfiguratorSelected(
+      {required String title, required String image, required int index}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+      child: Column(
+        children: [
+          widgets.boxShadows(
+              padding: 0,
+              child: Container(
+                height: 170,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          image != ""
+                              ? Image.asset(
+                                  'assets/images/config/$image.png',
+                                  width: 30,
+                                  height: 30,
+                                )
+                              : SizedBox(
+                                  width: 30,
+                                  height: 30,
+                                ),
+                          SizedBox(width: 10),
+                          Text(
+                            title,
+                            style: widgets.robotoConsid(),
+                          ),
+                          Spacer(),
+                          widgets.colorCustomButton(
+                              color: AppTextStyles.colorGrayDividar,
+                              child: Container(
+                                  width: 40,
+                                  height: 40,
+                                  child: Center(
+                                      child: widgets.anySvg(nameSvg: 'trash'))),
+                              onTap: () {
+                                controller.configuratorSelected[index].title =
+                                    "";
+                                controller.configuratorSelected.refresh();
+                              }),
+                          SizedBox(width: 10),
+                        ],
+                      ),
+                      SizedBox(height: 10),
+                      Row(
+                        children: [
+                          Stack(
+                            clipBehavior: Clip.none,
+                            children: [
+                              Image.asset(
+                                'assets/images/laptop.png',
+                                width: 100,
+                                height: 100,
+                              ),
+                              Positioned(
+                                bottom: -10,
+                                left: 0,
+                                child: Container(
+                                  width: 40,
+                                  height: 20,
+                                  child: Center(
+                                      child: Text(
+                                    "ХИТ",
+                                    style: widgets.robotoConsid(
+                                        color: Colors.white),
+                                  )),
+                                  decoration: BoxDecoration(
+                                      color: AppTextStyles.colorBlueMy,
+                                      borderRadius: BorderRadius.circular(2)),
+                                ),
+                              )
+                            ],
+                          ),
+                          SizedBox(width: 10),
+                          Flexible(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  controller.configuratorSelected[index].title,
+                                  style: widgets.robotoConsid(fontSize: 12),
+                                ),
+                                SizedBox(height: 5),
+                                Text("Код: 11400703",
+                                    style: widgets.robotoConsid(
+                                        fontSize: 12,
+                                        color: AppTextStyles.colorBlueMy)),
+                                SizedBox(height: 7),
+                                Row(
+                                  children: [
+                                    Text(
+                                      "${controller.configuratorSelected[index].price}",
+                                      style: widgets.robotoConsid(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(width: 10),
+                                    widgets.strikeThrough(
+                                      child: Text(
+                                        "${controller.configuratorSelected[index].price + 1000}",
+                                        style: widgets.robotoConsid(
+                                            color: AppTextStyles.colorGrayMy),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(width: 10),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              )),
         ],
       ),
     );

@@ -104,7 +104,7 @@ class ProductListItemWidget extends StatelessWidget {
                       oldPrice: "1 200",
                     ),
                     Spacer(),
-                    widgets.addCardAndFavoriteAndCar(
+                    widgets.addCardAndFavoriteNew(
                         textCard: 'to_cart'.tr,
                         onPressedCard: () {},
                         isSelectedFavorite: false,

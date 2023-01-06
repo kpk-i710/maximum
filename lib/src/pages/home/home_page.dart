@@ -35,229 +35,237 @@ class HomePage extends StatelessWidget {
     return Scaffold(
         backgroundColor: Get.context!.theme.background,
         body: SafeArea(
-          child: RefreshIndicator(
-              onRefresh: homeController.onRefresh,
-              child: ListView.builder(
-                  itemCount: kDebugMode == true ? 1 : null,
-                  itemBuilder: (context, index) {
-                    return Column(
-                      children: [
-                        SearchWidget(),
-                        widgets.location(
-                            adress:
-                                (controllerShoppingCart.selectedCity.value ??
-                                        "specify_the_city".tr) +
-                                    (controllerShoppingCart
-                                            .selectedStreetHouse.value ??
-                                        ""),
-                            onTap: () {
-                              Get.to(ShippingMethodsPage());
-                            }),
-                        Obx(() => BannerWidget(
-                            list: homeController.bannerList.value)),
-                        if (Prefs.isLogin)
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(height: 20),
-                              Row(
-                                children: [
-                                  SizedBox(width: 15),
-                                  widgets.anySvg(
-                                      nameSvg: 'person_outline',
-                                      size: Size(20, 20)),
-                                  SizedBox(width: 15),
-                                  Text('welcome'.tr + " Екатерина!",
-                                      style: widgets.robotoConsid(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold)),
-                                ],
-                              ),
-                              const SizedBox(height: 10),
-                              widgets.homeButton(
-                                  icon: 'checkMark',
-                                  text: 'current_orders',
-                                  page: AppRouter.currentOrders),
-                              const SizedBox(height: 10),
-                              widgets.homeButton(
-                                  icon: 'bell',
-                                  text: 'notifications',
-                                  page: AppRouter.notificationsDelivry),
-                              const SizedBox(height: 10),
-                              // Get.toNamed(AppRouter.currentOrders);
-                            ],
-                          ).paddingSymmetric(horizontal: 12),
-                        if (Prefs.isLogin)
-                          Container(
-                            color: AppTextStyles.colorFocus,
-                            child: Column(
+          child: NestedScrollView(
+            floatHeaderSlivers: true,
+            headerSliverBuilder:
+                (BuildContext context, bool innerBoxIsScrolled) =>
+                    [widgets.appBarSearchHome()],
+            body: RefreshIndicator(
+                onRefresh: homeController.onRefresh,
+                child: ListView.builder(
+                    itemCount: kDebugMode == true ? 1 : null,
+                    itemBuilder: (context, index) {
+                      return Column(
+                        children: [
+                          widgets.location(
+                              adress:
+                                  (controllerShoppingCart.selectedCity.value ??
+                                          "specify_the_city".tr) +
+                                      (controllerShoppingCart
+                                              .selectedStreetHouse.value ??
+                                          ""),
+                              onTap: () {
+                                Get.to(ShippingMethodsPage());
+                              }),
+                          Obx(() => BannerWidget(
+                              list: homeController.bannerList.value)),
+                          if (Prefs.isLogin)
+                            Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 SizedBox(height: 20),
-                                Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: homeController.left),
-                                  child: Text(
-                                    'you_watched'.tr,
-                                    style: widgets.robotoConsid(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold),
-                                  ),
+                                Row(
+                                  children: [
+                                    SizedBox(width: 15),
+                                    widgets.anySvg(
+                                        nameSvg: 'person_outline',
+                                        size: Size(20, 20)),
+                                    SizedBox(width: 15),
+                                    Text('welcome'.tr + " Екатерина!",
+                                        style: widgets.robotoConsid(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold)),
+                                  ],
                                 ),
-                                SizedBox(height: 15),
-                                Obx(() => Padding(
-                                      padding: EdgeInsets.only(
-                                          left: homeController.left),
-                                      child: ProductsCarouselWidget(
-                                        list: homeController
-                                            .viewedProductsList.value,
-                                      ),
+                                const SizedBox(height: 10),
+                                widgets.homeButton(
+                                    icon: 'checkMark',
+                                    text: 'current_orders',
+                                    page: AppRouter.currentOrders),
+                                const SizedBox(height: 10),
+                                widgets.homeButton(
+                                    icon: 'bell',
+                                    text: 'notifications',
+                                    page: AppRouter.notificationsDelivry),
+                                const SizedBox(height: 10),
+                                // Get.toNamed(AppRouter.currentOrders);
+                              ],
+                            ).paddingSymmetric(horizontal: 12),
+                          if (Prefs.isLogin)
+                            Container(
+                              color: AppTextStyles.colorFocus,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(height: 20),
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: homeController.left),
+                                    child: Text(
+                                      'you_watched'.tr,
+                                      style: widgets.robotoConsid(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  SizedBox(height: 15),
+                                  Obx(() => Padding(
+                                        padding: EdgeInsets.only(
+                                            left: homeController.left),
+                                        child: ProductsCarouselWidget(
+                                          list: homeController
+                                              .viewedProductsList.value,
+                                        ),
+                                      )),
+                                ],
+                              ),
+                            ),
+                          SizedBox(height: 30),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              widgets.titleWidget(
+                                  title: "popular_categories".tr, left: 10),
+                              SizedBox(height: 10),
+                              Obx(() => PopularCategoriesGridWidget(
+                                    list: homeController
+                                        .seasonCategoriesList.value,
+                                    countAxis: 2,
+                                    maxHeight: 350,
+                                    itemCount: 8,
+                                  )),
+                            ],
+                          ),
+                          SizedBox(height: 30),
+                          Padding(
+                            padding: EdgeInsets.only(left: homeController.left),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                widgets.titleWidget(title: 'bought_today'.tr),
+                                Obx(() => BoughtTodayGridWidget(
+                                      list: homeController.discountList.value,
                                     )),
                               ],
                             ),
                           ),
-                        SizedBox(height: 30),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            widgets.titleWidget(
-                                title: "popular_categories".tr, left: 10),
-                            SizedBox(height: 10),
-                            Obx(() => PopularCategoriesGridWidget(
-                                  list:
-                                      homeController.seasonCategoriesList.value,
-                                  countAxis: 2,
-                                  maxHeight: 350,
-                                  itemCount: 8,
-                                )),
-                          ],
-                        ),
-                        SizedBox(height: 30),
-                        Padding(
-                          padding: EdgeInsets.only(left: homeController.left),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          SizedBox(height: 30),
+                          Column(
                             children: [
-                              widgets.titleWidget(title: 'bought_today'.tr),
-                              Obx(() => BoughtTodayGridWidget(
-                                    list: homeController.discountList.value,
-                                  )),
+                              widgets.titleWidget(
+                                  title: 'promotions'.tr,
+                                  onTap: () {
+                                    Get.toNamed(AppRouter.allPromotionsPage);
+                                  },
+                                  isTrailing: true),
+                              Column(
+                                children: [
+                                  PromotionsSwiperWidget(
+                                    list: homeController.newsList,
+                                  ),
+                                  SizedBox(height: 20),
+                                ],
+                              ),
                             ],
-                          ),
-                        ),
-                        SizedBox(height: 30),
-                        Column(
-                          children: [
-                            widgets.titleWidget(
-                                title: 'promotions'.tr,
-                                onTap: () {
-                                  Get.toNamed(AppRouter.allPromotionsPage);
-                                },
-                                isTrailing: true),
-                            Column(
+                          ).paddingSymmetric(horizontal: homeController.left),
+                          SizedBox(height: 30),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 10.0),
+                            child: Column(
                               children: [
-                                PromotionsSwiperWidget(
-                                  list: homeController.newsList,
-                                ),
                                 SizedBox(height: 20),
+                                widgets.titleWidget(
+                                  title: 'brand_offers'.tr,
+                                ),
+                                widgets.subTitleWidget(
+                                  title: 'Asus',
+                                ),
+                                Obx(() => BoughtTodayGridWidget(
+                                      list: homeController.discountList.value,
+                                    )),
+                                SizedBox(height: 10),
+                                widgets.subTitleWidget(
+                                  title: 'Мечта',
+                                ),
+                                Obx(() => BoughtTodayGridWidget(
+                                      list: homeController.discountList.value,
+                                    )),
+                                SizedBox(height: 10),
+                                widgets.subTitleWidget(
+                                  title: 'Launch',
+                                ),
+                                Obx(() => BoughtTodayGridWidget(
+                                      list: homeController.discountList.value,
+                                    )),
                               ],
                             ),
-                          ],
-                        ).paddingSymmetric(horizontal: homeController.left),
-                        SizedBox(height: 30),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 10.0),
-                          child: Column(
-                            children: [
-                              SizedBox(height: 20),
-                              widgets.titleWidget(
-                                title: 'brand_offers'.tr,
-                              ),
-                              widgets.subTitleWidget(
-                                title: 'Asus',
-                              ),
-                              Obx(() => BoughtTodayGridWidget(
-                                    list: homeController.discountList.value,
-                                  )),
-                              SizedBox(height: 10),
-                              widgets.subTitleWidget(
-                                title: 'Мечта',
-                              ),
-                              Obx(() => BoughtTodayGridWidget(
-                                    list: homeController.discountList.value,
-                                  )),
-                              SizedBox(height: 10),
-                              widgets.subTitleWidget(
-                                title: 'Launch',
-                              ),
-                              Obx(() => BoughtTodayGridWidget(
-                                    list: homeController.discountList.value,
-                                  )),
-                            ],
                           ),
-                        ),
-                        SizedBox(height: 30),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                          child: Column(
-                            children: [
-                              widgets.titleWidget(
-                                  title: 'discounts'.tr,
-                                  isTrailing: true,
-                                  onTap: () {
-                                    Get.toNamed(AppRouter.discountList);
-                                  }),
-                              Obx(() => DiscountGridWidget(
-                                    list: homeController.discountList.value,
-                                  )),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 30),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                          child: Column(
-                            children: [
-                              widgets.titleWidget(
-                                  title: 'news'.tr,
-                                  isTrailing: true,
-                                  rightTrailing: 15,
-                                  onTap: () {
-                                    Get.to(AllNewsPage());
-                                  }),
-                              AllNewsSwiper(
-                                list: homeController.newsList,
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 30),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                          child: Column(
-                            children: [
-                              widgets.titleWidget(
-                                title: 'brands'.tr,
-                              ),
-                              BrandGridWidget(),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 30),
-                        Column(
-                          children: [
-                            widgets.titleWidget(
-                              title: 'popular_goods'.tr,
+                          SizedBox(height: 30),
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 10.0),
+                            child: Column(
+                              children: [
+                                widgets.titleWidget(
+                                    title: 'discounts'.tr,
+                                    isTrailing: true,
+                                    onTap: () {
+                                      Get.toNamed(AppRouter.discountList);
+                                    }),
+                                Obx(() => DiscountGridWidget(
+                                      list: homeController.discountList.value,
+                                    )),
+                              ],
                             ),
-                            Obx(() => PopularGoodsGridWidget(
-                                  list: homeController.discountList.value,
-                                )),
-                          ],
-                        ).paddingSymmetric(horizontal: 10),
-                        const SizedBox(height: 20.0),
-                      ],
-                    );
-                  })),
+                          ),
+                          SizedBox(height: 30),
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 10.0),
+                            child: Column(
+                              children: [
+                                widgets.titleWidget(
+                                    title: 'news'.tr,
+                                    isTrailing: true,
+                                    rightTrailing: 15,
+                                    onTap: () {
+                                      Get.to(AllNewsPage());
+                                    }),
+                                AllNewsSwiper(
+                                  list: homeController.newsList,
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: 30),
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 10.0),
+                            child: Column(
+                              children: [
+                                widgets.titleWidget(
+                                  title: 'brands'.tr,
+                                ),
+                                BrandGridWidget(),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: 30),
+                          Column(
+                            children: [
+                              widgets.titleWidget(
+                                title: 'popular_goods'.tr,
+                              ),
+                              Obx(() => PopularGoodsGridWidget(
+                                    list: homeController.discountList.value,
+                                  )),
+                            ],
+                          ).paddingSymmetric(horizontal: 10),
+                          const SizedBox(height: 20.0),
+                        ],
+                      );
+                    })),
+          ),
         ));
   }
 }

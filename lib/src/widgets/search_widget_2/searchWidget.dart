@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:maxkgapp/src/pages/between_pages_all/between_all_pages.dart';
+import 'package:maxkgapp/src/pages/filter/filter_page_controller.dart';
+
 import 'package:maxkgapp/src/widgets/search_widget_2/searchDeleg.dart';
-import '../../widgets/widgets.dart'as widgets;
+import '../../widgets/widgets.dart' as widgets;
 
 class SearchWidget extends StatelessWidget {
-  const SearchWidget({Key? key}) : super(key: key);
-
+  final controller = Get.put(FilterPageController());
+    SearchWidget({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -23,23 +26,24 @@ class SearchWidget extends StatelessWidget {
             tileMode: TileMode.clamp),
       ),
       child: Padding(
-          padding: const EdgeInsets.all(12.0),
-        child: GestureDetector(
-          onTap: () {
-            showSearch(context: context, delegate: searchDeleg());
+        padding: const EdgeInsets.all(12.0),
+        child: TextField(
+          onSubmitted: (value) {
+            Get.to(() => BetweenAllPages());
+
+            controller.isSearched.value = true;
           },
-          child: Container(
-            decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(5)),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                SizedBox(width: 40, child: Center(child: Icon(Icons.search ))),
-                Text("products_search".tr,style: widgets.robotoConsid(fontSize: 17),),
-                Spacer(),
-                SizedBox(width: 40, child: Center(child: Icon(Icons.mic_none))),
-              ],
+          decoration: InputDecoration(
+            contentPadding:
+                EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(5.0),
             ),
+            fillColor: Colors.white,
+            filled: true,
+            hintText: 'Поиск товаров',
+            prefixIcon: Icon(Icons.search),
+            suffixIcon: Icon(Icons.mic_none),
           ),
         ),
       ),

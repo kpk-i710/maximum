@@ -32,7 +32,7 @@ import '../pages/help_to_buyer/help_to_buyer_page.dart';
 import '../pages/favorite/favorite_page.dart';
 import '../pages/products_by_catalog/products_by_catalog_page.dart';
 import '../pages/user/profile/profile_page.dart';
-import '../pages/search/search_page.dart';
+
 import '../pages/test/test_page.dart';
 import '../pages/notifications/notifications_page.dart';
 import '../pages/main/main_page.dart';
@@ -110,7 +110,7 @@ class AppRouter {
     GetPage(name: main, page: () => MainPage()),
     GetPage(name: intro, page: () => IntroPage()),
     GetPage(name: productsByCatalog, page: () => ProductsByCatalogPage()),
-    GetPage(name: search, page: () => SearchPage()),
+
     GetPage(name: cart, page: () => CartPage()),
     GetPage(name: profile, page: () => ProfilePage()),
     GetPage(name: profileParams, page: () => ProfileParamsPage()),

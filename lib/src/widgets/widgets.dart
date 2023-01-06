@@ -8,14 +8,17 @@ import 'package:flutter/material.dart' hide MenuItem;
 import 'package:flutter_swiper_view/flutter_swiper_view.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
+import 'package:maxkgapp/src/pages/between_pages_all/between_all_pages.dart';
 import 'package:maxkgapp/src/pages/detail_all/detail_all_controller.dart';
 import 'package:maxkgapp/src/pages/filter/filter_page_controller.dart';
 import 'package:maxkgapp/src/pages/home/home_page_controller.dart';
 import 'package:maxkgapp/src/pages/intro/intro_controller.dart';
 import 'package:maxkgapp/src/pages/orders_history/order_history_page_controller.dart';
+
 import 'package:maxkgapp/src/pages/shopping_cart/shopping_cart_page.dart';
 import 'package:maxkgapp/src/pages/user/profile_params/profile_params_page_controller.dart';
 import 'package:maxkgapp/src/widgets/bought_today/bought_today_grid_widget.dart';
+import 'package:maxkgapp/src/widgets/filter_widget.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
@@ -2321,6 +2324,31 @@ Widget moreButton({required String text, Function()? onPressed}) {
   );
 }
 
+Widget borderButton(
+    {required String text, Function()? onPressed, double fontSize = 20}) {
+  return Padding(
+    padding: const EdgeInsets.only(left: 5.0, right: 5, top: 10),
+    child: widgets.customButton(
+      child: Container(
+        height: 40,
+        width: Get.width,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(5),
+            border: Border.all(color: AppTextStyles.colorBlueMy, width: 1)),
+        child: Center(
+          child: Text(text,
+              textAlign: TextAlign.center,
+              style: robotoConsid(
+                color: AppTextStyles.colorBlueMy,
+                fontSize: fontSize,
+              )),
+        ),
+      ),
+      onTap: onPressed,
+    ),
+  );
+}
+
 Widget OrderPayButton(
     {required String text,
     Function()? onPressed,
@@ -3113,21 +3141,18 @@ Widget getSort() {
   );
 }
 
-Widget newsHtml() {
+Widget isSearched() {
   final controller = Get.put(FilterPageController());
   return Obx(() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 50.0),
-      child: Column(
-        children: [
-          // Html(
-          //   data: newsListPageController.newsList?.news.anons,
-          // ),
-          if (controller.filtedCounter.value > 0)
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
+    return Column(
+      children: [
+        if (controller.isSearched.value)
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(top: 0),
+                child: Padding(
                   padding: const EdgeInsets.symmetric(
                       vertical: 10.0, horizontal: 10),
                   child: Text(
@@ -3138,36 +3163,46 @@ Widget newsHtml() {
                         fontWeight: FontWeight.bold),
                   ),
                 ),
-                SizedBox(
-                  height: 160,
-                  child: ListView.builder(
-                      physics: BouncingScrollPhysics(),
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: SizedBox(
-                            width: 150,
-                            child: popular_categories_item(
-                                index: index, onTap: () {}),
-                          ),
-                        );
-                      }),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 20.0),
-                  child: Center(
-                    child: Text(
-                      "По вашему запросу найдено 445 товаров",
-                      style: widgets.robotoConsid(
-                          color: AppTextStyles.colorGrayMy),
-                    ),
-                  ),
-                ),
-              ],
+              ),
+              SizedBox(
+                height: 160,
+                child: ListView.builder(
+                    physics: BouncingScrollPhysics(),
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SizedBox(
+                          width: 150,
+                          child: popular_categories_item(
+                              index: index, onTap: () {}),
+                        ),
+                      );
+                    }),
+              ),
+            ],
+          ),
+      ],
+    );
+  });
+}
+
+Widget isFiltered() {
+  final controller = Get.put(FilterPageController());
+  return Obx(() {
+    return Column(
+      children: [
+        if (controller.filtedCounter.value > 0 || controller.isSearched.value)
+          Padding(
+            padding: EdgeInsets.only(top: 10, bottom: 0),
+            child: Center(
+              child: Text(
+                "По вашему запросу найдено 445 товаров",
+                style: widgets.robotoConsid(color: AppTextStyles.colorGrayMy),
+              ),
             ),
-        ],
-      ),
+          ),
+      ],
     );
   });
 }
@@ -3408,13 +3443,142 @@ Widget seletTheme() {
 
 Widget appBarFloating({required String title}) {
   return SliverAppBar(
+    elevation: 0,
+    expandedHeight: 100,
+    pinned: true,
     iconTheme: IconThemeData(color: AppTextStyles.colorBlackMy),
     title: Text(
       title != null ? title : "",
       style: widgets.robotoConsid(fontSize: 16),
     ),
+    bottom: PreferredSize(
+      preferredSize: Size.fromHeight(50.0),
+      child: FilterWidget(
+          onFilterTap: () async {
+            Get.toNamed(AppRouter.filter);
+          },
+          onSortTap: () {
+            widgets.getSortSheet();
+          },
+          callBack: (type) {}),
+    ),
     backgroundColor: Colors.white,
     floating: true,
+  );
+}
+
+Widget appBarSearchHome() {
+  final controller = Get.put(FilterPageController());
+  return PreferredSize(
+    preferredSize: Size.fromHeight(100.0),
+    child: SliverAppBar(
+      leadingWidth: 0,
+      flexibleSpace: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+              colors: [
+                const Color(0xFF262963),
+                const Color(0xFF9E2757),
+              ],
+              begin: const FractionalOffset(0.0, 0.0),
+              end: const FractionalOffset(1.0, 0.0),
+              stops: [0.0, 1.0],
+              tileMode: TileMode.clamp),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(7.0),
+          child: TextField(
+            onSubmitted: (value) {
+              controller.isSearched.value = true;
+              Get.to(() => BetweenAllPages());
+            },
+            decoration: InputDecoration(
+              contentPadding:
+                  EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+              fillColor: Colors.white,
+              filled: true,
+              hintText: 'Поиск товаров',
+              prefixIcon: Icon(Icons.search),
+              suffixIcon: Icon(Icons.mic_none),
+            ),
+          ),
+        ),
+      ),
+      leading: SizedBox(
+        width: 0,
+      ),
+      floating: true,
+    ),
+  );
+}
+
+Widget appBarSearch() {
+  final controller = Get.put(FilterPageController());
+  return PreferredSize(
+    preferredSize: Size.fromHeight(120.0),
+    child: SliverAppBar(
+      backgroundColor: Colors.white,
+      elevation: 0,
+      pinned: true,
+      leadingWidth: 0,
+      bottom: PreferredSize(
+        preferredSize: Size.fromHeight(50.0),
+        child: FilterWidget(
+            onFilterTap: () async {
+              Get.toNamed(AppRouter.filter);
+            },
+            onSortTap: () {
+              widgets.getSortSheet();
+            },
+            callBack: (type) {}),
+      ),
+      flexibleSpace: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+              colors: [
+                const Color(0xFF262963),
+                const Color(0xFF9E2757),
+              ],
+              begin: const FractionalOffset(0.0, 0.0),
+              end: const FractionalOffset(1.0, 0.0),
+              stops: [0.0, 1.0],
+              tileMode: TileMode.clamp),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 10, top: 10, left: 5, right: 5),
+          child: SizedBox(
+            height: 40,
+            child: TextField(
+              onSubmitted: (value) {
+                controller.isSearched.value = true;
+                Get.to(() => BetweenAllPages());
+              },
+              decoration: InputDecoration(
+                contentPadding:
+                    EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+                fillColor: Colors.white,
+                filled: true,
+                hintText: 'Поиск товаров',
+                prefixIcon: Icon(Icons.search),
+                suffixIcon: Icon(Icons.mic_none),
+              ),
+            ),
+          ),
+        ),
+      ),
+      leading: SizedBox(
+        width: 0,
+      ),
+      floating: true,
+    ),
   );
 }
 
@@ -4180,7 +4344,36 @@ Widget addCartButton({required String text, Function()? onPressed}) {
       ));
 }
 
-Widget addCardAndFavoriteAndCar(
+Widget carDelivary() {
+  return Padding(
+      padding: EdgeInsets.only(left: 9),
+      child: Row(
+        children: [
+          SvgPicture.asset(
+            "assets/icons/car_ride.svg",
+            width: 14,
+            height: 17.33,
+            color: AppTextStyles.colorBlueMy,
+          ),
+          SizedBox(width: 7.37),
+          Expanded(
+            child: Text(
+              "Под заказ, доставим в Бишкек 24 - 31 октября",
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: widgets.robotoConsid(
+                color: AppTextStyles.colorBlueMy,
+                fontWeight: FontWeight.w400,
+                fontSize: 12,
+              ),
+            ),
+          ),
+          SizedBox(width: 7.37),
+        ],
+      ));
+}
+
+Widget addCardAndFavoriteNew(
     {required String textCard,
     required BuildContext context,
     Function()? onPressedCard,
@@ -4189,32 +4382,6 @@ Widget addCardAndFavoriteAndCar(
     bool isAddedToCard = false}) {
   return Column(
     children: [
-      Padding(
-          padding: EdgeInsets.only(left: 9),
-          child: Row(
-            children: [
-              SvgPicture.asset(
-                "assets/icons/car_ride.svg",
-                width: 14,
-                height: 17.33,
-                color: AppTextStyles.colorBlueMy,
-              ),
-              SizedBox(width: 7.37),
-              Expanded(
-                child: Text(
-                  "Под заказ, доставим в Бишкек 24 - 31 октября",
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: widgets.robotoConsid(
-                    color: AppTextStyles.colorBlueMy,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 12,
-                  ),
-                ),
-              ),
-              SizedBox(width: 7.37),
-            ],
-          )),
       SizedBox(height: 10),
       Row(
         children: [
@@ -4584,42 +4751,6 @@ Widget bottomPopularCards({int? index, required BuildContext context}) {
         height: 8,
       )
     ],
-  );
-}
-
-Widget fullWidthButton1(
-    {required String text,
-    AppIcons icon = AppIcons.person,
-    Color? bgColor,
-    double radius = 5,
-    double iconSize = 25,
-    TextStyle? textStyle,
-    Function()? onPressed}) {
-  return SizedBox(
-    width: double.infinity,
-    child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: bgColor ?? Get.context!.theme.primary,
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(radius),
-              side: BorderSide(color: Get.context!.theme.primary)),
-          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 14),
-        ),
-        onPressed: onPressed,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            AppIcon(icon, size: iconSize, color: Get.context!.theme.onPrimary),
-            SizedBox(width: 10),
-            Text(text,
-                textAlign: TextAlign.center,
-                style: textStyle ??
-                    robotoConsid(
-                        color: Get.context!.theme.onPrimary,
-                        fontSize: 17,
-                        fontWeight: FontWeight.bold)),
-          ],
-        )),
   );
 }
 

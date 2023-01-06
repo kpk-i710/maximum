@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:maxkgapp/src/pages/between_pages_all/between_all_pages.dart';
 import '../../widgets/widgets.dart' as widgets;
 
 class searchDeleg extends SearchDelegate {
@@ -40,76 +41,13 @@ class searchDeleg extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
+    Future.microtask(() {
+      Get.to(() => BetweenAllPages());
+    });
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        SizedBox(
-          height: 10,
-        ),
-        Expanded(
-          child: ListView.builder(
-              itemCount: 5,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: EdgeInsets.only(left: 50.0, right: 23.0, top: 10),
-                  child: ListTile(
-                      title: Text(
-                    exampleSearchString,
-                    style: widgets.robotoConsid(fontSize: 12),
-                  )),
-                );
-              }),
-        ),
-        SizedBox(
-          height: Get.height / 2.7,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.search),
-                  SizedBox(width: 10),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 2.0),
-                    child: Text("show_all_results".tr,style: widgets.robotoConsid(),),
-                  ),
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 28.0, top: 41.0),
-                child: Row(
-                  children: [
-                    Text("categories".tr,
-                        style: widgets.robotoConsid(
-                          fontSize: 24,
-                        )),
-                    SizedBox(width: 10),
-                    Expanded(
-                      child: Divider(
-                        thickness: 4,
-                        color: Color(0xffF5F5F5),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: exampleCategory.length,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.only(left: 51.0, top: 10),
-                      child: Text(exampleCategory[index]),
-                    );
-                  },
-                ),
-              )
-            ],
-          ),
-        )
-      ],
+      children: [],
     );
   }
 
@@ -132,9 +70,9 @@ class searchDeleg extends SearchDelegate {
           Text(
             "find_interested_products".tr,
             style: widgets.robotoConsid(
-                fontSize: 14,
-                fontWeight: FontWeight.w400,
-                 ),
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+            ),
           ),
         ],
       ),

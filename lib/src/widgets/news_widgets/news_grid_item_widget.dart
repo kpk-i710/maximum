@@ -4,22 +4,33 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/get_instance.dart';
+import 'package:get/get_navigation/get_navigation.dart';
 import 'package:get/get_utils/get_utils.dart';
 import 'package:maxkgapp/src/pages/between_pages_all/bewtween_all_pages_controller.dart';
+import 'package:maxkgapp/src/pages/configurator/configurator_controller.dart';
 import 'package:maxkgapp/src/widgets/discount_widgets/discount_swipe_widget_offline.dart';
 
-import '../../models/news_list.dart';
-import '../../styles.dart';
 import '../../widgets/widgets.dart' as widgets;
 
 class NewsGridItemWidget extends StatelessWidget {
   NewsGridItemWidget(
-      {Key? key, required this.result, required this.onPress, this.index})
+      {Key? key,
+      required this.onPress,
+      this.index,
+      this.fromConfigurator = false,
+      this.price = 15000,
+      this.indexConfigurator = 1,
+      this.title = "Мультировка n5965"})
       : super(key: key);
   VoidCallback onPress;
-  Result? result;
+
+  final controller = Get.put(ConfiguratorController());
   final index;
-  final newsListPageController = Get.put(BetweenAllPagesController());
+  final betweenAllPageController = Get.put(BetweenAllPagesController());
+  final bool fromConfigurator;
+  final String title;
+  final int price;
+  final int indexConfigurator;
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +63,6 @@ class NewsGridItemWidget extends StatelessWidget {
                     children: [
                       DiscountSwipeWidgetOffline(
                           image: "assets/images/sofa.png"),
-
                       Align(
                         alignment: Alignment(-0.8, 0.6),
                         child: Container(
@@ -63,7 +73,7 @@ class NewsGridItemWidget extends StatelessWidget {
                           padding:
                               EdgeInsets.symmetric(horizontal: 5, vertical: 3),
                           child: Text(
-                            '- ${result?.discountPrc}%',
+                            '- 20%',
                             style: widgets.robotoConsid(
                                 color: Colors.white,
                                 fontSize: 14,
@@ -83,17 +93,30 @@ class NewsGridItemWidget extends StatelessWidget {
                       height: 13,
                     ),
                     widgets.titleDescrpPriceWithoutCar(
-                      price: newsListPageController.getPrice(result?.cenaok),
-                      title: result?.naim.toString(),
-                      oldPrice:
-                          newsListPageController.getPrice(result?.oldPrice),
+                      price: betweenAllPageController.getPrice(price),
+                      title: title,
+                      oldPrice: betweenAllPageController.getPrice(price + 3000),
                     ),
                     Spacer(),
-                    widgets.addCardAndFavoriteAndCar(
-                        textCard: 'to_cart'.tr,
-                        onPressedCard: () {},
-                        isSelectedFavorite: index == 1 ? true : false,
-                        context: context),
+                    widgets.carDelivary(),
+                    if (!fromConfigurator)
+                      widgets.addCardAndFavoriteNew(
+                          textCard: 'to_cart'.tr,
+                          onPressedCard: () {},
+                          isSelectedFavorite: index == 1 ? true : false,
+                          context: context),
+                    if (fromConfigurator)
+                      widgets.borderButton(
+                          text: 'Выбрать',
+                          fontSize: 15,
+                          onPressed: () {
+                            controller.configuratorSelected[indexConfigurator].title =
+                                title;
+                            controller.configuratorSelected[indexConfigurator].price =
+                                price;
+                            controller.configuratorSelected.refresh();
+                            Get.back();
+                          }),
                     SizedBox(
                       height: 10,
                     )

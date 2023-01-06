@@ -87,7 +87,7 @@ class DiscountDetailItemWidget extends StatelessWidget {
                       oldPrice: controller.getPrice(15000),
                     ),
                     Spacer(),
-                    widgets.addCardAndFavoriteAndCar(
+                    widgets.addCardAndFavoriteNew(
                         textCard: 'to_cart'.tr,
                         onPressedCard: () {},
                         isSelectedFavorite: index == 1 ? true : false,
