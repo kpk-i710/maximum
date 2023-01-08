@@ -24,7 +24,8 @@ class FilterPageController extends GetxController {
     MultiSelect(title: 'Samsung'),
     MultiSelect(title: 'Nokia'),
     MultiSelect(title: 'Asus'),
-    MultiSelect(title: 'Xiomi')
+    MultiSelect(title: 'Xiomi'),
+    MultiSelect(title: 'LG')
   ].obs;
 
   RxList<MultiSelect> delivryTimeList = <MultiSelect>[
