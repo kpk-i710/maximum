@@ -1,86 +1,95 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:get/instance_manager.dart';
-import 'package:maxkgapp/src/helpers/app_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/route_manager.dart';
+import 'package:maxkgapp/src/models/configurator.dart';
+import 'package:maxkgapp/src/models/configurator_selected.dart';
 import 'package:maxkgapp/src/pages/between_pages_all/between_all_pages.dart';
-import 'package:maxkgapp/src/pages/configurator/configurator_controller.dart';
+import 'package:maxkgapp/src/pages/configurator/api_service.dart';
 import 'package:maxkgapp/src/styles.dart';
 import '../../widgets/widgets.dart' as widgets;
 
-class Confugarator extends StatelessWidget {
+final apiProvider = Provider<ApiService>((ref) => ApiService());
+
+final userDataProvider = FutureProvider<List<ConfiguratorSelected>>((ref) {
+  return ref.read(apiProvider).getData();
+});
+
+class Confugarator extends ConsumerWidget {
   Confugarator({Key? key}) : super(key: key);
 
-  final controller = Get.put(ConfiguratorController());
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final userData = ref.watch(userDataProvider);
     return Scaffold(
         appBar: widgets.appBarJust(),
-        body: Obx(() {
-          return Column(
-            children: [
-              if (controller.isLoaded.value)
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Obx(() {
-                      return ListView.separated(
-                          itemBuilder: (context, index) {
-                            if (index == 0) {
-                              return Column(
-                                children: [
-                                  systemBloc(),
-                                  mainItem(index: index),
-                                ],
-                              );
-                            }
+        body: Column(
+          children: [
+            userData.when(data: (List<ConfiguratorSelected> data) {
+              return Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ListView.separated(
+                      itemBuilder: (context, index) {
+                        if (index == 0) {
+                          return Column(
+                            children: [
+                              systemBloc(),
+                              mainItem(index: index,data: data),
+                            ],
+                          );
+                        }
 
-                            if (index == 10) {
-                              return titleMain(
-                                  title: 'Переферийные устройства',
-                                  index: index);
-                            }
+                        if (index == 10) {
+                          return titleMain(
+                              title: 'Переферийные устройства', index: index, data: data);
+                        }
 
-                            if (index == 20) {
-                              return titleMain(
-                                  title: 'Дополнительные комплектующие',
-                                  index: index);
-                            }
+                        if (index == 20) {
+                          return titleMain(
+                              title: 'Дополнительные комплектующие',
+                              data: data,
+                              index: index);
+                        }
 
-                            if (index == 23) {
-                              return titleMain(title: 'Мебель', index: index);
-                            }
+                        if (index == 23) {
+                          return titleMain(title: 'Мебель',
+                              data: data,
+                              index: index);
+                        }
 
-                            return mainItem(index: index);
-                          },
-                          separatorBuilder: (BuildContext context, int index) {
-                            return SizedBox(height: 10);
-                          },
-                          itemCount: controller.configuratorSelected.length);
-                    }),
-                  ),
+                        return  mainItem(index: index,data: data);
+                      },
+                      separatorBuilder: (BuildContext context, int index) {
+                        return SizedBox(height: 10);
+                      },
+                      itemCount: data.length),
                 ),
-            ],
-          );
-        }));
+              );
+            }, error: (error, stackTrack) {
+              print(stackTrack);
+              return Text("$stackTrack");
+            }, loading: () {
+              return Center(child: CircularProgressIndicator());
+            })
+          ],
+        ));
   }
 
-  Widget mainItem({required int index}) {
-    return controller.configuratorSelected[index].title == ""
+  Widget mainItem({required int index,required List<ConfiguratorSelected>   data}) {
+    return data[index].titleSelected == ""
         ? itemConfigurator(
-            title: controller.confList![index].title,
-            image: controller.confList![index].image,
+            title: data[index].title,
+            image: data[index].image,
             index: index,
           )
         : itemConfiguratorSelected(
-            title: controller.confList![index].title,
-            image: controller.confList![index].image,
-            index: index,
+            title: data[index].title,
+            image: data[index].image,
+            index: index, data: data,
           );
   }
 
-  Widget titleMain({required String title, required int index}) {
+  Widget titleMain({required String title, required int index,required List<ConfiguratorSelected> data}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -106,7 +115,7 @@ class Confugarator extends StatelessWidget {
             ],
           ),
         ),
-        mainItem(index: index)
+        mainItem(index: index, data: data)
       ],
     );
   }
@@ -136,7 +145,7 @@ class Confugarator extends StatelessWidget {
           Spacer(),
           widgets.resetButton(onTap: () {
             print("Сбросить");
-            controller.resetConfigureted();
+            // controller.resetConfigureted();
           })
         ],
       ),
@@ -190,7 +199,7 @@ class Confugarator extends StatelessWidget {
                   () => BetweenAllPages(
                     indexConfigurator: index,
                     fromConfigurator: true,
-                    title: controller.confList![index].title,
+                    title:   title,
                   ),
                   arguments: {"idNews": "382"},
                 );
@@ -203,7 +212,7 @@ class Confugarator extends StatelessWidget {
   }
 
   Widget itemConfiguratorSelected(
-      {required String title, required String image, required int index}) {
+      {required String title, required String image, required int index,required List<ConfiguratorSelected> data}) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10.0),
       child: Column(
@@ -242,9 +251,9 @@ class Confugarator extends StatelessWidget {
                                   child: Center(
                                       child: widgets.anySvg(nameSvg: 'trash'))),
                               onTap: () {
-                                controller.configuratorSelected[index].title =
-                                    "";
-                                controller.configuratorSelected.refresh();
+                                // controller.configuratorSelected[index].title =
+                                //     "";
+                                // controller.configuratorSelected.refresh();
                               }),
                           SizedBox(width: 10),
                         ],
@@ -285,7 +294,7 @@ class Confugarator extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  controller.configuratorSelected[index].title,
+                                  data[index].title,
                                   style: widgets.robotoConsid(fontSize: 12),
                                 ),
                                 SizedBox(height: 5),
@@ -297,14 +306,14 @@ class Confugarator extends StatelessWidget {
                                 Row(
                                   children: [
                                     Text(
-                                      "${controller.configuratorSelected[index].price}",
+                                      "${data[index] .price}",
                                       style: widgets.robotoConsid(
                                           fontWeight: FontWeight.bold),
                                     ),
                                     SizedBox(width: 10),
                                     widgets.strikeThrough(
                                       child: Text(
-                                        "${controller.configuratorSelected[index].price + 1000}",
+                                        "${data[index].price + 1000}",
                                         style: widgets.robotoConsid(
                                             color: AppTextStyles.colorGrayMy),
                                       ),

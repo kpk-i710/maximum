@@ -3,21 +3,6 @@ import 'package:get/get.dart';
 import 'package:maxkgapp/src/models/multi_select.dart';
 
 class FilterPageController extends GetxController {
-  final ranges = RangeValues(0, 10000).obs;
-
-  final priceStartCont = TextEditingController();
-
-  final priceEndCont = TextEditingController();
-  RxBool isSearched = false.obs;
-  RxInt filtedCounter = 0.obs;
-  RxInt brandCounter = 0.obs;
-  RxInt delivaryCounter = 0.obs;
-  RxInt discountCounter = 0.obs;
-
-  final getTodayCheck = false.obs;
-  final bestPriceCheck = false.obs;
-  final cashb = false.obs;
-
   RxList<MultiSelect> brandList = <MultiSelect>[
     MultiSelect(title: 'Acer'),
     MultiSelect(title: 'Lenovo'),
@@ -39,6 +24,16 @@ class FilterPageController extends GetxController {
     MultiSelect(title: 'Нет'),
   ].obs;
 
+  final priceStartCont = TextEditingController();
+  final priceEndCont = TextEditingController();
+
+
+  RxBool isSearched = false.obs;
+  RxInt filtedCounter = 0.obs;
+  RxInt brandCounter = 0.obs;
+  RxInt delivaryCounter = 0.obs;
+  RxInt discountCounter = 0.obs;
+
   calculateCountFilter() {
     final brand =
         brandList.where((item) => item.isSelected == true).toList().length;
@@ -51,7 +46,6 @@ class FilterPageController extends GetxController {
     final startText = priceStartCont.text.length > 0 ? 1 : 0;
     final endText = priceEndCont.text.length > 0 ? 1 : 0;
     filtedCounter.value = brand + delivry + discount + startText + endText;
-
   }
 
   resetAll() {
@@ -118,12 +112,6 @@ class FilterPageController extends GetxController {
     });
   }
 
-  changeRanges(RangeValues val) {
-    ranges.value = val;
-    priceStartCont.text = val.start.toStringAsFixed(2);
-    priceEndCont.text = val.end.toStringAsFixed(2);
-  }
-
   onStartPriceChanged(String val) {
     print(val);
   }
@@ -131,6 +119,4 @@ class FilterPageController extends GetxController {
   onEndPriceChanged(String val) {
     print(val);
   }
-
-
 }

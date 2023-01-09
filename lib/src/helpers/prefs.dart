@@ -25,6 +25,7 @@ class Prefs {
   static Token get token => Token.fromString(_token.val);
   static set token(Token val) => _token.val = val.toString();
 
+
   static User get user => _user;
   static set user(val) => _user = val;
   static User _user = User(name: 'Станислав',
@@ -49,6 +50,10 @@ class Prefs {
   static final _defaultCurrency = 'сом'.val('DEF_CURRENCY');
   static get defaultCurrency => _defaultCurrency.val;
   static set defaultCurrency(val) => _defaultCurrency.val = val;
+
+  static final _configuratorList = ''.val('CONFIGURATOR_LIST');
+  static get configuratorList => _configuratorList.val;
+  static set configuratorList(val) => _configuratorList.val = val;
 
   static final _currencyRight = false.val('CURRENCY_RIGHT');
   static get currencyRight => _currencyRight.val;

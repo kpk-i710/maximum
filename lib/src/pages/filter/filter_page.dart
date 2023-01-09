@@ -22,35 +22,33 @@ class FilterPage extends StatelessWidget {
                     style: widgets.robotoConsid(
                         fontSize: 16, fontWeight: FontWeight.bold)),
                 SizedBox(height: 10),
-                Obx(() {
-                  return Row(
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: TextField(
-                            controller: controller.priceStartCont,
-                            onChanged: (val) {
-                              controller.onStartPriceChanged(val);
-                              controller.calculateCountFilter();
-                            },
-                            keyboardType: TextInputType.number,
-                            decoration: decor(start: 'from')),
-                      ),
-                      SizedBox(width: 10),
-                      Expanded(
-                        flex: 1,
-                        child: TextField(
-                            controller: controller.priceEndCont,
-                            onChanged: (val) {
-                              controller.onEndPriceChanged(val);
-                              controller.calculateCountFilter();
-                            },
-                            keyboardType: TextInputType.number,
-                            decoration: decor(start: 'to')),
-                      ),
-                    ],
-                  );
-                }),
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: TextField(
+                          controller: controller.priceStartCont,
+                          onChanged: (val) {
+                            controller.onStartPriceChanged(val);
+                            controller.calculateCountFilter();
+                          },
+                          keyboardType: TextInputType.number,
+                          decoration: decor(start: 'from')),
+                    ),
+                    SizedBox(width: 10),
+                    Expanded(
+                      flex: 1,
+                      child: TextField(
+                          controller: controller.priceEndCont,
+                          onChanged: (val) {
+                            controller.onEndPriceChanged(val);
+                            controller.calculateCountFilter();
+                          },
+                          keyboardType: TextInputType.number,
+                          decoration: decor(start: 'to')),
+                    ),
+                  ],
+                ),
                 SizedBox(height: 20),
                 Row(
                   children: [
@@ -214,7 +212,7 @@ class FilterPage extends StatelessWidget {
             const BorderSide(color: AppTextStyles.colorBlueMy, width: 1.0),
         borderRadius: BorderRadius.circular(5.0),
       ),
-      hintText: controller.ranges.value.start.toString(),
+      hintText: "0".toString(),
     );
   }
 }

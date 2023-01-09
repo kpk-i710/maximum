@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -6,8 +8,11 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/get_instance.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:get/get_utils/get_utils.dart';
+import 'package:localstore/localstore.dart';
+import 'package:maxkgapp/src/models/configurator.dart';
+import 'package:maxkgapp/src/models/configurator_selected.dart';
 import 'package:maxkgapp/src/pages/between_pages_all/bewtween_all_pages_controller.dart';
-import 'package:maxkgapp/src/pages/configurator/configurator_controller.dart';
+import 'package:maxkgapp/src/pages/configurator/configurator.dart';
 import 'package:maxkgapp/src/widgets/discount_widgets/discount_swipe_widget_offline.dart';
 
 import '../../widgets/widgets.dart' as widgets;
@@ -24,7 +29,7 @@ class NewsGridItemWidget extends StatelessWidget {
       : super(key: key);
   VoidCallback onPress;
 
-  final controller = Get.put(ConfiguratorController());
+  // final controller = Get.put(ConfiguratorController());
   final index;
   final betweenAllPageController = Get.put(BetweenAllPagesController());
   final bool fromConfigurator;
@@ -109,12 +114,14 @@ class NewsGridItemWidget extends StatelessWidget {
                       widgets.borderButton(
                           text: 'Выбрать',
                           fontSize: 15,
-                          onPressed: () {
-                            controller.configuratorSelected[indexConfigurator].title =
-                                title;
-                            controller.configuratorSelected[indexConfigurator].price =
-                                price;
-                            controller.configuratorSelected.refresh();
+                          onPressed: () async {
+
+
+                            // controller.configuratorSelected[indexConfigurator].title =
+                            //     title;
+                            // controller.configuratorSelected[indexConfigurator].price =
+                            //     price;
+                            // controller.configuratorSelected.refresh();
                             Get.back();
                           }),
                     SizedBox(
