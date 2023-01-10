@@ -85,7 +85,7 @@ class _ConfugaratorState extends ConsumerState<Confugarator> {
 
                           if (index == 20) {
                             return titleMain(
-                                title: 'Дополнительные комплектующие',
+                                title: 'Дополнительные комплектующие ',
                                 index: index,
                                 data: config);
                           }
