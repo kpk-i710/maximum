@@ -1,23 +1,34 @@
 import 'dart:convert';
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:get/instance_manager.dart';
+import 'package:localstorage/localstorage.dart';
 import 'package:maxkgapp/src/models/configurator.dart';
 import 'package:maxkgapp/src/pages/between_pages_all/between_all_pages.dart';
+import 'package:maxkgapp/src/pages/configurator/configurator_controller.dart';
 import 'package:maxkgapp/src/styles.dart';
 import '../../widgets/widgets.dart' as widgets;
 import '../../helpers/data.dart' as data;
 
 Future<List<Configurator>> fetchUser(int configFirst) async {
-  await Future.delayed(Duration(milliseconds: 400));
+
   String? path;
   print("запрсо");
   path = 'assets/configurator.json';
   String jobsString = await rootBundle.loadString(path);
+
+  final storage = await LocalStorage('todo.json');
+  await storage.ready;
+  await Future.delayed(Duration(milliseconds: 400));
+  if (await storage.getItem('todo') == null) {
+
+    await storage.setItem('todo', jobsString);
+  } else {
+    jobsString = await storage.getItem('todo');
+  }
 
   List<Configurator> confLists = await configuratorFromJson(jobsString)
       .where((element) => element.category < configFirst)
@@ -186,6 +197,7 @@ class _ConfugaratorState extends ConsumerState<Confugarator> {
               data.configuratorsData[i].titleSelected = "";
             }
             setState(() {});
+            ConfiguratorController().saveList();
           })
         ],
       ),
@@ -287,6 +299,7 @@ class _ConfugaratorState extends ConsumerState<Confugarator> {
                             style: widgets.robotoConsid(),
                           ),
                           Spacer(),
+
                           widgets.colorCustomButton(
                               color: AppTextStyles.colorGrayDividar,
                               child: Container(
@@ -297,10 +310,8 @@ class _ConfugaratorState extends ConsumerState<Confugarator> {
                               onTap: () {
                                 setState(() {
                                   data[index].titleSelected = "";
+                                  ConfiguratorController().saveList();
                                 });
-                                // controller.configuratorSelected[index].title =
-                                //     "";
-                                // controller.configuratorSelected.refresh();
                               }),
                           SizedBox(width: 10),
                         ],

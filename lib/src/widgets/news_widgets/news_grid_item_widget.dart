@@ -7,6 +7,7 @@ import 'package:get/get_instance/get_instance.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:get/get_utils/get_utils.dart';
 import 'package:maxkgapp/src/pages/between_pages_all/bewtween_all_pages_controller.dart';
+import 'package:maxkgapp/src/pages/configurator/configurator_controller.dart';
 import 'package:maxkgapp/src/widgets/discount_widgets/discount_swipe_widget_offline.dart';
 import '../../helpers/data.dart' as data;
 import '../../widgets/widgets.dart' as widgets;
@@ -108,10 +109,12 @@ class NewsGridItemWidget extends StatelessWidget {
                           text: 'Выбрать',
                           fontSize: 15,
                           onPressed: () {
-                            data.configuratorsData[indexConfigurator].titleSelected =
-                                title;
+                            data.configuratorsData[indexConfigurator]
+                                .titleSelected = title;
                             data.configuratorsData[indexConfigurator].price =
                                 price;
+
+                            ConfiguratorController().saveList();
 
                             Get.back();
                           }),

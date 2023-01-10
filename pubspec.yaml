@@ -22,7 +22,7 @@ environment:
 
 dependencies:
 
-  localstore: ^1.3.4
+  localstorage: ^4.0.0+1
   path_provider: ^2.0.11
   flutter_riverpod: ^2.1.3
   connectivity_plus: ^3.0.2
