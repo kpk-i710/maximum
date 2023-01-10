@@ -13,53 +13,20 @@ import 'package:maxkgapp/src/styles.dart';
 import '../../widgets/widgets.dart' as widgets;
 import '../../helpers/data.dart' as data;
 
-Future<List<Configurator>> fetchUser(int configFirst) async {
-  String? path;
-  print("запрсо");
-  path = 'assets/configurator.json';
-  String jobsString = await rootBundle.loadString(path);
-
-  final storage = await LocalStorage('todo.json');
-  await storage.ready;
-  await Future.delayed(Duration(milliseconds: 400));
-  if (await storage.getItem('todo') == null) {
-    await storage.setItem('todo', jobsString);
-  } else {
-    jobsString = await storage.getItem('todo');
-  }
-
-  List<Configurator> confLists = await configuratorFromJson(jobsString)
-      .where((element) => element.category < configFirst)
-      .toList();
-  if (data.configuratorsData.length < 26) {
-    for (int i = 2; i < confLists.length; i++)
-      data.configuratorsData.add(confLists[i]);
-  }
-
-  return data.configuratorsData
-      .where((element) => element.category < configFirst)
-      .toList();
-}
-
 AutoDisposeFutureProviderFamily<List<Configurator>, int> configProvider =
     FutureProvider.family
-        .autoDispose<List<Configurator>, int>((refss, configFirst) async {
+        .autoDispose<List<Configurator>, int>((ref, configFirst) async {
+  ref.watch(changeProvider);
   return fetchUser(configFirst);
 });
 
-class Confugarator extends ConsumerStatefulWidget {
-  Confugarator({Key? key}) : super(key: key);
+final changeProvider = StateProvider<int>((ref) => 0);
 
-  @override
-  _ConfugaratorState createState() => _ConfugaratorState();
-}
-
-class _ConfugaratorState extends ConsumerState<Confugarator> {
+class Confugarator extends ConsumerWidget {
   int firstConfig = 4;
 
   @override
-  Widget build(BuildContext context) {
-    print(" обновился");
+  Widget build(BuildContext context, WidgetRef ref) {
     final future = ref.watch(configProvider(firstConfig));
     return Scaffold(
         appBar: widgets.appBarJust(),
@@ -70,7 +37,6 @@ class _ConfugaratorState extends ConsumerState<Confugarator> {
               loading: () => Center(child: const CircularProgressIndicator()),
               error: (err, stack) => Text('Error: $err'),
               data: (config) {
-                print("when обновился");
                 return Expanded(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -79,8 +45,8 @@ class _ConfugaratorState extends ConsumerState<Confugarator> {
                           if (index == 0) {
                             return Column(
                               children: [
-                                systemBloc(),
-                                mainItem(index: index, data: config),
+                                systemBloc(ref: ref),
+                                mainItem(index: index, data: config, ref: ref),
                               ],
                             );
                           }
@@ -89,22 +55,27 @@ class _ConfugaratorState extends ConsumerState<Confugarator> {
                             return titleMain(
                                 title: 'Переферийные устройства',
                                 index: index,
-                                data: config);
+                                data: config,
+                                ref: ref);
                           }
 
                           if (index == 20) {
                             return titleMain(
                                 title: 'Дополнительные комплектующие ',
                                 index: index,
-                                data: config);
+                                data: config,
+                                ref: ref);
                           }
 
                           if (index == 23) {
                             return titleMain(
-                                title: 'Мебель', index: index, data: config);
+                                title: 'Мебель',
+                                index: index,
+                                data: config,
+                                ref: ref);
                           }
 
-                          return mainItem(index: index, data: config);
+                          return mainItem(index: index, data: config, ref: ref);
                         },
                         separatorBuilder: (BuildContext context, int index) {
                           return SizedBox(height: 10);
@@ -118,24 +89,30 @@ class _ConfugaratorState extends ConsumerState<Confugarator> {
         ));
   }
 
-  Widget mainItem({required int index, required List<Configurator> data}) {
+  Widget mainItem(
+      {required int index,
+      required List<Configurator> data,
+      required WidgetRef ref}) {
     return data[index].titleSelected == ""
         ? itemConfigurator(
             title: data[index].title,
             image: data[index].image,
             index: index,
+            ref: ref,
           )
         : itemConfiguratorSelected(
             data: data,
             image: data[index].image,
             index: index,
+            ref: ref,
           );
   }
 
   Widget titleMain(
       {required String title,
       required int index,
-      required List<Configurator> data}) {
+      required List<Configurator> data,
+      required WidgetRef ref}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -161,12 +138,12 @@ class _ConfugaratorState extends ConsumerState<Confugarator> {
             ],
           ),
         ),
-        mainItem(index: index, data: data),
+        mainItem(index: index, data: data, ref: ref),
       ],
     );
   }
 
-  Widget systemBloc() {
+  Widget systemBloc({required WidgetRef ref}) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10.0),
       child: Row(
@@ -189,13 +166,13 @@ class _ConfugaratorState extends ConsumerState<Confugarator> {
             ],
           ),
           Spacer(),
-          widgets.resetButton(onTap: () {
+          widgets.resetButton(onTap: () async {
             print("Сбросить");
             for (int i = 0; i < data.configuratorsData.length; i++) {
               data.configuratorsData[i].titleSelected = "";
             }
-            setState(() {});
-            ConfiguratorController().saveList();
+            await ConfiguratorController().saveList();
+            ref.read(changeProvider.notifier).state++;
           })
         ],
       ),
@@ -203,7 +180,10 @@ class _ConfugaratorState extends ConsumerState<Confugarator> {
   }
 
   Widget itemConfigurator(
-      {required String title, required String image, required int index}) {
+      {required String title,
+      required String image,
+      required int index,
+      required WidgetRef ref}) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10.0),
       child: Column(
@@ -253,7 +233,7 @@ class _ConfugaratorState extends ConsumerState<Confugarator> {
                   arguments: {"idNews": "382"},
                 )!
                     .then((value) {
-                  setState(() {});
+                  ref.read(changeProvider.notifier).state++;
                 });
               },
             ),
@@ -266,7 +246,8 @@ class _ConfugaratorState extends ConsumerState<Confugarator> {
   Widget itemConfiguratorSelected(
       {required List<Configurator> data,
       required String image,
-      required int index}) {
+      required int index,
+      required WidgetRef ref}) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10.0),
       child: Column(
@@ -308,17 +289,17 @@ class _ConfugaratorState extends ConsumerState<Confugarator> {
                                   arguments: {"idNews": "382"},
                                 )!
                                     .then((value) {
-                                  setState(() {});
+                                  // setState(() {});
                                 });
                               },
                               image: 're_select'),
                           SizedBox(width: 5),
                           widgets.buttonIconTrash(
                               onTap: () {
-                                setState(() {
-                                  data[index].titleSelected = "";
-                                  ConfiguratorController().saveList();
-                                });
+                                data[index].titleSelected = "";
+                                ConfiguratorController().saveList();
+
+                                ref.read(changeProvider.notifier).state++;
                               },
                               image: 'trash'),
                         ],
@@ -359,7 +340,7 @@ class _ConfugaratorState extends ConsumerState<Confugarator> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  data[index].title,
+                                  data[index].titleSelected,
                                   style: widgets.robotoConsid(fontSize: 12),
                                 ),
                                 SizedBox(height: 5),

@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/get_instance.dart';
@@ -10,9 +11,10 @@ import 'package:maxkgapp/src/pages/between_pages_all/bewtween_all_pages_controll
 import 'package:maxkgapp/src/pages/configurator/configurator_controller.dart';
 import 'package:maxkgapp/src/widgets/discount_widgets/discount_swipe_widget_offline.dart';
 import '../../helpers/data.dart' as data;
+import '../../pages/configurator/configurator.dart';
 import '../../widgets/widgets.dart' as widgets;
 
-class NewsGridItemWidget extends StatelessWidget {
+class NewsGridItemWidget extends ConsumerWidget {
   NewsGridItemWidget(
       {Key? key,
       required this.onPress,
@@ -32,7 +34,7 @@ class NewsGridItemWidget extends StatelessWidget {
   final int indexConfigurator;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,WidgetRef ref) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: GestureDetector(
@@ -114,6 +116,7 @@ class NewsGridItemWidget extends StatelessWidget {
                             data.configuratorsData[indexConfigurator].price =
                                 price;
 
+                            ref.read(changeProvider.notifier).state++;
                             ConfiguratorController().saveList();
 
                             Get.back();
