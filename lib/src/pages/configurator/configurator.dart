@@ -14,7 +14,6 @@ import '../../widgets/widgets.dart' as widgets;
 import '../../helpers/data.dart' as data;
 
 Future<List<Configurator>> fetchUser(int configFirst) async {
-
   String? path;
   print("запрсо");
   path = 'assets/configurator.json';
@@ -24,7 +23,6 @@ Future<List<Configurator>> fetchUser(int configFirst) async {
   await storage.ready;
   await Future.delayed(Duration(milliseconds: 400));
   if (await storage.getItem('todo') == null) {
-
     await storage.setItem('todo', jobsString);
   } else {
     jobsString = await storage.getItem('todo');
@@ -299,21 +297,30 @@ class _ConfugaratorState extends ConsumerState<Confugarator> {
                             style: widgets.robotoConsid(),
                           ),
                           Spacer(),
-
-                          widgets.colorCustomButton(
-                              color: AppTextStyles.colorGrayDividar,
-                              child: Container(
-                                  width: 40,
-                                  height: 40,
-                                  child: Center(
-                                      child: widgets.anySvg(nameSvg: 'trash'))),
+                          widgets.buttonIconTrash(
+                              size: Size(22, 22),
+                              onTap: () {
+                                Get.to(
+                                  () => BetweenAllPages(
+                                      indexConfigurator: index,
+                                      fromConfigurator: true,
+                                      title: data[index].title),
+                                  arguments: {"idNews": "382"},
+                                )!
+                                    .then((value) {
+                                  setState(() {});
+                                });
+                              },
+                              image: 're_select'),
+                          SizedBox(width: 5),
+                          widgets.buttonIconTrash(
                               onTap: () {
                                 setState(() {
                                   data[index].titleSelected = "";
                                   ConfiguratorController().saveList();
                                 });
-                              }),
-                          SizedBox(width: 10),
+                              },
+                              image: 'trash'),
                         ],
                       ),
                       SizedBox(height: 10),

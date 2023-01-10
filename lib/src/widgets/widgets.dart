@@ -14,7 +14,6 @@ import 'package:maxkgapp/src/pages/filter/filter_page_controller.dart';
 import 'package:maxkgapp/src/pages/home/home_page_controller.dart';
 import 'package:maxkgapp/src/pages/intro/intro_controller.dart';
 import 'package:maxkgapp/src/pages/orders_history/order_history_page_controller.dart';
-
 import 'package:maxkgapp/src/pages/shopping_cart/shopping_cart_page.dart';
 import 'package:maxkgapp/src/pages/user/profile_params/profile_params_page_controller.dart';
 import 'package:maxkgapp/src/widgets/bought_today/bought_today_grid_widget.dart';
@@ -49,6 +48,19 @@ import 'package:flutter_svg_provider/flutter_svg_provider.dart' as svg;
 import 'dart:math' as math;
 import 'package:share_plus/share_plus.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+
+Widget buttonIconTrash(
+    {required Function() onTap,
+    required String image,
+    Size  size = const Size(20, 20)}) {
+  return widgets.colorCustomButton(
+      color: AppTextStyles.colorGrayDividar,
+      child: Container(
+          width: 40,
+          height: 40,
+          child: Center(child: widgets.anySvg(nameSvg: image,size: size))),
+      onTap: onTap);
+}
 
 Widget priceWidget(double price, {TextStyle? style}) {
   if (style != null) {
@@ -3550,7 +3562,8 @@ Widget appBarSearch() {
               tileMode: TileMode.clamp),
         ),
         child: Padding(
-          padding: const EdgeInsets.only(bottom: 10, top: 10, left: 5, right: 5),
+          padding:
+              const EdgeInsets.only(bottom: 10, top: 10, left: 5, right: 5),
           child: SizedBox(
             height: 40,
             child: TextField(
