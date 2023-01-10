@@ -13,7 +13,7 @@ class ConfiguratorController {
   }
 }
 
-Future<List<Configurator>> fetchUser(int configFirst) async {
+Future<List<Configurator>> fetchUser( ) async {
   String? path;
   print("запрсо");
   path = 'assets/configurator.json';
@@ -29,14 +29,15 @@ Future<List<Configurator>> fetchUser(int configFirst) async {
   }
 
   List<Configurator> confLists = await configuratorFromJson(jobsString)
-      .where((element) => element.category < configFirst)
+      .where((element) => element.category < 5)
       .toList();
   if (data.configuratorsData.length < 26) {
-    for (int i = 2; i < confLists.length; i++)
+    data.configuratorsData.clear();
+    for (int i = 1; i < confLists.length; i++)
       data.configuratorsData.add(confLists[i]);
   }
 
   return data.configuratorsData
-      .where((element) => element.category < configFirst)
+      .where((element) => element.category < 5)
       .toList();
 }

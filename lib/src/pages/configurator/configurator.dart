@@ -17,17 +17,17 @@ AutoDisposeFutureProviderFamily<List<Configurator>, int> configProvider =
     FutureProvider.family
         .autoDispose<List<Configurator>, int>((ref, configFirst) async {
   ref.watch(changeProvider);
-  return fetchUser(configFirst);
+  return fetchUser( );
 });
 
 final changeProvider = StateProvider<int>((ref) => 0);
 
 class Confugarator extends ConsumerWidget {
-  int firstConfig = 4;
+
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final future = ref.watch(configProvider(firstConfig));
+    final future = ref.watch(configProvider(0));
     return Scaffold(
         appBar: widgets.appBarJust(),
         body: Column(
