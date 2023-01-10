@@ -180,5 +180,12 @@
     "category": 4,
     "price": 0,
     "titleSelected": ""
+  },
+  {
+    "title": "Кресло для персонала",
+    "image": "",
+    "category": 5,
+    "price": 0,
+    "titleSelected": ""
   }
 ]

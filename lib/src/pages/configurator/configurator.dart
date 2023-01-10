@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,27 +10,32 @@ import 'package:maxkgapp/src/models/configurator.dart';
 import 'package:maxkgapp/src/pages/between_pages_all/between_all_pages.dart';
 import 'package:maxkgapp/src/styles.dart';
 import '../../widgets/widgets.dart' as widgets;
+import '../../helpers/data.dart' as data;
 
-bool isOne = true;
-
-final configProvider =
-    FutureProvider.autoDispose<List<Configurator>>((ref) async {
+Future<List<Configurator>> fetchUser(int configFirst) async {
   await Future.delayed(Duration(milliseconds: 400));
   String? path;
   print("запрсо");
-  if (isOne) {
-    path = 'assets/configurator.json';
-  } else {
-    path = 'assets/configurator2.json';
-  }
-  isOne = !isOne;
+  path = 'assets/configurator.json';
   String jobsString = await rootBundle.loadString(path);
 
   List<Configurator> confLists = await configuratorFromJson(jobsString)
-      .where((element) => element.category < 5)
+      .where((element) => element.category < configFirst)
       .toList();
+  if (data.configuratorsData.length < 26) {
+    for (int i = 2; i < confLists.length; i++)
+      data.configuratorsData.add(confLists[i]);
+  }
 
-  return confLists;
+  return data.configuratorsData
+      .where((element) => element.category < configFirst)
+      .toList();
+}
+
+AutoDisposeFutureProviderFamily<List<Configurator>, int> configProvider =
+    FutureProvider.family
+        .autoDispose<List<Configurator>, int>((refss, configFirst) async {
+  return fetchUser(configFirst);
 });
 
 class Confugarator extends ConsumerStatefulWidget {
@@ -40,18 +46,22 @@ class Confugarator extends ConsumerStatefulWidget {
 }
 
 class _ConfugaratorState extends ConsumerState<Confugarator> {
+  int firstConfig = 4;
+
   @override
   Widget build(BuildContext context) {
-    AsyncValue<List<Configurator>> config = ref.watch(configProvider);
+    print(" обновился");
+    final future = ref.watch(configProvider(firstConfig));
     return Scaffold(
         appBar: widgets.appBarJust(),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            config.when(
+            future.when(
               loading: () => Center(child: const CircularProgressIndicator()),
               error: (err, stack) => Text('Error: $err'),
               data: (config) {
+                print("when обновился");
                 return Expanded(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -90,7 +100,7 @@ class _ConfugaratorState extends ConsumerState<Confugarator> {
                         separatorBuilder: (BuildContext context, int index) {
                           return SizedBox(height: 10);
                         },
-                        itemCount: 10),
+                        itemCount: config.length),
                   ),
                 );
               },
@@ -172,7 +182,9 @@ class _ConfugaratorState extends ConsumerState<Confugarator> {
           Spacer(),
           widgets.resetButton(onTap: () {
             print("Сбросить");
-            setState(() {});
+            setState(() {
+              firstConfig = 3;
+            });
           })
         ],
       ),
@@ -226,9 +238,14 @@ class _ConfugaratorState extends ConsumerState<Confugarator> {
                   () => BetweenAllPages(
                       indexConfigurator: index,
                       fromConfigurator: true,
-                      title: "title"),
+                      title: title),
                   arguments: {"idNews": "382"},
-                );
+                )!
+                    .then((value) {
+                  setState(() {
+                    firstConfig < 5;
+                  });
+                });
               },
             ),
           ),
