@@ -24,12 +24,8 @@ class BetweenAllPagesController extends GetxController {
 
   @override
   Future<void> onInit() async {
-    print("число");
-    newsList = await RemoteService().getNews(
-        Get.arguments != null ? Get.arguments['idNews'].toString() : "382");
-    if (newsList != null) {
-      isLoaded.value = true;
-    }
+    await Future.delayed(Duration(milliseconds: 400));
+    isLoaded.value = true;
     super.onInit();
   }
 

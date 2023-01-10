@@ -1,21 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
-import 'package:maxkgapp/src/helpers/app_router.dart';
-import 'package:maxkgapp/src/models/news_list.dart';
 import 'package:maxkgapp/src/pages/filter/filter_page_controller.dart';
 import 'package:maxkgapp/src/pages/home/home_page_controller.dart';
-import 'package:maxkgapp/src/styles.dart';
-import 'package:maxkgapp/src/widgets/discount_widgets/discount_detail_item_widget.dart';
-import 'package:maxkgapp/src/widgets/filter_widget.dart';
-import 'package:maxkgapp/src/widgets/popular_categories/popular_categories_item.dart';
 import 'package:maxkgapp/src/widgets/popular_goods/popular_goods_grid_widget.dart';
 import 'package:maxkgapp/src/widgets/product_widgets/product_hight_item_widget.dart';
-import 'package:maxkgapp/src/widgets/search_widget_2/searchWidget.dart';
 import 'package:maxkgapp/src/widgets/widgets_controller.dart';
-
 import '../../widgets/news_widgets/news_grid_item_widget.dart';
-import '../../widgets/search_widgets/search_bar_2.dart';
 import 'bewtween_all_pages_controller.dart';
 import '../detail_all/detail_all.dart';
 import '../../widgets/widgets.dart' as widgets;
@@ -60,9 +50,7 @@ class BetweenAllPages extends StatelessWidget {
                           : widgets.appBarFloating(title: title!)
                     ],
                     body: ListView.separated(
-                      itemCount: betweenAllPageController
-                              .newsList?.result[0][0].length ??
-                          0,
+                      itemCount: 10 ,
                       itemBuilder: (context, index) {
                         if (index == 0)
                           return Column(

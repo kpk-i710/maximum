@@ -1,95 +1,122 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get/route_manager.dart';
+import 'package:get/get.dart';
+import 'package:get/instance_manager.dart';
 import 'package:maxkgapp/src/models/configurator.dart';
-import 'package:maxkgapp/src/models/configurator_selected.dart';
 import 'package:maxkgapp/src/pages/between_pages_all/between_all_pages.dart';
-import 'package:maxkgapp/src/pages/configurator/api_service.dart';
 import 'package:maxkgapp/src/styles.dart';
 import '../../widgets/widgets.dart' as widgets;
 
-final apiProvider = Provider<ApiService>((ref) => ApiService());
+bool isOne = true;
 
-final userDataProvider = FutureProvider<List<ConfiguratorSelected>>((ref) {
-  return ref.read(apiProvider).getData();
+final configProvider =
+    FutureProvider.autoDispose<List<Configurator>>((ref) async {
+  await Future.delayed(Duration(milliseconds: 400));
+  String? path;
+  print("запрсо");
+  if (isOne) {
+    path = 'assets/configurator.json';
+  } else {
+    path = 'assets/configurator2.json';
+  }
+  isOne = !isOne;
+  String jobsString = await rootBundle.loadString(path);
+
+  List<Configurator> confLists = await configuratorFromJson(jobsString)
+      .where((element) => element.category < 5)
+      .toList();
+
+  return confLists;
 });
 
-class Confugarator extends ConsumerWidget {
+class Confugarator extends ConsumerStatefulWidget {
   Confugarator({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final userData = ref.watch(userDataProvider);
+  _ConfugaratorState createState() => _ConfugaratorState();
+}
+
+class _ConfugaratorState extends ConsumerState<Confugarator> {
+  @override
+  Widget build(BuildContext context) {
+    AsyncValue<List<Configurator>> config = ref.watch(configProvider);
     return Scaffold(
         appBar: widgets.appBarJust(),
         body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            userData.when(data: (List<ConfiguratorSelected> data) {
-              return Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ListView.separated(
-                      itemBuilder: (context, index) {
-                        if (index == 0) {
-                          return Column(
-                            children: [
-                              systemBloc(),
-                              mainItem(index: index,data: data),
-                            ],
-                          );
-                        }
+            config.when(
+              loading: () => Center(child: const CircularProgressIndicator()),
+              error: (err, stack) => Text('Error: $err'),
+              data: (config) {
+                return Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ListView.separated(
+                        itemBuilder: (context, index) {
+                          if (index == 0) {
+                            return Column(
+                              children: [
+                                systemBloc(),
+                                mainItem(index: index, data: config),
+                              ],
+                            );
+                          }
 
-                        if (index == 10) {
-                          return titleMain(
-                              title: 'Переферийные устройства', index: index, data: data);
-                        }
+                          if (index == 10) {
+                            return titleMain(
+                                title: 'Переферийные устройства',
+                                index: index,
+                                data: config);
+                          }
 
-                        if (index == 20) {
-                          return titleMain(
-                              title: 'Дополнительные комплектующие',
-                              data: data,
-                              index: index);
-                        }
+                          if (index == 20) {
+                            return titleMain(
+                                title: 'Дополнительные комплектующие',
+                                index: index,
+                                data: config);
+                          }
 
-                        if (index == 23) {
-                          return titleMain(title: 'Мебель',
-                              data: data,
-                              index: index);
-                        }
+                          if (index == 23) {
+                            return titleMain(
+                                title: 'Мебель', index: index, data: config);
+                          }
 
-                        return  mainItem(index: index,data: data);
-                      },
-                      separatorBuilder: (BuildContext context, int index) {
-                        return SizedBox(height: 10);
-                      },
-                      itemCount: data.length),
-                ),
-              );
-            }, error: (error, stackTrack) {
-              print(stackTrack);
-              return Text("$stackTrack");
-            }, loading: () {
-              return Center(child: CircularProgressIndicator());
-            })
+                          return mainItem(index: index, data: config);
+                        },
+                        separatorBuilder: (BuildContext context, int index) {
+                          return SizedBox(height: 10);
+                        },
+                        itemCount: 10),
+                  ),
+                );
+              },
+            ),
           ],
         ));
   }
 
-  Widget mainItem({required int index,required List<ConfiguratorSelected>   data}) {
-    return data[index].titleSelected == ""
+  Widget mainItem({required int index, required List<Configurator> data}) {
+    return data[index].title != "Корпус"
         ? itemConfigurator(
             title: data[index].title,
             image: data[index].image,
             index: index,
           )
         : itemConfiguratorSelected(
-            title: data[index].title,
+            data: data,
             image: data[index].image,
-            index: index, data: data,
+            index: index,
           );
   }
 
-  Widget titleMain({required String title, required int index,required List<ConfiguratorSelected> data}) {
+  Widget titleMain(
+      {required String title,
+      required int index,
+      required List<Configurator> data}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -115,7 +142,7 @@ class Confugarator extends ConsumerWidget {
             ],
           ),
         ),
-        mainItem(index: index, data: data)
+        mainItem(index: index, data: data),
       ],
     );
   }
@@ -145,7 +172,7 @@ class Confugarator extends ConsumerWidget {
           Spacer(),
           widgets.resetButton(onTap: () {
             print("Сбросить");
-            // controller.resetConfigureted();
+            setState(() {});
           })
         ],
       ),
@@ -197,10 +224,9 @@ class Confugarator extends ConsumerWidget {
               onTap: () {
                 Get.to(
                   () => BetweenAllPages(
-                    indexConfigurator: index,
-                    fromConfigurator: true,
-                    title:   title,
-                  ),
+                      indexConfigurator: index,
+                      fromConfigurator: true,
+                      title: "title"),
                   arguments: {"idNews": "382"},
                 );
               },
@@ -212,7 +238,9 @@ class Confugarator extends ConsumerWidget {
   }
 
   Widget itemConfiguratorSelected(
-      {required String title, required String image, required int index,required List<ConfiguratorSelected> data}) {
+      {required List<Configurator> data,
+      required String image,
+      required int index}) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10.0),
       child: Column(
@@ -239,7 +267,7 @@ class Confugarator extends ConsumerWidget {
                                 ),
                           SizedBox(width: 10),
                           Text(
-                            title,
+                            data[index].title,
                             style: widgets.robotoConsid(),
                           ),
                           Spacer(),
@@ -306,14 +334,14 @@ class Confugarator extends ConsumerWidget {
                                 Row(
                                   children: [
                                     Text(
-                                      "${data[index] .price}",
+                                      "${data[index].price}",
                                       style: widgets.robotoConsid(
                                           fontWeight: FontWeight.bold),
                                     ),
                                     SizedBox(width: 10),
                                     widgets.strikeThrough(
                                       child: Text(
-                                        "${data[index].price + 1000}",
+                                        "${data[index].price + 100}",
                                         style: widgets.robotoConsid(
                                             color: AppTextStyles.colorGrayMy),
                                       ),

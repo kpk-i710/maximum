@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:maxkgapp/src/helpers/prefs.dart';
 import 'package:sizer/sizer.dart';
-
 import 'src/helpers/app_bindings.dart';
 import 'src/helpers/app_router.dart';
 import 'src/helpers/helper.dart';

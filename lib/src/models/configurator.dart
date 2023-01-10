@@ -7,6 +7,7 @@ String configuratorToJson(List<Configurator> data) => json.encode(List<dynamic>.
 class Configurator {
   Configurator({
    required this.title,
+   required this.price,
     required this.image,
     required this.category,
   });
@@ -14,16 +15,19 @@ class Configurator {
   String title;
   String image;
   int category;
+  int price;
 
   factory Configurator.fromJson(Map<String, dynamic> json) => Configurator(
     title: json["title"],
     image: json["image"],
+    price: json["price"],
     category: json["category"],
   );
 
   Map<String, dynamic> toJson() => {
     "title": title,
     "image": image,
+    "price": price,
     "category": category,
   };
 }
