@@ -5,12 +5,12 @@ final configuratorsData = [
     title: 'Корпус',
     image: "cose",
     category: 1,
-    price: 0,
+    price: 0, titleSelected: '',
   ),
   Configurator(
     title: 'Метеринская плата',
     image: "motherboard",
     category: 1,
-    price: 0,
+    price: 0, titleSelected: '',
   ),
 ];

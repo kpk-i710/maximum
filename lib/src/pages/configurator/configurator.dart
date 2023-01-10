@@ -110,7 +110,7 @@ class _ConfugaratorState extends ConsumerState<Confugarator> {
   }
 
   Widget mainItem({required int index, required List<Configurator> data}) {
-    return data[index].title != "Корпус"
+    return data[index].titleSelected == ""
         ? itemConfigurator(
             title: data[index].title,
             image: data[index].image,
@@ -182,9 +182,10 @@ class _ConfugaratorState extends ConsumerState<Confugarator> {
           Spacer(),
           widgets.resetButton(onTap: () {
             print("Сбросить");
-            setState(() {
-              firstConfig = 3;
-            });
+            for (int i = 0; i < data.configuratorsData.length; i++) {
+              data.configuratorsData[i].titleSelected = "";
+            }
+            setState(() {});
           })
         ],
       ),
@@ -242,9 +243,7 @@ class _ConfugaratorState extends ConsumerState<Confugarator> {
                   arguments: {"idNews": "382"},
                 )!
                     .then((value) {
-                  setState(() {
-                    firstConfig < 5;
-                  });
+                  setState(() {});
                 });
               },
             ),
@@ -296,6 +295,9 @@ class _ConfugaratorState extends ConsumerState<Confugarator> {
                                   child: Center(
                                       child: widgets.anySvg(nameSvg: 'trash'))),
                               onTap: () {
+                                setState(() {
+                                  data[index].titleSelected = "";
+                                });
                                 // controller.configuratorSelected[index].title =
                                 //     "";
                                 // controller.configuratorSelected.refresh();
