@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
+import 'package:maxkgapp/src/helpers/helper.dart';
 import 'package:maxkgapp/src/helpers/prefs.dart';
 import 'package:maxkgapp/src/models/filter.dart';
 import 'package:maxkgapp/src/styles.dart';
@@ -13,11 +15,8 @@ class WidgetsControllers extends GetxController {
   RxInt selectedRadioFilter = 0.obs;
 
   List<Filter> sorts = [
-    Filter(
-        title: "by_popularity".tr,
-        subtitle: "frequently_bought".tr),
-    Filter(
-        title: "by_rating".tr, subtitle: "highly_rated".tr),
+    Filter(title: "by_popularity".tr, subtitle: "frequently_bought".tr),
+    Filter(title: "by_rating".tr, subtitle: "highly_rated".tr),
     Filter(title: "cheapest".tr),
     Filter(title: "most_expensive".tr),
     Filter(title: "by_discounts".tr),
@@ -146,3 +145,11 @@ class WidgetsControllers extends GetxController {
     return false;
   }
 }
+
+final getPrice = Provider.family<String, int>((ref, price) {
+  NumberFormat numberFormat = NumberFormat("#,##0", "en,_US");
+  return numberFormat.format(price).replaceAll(",", " ");
+});
+
+
+

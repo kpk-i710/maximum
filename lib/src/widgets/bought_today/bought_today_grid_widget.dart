@@ -6,9 +6,7 @@ import 'bought_today_item_black_widget.dart';
 import 'bought_today_item_widget.dart';
 
 class BoughtTodayGridWidget extends StatelessWidget {
-  final List<Discount> list;
-
-  BoughtTodayGridWidget({Key? key, required this.list});
+  BoughtTodayGridWidget({Key? key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +16,7 @@ class BoughtTodayGridWidget extends StatelessWidget {
         child: ListView.builder(
           physics: BouncingScrollPhysics(),
           itemBuilder: (contexwidgetst, index) {
-            return   currentItem(index: index);
+            return currentItem(index: index);
           },
           itemCount: 3,
           primary: false,
@@ -33,12 +31,10 @@ class BoughtTodayGridWidget extends StatelessWidget {
     if (index == 0) {
       return BoughtTodayItemBlackWidget(
         index: index,
-        list: list,
       );
     }
     return BoughtTodayItemRedWidget(
       index: index,
-      list: list,
     );
   }
 }

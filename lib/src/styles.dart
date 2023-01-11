@@ -202,6 +202,7 @@ class AppTextStyles {
   static const Color colorBurgundy = Color(0xff292862);
   static const Color colorGreyThrou = Color( 0xffCCCCCC);
   static const Color colorFocus = Color( 0xffF9F9F9);
+  // static const Color colorYellow = Color( 0xffFF9C09);
 
   static mPlusRounded1c(
           {double fontSize = 12.0,

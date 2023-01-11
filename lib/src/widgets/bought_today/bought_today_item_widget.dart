@@ -7,10 +7,9 @@ import '../../styles.dart';
 import '../widgets.dart' as widgets;
 
 class BoughtTodayItemRedWidget extends StatelessWidget {
-  const BoughtTodayItemRedWidget({Key? key, required this.list, this.index})
+  const BoughtTodayItemRedWidget({Key? key,  this.index})
       : super(key: key);
 
-  final List<Discount> list;
 
   final index;
 

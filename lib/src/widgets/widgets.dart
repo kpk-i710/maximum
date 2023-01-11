@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dotted_decoration/dotted_decoration.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart' hide MenuItem;
@@ -52,13 +53,13 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 Widget buttonIconTrash(
     {required Function() onTap,
     required String image,
-    Size  size = const Size(20, 20)}) {
+    Size size = const Size(20, 20)}) {
   return widgets.colorCustomButton(
       color: AppTextStyles.colorGrayDividar,
       child: Container(
           width: 40,
           height: 40,
-          child: Center(child: widgets.anySvg(nameSvg: image,size: size))),
+          child: Center(child: widgets.anySvg(nameSvg: image, size: size))),
       onTap: onTap);
 }
 
@@ -308,7 +309,7 @@ Widget leaveFeedbackSheet({
                 SizedBox(
                   height: 20,
                 ),
-                OrderPayButton(
+                orderPayButton(
                     text: 'send'.tr,
                     fontSize: 15,
                     onPressed: () {
@@ -894,28 +895,23 @@ void showMassageOneSecondSnackBar(
 }
 
 Widget twoList() {
-  final homeController = Get.put(HomePageController());
   return Column(
     children: [
       widgets
           .titleWidget(title: 'you_watched'.tr)
           .paddingSymmetric(horizontal: 10),
-      Obx(() => Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 11.0),
-            child: BoughtTodayGridWidget(
-              list: homeController.discountList.value,
-            ),
-          )),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 11.0),
+        child: BoughtTodayGridWidget(),
+      ),
       SizedBox(height: 10),
       widgets
           .titleWidget(title: 'popular_goods'.tr)
           .paddingSymmetric(horizontal: 10),
-      Obx(() => Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 11.0),
-            child: BoughtTodayGridWidget(
-              list: homeController.discountList.value,
-            ),
-          )),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 11.0),
+        child: BoughtTodayGridWidget(),
+      ),
     ],
   );
 }
@@ -1404,6 +1400,55 @@ SizedBox bottomNavigation(
       unselectedIconTheme: IconThemeData(size: 25),
       currentIndex: currentTab,
       onTap: onSelectTab,
+      items: [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          label: 'home'.tr,
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(currentTab == 1 ? Icons.close : Icons.menu),
+          label: 'catalog'.tr,
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.favorite),
+          label: 'interesting'.tr,
+        ),
+        BottomNavigationBarItem(
+          icon: cardIcon(isSelected: currentTab == 3),
+
+          // new Icon(Icons.shopping_cart),
+          // icon: CartIcon(), // new Icon(Icons.shopping_cart),
+          label: 'shopping_cart'.tr,
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.person),
+          label: 'profile'.tr,
+        ),
+      ],
+    ),
+  );
+}
+
+SizedBox newBottomNavigation(
+    {int currentTab = 0, Function(int sel)? onSelectTab}) {
+  return SizedBox(
+    height: 50,
+    child: BottomNavigationBar(
+      elevation: 10,
+      type: BottomNavigationBarType.fixed,
+      selectedItemColor: AppTextStyles.colorBlueMy,
+      unselectedItemColor: AppTextStyles.colorGrayMy,
+      selectedLabelStyle: widgets.robotoConsid(fontSize: 10),
+      unselectedLabelStyle: widgets.robotoConsid(fontSize: 10),
+      selectedFontSize: 10,
+      unselectedFontSize: 10,
+      backgroundColor: Get.context!.theme.background,
+      selectedIconTheme: IconThemeData(size: 25),
+      unselectedIconTheme: IconThemeData(size: 25),
+      currentIndex: currentTab,
+      onTap: (value) {
+        Helper.tabSelect(value);
+      },
       items: [
         BottomNavigationBarItem(
           icon: Icon(Icons.home),
@@ -2361,13 +2406,14 @@ Widget borderButton(
   );
 }
 
-Widget OrderPayButton(
+Widget orderPayButton(
     {required String text,
     Function()? onPressed,
     bool isActive = true,
-    double fontSize = 20}) {
+    double fontSize = 20,
+    double hight = 45}) {
   return SizedBox(
-      height: 45,
+      height: hight,
       width: double.infinity,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
@@ -2386,6 +2432,34 @@ Widget OrderPayButton(
                 color: isActive ? AppTextStyles.colorBlueMy : Color(0xff9A9A9A),
                 fontSize: fontSize,
                 fontWeight: FontWeight.w700)),
+      ));
+}
+
+Widget noInternetButton(
+    {required String text,
+    Function()? onPressed,
+    bool isActive = true,
+    double fontSize = 20,
+    double hight = 45}) {
+  return SizedBox(
+      height: hight,
+      width: double.infinity,
+      child: customButton(
+        onTap: onPressed,
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(5),
+            border: Border.all(color: AppTextStyles.colorBlueMy, width: 1.0),
+          ),
+          child: Center(
+            child: Text(text,
+                textAlign: TextAlign.center,
+                style: robotoConsid(
+                  color: AppTextStyles.colorBlueMy,
+                  fontSize: fontSize,
+                )),
+          ),
+        ),
       ));
 }
 

@@ -4,9 +4,13 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:maxkgapp/src/helpers/app_router.dart';
+import 'package:maxkgapp/src/helpers/helper.dart';
 import '../../widgets/widgets.dart' as widgets;
 
 class NetWorkController extends GetxController {
+
+  void tabSelect(int index) => Helper.tabSelect(index);
+
   var isConnected = false.obs;
   final Connectivity connectivity = Connectivity();
 
@@ -16,7 +20,7 @@ class NetWorkController extends GetxController {
   void onInit() {
     _connectivitySubscription =
         connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
-    print("првоерка интеренат");
+
     initConnectivity();
     super.onInit();
   }

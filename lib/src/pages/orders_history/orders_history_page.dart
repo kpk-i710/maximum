@@ -77,7 +77,7 @@ class OrdersHistPage extends StatelessWidget {
             SizedBox(height: 20),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: Get.width * 0.2),
-              child: widgets.OrderPayButton(
+              child: widgets.orderPayButton(
                   text: 'leave_feedback'.tr,
                   fontSize: 15,
                   onPressed: () {

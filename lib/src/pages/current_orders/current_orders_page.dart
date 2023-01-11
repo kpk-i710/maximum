@@ -122,13 +122,13 @@ class CurrentOrdersPage extends StatelessWidget {
                   Row(
                     children: [
                       Expanded(
-                          child: widgets.OrderPayButton(
+                          child: widgets.orderPayButton(
                               text: 'pay_order'.tr, onPressed: () {})),
                       SizedBox(
                         width: 13,
                       ),
                       Expanded(
-                          child: widgets.OrderPayButton(
+                          child: widgets.orderPayButton(
                               isActive: false,
                               text: 'cancel_order'.tr,
                               onPressed: () {}))

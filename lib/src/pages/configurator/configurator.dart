@@ -9,7 +9,9 @@ import 'package:localstorage/localstorage.dart';
 import 'package:maxkgapp/src/models/configurator.dart';
 import 'package:maxkgapp/src/pages/between_pages_all/between_all_pages.dart';
 import 'package:maxkgapp/src/pages/configurator/configurator_controller.dart';
+import 'package:maxkgapp/src/pages/detail_all/detail_all.dart';
 import 'package:maxkgapp/src/styles.dart';
+import 'package:maxkgapp/src/widgets/widgets_controller.dart';
 import '../../widgets/widgets.dart' as widgets;
 import '../../helpers/data.dart' as data;
 
@@ -17,19 +19,20 @@ AutoDisposeFutureProviderFamily<List<Configurator>, int> configProvider =
     FutureProvider.family
         .autoDispose<List<Configurator>, int>((ref, configFirst) async {
   ref.watch(changeProvider);
-  return fetchUser( );
+  return fetchUser();
 });
 
 final changeProvider = StateProvider<int>((ref) => 0);
 
 class Confugarator extends ConsumerWidget {
-
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final future = ref.watch(configProvider(0));
     return Scaffold(
         appBar: widgets.appBarJust(),
+        bottomNavigationBar: widgets.newBottomNavigation(
+          currentTab: 0,
+        ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -248,131 +251,142 @@ class Confugarator extends ConsumerWidget {
       required String image,
       required int index,
       required WidgetRef ref}) {
+    final getPrices = ref.read(getPrice(data[index].price));
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10.0),
       child: Column(
         children: [
           widgets.boxShadows(
               padding: 0,
-              child: Container(
-                height: 170,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          image != ""
-                              ? Image.asset(
-                                  'assets/images/config/$image.png',
-                                  width: 30,
-                                  height: 30,
-                                )
-                              : SizedBox(
-                                  width: 30,
-                                  height: 30,
-                                ),
-                          SizedBox(width: 10),
-                          Text(
-                            data[index].title,
-                            style: widgets.robotoConsid(),
-                          ),
-                          Spacer(),
-                          widgets.buttonIconTrash(
-                              size: Size(22, 22),
-                              onTap: () {
-                                Get.to(
-                                  () => BetweenAllPages(
-                                      indexConfigurator: index,
-                                      fromConfigurator: true,
-                                      title: data[index].title),
-                                  arguments: {"idNews": "382"},
-                                )!
-                                    .then((value) {
-                                  // setState(() {});
-                                });
-                              },
-                              image: 're_select'),
-                          SizedBox(width: 5),
-                          widgets.buttonIconTrash(
-                              onTap: () {
-                                data[index].titleSelected = "";
-                                ConfiguratorController().saveList();
+              child: widgets.customButton(
+                onTap: () {
+                  Get.to(() => DetailAll(
+                        idPost: '',
+                        img: '',
+                        price: null,
+                        naim: '',
+                      ));
+                },
+                child: Container(
+                  height: 170,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            image != ""
+                                ? Image.asset(
+                                    'assets/images/config/$image.png',
+                                    width: 30,
+                                    height: 30,
+                                  )
+                                : SizedBox(
+                                    width: 30,
+                                    height: 30,
+                                  ),
+                            SizedBox(width: 10),
+                            Text(
+                              data[index].title,
+                              style: widgets.robotoConsid(),
+                            ),
+                            Spacer(),
+                            widgets.buttonIconTrash(
+                                size: Size(22, 22),
+                                onTap: () {
+                                  Get.to(
+                                    () => BetweenAllPages(
+                                        indexConfigurator: index,
+                                        fromConfigurator: true,
+                                        title: data[index].title),
+                                    arguments: {"idNews": "382"},
+                                  );
+                                },
+                                image: 're_select'),
+                            SizedBox(width: 5),
+                            widgets.buttonIconTrash(
+                                onTap: () {
+                                  data[index].titleSelected = "";
+                                  ConfiguratorController().saveList();
 
-                                ref.read(changeProvider.notifier).state++;
-                              },
-                              image: 'trash'),
-                        ],
-                      ),
-                      SizedBox(height: 10),
-                      Row(
-                        children: [
-                          Stack(
-                            clipBehavior: Clip.none,
-                            children: [
-                              Image.asset(
-                                'assets/images/laptop.png',
-                                width: 100,
-                                height: 100,
-                              ),
-                              Positioned(
-                                bottom: -10,
-                                left: 0,
-                                child: Container(
-                                  width: 40,
-                                  height: 20,
-                                  child: Center(
-                                      child: Text(
-                                    "ХИТ",
-                                    style: widgets.robotoConsid(
-                                        color: Colors.white),
-                                  )),
-                                  decoration: BoxDecoration(
-                                      color: AppTextStyles.colorBlueMy,
-                                      borderRadius: BorderRadius.circular(2)),
-                                ),
-                              )
-                            ],
-                          ),
-                          SizedBox(width: 10),
-                          Flexible(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                                  ref.read(changeProvider.notifier).state++;
+                                },
+                                image: 'trash'),
+                          ],
+                        ),
+                        SizedBox(height: 10),
+                        Row(
+                          children: [
+                            Stack(
+                              clipBehavior: Clip.none,
                               children: [
-                                Text(
-                                  data[index].titleSelected,
-                                  style: widgets.robotoConsid(fontSize: 12),
+                                Image.asset(
+                                  'assets/images/laptop.png',
+                                  width: 100,
+                                  height: 100,
                                 ),
-                                SizedBox(height: 5),
-                                Text("Код: 11400703",
-                                    style: widgets.robotoConsid(
-                                        fontSize: 12,
-                                        color: AppTextStyles.colorBlueMy)),
-                                SizedBox(height: 7),
-                                Row(
-                                  children: [
-                                    Text(
-                                      "${data[index].price}",
+                                Positioned(
+                                  bottom: -10,
+                                  left: 0,
+                                  child: Container(
+                                    width: 40,
+                                    height: 20,
+                                    child: Center(
+                                        child: Text(
+                                      "ХИТ",
                                       style: widgets.robotoConsid(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    SizedBox(width: 10),
-                                    widgets.strikeThrough(
-                                      child: Text(
-                                        "${data[index].price + 100}",
-                                        style: widgets.robotoConsid(
-                                            color: AppTextStyles.colorGrayMy),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                          color: Colors.white),
+                                    )),
+                                    decoration: BoxDecoration(
+                                        color: AppTextStyles.colorBlueMy,
+                                        borderRadius: BorderRadius.circular(2)),
+                                  ),
+                                )
                               ],
                             ),
-                          ),
-                          SizedBox(width: 10),
-                        ],
-                      ),
-                    ],
+                            SizedBox(width: 10),
+                            Flexible(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    data[index].titleSelected,
+                                    style: widgets.robotoConsid(fontSize: 12),
+                                  ),
+                                  SizedBox(height: 5),
+                                  Text("Код: 11400703",
+                                      style: widgets.robotoConsid(
+                                          fontSize: 12,
+                                          color: AppTextStyles.colorBlueMy)),
+                                  SizedBox(height: 7),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        "$getPrices с",
+                                        style: widgets.robotoConsid(
+                                            color: AppTextStyles.colorRedMy,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      SizedBox(width: 10),
+                                      widgets.strikeThrough(
+                                        child: Text(
+                                          "${getPrices} с",
+                                          style: widgets.robotoConsid(
+                                              fontWeight: FontWeight.bold,
+                                              color:
+                                                  AppTextStyles.colorGreyThrou),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(width: 10),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               )),

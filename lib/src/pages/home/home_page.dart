@@ -7,13 +7,10 @@ import 'package:maxkgapp/src/widgets/popular_goods/popular_goods_grid_widget.dar
 import 'package:maxkgapp/src/widgets/promotions_widgets/promotions_swiper.dart';
 import '../../helpers/app_router.dart';
 import '../../widgets/bought_today/bought_today_grid_widget.dart';
-import '../../widgets/brand_offers/brand_offers_grid_widget.dart';
 import '../../widgets/brands/brand_grid_widget.dart';
 import '../../widgets/discount_widgets/discount_grid_widget.dart';
-import '../../widgets/catalog_widgets/catalog_grid_widget.dart';
 import '../../widgets/banner_widget.dart';
 import '../../widgets/popular_categories/popular_categories_grid_widget.dart';
-import '../../widgets/search_widget_2/searchWidget.dart';
 import '../../widgets/product_widgets/products_carousel_widget.dart';
 import '../../widgets/widgets.dart' as widgets;
 import '../../styles.dart';
@@ -143,9 +140,7 @@ class HomePage extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 widgets.titleWidget(title: 'bought_today'.tr),
-                                Obx(() => BoughtTodayGridWidget(
-                                      list: homeController.discountList.value,
-                                    )),
+                                BoughtTodayGridWidget(),
                               ],
                             ),
                           ),
@@ -180,23 +175,17 @@ class HomePage extends StatelessWidget {
                                 widgets.subTitleWidget(
                                   title: 'Asus',
                                 ),
-                                Obx(() => BoughtTodayGridWidget(
-                                      list: homeController.discountList.value,
-                                    )),
+                                BoughtTodayGridWidget(),
                                 SizedBox(height: 10),
                                 widgets.subTitleWidget(
                                   title: 'Мечта',
                                 ),
-                                Obx(() => BoughtTodayGridWidget(
-                                      list: homeController.discountList.value,
-                                    )),
+                                BoughtTodayGridWidget(),
                                 SizedBox(height: 10),
                                 widgets.subTitleWidget(
                                   title: 'Launch',
                                 ),
-                                Obx(() => BoughtTodayGridWidget(
-                                      list: homeController.discountList.value,
-                                    )),
+                                BoughtTodayGridWidget(),
                               ],
                             ),
                           ),

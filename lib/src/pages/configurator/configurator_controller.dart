@@ -7,15 +7,15 @@ import '../../helpers/data.dart' as data;
 import 'package:localstorage/localstorage.dart';
 
 class ConfiguratorController {
-   saveList() async {
+  saveList() async {
     final storage = LocalStorage('todo.json');
-   await storage.setItem("todo", json.encode(data.configuratorsData).toString());
+    await storage.setItem(
+        "todo", json.encode(data.configuratorsData).toString());
   }
 }
 
-Future<List<Configurator>> fetchUser( ) async {
+Future<List<Configurator>> fetchUser() async {
   String? path;
-  print("запрсо");
   path = 'assets/configurator.json';
   String jobsString = await rootBundle.loadString(path);
 
@@ -31,9 +31,9 @@ Future<List<Configurator>> fetchUser( ) async {
   List<Configurator> confLists = await configuratorFromJson(jobsString)
       .where((element) => element.category < 5)
       .toList();
-  if (data.configuratorsData.length < 26) {
+  if (data.configuratorsData.length == 1) {
     data.configuratorsData.clear();
-    for (int i = 1; i < confLists.length; i++)
+    for (int i = 0; i < confLists.length; i++)
       data.configuratorsData.add(confLists[i]);
   }
 

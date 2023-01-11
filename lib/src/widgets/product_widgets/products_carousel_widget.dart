@@ -21,7 +21,7 @@ class ProductsCarouselWidget extends StatelessWidget {
           physics: BouncingScrollPhysics(),
           itemBuilder: (context, index) {
             return BoughtTodayItemBlackWidget(
-              list: [],
+
             );
           },
 
