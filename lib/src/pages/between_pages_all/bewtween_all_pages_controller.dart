@@ -11,7 +11,6 @@ import 'dart:math';
 class BetweenAllPagesController extends GetxController {
   NewsList? newsList;
 
-  var isLoaded = false.obs;
 
   int getRandomTitle() {
     var rng = Random();
@@ -22,12 +21,6 @@ class BetweenAllPagesController extends GetxController {
 
   void tabSelect(int index) => Helper.tabSelect(index);
 
-  @override
-  Future<void> onInit() async {
-    await Future.delayed(Duration(milliseconds: 400));
-    isLoaded.value = true;
-    super.onInit();
-  }
 
   String getPrice(int? price) {
     NumberFormat numberFormat = NumberFormat("#,##0", "en_US");

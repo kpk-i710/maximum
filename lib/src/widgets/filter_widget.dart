@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 import 'package:maxkgapp/src/helpers/prefs.dart';
@@ -18,7 +19,6 @@ class FilterWidget extends StatelessWidget {
 
   FilterWidget({this.callBack, this.onFilterTap, this.onSortTap});
 
-  final controller = Get.put(ProductsByCatalogPageController());
   final widgetController = Get.put(WidgetsControllers());
   final controllerFilter = Get.put(FilterPageController());
 
@@ -125,27 +125,30 @@ class FilterWidget extends StatelessWidget {
               ),
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Obx(() => widgets.customButton(
-                  onTap: () {
-                    if (widgetController.currentVersionCatalog.value < 2) {
-                      widgetController.currentVersionCatalog.value =
-                          widgetController.currentVersionCatalog.value + 1;
-                    } else {
-                      widgetController.currentVersionCatalog.value = 0;
-                    }
-                    widgetController
-                        .setIcon(widgetController.currentVersionCatalog.value);
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                    child: widgetController.icon.value,
-                  ))),
-              widgets.share(color: AppTextStyles.colorBlueMy),
-              const SizedBox(width: 10),
-            ],
+          Consumer(
+            builder: (BuildContext context, WidgetRef ref, Widget? child) {
+              final currentVersion = ref.read(currentVersionCatalog);
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Obx(() => widgets.customButton(
+                      onTap: () {
+                        if (currentVersion < 2) {
+                          ref.read(currentVersionCatalog.notifier).state++;
+                        } else {
+                          ref.read(currentVersionCatalog.notifier).state = 0;
+                        }
+                        widgetController.setIcon(currentVersion);
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                        child: widgetController.icon.value,
+                      ))),
+                  widgets.share(color: AppTextStyles.colorBlueMy),
+                  const SizedBox(width: 10),
+                ],
+              );
+            },
           ),
         ],
       ),

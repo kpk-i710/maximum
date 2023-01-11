@@ -11,6 +11,13 @@ import 'package:maxkgapp/src/styles.dart';
 import 'widgets.dart' as widgets;
 import '../models/checkBox.dart';
 
+final getPrice = Provider.family<String, int>((ref, price) {
+  NumberFormat numberFormat = NumberFormat("#,##0", "en,_US");
+  return numberFormat.format(price).replaceAll(",", " ");
+});
+
+final currentVersionCatalog = StateProvider(<int>(ref) => 0);
+
 class WidgetsControllers extends GetxController {
   RxInt selectedRadioFilter = 0.obs;
 
@@ -30,7 +37,6 @@ class WidgetsControllers extends GetxController {
 
   var counter = 0.obs;
 
-  var currentVersionCatalog = 0.obs;
 
   var demoList = <bool>[
     false,
@@ -145,11 +151,3 @@ class WidgetsControllers extends GetxController {
     return false;
   }
 }
-
-final getPrice = Provider.family<String, int>((ref, price) {
-  NumberFormat numberFormat = NumberFormat("#,##0", "en,_US");
-  return numberFormat.format(price).replaceAll(",", " ");
-});
-
-
-

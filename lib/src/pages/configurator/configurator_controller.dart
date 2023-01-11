@@ -14,7 +14,7 @@ class ConfiguratorController {
   }
 }
 
-Future<List<Configurator>> fetchUser() async {
+Future<List<Configurator>> fetchConfigurators() async {
   String? path;
   path = 'assets/configurator.json';
   String jobsString = await rootBundle.loadString(path);

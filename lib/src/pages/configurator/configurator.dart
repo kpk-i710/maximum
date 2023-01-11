@@ -15,11 +15,11 @@ import 'package:maxkgapp/src/widgets/widgets_controller.dart';
 import '../../widgets/widgets.dart' as widgets;
 import '../../helpers/data.dart' as data;
 
-AutoDisposeFutureProviderFamily<List<Configurator>, int> configProvider =
+final configProvider =
     FutureProvider.family
         .autoDispose<List<Configurator>, int>((ref, configFirst) async {
   ref.watch(changeProvider);
-  return fetchUser();
+  return fetchConfigurators();
 });
 
 final changeProvider = StateProvider<int>((ref) => 0);

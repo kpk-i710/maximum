@@ -15,11 +15,11 @@ class ProductBlockItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 10.0),
       child: widgets.boxShadows(
           child: Column(
         children: [
-            SwiperImage(
+          SwiperImage(
             image: 'assets/images/notebook_item.png',
           ),
           SizedBox(height: 10),
@@ -46,7 +46,8 @@ class ProductBlockItemWidget extends StatelessWidget {
                 child: widgets.addCardAndFavorite(
                     rightPadding: 0,
                     textCard: 'to_cart'.tr,
-                    onPressedCard: () {}, context: context),
+                    onPressedCard: () {},
+                    context: context),
               ),
             ],
           )

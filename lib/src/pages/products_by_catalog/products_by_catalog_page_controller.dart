@@ -1,17 +1,13 @@
-import 'package:get/get.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:maxkgapp/src/widgets/widgets_controller.dart';
 
-import '../../helpers/helper.dart';
-import '../../models/app_banner.dart';
-import '../../models/catalog.dart';
-import '../../models/product.dart';
-import '../../repositories/app_repo.dart';
-import '../../repositories/catalog_repo.dart';
-import '../../repositories/product_repo.dart';
+final catalogProvider =
+    FutureProvider.family.autoDispose<int, int>((ref, configFirst) async {
+  ref.watch(currentVersionCatalog);
+  return fetchProductsByCatalog();
+});
 
-class ProductsByCatalogPageController extends GetxController {
-
-  void tabSelect(int index) => Helper.tabSelect(index);
-
-
-
+Future<int> fetchProductsByCatalog() async {
+  await Future.delayed(Duration(milliseconds: 300));
+  return 0;
 }
