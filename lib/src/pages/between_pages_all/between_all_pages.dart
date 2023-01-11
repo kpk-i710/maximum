@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
+import 'package:maxkgapp/src/pages/filter/filter_page.dart';
 import 'package:maxkgapp/src/pages/filter/filter_page_controller.dart';
 import 'package:maxkgapp/src/pages/home/home_page_controller.dart';
 import 'package:maxkgapp/src/pages/products_by_catalog/products_by_catalog_page_controller.dart';
@@ -24,7 +25,6 @@ class BetweenAllPages extends ConsumerWidget {
   final height = 180.0;
   final widgetController = Get.put(WidgetsControllers());
   final homeController = Get.put(HomePageController());
-  final controller = Get.put(FilterPageController());
 
   final String? title;
   final bool fromConfigurator;
@@ -34,9 +34,10 @@ class BetweenAllPages extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final currentVersion = ref.watch(currentVersionCatalog);
     final future = ref.watch(catalogProvider(0));
+    final isSearchedValue = ref.watch(isSearchedProvider);
     return WillPopScope(
       onWillPop: () async {
-        controller.isSearched.value = false;
+        ref.read(isSearchedProvider.notifier).state = false;
         return true;
       },
       child: Scaffold(
@@ -47,8 +48,8 @@ class BetweenAllPages extends ConsumerWidget {
             floatHeaderSlivers: true,
             headerSliverBuilder:
                 (BuildContext context, bool innerBoxIsScrolled) => [
-              controller.isSearched.value
-                  ? widgets.appBarSearch()
+                  isSearchedValue
+                  ? widgets.appBarSearch(ref: ref)
                   : widgets.appBarFloating(title: title!)
             ],
             body: future.when(

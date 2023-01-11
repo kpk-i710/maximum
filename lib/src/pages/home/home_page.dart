@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:maxkgapp/src/pages/network/network_controller.dart';
 import 'package:maxkgapp/src/pages/news/all_news_swiper.dart';
@@ -20,7 +21,7 @@ import '../shopping_cart/before_payment_delivry/shipping_methods/shipping_method
 import '../shopping_cart/shopping_cart_page_controller.dart';
 import 'home_page_controller.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends ConsumerWidget {
   final homeController = Get.put(HomePageController());
   final networkController = Get.put(NetWorkController());
   final controllerShoppingCart = Get.put(ShoppingCartPageController());
@@ -28,7 +29,7 @@ class HomePage extends StatelessWidget {
   HomePage({key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,WidgetRef ref) {
     return Scaffold(
         backgroundColor: Get.context!.theme.background,
         body: SafeArea(
@@ -36,7 +37,7 @@ class HomePage extends StatelessWidget {
             floatHeaderSlivers: true,
             headerSliverBuilder:
                 (BuildContext context, bool innerBoxIsScrolled) =>
-                    [widgets.appBarSearchHome()],
+                    [widgets.appBarSearchHome(ref: ref)],
             body: RefreshIndicator(
                 onRefresh: homeController.onRefresh,
                 child: ListView.builder(

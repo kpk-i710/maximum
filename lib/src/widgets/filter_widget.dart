@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 import 'package:maxkgapp/src/helpers/prefs.dart';
+import 'package:maxkgapp/src/pages/filter/filter_page.dart';
 import 'package:maxkgapp/src/pages/filter/filter_page_controller.dart';
 import 'package:maxkgapp/src/pages/products_by_catalog/products_by_catalog_page_controller.dart';
 import 'package:maxkgapp/src/widgets/widgets_controller.dart';
@@ -12,7 +13,7 @@ import '../styles.dart';
 import 'app_icon.dart';
 import '../widgets/widgets.dart' as widgets;
 
-class FilterWidget extends StatelessWidget {
+class FilterWidget extends ConsumerWidget {
   final Function(String val)? callBack;
   final Function()? onFilterTap;
   final Function()? onSortTap;
@@ -20,10 +21,11 @@ class FilterWidget extends StatelessWidget {
   FilterWidget({this.callBack, this.onFilterTap, this.onSortTap});
 
   final widgetController = Get.put(WidgetsControllers());
-  final controllerFilter = Get.put(FilterPageController());
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final filterInterase = ref.watch(filtedCounter);
+
     return Container(
       height: 50,
       padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -52,18 +54,14 @@ class FilterWidget extends StatelessWidget {
                           style: AppTextStyles.roboto(
                               fontSize: 14, fontWeight: FontWeight.w500),
                         ),
-                        Obx(() {
-                          return Text(
-                            widgetController
-                                .sorts[
-                                    widgetController.selectedRadioFilter.value]
-                                .title,
-                            overflow: TextOverflow.ellipsis,
-                            style: AppTextStyles.roboto(
-                                color: Colors.black.withAlpha(80),
-                                fontSize: 10),
-                          );
-                        }),
+                        Text(
+                          widgetController
+                              .sorts[widgetController.selectedRadioFilter.value]
+                              .title,
+                          overflow: TextOverflow.ellipsis,
+                          style: AppTextStyles.roboto(
+                              color: Colors.black.withAlpha(80), fontSize: 10),
+                        )
                       ],
                     ),
                   )
@@ -91,26 +89,23 @@ class FilterWidget extends StatelessWidget {
                                 style: AppTextStyles.roboto(
                                     fontSize: 14, fontWeight: FontWeight.w500)),
                             SizedBox(width: 5),
-                            Obx(() {
-                              return controllerFilter.filtedCounter.value > 0
-                                  ? Container(
-                                      decoration: BoxDecoration(
-                                          color: AppTextStyles.colorRedMy,
-                                          borderRadius:
-                                              BorderRadius.circular(2)),
-                                      child: Center(
-                                          child: Text(
-                                        "${controllerFilter.filtedCounter.value}",
-                                        style: widgets.robotoConsid(
-                                            color: Colors.white, fontSize: 10),
-                                      )).paddingSymmetric(
-                                          horizontal: 3, vertical: 1),
-                                    )
-                                  : Text(
-                                      "${controllerFilter.filtedCounter.value}",
-                                      style: TextStyle(fontSize: 0),
-                                    );
-                            }),
+                            filterInterase > 0
+                                ? Container(
+                                    decoration: BoxDecoration(
+                                        color: AppTextStyles.colorRedMy,
+                                        borderRadius: BorderRadius.circular(2)),
+                                    child: Center(
+                                        child: Text(
+                                      "${filterInterase}",
+                                      style: widgets.robotoConsid(
+                                          color: Colors.white, fontSize: 10),
+                                    )).paddingSymmetric(
+                                        horizontal: 3, vertical: 1),
+                                  )
+                                : Text(
+                                    "${filterInterase}",
+                                    style: TextStyle(fontSize: 0),
+                                  ),
                           ],
                         ),
                         Text('found_products'.trParams({'count': '467'})!,
@@ -131,7 +126,7 @@ class FilterWidget extends StatelessWidget {
               return Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Obx(() => widgets.customButton(
+                  widgets.customButton(
                       onTap: () {
                         if (currentVersion < 2) {
                           ref.read(currentVersionCatalog.notifier).state++;
@@ -143,7 +138,7 @@ class FilterWidget extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 5.0),
                         child: widgetController.icon.value,
-                      ))),
+                      )),
                   widgets.share(color: AppTextStyles.colorBlueMy),
                   const SizedBox(width: 10),
                 ],

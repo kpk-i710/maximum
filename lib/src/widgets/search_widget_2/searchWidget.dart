@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:maxkgapp/src/pages/between_pages_all/between_all_pages.dart';
+import 'package:maxkgapp/src/pages/filter/filter_page.dart';
 import 'package:maxkgapp/src/pages/filter/filter_page_controller.dart';
 
 import 'package:maxkgapp/src/widgets/search_widget_2/searchDeleg.dart';
 import '../../widgets/widgets.dart' as widgets;
 
-class SearchWidget extends StatelessWidget {
-  final controller = Get.put(FilterPageController());
+class SearchWidget extends ConsumerWidget {
     SearchWidget({Key? key}) : super(key: key);
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,WidgetRef ref) {
     return Container(
       height: 70,
       width: double.infinity,
@@ -31,7 +32,7 @@ class SearchWidget extends StatelessWidget {
           onSubmitted: (value) {
             Get.to(() => BetweenAllPages());
 
-            controller.isSearched.value = true;
+            ref.read(isSearchedProvider.notifier).state = true;
           },
           decoration: InputDecoration(
             contentPadding:

@@ -11,6 +11,7 @@ import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
 import 'package:maxkgapp/src/pages/between_pages_all/between_all_pages.dart';
 import 'package:maxkgapp/src/pages/detail_all/detail_all_controller.dart';
+import 'package:maxkgapp/src/pages/filter/filter_page.dart';
 import 'package:maxkgapp/src/pages/filter/filter_page_controller.dart';
 import 'package:maxkgapp/src/pages/home/home_page_controller.dart';
 import 'package:maxkgapp/src/pages/intro/intro_controller.dart';
@@ -3115,65 +3116,63 @@ PreferredSizeWidget appBarJust() {
   );
 }
 
-PreferredSizeWidget appBarFilter() {
-  final controller = Get.put(FilterPageController());
+PreferredSizeWidget appBarFilter({required Function()  onTap}) {
   return AppBar(
     backgroundColor: Colors.white,
     elevation: 0,
     iconTheme: IconThemeData(
       color: AppTextStyles.colorBlackMy, //change your color here
     ),
-    title: Row(
-      children: [
-        Row(
+    title: Consumer(
+      builder: (BuildContext context, WidgetRef ref, Widget? child) {
+        final filterInterase = ref.watch(filtedCounter);
+        return Row(
           children: [
-            Text(
-              'filters'.tr,
-              style: widgets.robotoConsid(
-                  color: AppTextStyles.colorBlackMy, fontSize: 16),
+            Row(
+              children: [
+                Text(
+                  'filters'.tr,
+                  style: widgets.robotoConsid(
+                      color: AppTextStyles.colorBlackMy, fontSize: 16),
+                ),
+                SizedBox(width: 5),
+                filterInterase > 0
+                    ? Container(
+                        decoration: BoxDecoration(
+                            color: AppTextStyles.colorRedMy,
+                            borderRadius: BorderRadius.circular(2)),
+                        child: Center(
+                            child: Text(
+                          "${filterInterase}",
+                          style: widgets.robotoConsid(
+                              color: Colors.white, fontSize: 10),
+                        )).paddingSymmetric(horizontal: 3, vertical: 1),
+                      )
+                    : SizedBox(
+                        width: 0, height: 0, child: Text("${filterInterase}"))
+              ],
             ),
-            SizedBox(width: 5),
-            Obx(() {
-              return controller.filtedCounter.value > 0
-                  ? Container(
-                      decoration: BoxDecoration(
-                          color: AppTextStyles.colorRedMy,
-                          borderRadius: BorderRadius.circular(2)),
-                      child: Center(
-                          child: Text(
-                        "${controller.filtedCounter.value}",
-                        style: widgets.robotoConsid(
-                            color: Colors.white, fontSize: 10),
-                      )).paddingSymmetric(horizontal: 3, vertical: 1),
-                    )
-                  : SizedBox(
-                      width: 0,
-                      height: 0,
-                      child: Text("${controller.filtedCounter.value}"));
-            }),
+            Spacer(),
+            customButton(
+              child: underLineDashed(
+                child: Text(
+                  "Сбросить все",
+                  style: widgets.robotoConsid(
+                      color: AppTextStyles.colorBlueMy, fontSize: 14),
+                ),
+              ),
+              onTap: onTap,
+            ),
+            Spacer(),
+            customButtonOval(
+                child: anySvg(nameSvg: 'close', size: Size(17, 17)),
+                onTap: () {
+                  print("нажал");
+                  Get.back();
+                })
           ],
-        ),
-        Spacer(),
-        customButton(
-          child: underLineDashed(
-            child: Text(
-              "Сбросить все",
-              style: widgets.robotoConsid(
-                  color: AppTextStyles.colorBlueMy, fontSize: 14),
-            ),
-          ),
-          onTap: () {
-            controller.resetAll();
-          },
-        ),
-        Spacer(),
-        customButtonOval(
-            child: anySvg(nameSvg: 'close', size: Size(17, 17)),
-            onTap: () {
-              print("нажал");
-              Get.back();
-            })
-      ],
+        );
+      },
     ),
   );
 }
@@ -3228,69 +3227,74 @@ Widget getSort() {
 }
 
 Widget isSearched() {
-  final controller = Get.put(FilterPageController());
-  return Obx(() {
-    return Column(
-      children: [
-        if (controller.isSearched.value)
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(top: 0),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 10.0, horizontal: 10),
-                  child: Text(
-                    "В категориях",
-                    style: widgets.robotoConsid(
-                        color: AppTextStyles.colorBlackMy,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold),
+  return Consumer(
+    builder: (BuildContext context, WidgetRef ref, Widget? child) {
+      final isSearchedValue = ref.watch(isSearchedProvider);
+      return Column(
+        children: [
+          if (isSearchedValue)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(top: 0),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10.0, horizontal: 10),
+                    child: Text(
+                      "В категориях",
+                      style: widgets.robotoConsid(
+                          color: AppTextStyles.colorBlackMy,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold),
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(
-                height: 160,
-                child: ListView.builder(
-                    physics: BouncingScrollPhysics(),
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: SizedBox(
-                          width: 150,
-                          child: popular_categories_item(
-                              index: index, onTap: () {}),
-                        ),
-                      );
-                    }),
-              ),
-            ],
-          ),
-      ],
-    );
-  });
+                SizedBox(
+                  height: 160,
+                  child: ListView.builder(
+                      physics: BouncingScrollPhysics(),
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: SizedBox(
+                            width: 150,
+                            child: popular_categories_item(
+                                index: index, onTap: () {}),
+                          ),
+                        );
+                      }),
+                ),
+              ],
+            ),
+        ],
+      );
+    },
+  );
 }
 
 Widget isFiltered() {
-  final controller = Get.put(FilterPageController());
-  return Obx(() {
-    return Column(
-      children: [
-        if (controller.filtedCounter.value > 0 || controller.isSearched.value)
-          Padding(
-            padding: EdgeInsets.only(top: 10, bottom: 0),
-            child: Center(
-              child: Text(
-                "По вашему запросу найдено 445 товаров",
-                style: widgets.robotoConsid(color: AppTextStyles.colorGrayMy),
+  return Consumer(
+    builder: (BuildContext context, WidgetRef ref, Widget? child) {
+      final filterIncrease = ref.watch(filtedCounter);
+      final isSearchedValue = ref.watch(isSearchedProvider);
+      return Column(
+        children: [
+          if (filterIncrease > 0 || isSearchedValue)
+            Padding(
+              padding: EdgeInsets.only(top: 10, bottom: 0),
+              child: Center(
+                child: Text(
+                  "По вашему запросу найдено 445 товаров",
+                  style: widgets.robotoConsid(color: AppTextStyles.colorGrayMy),
+                ),
               ),
             ),
-          ),
-      ],
-    );
-  });
+        ],
+      );
+    },
+  );
 }
 
 Widget radioSelect({required int index}) {
@@ -3553,8 +3557,7 @@ Widget appBarFloating({required String title}) {
   );
 }
 
-Widget appBarSearchHome() {
-  final controller = Get.put(FilterPageController());
+Widget appBarSearchHome({required WidgetRef ref}) {
   return PreferredSize(
     preferredSize: Size.fromHeight(100.0),
     child: SliverAppBar(
@@ -3576,7 +3579,7 @@ Widget appBarSearchHome() {
           padding: const EdgeInsets.all(7.0),
           child: TextField(
             onSubmitted: (value) {
-              controller.isSearched.value = true;
+              ref.read(isSearchedProvider.notifier).state = true;
               Get.to(() => BetweenAllPages());
             },
             decoration: InputDecoration(
@@ -3602,8 +3605,7 @@ Widget appBarSearchHome() {
   );
 }
 
-Widget appBarSearch() {
-  final controller = Get.put(FilterPageController());
+Widget appBarSearch({required WidgetRef ref}) {
   return PreferredSize(
     preferredSize: Size.fromHeight(120.0),
     child: SliverAppBar(
@@ -3642,7 +3644,7 @@ Widget appBarSearch() {
             height: 40,
             child: TextField(
               onSubmitted: (value) {
-                controller.isSearched.value = true;
+                ref.read(isSearchedProvider.notifier).state = true;
                 Get.to(() => BetweenAllPages());
               },
               decoration: InputDecoration(

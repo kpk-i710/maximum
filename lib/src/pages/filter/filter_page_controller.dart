@@ -1,136 +1,27 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:maxkgapp/src/models/multi_select.dart';
 
-class FilterPageController extends GetxController {
-  final ranges = RangeValues(0, 10000).obs;
+List<MultiSelect> fetchFilterCategory() {
+  // await Future.delayed(Duration(milliseconds: 400));
 
-  final priceStartCont = TextEditingController();
+  List<MultiSelect> list = [];
+  if (list.length <7) list = ListTitles;
 
-  final priceEndCont = TextEditingController();
-  RxBool isSearched = false.obs;
-  RxInt filtedCounter = 0.obs;
-  RxInt brandCounter = 0.obs;
-  RxInt delivaryCounter = 0.obs;
-  RxInt discountCounter = 0.obs;
+  print("опять применил");
 
-  final getTodayCheck = false.obs;
-  final bestPriceCheck = false.obs;
-  final cashb = false.obs;
-
-  RxList<MultiSelect> brandList = <MultiSelect>[
-    MultiSelect(title: 'Acer'),
-    MultiSelect(title: 'Lenovo'),
-    MultiSelect(title: 'Samsung'),
-    MultiSelect(title: 'Nokia'),
-    MultiSelect(title: 'Asus'),
-    MultiSelect(title: 'Xiomi'),
-    MultiSelect(title: 'LG')
-  ].obs;
-
-  RxList<MultiSelect> delivryTimeList = <MultiSelect>[
-    MultiSelect(title: 'В течении часа'),
-    MultiSelect(title: '1-2 дня'),
-    MultiSelect(title: '10-14 дней'),
-  ].obs;
-
-  RxList<MultiSelect> discountsList = <MultiSelect>[
-    MultiSelect(title: ' Есть'),
-    MultiSelect(title: 'Нет'),
-  ].obs;
-
-  calculateCountFilter() {
-    final brand =
-        brandList.where((item) => item.isSelected == true).toList().length;
-    final delivry = delivryTimeList
-        .where((item) => item.isSelected == true)
-        .toList()
-        .length;
-    final discount =
-        discountsList.where((item) => item.isSelected == true).toList().length;
-    final startText = priceStartCont.text.length > 0 ? 1 : 0;
-    final endText = priceEndCont.text.length > 0 ? 1 : 0;
-    filtedCounter.value = brand + delivry + discount + startText + endText;
-
-  }
-
-  resetAll() {
-    resetLists();
-    priceStartCont.text = "";
-    priceEndCont.text = "";
-  }
-
-  resetBrend() {
-    for (int i = 0; i < brandList.length; i++) brandList[i].isSelected = false;
-    brandList.refresh();
-    calculateCountFilter();
-  }
-
-  resetDelivery() {
-    for (int i = 0; i < delivryTimeList.length; i++)
-      delivryTimeList[i].isSelected = false;
-    delivryTimeList.refresh();
-    calculateCountFilter();
-  }
-
-  resetDiscount() {
-    for (int i = 0; i < discountsList.length; i++)
-      discountsList[i].isSelected = false;
-    discountsList.refresh();
-    calculateCountFilter();
-  }
-
-  resetLists() {
-    for (int i = 0; i < brandList.length; i++) brandList[i].isSelected = false;
-    for (int i = 0; i < delivryTimeList.length; i++)
-      delivryTimeList[i].isSelected = false;
-    for (int i = 0; i < discountsList.length; i++)
-      discountsList[i].isSelected = false;
-    discountsList.refresh();
-    brandList.refresh();
-    delivryTimeList.refresh();
-    calculateCountFilter();
-  }
-
-  @override
-  void onInit() {
-    super.onInit();
-    ever(brandList, (velue) {
-      final brand =
-          brandList.where((item) => item.isSelected == true).toList().length;
-      brandCounter.value = brand;
-    });
-    ever(discountsList, (velue) {
-      final discount = discountsList
-          .where((item) => item.isSelected == true)
-          .toList()
-          .length;
-      discountCounter.value = discount;
-    });
-
-    ever(delivryTimeList, (velue) {
-      final delivry = delivryTimeList
-          .where((item) => item.isSelected == true)
-          .toList()
-          .length;
-
-      delivaryCounter.value = delivry;
-    });
-  }
-
-  changeRanges(RangeValues val) {
-    ranges.value = val;
-    priceStartCont.text = val.start.toStringAsFixed(2);
-    priceEndCont.text = val.end.toStringAsFixed(2);
-  }
-
-  onStartPriceChanged(String val) {
-    print(val);
-  }
-
-  onEndPriceChanged(String val) {
-    print(val);
-  }
-
-
+  return list;
 }
+
+List<MultiSelect> ListTitles = [
+  MultiSelect(title: 'Acer', category: 1),
+  MultiSelect(title: 'Lenovo', category: 1),
+  MultiSelect(title: 'Samsung', category: 1),
+  MultiSelect(title: 'Nokia', category: 1),
+  MultiSelect(title: 'Asus', category: 1),
+  MultiSelect(title: 'Xiomi', category: 1),
+  MultiSelect(title: 'LG', category: 1),
+  MultiSelect(title: 'В течении часа', category: 2),
+  MultiSelect(title: ' 1-2 дня', category: 2),
+  MultiSelect(title: '10-14 дней', category: 2),
+  MultiSelect(title: 'Есть', category: 3),
+  MultiSelect(title: 'Нет', category: 3),
+];
