@@ -298,6 +298,8 @@ class _FilterPageState extends ConsumerState<FilterPage> {
     ref.read(filterProvider.notifier).resetAllListsState();
     priceEndCont.text = "";
     priceStartCont.text = "";
+    ref.read(startPrice.notifier).state = "";
+    ref.read(endPrice.notifier).state = "";
     calculate(ref: ref);
   }
 
@@ -306,7 +308,8 @@ class _FilterPageState extends ConsumerState<FilterPage> {
         ListTitles.where((element) => element.isSelected == true)
             .toList()
             .length;
-    if(priceStartCont.text.length>0) ref.read(filtedCounter.notifier).state++;
-    if(priceEndCont.text.length>0) ref.read(filtedCounter.notifier).state++;
+    if (priceStartCont.text.length > 0)
+      ref.read(filtedCounter.notifier).state++;
+    if (priceEndCont.text.length > 0) ref.read(filtedCounter.notifier).state++;
   }
 }

@@ -48,8 +48,11 @@ class ProductsByCatalogPage extends ConsumerWidget {
                       if (currentVersion == 2)
                         showList(
                             separator: 0,
-                            bottomWidget: PopularGoodsGridWidget(
-                              list: homeController.discountList.value,
+                            bottomWidget: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                              child: PopularGoodsGridWidget(
+                                list: homeController.discountList.value,
+                              ),
                             )),
                     ],
                   ),
