@@ -1,14 +1,54 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:maxkgapp/src/models/multi_select.dart';
 
-List<MultiSelect> fetchFilterCategory() {
-  // await Future.delayed(Duration(milliseconds: 400));
 
-  List<MultiSelect> list = [];
-  if (list.length <7) list = ListTitles;
 
-  print("опять применил");
+class filterNotifier extends StateNotifier<List<MultiSelect>> {
+  void add(MultiSelect name) {
+    state = [...state, name];
+  }
 
-  return list;
+  void remove(String name) {
+    state = [...state.where((element) => element != name)];
+  }
+
+  void updateState(
+      {required int index, required bool value, int category = 1}) {
+    final updatedList = <MultiSelect>[];
+    for (var i = 0; i < state.length; i++) {
+      updatedList.add(state[i]);
+    }
+    updatedList
+        .where((element) => element.category == category)
+        .toList()[index]
+        .isSelected = value;
+    state = updatedList;
+  }
+
+  void resetListState({required bool value, int category = 1}) {
+    final updatedList = <MultiSelect>[];
+    for (var i = 0; i < state.length; i++) {
+      updatedList.add(state[i]);
+    }
+    for (var i = 0; i < state.where((element) => element.category== category).toList().length; i++) {
+      updatedList.where((element) => element.category== category).toList()[i].isSelected = false;
+    }
+
+
+    state = updatedList;
+  }
+
+  void resetAllListsState() {
+    final updatedList = <MultiSelect>[];
+    for (var i = 0; i < state.length; i++) {
+      updatedList.add(state[i]);
+      updatedList[i].isSelected = false;
+    }
+
+    state = updatedList;
+  }
+
+  filterNotifier() : super(ListTitles);
 }
 
 List<MultiSelect> ListTitles = [

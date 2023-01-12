@@ -6,54 +6,6 @@ import 'package:maxkgapp/src/pages/filter/filter_page_controller.dart';
 import 'package:maxkgapp/src/styles.dart';
 import '../../widgets/widgets.dart' as widgets;
 
-class filterNotifier extends StateNotifier<List<MultiSelect>> {
-  void add(MultiSelect name) {
-    state = [...state, name];
-  }
-
-  void remove(String name) {
-    state = [...state.where((element) => element != name)];
-  }
-
-  void updateState(
-      {required int index, required bool value, int category = 1}) {
-    final updatedList = <MultiSelect>[];
-    for (var i = 0; i < state.length; i++) {
-      updatedList.add(state[i]);
-    }
-    updatedList
-        .where((element) => element.category == category)
-        .toList()[index]
-        .isSelected = value;
-    state = updatedList;
-  }
-
-  void resetListState({required bool value, int category = 1}) {
-    final updatedList = <MultiSelect>[];
-    for (var i = 0; i < state.length; i++) {
-      updatedList.add(state[i]);
-    }
-    for (var i = 0; i < state.where((element) => element.category== category).toList().length; i++) {
-      updatedList.where((element) => element.category== category).toList()[i].isSelected = false;
-    }
-
-
-    state = updatedList;
-  }
-
-  void resetAllListsState() {
-    final updatedList = <MultiSelect>[];
-    for (var i = 0; i < state.length; i++) {
-      updatedList.add(state[i]);
-      updatedList[i].isSelected = false;
-    }
-
-    state = updatedList;
-  }
-
-  filterNotifier() : super(ListTitles);
-}
-
 final filterProvider =
     StateNotifierProvider<filterNotifier, List<MultiSelect>>((ref) {
   return filterNotifier();
@@ -62,14 +14,40 @@ final filterProvider =
 final filtedCounter = StateProvider<int>((ref) {
   return 0;
 });
+
+final startPrice = StateProvider<String>((ref) {
+  return "";
+});
+
+final endPrice = StateProvider<String>((ref) {
+  return "";
+});
+
 final isSearchedProvider = StateProvider.autoDispose<bool>((ref) => false);
 
-class FilterPage extends ConsumerWidget {
+class FilterPage extends ConsumerStatefulWidget {
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<FilterPage> createState() => _FilterPageState();
+}
+
+class _FilterPageState extends ConsumerState<FilterPage> {
+  late TextEditingController priceStartCont;
+
+  late TextEditingController priceEndCont;
+
+  @override
+  void initState() {
+    priceStartCont = TextEditingController();
+    priceEndCont = TextEditingController();
+    priceStartCont.text = ref.read(startPrice);
+    priceEndCont.text = ref.read(endPrice);
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final filterList = ref.watch(filterProvider);
-    TextEditingController priceStartCont = TextEditingController();
-    TextEditingController priceEndCont = TextEditingController();
+
     final brandList =
         filterList.where((element) => element.category == 1).toList();
     final delivryList =
@@ -96,7 +74,10 @@ class FilterPage extends ConsumerWidget {
                     flex: 1,
                     child: TextField(
                         controller: priceStartCont,
-                        onChanged: (val) {},
+                        onChanged: (val) {
+                          ref.read(startPrice.notifier).state = val;
+                          calculate(ref: ref);
+                        },
                         keyboardType: TextInputType.number,
                         decoration: decor(start: 'from')),
                   ),
@@ -105,7 +86,11 @@ class FilterPage extends ConsumerWidget {
                     flex: 1,
                     child: TextField(
                         controller: priceEndCont,
-                        onChanged: (val) {},
+                        onChanged: (val) {
+                          ref.read(endPrice.notifier).state = val;
+                          print(ref.read(endPrice.notifier).state);
+                          calculate(ref: ref);
+                        },
                         keyboardType: TextInputType.number,
                         decoration: decor(start: 'to')),
                   ),
@@ -311,6 +296,8 @@ class FilterPage extends ConsumerWidget {
 
   void resetAllLists({required WidgetRef ref}) {
     ref.read(filterProvider.notifier).resetAllListsState();
+    priceEndCont.text = "";
+    priceStartCont.text = "";
     calculate(ref: ref);
   }
 
@@ -319,5 +306,7 @@ class FilterPage extends ConsumerWidget {
         ListTitles.where((element) => element.isSelected == true)
             .toList()
             .length;
+    if(priceStartCont.text.length>0) ref.read(filtedCounter.notifier).state++;
+    if(priceEndCont.text.length>0) ref.read(filtedCounter.notifier).state++;
   }
 }
