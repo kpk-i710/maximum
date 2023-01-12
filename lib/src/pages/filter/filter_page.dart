@@ -6,10 +6,57 @@ import 'package:maxkgapp/src/pages/filter/filter_page_controller.dart';
 import 'package:maxkgapp/src/styles.dart';
 import '../../widgets/widgets.dart' as widgets;
 
-final filterProvider = StateProvider.autoDispose<List<MultiSelect>>((ref) {
-  ref.watch(filtedCounter);
+class filterNotifier extends StateNotifier<List<MultiSelect>> {
+  void add(MultiSelect name) {
+    state = [...state, name];
+  }
 
-  return fetchFilterCategory();
+  void remove(String name) {
+    state = [...state.where((element) => element != name)];
+  }
+
+  void updateState(
+      {required int index, required bool value, int category = 1}) {
+    final updatedList = <MultiSelect>[];
+    for (var i = 0; i < state.length; i++) {
+      updatedList.add(state[i]);
+    }
+    updatedList
+        .where((element) => element.category == category)
+        .toList()[index]
+        .isSelected = value;
+    state = updatedList;
+  }
+
+  void resetListState({required bool value, int category = 1}) {
+    final updatedList = <MultiSelect>[];
+    for (var i = 0; i < state.length; i++) {
+      updatedList.add(state[i]);
+    }
+    for (var i = 0; i < state.where((element) => element.category== category).toList().length; i++) {
+      updatedList.where((element) => element.category== category).toList()[i].isSelected = false;
+    }
+
+
+    state = updatedList;
+  }
+
+  void resetAllListsState() {
+    final updatedList = <MultiSelect>[];
+    for (var i = 0; i < state.length; i++) {
+      updatedList.add(state[i]);
+      updatedList[i].isSelected = false;
+    }
+
+    state = updatedList;
+  }
+
+  filterNotifier() : super(ListTitles);
+}
+
+final filterProvider =
+    StateNotifierProvider<filterNotifier, List<MultiSelect>>((ref) {
+  return filterNotifier();
 });
 
 final filtedCounter = StateProvider<int>((ref) {
@@ -248,38 +295,22 @@ class FilterPage extends ConsumerWidget {
       required int index,
       required bool value,
       int category = 1}) {
-    ListTitles.where((element) => element.category == category)
-        .toList()[index]
-        .isSelected = value;
-    ref.read(filterProvider.notifier).update((state) {
-      return state = [...state];
-    });
+    ref
+        .read(filterProvider.notifier)
+        .updateState(index: index, value: value, category: category);
 
     calculate(ref: ref);
   }
 
   void resetList({int indexCategory = 1, required WidgetRef ref}) {
-    final currentList =
-        ListTitles.where((element) => element.category == indexCategory)
-            .toList();
-
-    for (int i = 0; i < currentList.length; i++)
-      ListTitles.where((element) => element.category == indexCategory)
-          .toList()[i]
-          .isSelected = false;
-    ref.read(filterProvider.notifier).update((state) {
-      return state = [...state];
-    });
+    ref
+        .read(filterProvider.notifier)
+        .resetListState(value: false, category: indexCategory);
     calculate(ref: ref);
   }
 
   void resetAllLists({required WidgetRef ref}) {
-    for (int i = 0; i < ListTitles.length; i++)
-      ListTitles[i].isSelected = false;
-
-    ref.read(filterProvider.notifier).update((state) {
-      return state = [...state];
-    });
+    ref.read(filterProvider.notifier).resetAllListsState();
     calculate(ref: ref);
   }
 
